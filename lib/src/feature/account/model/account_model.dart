@@ -1,4 +1,5 @@
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
 
 class AccountModel {
   final String id;
@@ -90,20 +91,7 @@ class TimetableModel {
 //   });
 // }
 
-class PositionModel {
-  final String id;
-  final String positionName;
-  final String type;
 
-  factory PositionModel.fromJson(Map<String, dynamic> json) {
-    return PositionModel(
-        id: json["id"].toString(),
-        positionName: json["position_name"],
-        type: json["type"]);
-  }
-  PositionModel(
-      {required this.id, required this.positionName, required this.type});
-}
 
 class StoreModel {
   final String id;
