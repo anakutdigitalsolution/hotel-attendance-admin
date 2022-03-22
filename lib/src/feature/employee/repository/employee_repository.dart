@@ -1,23 +1,24 @@
 import 'package:dio/dio.dart';
-import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
-class PositionRepository {
+class EmployeeRepository {
   String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
-  Future<List<PositionModel>> getPosition(
+  Future<List<EmployeeModel>> getEmployee(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "position?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "employee?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
-        List<PositionModel> leave = [];
+        List<EmployeeModel> leave = [];
         response.data["data"].forEach((data) {
-          leave.add(PositionModel.fromJson(data));
+          leave.add(EmployeeModel.fromJson(data));
         });
         return leave;
       }
@@ -26,18 +27,35 @@ class PositionRepository {
       throw e;
     }
   }
-  Future<void> addPosition({
+
+  Future<void> addEmployee({
     required String name,
-    required String type,
+    required String gender,
+    required String img,
+    required String username,
+    required String password,
+    required String positionId,
+    required String departmentId,
+    required String storeId,
+    required String phoneNumber,
+    required String address,
   }) async {
     try {
-      String url = mainUrl + "position/add";
+      String url = mainUrl + "employee/add";
       Map body = {
-        "position_name": name,
-        "type":type
+        "name": name,
+        "gender": gender,
+        "username": username,
+        "password": password,
+        "profile_url":img,
+        "position_id": positionId,
+        "department_id": departmentId,
+        "store_id":storeId,
+        "employee_phone": phoneNumber,
+        "address": address,
+        
       };
       Response response = await apiProvider.post(url, body, null);
-
       print(response.statusCode);
       if (response.statusCode == 200 && response.data["code"] == 0) {
         print(response.data);
@@ -51,16 +69,33 @@ class PositionRepository {
     }
   }
 
-  Future<void> editPosition({
+  Future<void> editEmployee({
     required String id,
-    required String name,
-    required String type,
+  required String name,
+    required String gender,
+    required String img,
+    // required String username,
+    // required String password,
+    required String positionId,
+    required String departmentId,
+    required String storeId,
+    required String phoneNumber,
+    required String address,
   }) async {
     try {
-      String url = mainUrl + "position/edit/$id";
-      Map body = {
-        "position_name": name,
-        "type":type
+      String url = mainUrl + "employee/edit/$id";
+       Map body = {
+        "name": name,
+        "gender": gender,
+        // "username": username,
+        // "password": password,
+        "profile_url":img,
+        "position_id": positionId,
+        "department_id": departmentId,
+        "store_id":storeId,
+        "employee_phone": phoneNumber,
+        "address": address,
+        
       };
       Response response = await apiProvider.put(url, body);
 
@@ -77,11 +112,11 @@ class PositionRepository {
     }
   }
 
-  Future<void> deletePosition({
+  Future<void> deleteEmployee({
     required String id,
   }) async {
     try {
-      String url = mainUrl + "position/delete/$id";
+      String url = mainUrl + "employee/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);

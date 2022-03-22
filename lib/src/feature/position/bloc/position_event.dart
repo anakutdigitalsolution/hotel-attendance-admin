@@ -28,10 +28,10 @@ class UpdatePositionStarted extends PositionEvent {
   UpdatePositionStarted({required this.id, required this.name,required this.type});
 }
 
-class DeleteDepartmentStarted extends PositionEvent {
+class DeletePositionStarted extends PositionEvent {
   final String id;
   // final String date;
-  DeleteDepartmentStarted({
+  DeletePositionStarted({
     required this.id,
   });
 }

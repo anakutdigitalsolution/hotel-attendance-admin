@@ -1,37 +1,31 @@
 import 'dart:developer';
-
-import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/department/repository/department_repository.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_type_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/repository/leave_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/position/repository/position_repository.dart';
 
 import 'index.dart';
 
 class PositionBlc extends Bloc<PositionEvent, PositionState> {
   PositionBlc() : super(InitializingPosition());
 
-  DepartmentRepository departmentRepository = DepartmentRepository();
-  List<DepartmentModel> departmentList = [];
+  PositionRepository positionRepository = PositionRepository();
+  List<PositionModel> positionList = [];
   int rowperpage = 12;
   int page = 1;
   @override
   Stream<PositionState> mapEventToState(PositionEvent event) async* {
-    if (event is InitializeDepartmentStarted) {
+    if (event is InitializePositionStarted) {
       yield InitializingPosition();
       try {
         // Future.delayed(Duration(milliseconds: 200));
         page = 1;
-        departmentList = await departmentRepository.getdepartment(
+        positionList = await positionRepository.getPosition(
             rowPerpage: rowperpage, page: page);
 
         page++;
         print(page);
-        print(departmentList.length);
-        if (departmentList.length < rowperpage) {
+        print(positionList.length);
+        if (positionList.length < rowperpage) {
           yield EndOfPositionList();
         } else {
           yield InitializedPosition();
@@ -41,13 +35,13 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
         yield ErrorFetchingPosition(error: e.toString());
       }
     }
-    if (event is FetchDepartmentStarted) {
+    if (event is FetchPositionStarted) {
       yield FetchingPosition();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        List<DepartmentModel> _departmentList = await departmentRepository
-            .getdepartment(rowPerpage: rowperpage, page: page);
-        departmentList.addAll(_departmentList);
+        List<PositionModel> _departmentList = await positionRepository.getPosition(
+            rowPerpage: rowperpage, page: page);
+        positionList.addAll(_departmentList);
         page++;
         print(page);
         print(_departmentList.length);
@@ -61,17 +55,17 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
       }
     }
 
-    if (event is RefreshDepartmentStarted) {
+    if (event is RefreshPositionStarted) {
       yield FetchingPosition();
       try {
         // Future.delayed(Duration(milliseconds: 200));
         page = 1;
-        if (departmentList.length != 0) {
-          departmentList.clear();
+        if (positionList.length != 0) {
+          positionList.clear();
         }
-        List<DepartmentModel> leaveList = await departmentRepository
-            .getdepartment(rowPerpage: rowperpage, page: page);
-        departmentList.addAll(leaveList);
+        List<PositionModel> leaveList = await positionRepository.getPosition(
+            rowPerpage: rowperpage, page: page);
+        positionList.addAll(leaveList);
         print(leaveList.length);
         // page++;
         yield FetchedPosition();
@@ -83,15 +77,15 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
     if (event is AddPositionStarted) {
       yield AddingPosition();
       try {
-        await departmentRepository.addDepartment(name: event.name);
+        await positionRepository.addPosition(name: event.name,type: event.type);
 
         yield AddedPosition();
         yield FetchingPosition();
-        print(departmentList.length);
-        departmentList.clear();
-        departmentList = await departmentRepository.getdepartment(
-            rowPerpage: rowperpage, page: 1);
-        print(departmentList.length);
+        print(positionList.length);
+        positionList.clear();
+        positionList = await  positionRepository.getPosition(
+            rowPerpage: rowperpage, page: page);
+        print(positionList.length);
         yield FetchedPosition();
       } catch (e) {
         log(e.toString());

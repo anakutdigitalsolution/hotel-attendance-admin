@@ -1,5 +1,6 @@
 
-import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/timetable_bloc.dart';
 
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
@@ -9,22 +10,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'add_position.dart';
-import 'edit_position.dart';
-class PositionPage extends StatefulWidget {
-  const PositionPage({ Key? key }) : super(key: key);
+import 'add_timetable.dart';
+import 'edit_timetable.dart';
+
+
+class TimetablePage extends StatefulWidget {
+  const TimetablePage({ Key? key }) : super(key: key);
 
   @override
-  State<PositionPage> createState() => _PositionPageState();
+  State<TimetablePage> createState() => _TimetablePageState();
 }
 
-class _PositionPageState extends State<PositionPage> {
+class _TimetablePageState extends State<TimetablePage> {
   @override
   Widget build(BuildContext context) {
      return Scaffold(
-      appBar: standardAppBar(context, "Department Page"),
+      appBar: standardAppBar(context, "Timetable Page"),
       body: Container(
-          margin: EdgeInsets.only(top: 10, bottom: 10), child: PositionBody()),
+          margin: EdgeInsets.only(top: 10, bottom: 10), child: DepartmentBody()),
       floatingActionButton: Container(
         child: FloatingActionButton(
             backgroundColor: Colors.lightBlueAccent,
@@ -32,70 +35,71 @@ class _PositionPageState extends State<PositionPage> {
             elevation: 0,
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddPosition()));
+                  context, MaterialPageRoute(builder: (context) => AddTimetable()));
             }),
       ),
     );
   }
 }
-class PositionBody extends StatefulWidget {
-  const PositionBody({ Key? key }) : super(key: key);
+
+class DepartmentBody extends StatefulWidget {
+  const DepartmentBody({ Key? key }) : super(key: key);
 
   @override
-  State<PositionBody> createState() => _PositionBodyState();
+  State<DepartmentBody> createState() => _DepartmentBodyState();
 }
 
-class _PositionBodyState extends State<PositionBody> {
- @override
+class _DepartmentBodyState extends State<DepartmentBody> {
+  @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-    BlocProvider.of<PositionBlc>(context).add(InitializePositionStarted());
+    BlocProvider.of<TimetableBloc>(context).add(InitializeTimetableStarted());
     final RefreshController _refreshController = RefreshController();
-    return BlocBuilder<PositionBlc, PositionState>(
+    return BlocBuilder<TimetableBloc, TimetableState>(
       builder: (context, state) {
-        if (state is InitializingPosition) {
+        if (state is InitializingTimetable) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is ErrorFetchingPosition) {
+        } else if (state is ErrorFetchingTimetable) {
           return Center(
             child: Text(state.error.toString()),
           );
         } else {
-          if (BlocProvider.of<PositionBlc>(context).positionList.length == 0) {
+          if (BlocProvider.of<TimetableBloc>(context).timetableList.length == 0) {
             return Center(
               child: Text("No Data"),
             );
           }
           print(
-              "length ${BlocProvider.of<PositionBlc>(context).positionList.length}");
+              "length ${BlocProvider.of<TimetableBloc>(context).timetableList.length}");
 
-          return BlocListener<PositionBlc, PositionState>(
+          return BlocListener<TimetableBloc, TimetableState>(
             listener: (context, state) {
-              if (state is FetchedPosition) {
+              if (state is FetchedTimetable) {
                 _refreshController.loadComplete();
                 _refreshController.refreshCompleted();
               }
-              if (state is EndOfPositionList) {
+              if (state is EndOfTimetableList) {
                 _refreshController.loadNoData();
               }
-              if (state is AddingPosition) {
+              if (state is AddingTimetable) {
                 loadingDialogs(context);
-              } else if (state is ErrorAddingPosition) {
+              } else if (state is ErrorAddingTimetable) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
-              } else if (state is AddedPosition) {
+              } else if (state is AddedTimetable) {
                 // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
                 Navigator.pop(context);
               }
             },
             child: SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<PositionBlc>(context).add(RefreshPositionStarted());
+                BlocProvider.of<TimetableBloc>(context).add(RefreshTimetableStarted());
               },
               onLoading: () {
-                if (BlocProvider.of<PositionBlc>(context).state
-                    is EndOfPositionList) {
+                if (BlocProvider.of<TimetableBloc>(context).state
+                    is EndOfTimetableList) {
                 } else {
                   // BlocProvider.of<ProductListingBloc>(context)
                   //     .add(FetchProductListStarted(arg: widget.category.id));
@@ -108,7 +112,7 @@ class _PositionBodyState extends State<PositionBody> {
               controller: _refreshController,
               child: ListView.builder(
                   itemCount:
-                      BlocProvider.of<PositionBlc>(context).positionList.length,
+                      BlocProvider.of<TimetableBloc>(context).timetableList.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -143,7 +147,51 @@ class _PositionBodyState extends State<PositionBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<PositionBlc>(context).positionList[index].positionName}",
+                                  "${BlocProvider.of<TimetableBloc>(context).timetableList[index].timetableName}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+                            Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Time in :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${BlocProvider.of<TimetableBloc>(context).timetableList[index].onDutyTtime}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+                            Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Time out :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${BlocProvider.of<TimetableBloc>(context).timetableList[index].offDutyTime}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       ),
@@ -166,8 +214,8 @@ class _PositionBodyState extends State<PositionBody> {
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (con) => EditPosition(
-                                                          positionModel: BlocProvider.of<PositionBlc>(context).positionList[index],
+                                                    builder: (con) => EditTimetable(
+                                                          timetableModel: BlocProvider.of<TimetableBloc>(context).timetableList[index],
                                                         )));
                                           }),
                                       SizedBox(
@@ -183,10 +231,10 @@ class _PositionBodyState extends State<PositionBody> {
                                           ),
                                           onPressed: () {
                                             print(
-                                                "id ${BlocProvider.of<PositionBlc>(context).positionList[index].id}");
-                                          BlocProvider.of<PositionBlc>(context)
-                                                .add(DeletePositionStarted(
-                                                    id:BlocProvider.of<PositionBlc>(context).positionList[index]
+                                                "id ${BlocProvider.of<TimetableBloc>(context).timetableList[index].id}");
+                                            BlocProvider.of<TimetableBloc>(context)
+                                                .add(DeleteTimetableStarted(
+                                                    id:BlocProvider.of<TimetableBloc>(context).timetableList[index]
                                                         .id));
                                           }),
                                     ],

@@ -1,29 +1,29 @@
 import 'package:equatable/equatable.dart';
 
-class DepartmentState extends Equatable {
-  DepartmentState([List props = const []]) : super();
+class PositionState extends Equatable {
+  PositionState([List props = const []]) : super();
   @override
   List<Object?> get props => [];
 }
-class InitializingDepartment extends DepartmentState{}
-class InitializedDepartment extends DepartmentState{}
+class InitializingPosition extends PositionState{}
+class InitializedPosition extends PositionState{}
 
-class FetchingDepartment extends DepartmentState {}
+class FetchingPosition extends PositionState {}
 
-class FetchedDepartment extends DepartmentState {}
+class FetchedPosition extends PositionState {}
 
-class EndOfDepartmentList extends DepartmentState {}
+class EndOfPositionList extends PositionState {}
 
-class ErrorFetchingDepartment extends DepartmentState {
+class ErrorFetchingPosition extends PositionState {
   final dynamic error;
-  ErrorFetchingDepartment({required this.error});
+  ErrorFetchingPosition({required this.error});
 }
 
-class AddingDepartment extends DepartmentState {}
+class AddingPosition extends PositionState {}
 
-class AddedDepartment extends DepartmentState {}
+class AddedPosition extends PositionState {}
 
-class ErrorAddingDepartment extends DepartmentState {
+class ErrorAddingPosition extends PositionState {
   final dynamic error;
-  ErrorAddingDepartment({required this.error});
+  ErrorAddingPosition({required this.error});
 }

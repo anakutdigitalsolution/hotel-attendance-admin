@@ -1,10 +1,14 @@
-class DepartmentModel {
+class PositionModel {
   final String id;
-  final String name;
-  factory DepartmentModel.fromJson(Map<String, dynamic> json) {
-    return DepartmentModel(
-        id: json["id"].toString(), name: json["department_name"]);
-  }
+  final String positionName;
+  final String type;
 
-  DepartmentModel({required this.id, required this.name});
+  factory PositionModel.fromJson(Map<String, dynamic> json) {
+    return PositionModel(
+        id: json["id"].toString(),
+        positionName: json["position_name"],
+        type: json["type"]);
+  }
+  PositionModel(
+      {required this.id, required this.positionName, required this.type});
 }

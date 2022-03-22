@@ -1,38 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
-
+import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/timetable_bloc.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 
-
-class AddPosition extends StatefulWidget {
-  const AddPosition({ Key? key }) : super(key: key);
+class AddTimetable extends StatefulWidget {
+  const AddTimetable({ Key? key }) : super(key: key);
 
   @override
-  State<AddPosition> createState() => _AddPositionState();
+  State<AddTimetable> createState() => _AddTimetableState();
 }
 
-class _AddPositionState extends State<AddPosition> {
+class _AddTimetableState extends State<AddTimetable> {
    final TextEditingController _reasonCtrl = TextEditingController();
-  final TextEditingController _typeCtrl = TextEditingController();
+   final TextEditingController _ondutyCtrl = TextEditingController();
+    final TextEditingController _ofDutyCtrl = TextEditingController();
+    //  final TextEditingController _reasonCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Add Position"),
+      appBar: standardAppBar(context, "Add Department"),
       body: Builder(builder: (context) {
-        return BlocListener<PositionBlc, PositionState>(
+        return BlocListener<TimetableBloc, TimetableState>(
           listener: (context, state) {
-            if (state is AddingPosition) {
+            if (state is AddingTimetable) {
               loadingDialogs(context);
             }
-            if (state is ErrorAddingPosition) {
+            if (state is ErrorAddingTimetable) {
               Navigator.pop(context);
               errorSnackBar(text: state.error.toString(), context: context);
             }
-            if (state is AddedPosition) {
+            if (state is AddedTimetable) {
               // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
               // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
               Navigator.pop(context);
@@ -65,17 +66,17 @@ class _AddPositionState extends State<AddPosition> {
                               ),
                             ),
                             isDense: true,
-                            labelText: "Position name"),
+                            labelText: "Timetalbe name"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Type name';
+                            return 'Timetalbe name';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: 15),
                       TextFormField(
-                        controller: _typeCtrl,
+                        controller: _ondutyCtrl,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
@@ -88,16 +89,38 @@ class _AddPositionState extends State<AddPosition> {
                               ),
                             ),
                             isDense: true,
-                            labelText: "Type "),
+                            labelText: "On duty"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'type';
+                            return 'On duty';
                           }
                           return null;
                         },
                       ),
-
-                      
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _ofDutyCtrl,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                              borderSide: new BorderSide(
+                                width: 1,
+                              ),
+                            ),
+                            isDense: true,
+                            labelText: "Off duty"),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Off duty';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 15),
                     ],
                   ),
                 ),
@@ -118,7 +141,7 @@ class _AddPositionState extends State<AddPosition> {
             color: Colors.blue,
             onPressed: () {
               if (_formKey!.currentState!.validate()) {
-                BlocProvider.of<PositionBlc>(context).add(AddPositionStarted(name: _reasonCtrl.text, type: _typeCtrl.text));
+                BlocProvider.of<TimetableBloc>(context).add(AddTimetableStarted(name: _reasonCtrl.text, offDuty: _ofDutyCtrl.text, onDuty: _ondutyCtrl.text));
               }
             },
             padding: EdgeInsets.symmetric(vertical: 10),

@@ -1,23 +1,23 @@
 import 'package:dio/dio.dart';
-import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
-class PositionRepository {
+class TimetableRepository {
   String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
-  Future<List<PositionModel>> getPosition(
+  Future<List<TimetableModel>> getTimetable(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "position?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "timetable?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
-        List<PositionModel> leave = [];
+        List<TimetableModel> leave = [];
         response.data["data"].forEach((data) {
-          leave.add(PositionModel.fromJson(data));
+          leave.add(TimetableModel.fromJson(data));
         });
         return leave;
       }
@@ -26,16 +26,20 @@ class PositionRepository {
       throw e;
     }
   }
-  Future<void> addPosition({
+
+  Future<void> addTimetable({
     required String name,
-    required String type,
+    required String onDuty,
+    required String offDuty,
   }) async {
     try {
-      String url = mainUrl + "position/add";
+      String url = mainUrl + "timetable/add";
       Map body = {
-        "position_name": name,
-        "type":type
+        "timetable_name": name,
+        "on_duty_time": name,
+        "off_duty_time": name,
       };
+
       Response response = await apiProvider.post(url, body, null);
 
       print(response.statusCode);
@@ -51,16 +55,18 @@ class PositionRepository {
     }
   }
 
-  Future<void> editPosition({
+  Future<void> editTimetable({
     required String id,
-    required String name,
-    required String type,
+   required String name,
+    required String onDuty,
+    required String offDuty,
   }) async {
     try {
-      String url = mainUrl + "position/edit/$id";
+      String url = mainUrl + "timetable/edit/$id";
       Map body = {
-        "position_name": name,
-        "type":type
+        "timetable_name": name,
+        "on_duty_time": name,
+        "off_duty_time": name,
       };
       Response response = await apiProvider.put(url, body);
 
@@ -77,11 +83,11 @@ class PositionRepository {
     }
   }
 
-  Future<void> deletePosition({
+  Future<void> deleteTimetable({
     required String id,
   }) async {
     try {
-      String url = mainUrl + "position/delete/$id";
+      String url = mainUrl + "timetable/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);

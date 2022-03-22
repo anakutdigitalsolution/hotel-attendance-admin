@@ -1,5 +1,6 @@
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
 
 class AccountModel {
   final String id;
@@ -56,24 +57,7 @@ class AccountModel {
   }
 }
 
-class TimetableModel {
-  final String id;
-  final String timetableName;
-  final String onDutyTtime;
-  final String offDutyTime;
-  factory TimetableModel.fromJson(Map<String, dynamic> json) {
-    return TimetableModel(
-        id: json["id"].toString(),
-        timetableName: json["timetable_name"],
-        offDutyTime: json["on_duty_time"],
-        onDutyTtime: json["off_duty_time"]);
-  }
-  TimetableModel(
-      {required this.id,
-      required this.timetableName,
-      required this.offDutyTime,
-      required this.onDutyTtime});
-}
+
 
 // class DepartmentModel {
 //   final String id;

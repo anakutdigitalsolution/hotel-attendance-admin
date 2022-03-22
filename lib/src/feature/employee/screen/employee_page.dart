@@ -1,6 +1,7 @@
 
-import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
-
+import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/add_employee.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/edit_employee.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
@@ -9,22 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'add_position.dart';
-import 'edit_position.dart';
-class PositionPage extends StatefulWidget {
-  const PositionPage({ Key? key }) : super(key: key);
+class EmployeePage extends StatefulWidget {
+  const EmployeePage({ Key? key }) : super(key: key);
 
   @override
-  State<PositionPage> createState() => _PositionPageState();
+  State<EmployeePage> createState() => _EmployeePageState();
 }
 
-class _PositionPageState extends State<PositionPage> {
-  @override
+class _EmployeePageState extends State<EmployeePage> {
+ @override
   Widget build(BuildContext context) {
      return Scaffold(
-      appBar: standardAppBar(context, "Department Page"),
+      appBar: standardAppBar(context, "Employee Page"),
       body: Container(
-          margin: EdgeInsets.only(top: 10, bottom: 10), child: PositionBody()),
+          margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
       floatingActionButton: Container(
         child: FloatingActionButton(
             backgroundColor: Colors.lightBlueAccent,
@@ -32,70 +31,71 @@ class _PositionPageState extends State<PositionPage> {
             elevation: 0,
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddPosition()));
+                  context, MaterialPageRoute(builder: (context) => AddEmployee()));
             }),
       ),
     );
   }
 }
-class PositionBody extends StatefulWidget {
-  const PositionBody({ Key? key }) : super(key: key);
+
+class Body extends StatefulWidget {
+  const Body({ Key? key }) : super(key: key);
 
   @override
-  State<PositionBody> createState() => _PositionBodyState();
+  State<Body> createState() => _BodyState();
 }
 
-class _PositionBodyState extends State<PositionBody> {
- @override
+class _BodyState extends State<Body> {
+  @override
+   final RefreshController _refreshController = RefreshController();
   Widget build(BuildContext context) {
-    //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-    BlocProvider.of<PositionBlc>(context).add(InitializePositionStarted());
-    final RefreshController _refreshController = RefreshController();
-    return BlocBuilder<PositionBlc, PositionState>(
+     BlocProvider.of<EmployeeBloc>(context).add(InitializeEmployeeStarted());
+   
+    return BlocBuilder<EmployeeBloc, EmployeeState>(
       builder: (context, state) {
-        if (state is InitializingPosition) {
+        if (state is InitializingEmployee) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is ErrorFetchingPosition) {
+        } else if (state is ErrorFetchingEmployee) {
           return Center(
             child: Text(state.error.toString()),
           );
         } else {
-          if (BlocProvider.of<PositionBlc>(context).positionList.length == 0) {
+          if (BlocProvider.of<EmployeeBloc>(context).emploList.length == 0) {
             return Center(
               child: Text("No Data"),
             );
           }
           print(
-              "length ${BlocProvider.of<PositionBlc>(context).positionList.length}");
+              "length ${BlocProvider.of<EmployeeBloc>(context).emploList.length}");
 
-          return BlocListener<PositionBlc, PositionState>(
+          return BlocListener<EmployeeBloc, EmployeeState>(
             listener: (context, state) {
-              if (state is FetchedPosition) {
+              if (state is FetchedEmployee) {
                 _refreshController.loadComplete();
                 _refreshController.refreshCompleted();
               }
-              if (state is EndOfPositionList) {
+              if (state is EndofEmployeeList) {
                 _refreshController.loadNoData();
               }
-              if (state is AddingPosition) {
+              if (state is AddingEmployee) {
                 loadingDialogs(context);
-              } else if (state is ErrorAddingPosition) {
+              } else if (state is ErorrAddingEmployee) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
-              } else if (state is AddedPosition) {
+              } else if (state is AddedEmployee) {
                 // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
                 Navigator.pop(context);
               }
             },
             child: SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<PositionBlc>(context).add(RefreshPositionStarted());
+                BlocProvider.of<EmployeeBloc>(context).add(RefreshEmployeeStarted());
               },
               onLoading: () {
-                if (BlocProvider.of<PositionBlc>(context).state
-                    is EndOfPositionList) {
+                if (BlocProvider.of<EmployeeBloc>(context).state
+                    is EndofEmployeeList) {
                 } else {
                   // BlocProvider.of<ProductListingBloc>(context)
                   //     .add(FetchProductListStarted(arg: widget.category.id));
@@ -108,7 +108,7 @@ class _PositionBodyState extends State<PositionBody> {
               controller: _refreshController,
               child: ListView.builder(
                   itemCount:
-                      BlocProvider.of<PositionBlc>(context).positionList.length,
+                      BlocProvider.of<EmployeeBloc>(context).emploList.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -143,13 +143,57 @@ class _PositionBodyState extends State<PositionBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<PositionBlc>(context).positionList[index].positionName}",
+                                  "${BlocProvider.of<EmployeeBloc>(context).emploList[index].name}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       ),
                                 )
                               ],
                             ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+                            Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Gender :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${BlocProvider.of<EmployeeBloc>(context).emploList[index].gender}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      ),
+                                )
+                              ],
+                            ),
+                            // SizedBox(
+                            //   height: 5.0,
+                            // ),
+                            // Row(
+                            //   // mainAxisAlignment:
+                            //   //     MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     Padding(
+                            //       padding: const EdgeInsets.only(right: 10),
+                            //       child: Text(
+                            //         "Time out :",
+                            //         style: TextStyle(color: Colors.black),
+                            //       ),
+                            //     ),
+                            //     Text(
+                            //       "${BlocProvider.of<TimetableBloc>(context).timetableList[index].offDutyTime}",
+                            //       style: TextStyle(
+                            //           color: Colors.black,
+                            //           ),
+                            //     )
+                            //   ],
+                            // ),
                             
                              Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -166,8 +210,8 @@ class _PositionBodyState extends State<PositionBody> {
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (con) => EditPosition(
-                                                          positionModel: BlocProvider.of<PositionBlc>(context).positionList[index],
+                                                    builder: (con) => EditEmployee(
+                                                          employeeModel: BlocProvider.of<EmployeeBloc>(context).emploList[index],
                                                         )));
                                           }),
                                       SizedBox(
@@ -183,10 +227,10 @@ class _PositionBodyState extends State<PositionBody> {
                                           ),
                                           onPressed: () {
                                             print(
-                                                "id ${BlocProvider.of<PositionBlc>(context).positionList[index].id}");
-                                          BlocProvider.of<PositionBlc>(context)
-                                                .add(DeletePositionStarted(
-                                                    id:BlocProvider.of<PositionBlc>(context).positionList[index]
+                                                "id ${BlocProvider.of<EmployeeBloc>(context).emploList[index].id}");
+                                            BlocProvider.of<EmployeeBloc>(context)
+                                                .add(DeleteEmployeeStarted(
+                                                    id:BlocProvider.of<EmployeeBloc>(context).emploList[index]
                                                         .id));
                                           }),
                                     ],
