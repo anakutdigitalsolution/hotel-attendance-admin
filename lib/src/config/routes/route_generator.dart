@@ -2,7 +2,10 @@ import 'package:hotle_attendnce_admin/src/feature/account/screen/account_page_on
 import 'package:hotle_attendnce_admin/src/feature/checkin/screen/attendance_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/screen/timetable_page.dart';
 
 import 'routes.dart';
 
@@ -21,6 +24,13 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SettingPage());
       case department:
         return MaterialPageRoute(builder: (_) => DepartmentPage());
+      case employee:
+        return MaterialPageRoute(builder: (_) => EmployeePage());
+      case position:
+        return MaterialPageRoute(builder: (_) => PositionPage());
+      case timetable:
+        return MaterialPageRoute(builder: (_) => TimetablePage());
+
 
       // case editProduct:
       //   if (args is Product) {

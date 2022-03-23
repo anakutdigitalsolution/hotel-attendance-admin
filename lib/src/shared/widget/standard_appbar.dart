@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-
 AppBar standardAppBar(BuildContext context, String text) {
   return AppBar(
     brightness: Brightness.light,
     elevation: 0,
-    backgroundColor: Colors.lightBlue,
+    backgroundColor: Theme.of(context).primaryColor,
     leading: IconButton(
       icon: Icon(
-        Icons.arrow_back_ios_outlined,
+        Icons.arrow_back_outlined,
         color: Colors.white,
       ),
       onPressed: () {

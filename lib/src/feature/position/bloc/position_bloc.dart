@@ -39,8 +39,8 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
       yield FetchingPosition();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        List<PositionModel> _departmentList = await positionRepository.getPosition(
-            rowPerpage: rowperpage, page: page);
+        List<PositionModel> _departmentList = await positionRepository
+            .getPosition(rowPerpage: rowperpage, page: page);
         positionList.addAll(_departmentList);
         page++;
         print(page);
@@ -77,14 +77,15 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
     if (event is AddPositionStarted) {
       yield AddingPosition();
       try {
-        await positionRepository.addPosition(name: event.name,type: event.type);
+        await positionRepository.addPosition(
+            name: event.name, type: event.type);
 
         yield AddedPosition();
         yield FetchingPosition();
         print(positionList.length);
         positionList.clear();
-        positionList = await  positionRepository.getPosition(
-            rowPerpage: rowperpage, page: page);
+        positionList = await positionRepository.getPosition(
+            rowPerpage: rowperpage, page: 1);
         print(positionList.length);
         yield FetchedPosition();
       } catch (e) {
@@ -92,42 +93,42 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
         yield ErrorAddingPosition(error: e.toString());
       }
     }
-    // if (event is UpdateDepartmentStarted) {
-    //   yield AddingPosition();
-    //   try {
-    //     await departmentRepository.editDepartment(
-    //         id: event.id, name: event.name);
+    if (event is UpdatePositionStarted) {
+      yield AddingPosition();
+      try {
+        await positionRepository.editPosition(
+            id: event.id, name: event.name, type: event.type);
 
-    //     yield AddedDepartment();
-    //     yield FetchingDepartment();
-    //     print(departmentList.length);
-    //     departmentList.clear();
-    //     departmentList = await departmentRepository.getdepartment(
-    //         rowPerpage: rowperpage, page: 1);
-    //     print(departmentList.length);
-    //     yield FetchedPosition();
-    //   } catch (e) {
-    //     log(e.toString());
-    //     yield ErrorAddingPosition(error: e.toString());
-    //   }
-    // }
-    // if (event is DeleteDepartmentStarted) {
-    //   yield AddingDepartment();
-    //   try {
-    //     await departmentRepository.deleteDepartment(id: event.id);
+        yield AddedPosition();
+        yield FetchingPosition();
+        print(positionList.length);
+        positionList.clear();
+        positionList = await positionRepository.getPosition(
+            rowPerpage: rowperpage, page: 1);
+        print(positionList.length);
+        yield FetchedPosition();
+      } catch (e) {
+        log(e.toString());
+        yield ErrorAddingPosition(error: e.toString());
+      }
+    }
+    if (event is DeletePositionStarted) {
+      yield AddingPosition();
+      try {
+        await positionRepository.deletePosition(id: event.id);
 
-    //     yield AddedDepartment();
-    //     yield FetchingDepartment();
-    //     print(departmentList.length);
-    //     departmentList.clear();
-    //     departmentList = await departmentRepository.getdepartment(
-    //         rowPerpage: rowperpage, page: 1);
-    //     print(departmentList.length);
-    //     yield FetchedDepartment();
-    //   } catch (e) {
-    //     log(e.toString());
-    //     yield ErrorAddingPosition(error: e.toString());
-    //   }
-    // }
+        yield AddedPosition();
+        yield FetchingPosition();
+        print(positionList.length);
+        positionList.clear();
+        positionList = await positionRepository.getPosition(
+            rowPerpage: rowperpage, page: 1);
+        print(positionList.length);
+        yield FetchedPosition();
+      } catch (e) {
+        log(e.toString());
+        yield ErrorAddingPosition(error: e.toString());
+      }
+    }
   }
 }

@@ -65,6 +65,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                   errorSnackBar(text: state.error.toString(), context: context);
                 }
                 if (state is FetchedDepartment) {
+                  Navigator.pop(context);
                   customModal(
                       context,
                       BlocProvider.of<DepartmentBlc>(context)
@@ -90,7 +91,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                     errorSnackBar(
                         text: state.error.toString(), context: context);
                   }
-                  if (state is FetchedDepartment) {
+                  if (state is FetchedPosition) {
+                    Navigator.pop(context);
                     customModal(
                         context,
                         BlocProvider.of<PositionBlc>(context)
@@ -154,7 +156,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "On duty"),
+                                  labelText: "Gender"),
                               onTap: () {
                                 _showDialog(context);
                               },
@@ -240,11 +242,12 @@ class _AddEmployeeState extends State<AddEmployee> {
                               controller: _departmentIdCtrl,
                               onTap: () {
                                 BlocProvider.of<DepartmentBlc>(context)
-                                    .add(FetchDepartmentStarted());
+                                    .add(RefreshDepartmentStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
+                                  suffixIcon: Icon(Icons.arrow_drop_down),
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -255,7 +258,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "Department name"),
+                                  labelText: "Select deparment"),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'Department is required';
@@ -268,11 +271,12 @@ class _AddEmployeeState extends State<AddEmployee> {
                               controller: _positionIdCtrl,
                               onTap: () {
                                 BlocProvider.of<PositionBlc>(context)
-                                    .add(FetchPositionStarted());
+                                    .add(RefreshPositionStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
+                                  suffixIcon: Icon(Icons.arrow_drop_down),
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -283,7 +287,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "position name"),
+                                  labelText: "select position"),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'password is required';
@@ -349,7 +353,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                     name: _nameCtrl.text,
                     gender: _genderCtrl.text,
                     username: _usernameCtrl.text,
-                    img: "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png",
+                    img:
+                        "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png",
                     password: _passwordCtrl.text,
                     positionId: posiId.id,
                     departmentId: departId.id,

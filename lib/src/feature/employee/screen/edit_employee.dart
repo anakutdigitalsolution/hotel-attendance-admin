@@ -14,10 +14,9 @@ import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 
-
 class EditEmployee extends StatefulWidget {
-  final EmployeeModel employeeModel ;
-  const EditEmployee({ required this.employeeModel}) ;
+  final EmployeeModel employeeModel;
+  const EditEmployee({required this.employeeModel});
 
   @override
   State<EditEmployee> createState() => _EditEmployeeState();
@@ -36,15 +35,20 @@ class _EditEmployeeState extends State<EditEmployee> {
   final TextEditingController _phoneNumberCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   @override
-    void initState() {
-     _nameCtrl.text = widget.employeeModel.name;
-     _addressCtrl.text = widget.employeeModel.address;
-     _departmentIdCtrl.text = widget.employeeModel.departmentModel.name;
-     _positionIdCtrl.text = widget.employeeModel.positionModel.positionName;
-     _genderCtrl.text = widget.employeeModel.gender;
-     _phoneNumberCtrl.text = widget.employeeModel.phone;
-      super.initState();
-    }
+  void initState() {
+    _nameCtrl.text = widget.employeeModel.name;
+    widget.employeeModel.address == null
+        ? _addressCtrl.text = ""
+        : _addressCtrl.text = widget.employeeModel.address!;
+    _departmentIdCtrl.text = widget.employeeModel.departmentModel.name;
+    _positionIdCtrl.text = widget.employeeModel.positionModel.positionName;
+    _genderCtrl.text = widget.employeeModel.gender;
+    widget.employeeModel.phone == null
+        ? _phoneNumberCtrl.text = ""
+        : _phoneNumberCtrl.text = widget.employeeModel.phone!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +107,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                     errorSnackBar(
                         text: state.error.toString(), context: context);
                   }
-                  if (state is FetchedDepartment) {
+                  if (state is FetchedPosition) {
                     customModal(
                         context,
                         BlocProvider.of<PositionBlc>(context)
@@ -167,7 +171,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "On duty"),
+                                  labelText: "Select gender"),
                               onTap: () {
                                 _showDialog(context);
                               },
@@ -253,11 +257,12 @@ class _EditEmployeeState extends State<EditEmployee> {
                               controller: _departmentIdCtrl,
                               onTap: () {
                                 BlocProvider.of<DepartmentBlc>(context)
-                                    .add(FetchDepartmentStarted());
+                                    .add(RefreshDepartmentStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
+                                  suffixIcon: Icon(Icons.arrow_drop_down),
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -268,7 +273,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "Department name"),
+                                  labelText: "select department name"),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'Department is required';
@@ -281,11 +286,12 @@ class _EditEmployeeState extends State<EditEmployee> {
                               controller: _positionIdCtrl,
                               onTap: () {
                                 BlocProvider.of<PositionBlc>(context)
-                                    .add(FetchPositionStarted());
+                                    .add(RefreshPositionStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
+                                  suffixIcon: Icon(Icons.arrow_drop_down),
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -296,7 +302,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "position name"),
+                                  labelText: "select position name"),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'password is required';
@@ -359,7 +365,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                     .firstWhere((element) =>
                         element.positionName == _positionIdCtrl.text);
                 BlocProvider.of<EmployeeBloc>(context).add(UpdateEmployeeStarted(
-                  id: widget.employeeModel.id,
+                    id: widget.employeeModel.id,
                     name: _nameCtrl.text,
                     gender: _genderCtrl.text,
                     // username: _usernameCtrl.text,

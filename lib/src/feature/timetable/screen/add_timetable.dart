@@ -5,24 +5,27 @@ import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/timetable_bloc.
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class AddTimetable extends StatefulWidget {
-  const AddTimetable({ Key? key }) : super(key: key);
+  const AddTimetable({Key? key}) : super(key: key);
 
   @override
   State<AddTimetable> createState() => _AddTimetableState();
 }
 
 class _AddTimetableState extends State<AddTimetable> {
-   final TextEditingController _reasonCtrl = TextEditingController();
-   final TextEditingController _ondutyCtrl = TextEditingController();
-    final TextEditingController _ofDutyCtrl = TextEditingController();
-    //  final TextEditingController _reasonCtrl = TextEditingController();
+  final TextEditingController _reasonCtrl = TextEditingController();
+  final TextEditingController _ondutyCtrl = TextEditingController();
+  final TextEditingController _ofDutyCtrl = TextEditingController();
+  //  final TextEditingController _reasonCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Add Department"),
+      appBar: standardAppBar(context, "Add Timetable"),
       body: Builder(builder: (context) {
         return BlocListener<TimetableBloc, TimetableState>(
           listener: (context, state) {
@@ -50,7 +53,6 @@ class _AddTimetableState extends State<AddTimetable> {
                   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: Column(
                     children: [
-                      
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _reasonCtrl,
@@ -141,7 +143,10 @@ class _AddTimetableState extends State<AddTimetable> {
             color: Colors.blue,
             onPressed: () {
               if (_formKey!.currentState!.validate()) {
-                BlocProvider.of<TimetableBloc>(context).add(AddTimetableStarted(name: _reasonCtrl.text, offDuty: _ofDutyCtrl.text, onDuty: _ondutyCtrl.text));
+                BlocProvider.of<TimetableBloc>(context).add(AddTimetableStarted(
+                    name: _reasonCtrl.text,
+                    offDuty: _ofDutyCtrl.text,
+                    onDuty: _ondutyCtrl.text));
               }
             },
             padding: EdgeInsets.symmetric(vertical: 10),

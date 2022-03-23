@@ -50,6 +50,7 @@ class DepartmentBody extends StatefulWidget {
 }
 
 class _DepartmentBodyState extends State<DepartmentBody> {
+  
   @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());

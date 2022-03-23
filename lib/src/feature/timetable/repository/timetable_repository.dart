@@ -36,8 +36,8 @@ class TimetableRepository {
       String url = mainUrl + "timetable/add";
       Map body = {
         "timetable_name": name,
-        "on_duty_time": name,
-        "off_duty_time": name,
+        "on_duty_time": onDuty,
+        "off_duty_time": offDuty,
       };
 
       Response response = await apiProvider.post(url, body, null);
@@ -57,7 +57,7 @@ class TimetableRepository {
 
   Future<void> editTimetable({
     required String id,
-   required String name,
+    required String name,
     required String onDuty,
     required String offDuty,
   }) async {
@@ -65,8 +65,8 @@ class TimetableRepository {
       String url = mainUrl + "timetable/edit/$id";
       Map body = {
         "timetable_name": name,
-        "on_duty_time": name,
-        "off_duty_time": name,
+        "on_duty_time": onDuty,
+        "off_duty_time": offDuty,
       };
       Response response = await apiProvider.put(url, body);
 
@@ -87,6 +87,7 @@ class TimetableRepository {
     required String id,
   }) async {
     try {
+      print(id);
       String url = mainUrl + "timetable/delete/$id";
 
       Response response = await apiProvider.delete(url, null);

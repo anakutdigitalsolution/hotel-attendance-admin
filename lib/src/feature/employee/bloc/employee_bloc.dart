@@ -70,9 +70,11 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
             address: event.address);
         yield AddedEmployee();
         yield FetchingEmployee();
+        print(emploList.length);
         emploList.clear();
         emploList = await departmentRepository.getEmployee(
-            rowPerpage: rowperpage, page: page);
+            rowPerpage: rowperpage, page: 1);
+        print(emploList.length);
         yield FetchedEmployee();
       } catch (e) {
         log(e.toString());
@@ -94,26 +96,32 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
             storeId: event.storeId,
             phoneNumber: event.phoneNumber,
             address: event.address);
-         yield AddedEmployee();
+        yield AddedEmployee();
         yield FetchingEmployee();
+        print(emploList.length);
         emploList.clear();
         emploList = await departmentRepository.getEmployee(
-            rowPerpage: rowperpage, page: page);
+            rowPerpage: rowperpage, page: 1);
+        print(emploList.length);
         yield FetchedEmployee();
       } catch (e) {
         log(e.toString());
         yield ErorrAddingEmployee(error: e.toString());
       }
     }
-    if(event is DeleteEmployeeStarted){
+    if (event is DeleteEmployeeStarted) {
       yield AddingEmployee();
       try {
-       await departmentRepository.deleteEmployee(id: event.id);
+        await departmentRepository.deleteEmployee(id: event.id);
+        // yield FetchingEmployee();
+
+        yield AddedEmployee();
         yield FetchingEmployee();
+        print(emploList.length);
         emploList.clear();
         emploList = await departmentRepository.getEmployee(
-            rowPerpage: rowperpage, page: page);
-         yield AddedEmployee();
+            rowPerpage: rowperpage, page: 1);
+        print(emploList.length);
         yield FetchedEmployee();
       } catch (e) {
         log(e.toString());

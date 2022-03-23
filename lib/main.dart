@@ -8,9 +8,12 @@ import 'package:hotle_attendnce_admin/src/feature/account/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/auth/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/language/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/position/bloc/position_bloc.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/timetable_bloc.dart';
 
 import 'src/feature/landing/landing_page.dart';
 
@@ -54,6 +57,12 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => DepartmentBlc()),
         BlocProvider<NotificationBloc>(
             create: (BuildContext context) => NotificationBloc()),
+        BlocProvider<EmployeeBloc>(
+            create: (BuildContext context) => EmployeeBloc()),
+        BlocProvider<PositionBlc>(
+            create: (BuildContext context) => PositionBlc()),
+        BlocProvider<TimetableBloc>(
+            create: (BuildContext context) => TimetableBloc()),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {

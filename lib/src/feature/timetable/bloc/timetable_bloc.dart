@@ -36,8 +36,8 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
       yield FetchingTimetable();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        List<TimetableModel> _departmentList = await departmentRepository.getTimetable(
-            rowPerpage: rowperpage, page: page);
+        List<TimetableModel> _departmentList = await departmentRepository
+            .getTimetable(rowPerpage: rowperpage, page: page);
 
         timetableList.addAll(_departmentList);
         page++;
@@ -61,8 +61,8 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
         if (timetableList.length != 0) {
           timetableList.clear();
         }
-        List<TimetableModel> leaveList =  await departmentRepository.getTimetable(
-            rowPerpage: rowperpage, page: page);
+        List<TimetableModel> leaveList = await departmentRepository
+            .getTimetable(rowPerpage: rowperpage, page: page);
         timetableList.addAll(leaveList);
         print(leaveList.length);
         // page++;
@@ -75,14 +75,15 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
     if (event is AddTimetableStarted) {
       yield AddingTimetable();
       try {
-        await departmentRepository.addTimetable(name: event.name, onDuty: event.onDuty, offDuty: event.offDuty);
+        await departmentRepository.addTimetable(
+            name: event.name, onDuty: event.onDuty, offDuty: event.offDuty);
 
         yield AddedTimetable();
         yield FetchingTimetable();
         print(timetableList.length);
         timetableList.clear();
         timetableList = await departmentRepository.getTimetable(
-            rowPerpage: rowperpage, page: page);
+            rowPerpage: rowperpage, page: 1);
         print(timetableList.length);
         yield FetchedTimetable();
       } catch (e) {
@@ -91,17 +92,20 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
       }
     }
     if (event is UpdateTimetableStarted) {
-     yield AddingTimetable();
+      yield AddingTimetable();
       try {
         await departmentRepository.editTimetable(
-            id: event.id, name: event.name, onDuty: event.onDuty, offDuty: event.offDuty);
+            id: event.id,
+            name: event.name,
+            onDuty: event.onDuty,
+            offDuty: event.offDuty);
 
         yield AddedTimetable();
         yield FetchingTimetable();
         print(timetableList.length);
         timetableList.clear();
         timetableList = await departmentRepository.getTimetable(
-            rowPerpage: rowperpage, page: page);
+            rowPerpage: rowperpage, page: 1);
         print(timetableList.length);
         yield FetchedTimetable();
       } catch (e) {
@@ -110,7 +114,7 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
       }
     }
     if (event is DeleteTimetableStarted) {
-     yield AddingTimetable();
+      yield AddingTimetable();
       try {
         await departmentRepository.deleteTimetable(id: event.id);
 
@@ -119,7 +123,7 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
         print(timetableList.length);
         timetableList.clear();
         timetableList = await departmentRepository.getTimetable(
-            rowPerpage: rowperpage, page: page);
+            rowPerpage: rowperpage, page: 1);
         print(timetableList.length);
         yield FetchedTimetable();
       } catch (e) {

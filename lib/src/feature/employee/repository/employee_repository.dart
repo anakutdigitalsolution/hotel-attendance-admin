@@ -10,7 +10,7 @@ class EmployeeRepository {
   Future<List<EmployeeModel>> getEmployee(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "employee?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "employees?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -47,13 +47,12 @@ class EmployeeRepository {
         "gender": gender,
         "username": username,
         "password": password,
-        "profile_url":img,
+        "profile_url": img,
         "position_id": positionId,
         "department_id": departmentId,
-        "store_id":storeId,
+        "store_id": storeId,
         "employee_phone": phoneNumber,
         "address": address,
-        
       };
       Response response = await apiProvider.post(url, body, null);
       print(response.statusCode);
@@ -71,7 +70,7 @@ class EmployeeRepository {
 
   Future<void> editEmployee({
     required String id,
-  required String name,
+    required String name,
     required String gender,
     required String img,
     // required String username,
@@ -84,18 +83,17 @@ class EmployeeRepository {
   }) async {
     try {
       String url = mainUrl + "employee/edit/$id";
-       Map body = {
+      Map body = {
         "name": name,
         "gender": gender,
         // "username": username,
         // "password": password,
-        "profile_url":img,
+        "profile_url": img,
         "position_id": positionId,
         "department_id": departmentId,
-        "store_id":storeId,
+        "store_id": storeId,
         "employee_phone": phoneNumber,
         "address": address,
-        
       };
       Response response = await apiProvider.put(url, body);
 

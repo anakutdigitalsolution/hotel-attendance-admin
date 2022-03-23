@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
         "iconColor": Colors.orange,
         "image": "assets/icon/man.png",
         "onPressed": () {
-          Navigator.pushNamed(context, account);
+          Navigator.pushNamed(context, employee);
         }
       },
       {
@@ -128,7 +128,7 @@ class _HomePageState extends State<HomePage> {
         "iconColor": Colors.orange,
         "image": "assets/icon/attendance.png",
         "onPressed": () {
-          Navigator.pushNamed(context, account);
+          // Navigator.pushNamed(context, account);
         }
       },
       {

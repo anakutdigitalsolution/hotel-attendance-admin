@@ -9,29 +9,30 @@ import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 
 class EditTimetable extends StatefulWidget {
   final TimetableModel timetableModel;
-  const EditTimetable({ required this.timetableModel });
+  const EditTimetable({required this.timetableModel});
 
   @override
   State<EditTimetable> createState() => _EditTimetableState();
 }
 
 class _EditTimetableState extends State<EditTimetable> {
-   final TextEditingController _reasonCtrl = TextEditingController();
-   final TextEditingController _ondutyCtrl = TextEditingController();
-    final TextEditingController _ofDutyCtrl = TextEditingController();
-    //  final TextEditingController _reasonCtrl = TextEditingController();
+  final TextEditingController _reasonCtrl = TextEditingController();
+  final TextEditingController _ondutyCtrl = TextEditingController();
+  final TextEditingController _ofDutyCtrl = TextEditingController();
+  //  final TextEditingController _reasonCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
-   @override
+  @override
   void initState() {
     _reasonCtrl.text = widget.timetableModel.timetableName;
     _ondutyCtrl.text = widget.timetableModel.onDutyTtime;
     _ofDutyCtrl.text = widget.timetableModel.offDutyTime;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Edit Department"),
+      appBar: standardAppBar(context, "Edit Timetable"),
       body: Builder(builder: (context) {
         return BlocListener<TimetableBloc, TimetableState>(
           listener: (context, state) {
@@ -59,6 +60,29 @@ class _EditTimetableState extends State<EditTimetable> {
                   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: Column(
                     children: [
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _reasonCtrl,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                              borderSide: new BorderSide(
+                                width: 1,
+                              ),
+                            ),
+                            isDense: true,
+                            labelText: "Timetable name"),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Timetable name';
+                          }
+                          return null;
+                        },
+                      ),
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _ondutyCtrl,
@@ -127,7 +151,11 @@ class _EditTimetableState extends State<EditTimetable> {
             onPressed: () {
               if (_formKey!.currentState!.validate()) {
                 BlocProvider.of<TimetableBloc>(context).add(
-                    UpdateTimetableStarted(id: widget.timetableModel.id, name: _reasonCtrl.text, offDuty: _ofDutyCtrl.text, onDuty: _ondutyCtrl.text));
+                    UpdateTimetableStarted(
+                        id: widget.timetableModel.id,
+                        name: _reasonCtrl.text,
+                        offDuty: _ofDutyCtrl.text,
+                        onDuty: _ondutyCtrl.text));
               }
             },
             padding: EdgeInsets.symmetric(vertical: 10),

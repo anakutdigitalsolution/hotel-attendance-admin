@@ -1,4 +1,3 @@
-
 import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
 
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
@@ -11,8 +10,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'add_position.dart';
 import 'edit_position.dart';
+
 class PositionPage extends StatefulWidget {
-  const PositionPage({ Key? key }) : super(key: key);
+  const PositionPage({Key? key}) : super(key: key);
 
   @override
   State<PositionPage> createState() => _PositionPageState();
@@ -21,8 +21,8 @@ class PositionPage extends StatefulWidget {
 class _PositionPageState extends State<PositionPage> {
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
-      appBar: standardAppBar(context, "Department Page"),
+    return Scaffold(
+      appBar: standardAppBar(context, "Position Page"),
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10), child: PositionBody()),
       floatingActionButton: Container(
@@ -31,22 +31,23 @@ class _PositionPageState extends State<PositionPage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddPosition()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddPosition()));
             }),
       ),
     );
   }
 }
+
 class PositionBody extends StatefulWidget {
-  const PositionBody({ Key? key }) : super(key: key);
+  const PositionBody({Key? key}) : super(key: key);
 
   @override
   State<PositionBody> createState() => _PositionBodyState();
 }
 
 class _PositionBodyState extends State<PositionBody> {
- @override
+  @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
     BlocProvider.of<PositionBlc>(context).add(InitializePositionStarted());
@@ -91,7 +92,8 @@ class _PositionBodyState extends State<PositionBody> {
             },
             child: SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<PositionBlc>(context).add(RefreshPositionStarted());
+                BlocProvider.of<PositionBlc>(context)
+                    .add(RefreshPositionStarted());
               },
               onLoading: () {
                 if (BlocProvider.of<PositionBlc>(context).state
@@ -145,53 +147,56 @@ class _PositionBodyState extends State<PositionBody> {
                                 Text(
                                   "${BlocProvider.of<PositionBlc>(context).positionList[index].positionName}",
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      ),
+                                    color: Colors.black,
+                                  ),
                                 )
                               ],
                             ),
-                            
-                             Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      CupertinoButton(
-                                          padding: EdgeInsets.all(1.0),
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.edit),
-                                            ],
-                                          ),
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (con) => EditPosition(
-                                                          positionModel: BlocProvider.of<PositionBlc>(context).positionList[index],
-                                                        )));
-                                          }),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      CupertinoButton(
-                                          padding: EdgeInsets.all(1.0),
-                                          color: Colors.red,
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.delete),
-                                            ],
-                                          ),
-                                          onPressed: () {
-                                            print(
-                                                "id ${BlocProvider.of<PositionBlc>(context).positionList[index].id}");
-                                          BlocProvider.of<PositionBlc>(context)
-                                                .add(DeletePositionStarted(
-                                                    id:BlocProvider.of<PositionBlc>(context).positionList[index]
-                                                        .id));
-                                          }),
-                                    ],
-                                  )
-                               
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                CupertinoButton(
+                                    padding: EdgeInsets.all(1.0),
+                                    color: Colors.green,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.edit),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (con) => EditPosition(
+                                                    positionModel: BlocProvider
+                                                            .of<PositionBlc>(
+                                                                context)
+                                                        .positionList[index],
+                                                  )));
+                                    }),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                CupertinoButton(
+                                    padding: EdgeInsets.all(1.0),
+                                    color: Colors.red,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.delete),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      print(
+                                          "id ${BlocProvider.of<PositionBlc>(context).positionList[index].id}");
+                                      BlocProvider.of<PositionBlc>(context).add(
+                                          DeletePositionStarted(
+                                              id: BlocProvider.of<PositionBlc>(
+                                                      context)
+                                                  .positionList[index]
+                                                  .id));
+                                    }),
+                              ],
+                            )
                           ],
                         ),
                       ),
