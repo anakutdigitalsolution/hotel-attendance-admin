@@ -1,6 +1,10 @@
+import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/levetype/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/levetype/model/leave_type_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_type_model.dart';
+
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
@@ -19,6 +23,7 @@ class EditLeave extends StatefulWidget {
 }
 
 class _EditLeaveState extends State<EditLeave> {
+   final TextEditingController _emCtrl = TextEditingController();
   final TextEditingController _leaveCtrl = TextEditingController();
   final TextEditingController _fromCtrl = TextEditingController();
   final TextEditingController _toCtrl = TextEditingController();
@@ -34,7 +39,8 @@ class _EditLeaveState extends State<EditLeave> {
     _toCtrl.text = widget.leaveModel.toDate;
     _reasonCtrl.text = widget.leaveModel.reason;
     _numCtrl.text = widget.leaveModel.number;
-    _leaveCtrl.text = widget.leaveModel.leaveTypeModel!.leaveType;
+    _leaveCtrl.text = widget.leaveModel.leaveTypeModel!.name;
+    _emCtrl.text = widget.leaveModel.employeeModel!.name;
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy/MM/dd').format(now);
     // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
@@ -99,22 +105,41 @@ class _EditLeaveState extends State<EditLeave> {
               print("success");
             }
           },
-          child: BlocListener<LeaveBloc, LeaveState>(
+          child: BlocListener<EmployeeBloc,EmployeeState>(listener: (context,state){
+              if(state is InitializingEmployee){
+                loadingDialogs(context);
+              }
+              if(state is ErrorFetchingEmployee){
+                Navigator.pop(context);
+                errorSnackBar(text: state.toString(), context: context);
+              }
+              if(state is InitializedEmployee){
+                 Navigator.pop(context);
+                customModal(
+                    context,
+                    BlocProvider.of<EmployeeBloc>(context)
+                        .emploList
+                        .map((e) => e.name)
+                        .toList(), (value) {
+                  _leaveCtrl.text = value;
+                });
+              }
+          },child: BlocListener<LeaveTypeBloc, LeaveTypeState>(
             listener: (context, state) {
-              if (state is FetchingLeaveType) {
+              if (state is InitializingLeaveType) {
                 loadingDialogs(context);
               }
               if (state is ErrorFetchingLeaveType) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               }
-              if (state is FetchedLeaveType) {
+              if (state is InitializedLeaveType) {
                 Navigator.pop(context);
                 customModal(
                     context,
-                    BlocProvider.of<LeaveBloc>(context)
-                        .leaveList
-                        .map((e) => e.leaveType)
+                    BlocProvider.of<LeaveTypeBloc>(context)
+                        .leavetype
+                        .map((e) => e.name)
                         .toList(), (value) {
                   _leaveCtrl.text = value;
                 });
@@ -129,10 +154,39 @@ class _EditLeaveState extends State<EditLeave> {
                     child: Column(
                       children: [
                         TextFormField(
+                          controller: _emCtrl,
+                          onTap: () {
+                            BlocProvider.of<EmployeeBloc>(context)
+                                .add(InitializeEmployeeStarted());
+                          },
+                          readOnly: true,
+                          // keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                              suffixIcon: Icon(Icons.arrow_drop_down),
+                              contentPadding: EdgeInsets.all(15),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(5.0),
+                                ),
+                                borderSide: new BorderSide(
+                                  width: 1,
+                                ),
+                              ),
+                              isDense: true,
+                              labelText: "Choose Employee"),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Employee is required.';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 15),
+                        TextFormField(
                           controller: _leaveCtrl,
                           onTap: () {
-                            BlocProvider.of<LeaveBloc>(context)
-                                .add(FetchLeaveTypeStarted());
+                            BlocProvider.of<LeaveTypeBloc>(context)
+                                .add(InitializeLeaveTypeStarted());
                           },
                           readOnly: true,
                           // keyboardType: TextInputType.text,
@@ -323,7 +377,7 @@ class _EditLeaveState extends State<EditLeave> {
                 )
               ],
             ),
-          ),
+          ),)
         );
       }),
       bottomNavigationBar: Container(
@@ -341,15 +395,19 @@ class _EditLeaveState extends State<EditLeave> {
                 // addessdetail = 11.565271/94.6778 so we need to spilt into lat and long
 
                 // print("hi");
-
-                LeaveTypeModel select = BlocProvider.of<LeaveBloc>(context)
-                    .leaveList
+                EmployeeModel emId = BlocProvider.of<EmployeeBloc>(context)
+                    .emploList
                     .firstWhere(
-                        (element) => element.leaveType == _leaveCtrl.text);
+                        (element) => element.name == _leaveCtrl.text);
+
+                LeaveTypeModel select = BlocProvider.of<LeaveTypeBloc>(context)
+                    .leavetype
+                    .firstWhere(
+                        (element) => element.name == _leaveCtrl.text);
 
                 BlocProvider.of<LeaveBloc>(context).add(UpdateLeaveStarted(
-                  // employeeId: widget.id,
                   id: widget.leaveModel.id,
+                  employeeId: emId.id,
                   leaveTypeId: select.id,
                   reason: _reasonCtrl.text,
                   number: _numCtrl.text,

@@ -5,7 +5,7 @@ import 'package:hotle_attendnce_admin/src/feature/department/model/department_mo
 import 'package:hotle_attendnce_admin/src/feature/department/repository/department_repository.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_type_model.dart';
+
 import 'package:hotle_attendnce_admin/src/feature/permission/repository/leave_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

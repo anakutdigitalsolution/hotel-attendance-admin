@@ -6,13 +6,12 @@ class LeaveEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class FetchLeaveTypeStarted extends LeaveEvent {}
-class InitializeStarted extends LeaveEvent{}
-class FetchLeaveStarted extends LeaveEvent{}
 
+class InitializeLeaveStarted extends LeaveEvent{}
+class FetchLeaveStarted extends LeaveEvent{}
 class RefreshLeaveStarted extends LeaveEvent{}
 class AddLeaveStarted extends LeaveEvent {
-  // final String employeeId;
+  final String employeeId;
   final String leaveTypeId;
   final String reason;
   final String number;
@@ -21,7 +20,7 @@ class AddLeaveStarted extends LeaveEvent {
   // final String date;
   AddLeaveStarted(
       {
-        // required this.employeeId,
+        required this.employeeId,
       required this.leaveTypeId,
       required this.reason,
       required this.number,
@@ -37,7 +36,7 @@ class UpdateLeaveStarted extends LeaveEvent {
   final String number;
   final String fromDate;
   final String toDate;
-  // final String date;
+  final String employeeId;
   UpdateLeaveStarted(
       {
         required this.id,
@@ -46,7 +45,7 @@ class UpdateLeaveStarted extends LeaveEvent {
       required this.number,
       required this.fromDate,
       required this.toDate,
-      // required this.date
+      required this.employeeId
       });
 }
 class DeleteLeaveStarted extends LeaveEvent {

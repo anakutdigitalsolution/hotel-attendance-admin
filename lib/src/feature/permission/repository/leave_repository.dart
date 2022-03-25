@@ -1,31 +1,31 @@
 import 'package:dio/dio.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_type_model.dart';
+
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class LeaveRepository {
   String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
-  Future<List<LeaveTypeModel>> getleavetype() async {
-    try {
-      String url = mainUrl + "leavetype";
+  // Future<List<LeaveTypeModel>> getleavetype() async {
+  //   try {
+  //     String url = mainUrl + "leavetype";
 
-      Response response = await apiProvider.get(url, null, null);
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        print(response.data);
-        List<LeaveTypeModel> leave = [];
-        response.data["data"].forEach((data) {
-          leave.add(LeaveTypeModel.fromJson(data));
-        });
-        return leave;
-      }
-      throw CustomException.generalException();
-    } catch (e) {
-      throw e;
-    }
-  }
+  //     Response response = await apiProvider.get(url, null, null);
+  //     print(response.statusCode);
+  //     if (response.statusCode == 200) {
+  //       print(response.data);
+  //       List<LeaveTypeModel> leave = [];
+  //       response.data["data"].forEach((data) {
+  //         leave.add(LeaveTypeModel.fromJson(data));
+  //       });
+  //       return leave;
+  //     }
+  //     throw CustomException.generalException();
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 
   Future<List<LeaveModel>> getleave(
       {required int page, required int rowperpage}) async {
@@ -49,7 +49,7 @@ class LeaveRepository {
 
   Future<void> addleave(
       {
-      // required String employeeId,
+      required String employeeId,
       required String leavetypeId,
       required String reason,
       required String number,
@@ -60,7 +60,7 @@ class LeaveRepository {
       String url = mainUrl + "leave/add";
       Map body = {
         // "type": "company",
-        // "employee_id": employeeId,
+        "employee_id": employeeId,
         "reason": reason,
         "number": number,
         "from_date": fromDate,
@@ -89,13 +89,13 @@ class LeaveRepository {
       required String reason,
       required String number,
       required String fromDate,
-      // required String date,
+     required String employeeId,
       required String toDate}) async {
     try {
       String url = mainUrl + "leave/edit/$id";
       Map body = {
         // "type": "company",
-        // "employee_id": employeeId,
+        "employee_id": employeeId,
         "reason": reason,
         "number": number,
         "from_date": fromDate,

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/shedule_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/levetype/screen/leave_type_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/screen/leave_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page.dart';
@@ -37,6 +38,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SchedulePage());
       case leave:
         return MaterialPageRoute(builder: (_) => LeavePage());
+      case leavetype:
+        return MaterialPageRoute(builder: (_) => LeaveTypePage());
 
       // case editProduct:
       //   if (args is Product) {

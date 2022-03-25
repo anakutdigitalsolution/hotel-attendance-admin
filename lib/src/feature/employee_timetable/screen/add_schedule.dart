@@ -43,16 +43,19 @@ class _AddScheduleState extends State<AddSchedule> {
             }
           },
           child: BlocListener<EmployeeBloc, EmployeeState>(
-              listener: (context, state) {
-                if (state is InitializingEmployee) {
-                  loadingDialogs(context);
+              listener: (context, stae) {
+                if (stae is InitializingEmployee) {
+                  // loadingDialogs(context);
+                  print("fetching data");
                 }
-                if (state is ErrorFetchingEmployee) {
+                if (stae is ErrorFetchingEmployee) {
                   Navigator.pop(context);
-                  errorSnackBar(text: state.error.toString(), context: context);
+                  print("errir");
+                  errorSnackBar(text: stae.error.toString(), context: context);
                 }
-                if (state is InitializedEmployee) {
-                  Navigator.pop(context);
+                if (stae is InitializedEmployee) {
+                  print("hi");
+                  // Navigator.pop(context);
                   customModal(
                       context,
                       BlocProvider.of<EmployeeBloc>(context)

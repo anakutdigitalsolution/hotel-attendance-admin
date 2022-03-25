@@ -12,15 +12,12 @@ class FetchingLeave extends LeaveState {}
 
 class FetchedLeave extends LeaveState {}
 
-class FetchingLeaveType extends LeaveState {}
+class RefreshingLeave extends LeaveState{}
 
-class FetchedLeaveType extends LeaveState {}
+class RefreshedLeave extends LeaveState{}
 class EndOfLeaveList extends LeaveState {}
 
-class ErrorFetchingLeaveType extends LeaveState {
-  final dynamic error;
-  ErrorFetchingLeaveType({required this.error});
-}
+
 
 class ErrorFetchingLeave extends LeaveState {
   final dynamic error;

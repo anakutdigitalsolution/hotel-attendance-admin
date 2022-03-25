@@ -1,5 +1,6 @@
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_type_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/levetype/model/leave_type_model.dart';
+
 
 class LeaveModel {
   final String id;

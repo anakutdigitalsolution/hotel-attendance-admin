@@ -8,6 +8,8 @@ import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import 'add_schedule.dart';
+
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
 
@@ -29,8 +31,8 @@ class _SchedulePageState extends State<SchedulePage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => AddEmployee()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddSchedule()));
             }),
       ),
     );
@@ -113,7 +115,10 @@ class _BodyState extends State<Body> {
                       .timeList
                       .length,
                   itemBuilder: (context, index) {
-                    return Container(
+                    return   BlocProvider.of<EmployeeTimetableBloc>(
+                                                    context)
+                                                .timeList[index]
+                                                .timetableList!.length==0? Container():Container(
                       color: Colors.white,
                       margin: EdgeInsets.only(bottom: 10),
                       child: TextButton(
@@ -166,21 +171,12 @@ class _BodyState extends State<Body> {
                                         // AspectRatio(aspectRatio: 1)
                                       ],
                                     ),
-                                    SizedBox(height: 10),
-                                    BlocProvider.of<EmployeeTimetableBloc>(
+                                    _buildTimetable(BlocProvider.of<EmployeeTimetableBloc>(
                                                     context)
                                                 .timeList[index]
-                                                .timetableList ==
-                                            []
-                                        ? Container()
-                                        : Container(
-                                            child: Text("HI"),
-                                          ),
-                                    // _buildTimetable(
-                                    //     BlocProvider.of<EmployeeTimetableBloc>(
-                                    //             context)
-                                    //         .timeList[index]
-                                    //         .timetableList),
+                                                .timetableList!)
+                                   
+                                  
                                     // BlocProvider.of<EmployeeTimetableBloc>(
                                     //                 context)
                                     //             .timeList[index]
@@ -200,7 +196,7 @@ class _BodyState extends State<Body> {
                                     //             .subtitle2,
                                     //         textAlign: TextAlign.right,
                                     //       ),
-                                    SizedBox(height: 10),
+                                    // SizedBox(height: 10),
 
                                     // Text(
                                     //         ": ${customer.balance}",
@@ -224,7 +220,7 @@ class _BodyState extends State<Body> {
                                     //               .copyWith(color: Colors.purple[700]),
                                     //           textAlign: TextAlign.right,
                                     //         ),
-                                    //       ),
+                                          
                                   ],
                                 ),
                               ),
@@ -281,10 +277,58 @@ class _BodyState extends State<Body> {
 
   _buildTimetable(List<TimetableModel> time) {
     return Container(
+      height: 50,
       child: ListView.builder(
           itemCount: time.length,
           itemBuilder: (context, index) {
-            return Text("${time[index].offDutyTime}");
+            return Column(
+              children: [
+                Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Time in :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${time[index].onDutyTtime}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+                            Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Time out :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${time[index].offDutyTime}",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+              ],
+            );
           }),
     );
   }

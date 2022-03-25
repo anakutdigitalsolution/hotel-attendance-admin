@@ -121,6 +121,15 @@ class _SettingPageState extends State<SettingPage> {
                 onPressed: () {
                   Navigator.pushNamed(context, timetable);
                 }),
+             SizedBox(
+              height: 10,
+            ),
+            settingitem(
+                name: "Leave Type",
+                icon: Icons.people,
+                onPressed: () {
+                  Navigator.pushNamed(context, leavetype );
+                }),
             SizedBox(
               height: 10,
             ),

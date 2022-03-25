@@ -10,6 +10,7 @@ import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/language/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/levetype/bloc/leave_type_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/bloc/position_bloc.dart';
@@ -68,6 +69,8 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => EmployeeBloc()),
         BlocProvider<EmployeeTimetableBloc>(
             create: (BuildContext context) => EmployeeTimetableBloc()),
+        BlocProvider<LeaveTypeBloc>(
+            create: (BuildContext context) => LeaveTypeBloc()),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {

@@ -27,8 +27,8 @@ class _LeavePageState extends State<LeavePage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (context) => AddLeave()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AddLeave()));
             }),
       ),
     );
@@ -44,7 +44,7 @@ class _WantedBodyState extends State<WantedBody> {
   @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-    BlocProvider.of<LeaveBloc>(context).add(InitializeStarted());
+    BlocProvider.of<LeaveBloc>(context).add(InitializeLeaveStarted());
     final RefreshController _refreshController = RefreshController();
     return BlocBuilder<LeaveBloc, LeaveState>(
       builder: (context, state) {
@@ -139,6 +139,28 @@ class _WantedBodyState extends State<WantedBody> {
                                 ),
                                 Text(
                                   "${BlocProvider.of<LeaveBloc>(context).leavemodel[index].date}",
+                                  style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+                            Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Employee name :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${BlocProvider.of<LeaveBloc>(context).leavemodel[index].employeeModel!.name}",
                                   style: TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.bold),
