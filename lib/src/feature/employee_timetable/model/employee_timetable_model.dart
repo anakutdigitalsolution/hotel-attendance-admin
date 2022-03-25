@@ -3,7 +3,7 @@ import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_mode
 
 class EmployeeTimetablModel {
   final EmployeeModel employeeModel;
-  final List<TimetableModel> timetableList;
+  final List<TimetableModel>? timetableList;
   factory EmployeeTimetablModel.fromJson(Map<String, dynamic> json) {
     List<TimetableModel> time = [];
     json["timetable"].forEach((val) {

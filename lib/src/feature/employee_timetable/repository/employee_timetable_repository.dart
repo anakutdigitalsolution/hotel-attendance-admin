@@ -6,7 +6,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 class EmployeeTimetableRepository {
   String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
-  Future<List<EmployeeTimetablModel>> getEmployee(
+  Future<List<EmployeeTimetablModel>> getSchedule(
       {required int rowPerpage, required int page}) async {
     try {
       String url = mainUrl + "schedules";
@@ -20,6 +20,78 @@ class EmployeeTimetableRepository {
           leave.add(EmployeeTimetablModel.fromJson(data));
         });
         return leave;
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> addSchedule({
+    required String employeeId,
+    required String timetableId,
+  }) async {
+    try {
+      String url = mainUrl + "schedule/add";
+      Map body = {
+        "employee_id": employeeId,
+        "timetable_id": timetableId,
+      };
+      Response response = await apiProvider.post(url, body, null);
+
+      print(response.statusCode);
+      if (response.statusCode == 200 && response.data["code"] == 0) {
+        print(response.data);
+        return;
+      } else if (response.data["code"].toString() != "0") {
+        throw response.data["message"];
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> editSchedule({
+    required String id,
+    required String employeeId,
+    required String timetableId,
+  }) async {
+    try {
+      String url = mainUrl + "schedule/edit/$id";
+      Map body = {
+        "employee_id": employeeId,
+        "timetable_id": timetableId,
+      };
+      Response response = await apiProvider.put(url, body);
+
+      print(response.statusCode);
+      if (response.statusCode == 200 && response.data["code"] == 0) {
+        print(response.data);
+        return;
+      } else if (response.data["code"].toString() != "0") {
+        throw response.data["message"];
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+  Future<void> deleteSchedule({
+    required String id,
+   
+  }) async {
+    try {
+      String url = mainUrl + "schedule/delete/$id";
+      
+      Response response = await apiProvider.delete(url, null);
+
+      print(response.statusCode);
+      if (response.statusCode == 200 && response.data["code"] == 0) {
+        print(response.data);
+        return;
+      } else if (response.data["code"].toString() != "0") {
+        throw response.data["message"];
       }
       throw CustomException.generalException();
     } catch (e) {

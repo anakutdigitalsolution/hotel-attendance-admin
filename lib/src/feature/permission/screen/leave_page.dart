@@ -20,16 +20,15 @@ class _LeavePageState extends State<LeavePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: standardAppBar(context, "Leave Page"),
-      body: Container(
-          margin: EdgeInsets.only(top: 10, bottom: 10), child: WantedBody()),
+      body: Container(margin: EdgeInsets.only(top: 10, bottom: 10)),
       floatingActionButton: Container(
         child: FloatingActionButton(
             backgroundColor: Colors.lightBlueAccent,
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddLeave()));
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (context) => AddLeave()));
             }),
       ),
     );

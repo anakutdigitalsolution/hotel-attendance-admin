@@ -15,6 +15,7 @@ import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/bloc/position_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/timetable_bloc.dart';
 
+import 'src/feature/employee_timetable/bloc/index.dart';
 import 'src/feature/landing/landing_page.dart';
 
 ///Receive message when app is in background solution for on message
@@ -63,6 +64,10 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => PositionBlc()),
         BlocProvider<TimetableBloc>(
             create: (BuildContext context) => TimetableBloc()),
+        BlocProvider<EmployeeBloc>(
+            create: (BuildContext context) => EmployeeBloc()),
+        BlocProvider<EmployeeTimetableBloc>(
+            create: (BuildContext context) => EmployeeTimetableBloc()),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {

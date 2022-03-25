@@ -1,3 +1,4 @@
+import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_type_model.dart';
 
 class LeaveModel {
@@ -8,6 +9,7 @@ class LeaveModel {
   final String toDate;
   final String reason;
   final String number;
+  final EmployeeModel? employeeModel;
   final LeaveTypeModel? leaveTypeModel;
   factory LeaveModel.fromJson(Map<String, dynamic> json) {
     return LeaveModel(
@@ -18,6 +20,7 @@ class LeaveModel {
         toDate: json["to_date"],
         number: json["number"],
         reason: json["reason"],
+        employeeModel: EmployeeModel.fromJson(json["employee"]),
         leaveTypeModel: LeaveTypeModel.fromJson(json["leavetype"]));
   }
   LeaveModel(
@@ -28,5 +31,6 @@ class LeaveModel {
       required this.toDate,
       required this.number,
       required this.reason,
+      required this.employeeModel,
       required this.leaveTypeModel});
 }

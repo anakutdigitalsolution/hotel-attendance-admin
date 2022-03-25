@@ -16,7 +16,7 @@ class LoginRegisterRepository {
 
   Future<UserModel> login(
       {required String phone, required String password}) async {
-    String url = mainUrl + "admin/login";
+    String url = mainUrl + "admin/login"; 
     Map body = {"email": phone, "password": password};
 
     var auth = 'Bearer' + base64Encode(utf8.encode('$phone:$password'));
@@ -31,7 +31,7 @@ class LoginRegisterRepository {
         // return response.data["token"];
         return UserModel.fromJson(response.data);
       } else if (response.data["code"].toString() != "0") {
-        // if not success return message from backend
+      // if not success return message from backend
         throw response.data["message"];
       }
       throw CustomException.generalException();
