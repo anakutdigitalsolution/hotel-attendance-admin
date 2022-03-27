@@ -10,6 +10,7 @@ class FetchLeaveTypeStarted extends LeaveTypeEvent {}
 
 class RefreshLeaveTypeStarted extends LeaveTypeEvent {}
 
+class FetchAllLeaveTypeStarted extends LeaveTypeEvent{}
 class InitializeLeaveTypeStarted extends LeaveTypeEvent {}
 
 class AddLeaveTypeStarted extends LeaveTypeEvent {

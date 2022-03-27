@@ -28,6 +28,26 @@ class EmployeeRepository {
     }
   }
 
+  Future<List<EmployeeModel>> getAllEmployee() async {
+    try {
+      String url = mainUrl + "employees";
+
+      Response response = await apiProvider.get(url, null, null);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.data);
+        List<EmployeeModel> leave = [];
+        response.data["data"].forEach((data) {
+          leave.add(EmployeeModel.fromJson(data));
+        });
+        return leave;
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> addEmployee({
     required String name,
     required String gender,

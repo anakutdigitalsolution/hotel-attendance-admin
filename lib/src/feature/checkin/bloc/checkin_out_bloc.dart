@@ -16,15 +16,17 @@ class CheckInOutBloc extends Bloc<CheckInOutEvent, CheckInOutState> {
     if (event is AddCheckinStarted) {
       yield AddingCheckin();
       try {
-        checkInOutRepository.checkin(
-            checkinTime: event.checkinTime,
-            lat: event.lat,
-            lon: event.lon,
-            locationId: event.locationId,
-            date: event.date,
-            timetableId: event.timetableId);
+        await checkInOutRepository.checkin(
+            checkinTime: event.checkinTime, employeeId: event.employeeId);
         yield AddedCheckin();
+        // yield FetchingCheckin();
+
+        // checkilist.clear();
+        // checkilist = await checkInOutRepository.getcheckin(
+        //     page: 1, rowperpage: rowperpage);
+        // yield FetchedCheckin();
       } catch (e) {
+        log(e.toString());
         yield ErrorAddingCheckInOut(error: e.toString());
       }
     }
@@ -89,15 +91,19 @@ class CheckInOutBloc extends Bloc<CheckInOutEvent, CheckInOutState> {
     if (event is AddCheckoutStarted) {
       yield AddingCheckin();
       try {
-        checkInOutRepository.checkin(
-            checkinTime: event.checkoutTime,
-            lat: event.lat,
-            lon: event.lon,
-            locationId: event.locationId,
-            date: event.date,
-            timetableId: event.timetableId);
+        await checkInOutRepository.checkout(
+            id: event.id,
+            checkoutTime: event.checkoutTime,
+            employeeId: event.employeeId);
         yield AddedCheckin();
+        yield FetchingCheckin();
+
+        checkilist.clear();
+        checkilist = await checkInOutRepository.getcheckin(
+            page: 1, rowperpage: rowperpage);
+        yield FetchedCheckin();
       } catch (e) {
+        log(e.toString());
         yield ErrorAddingCheckInOut(error: e.toString());
       }
     }

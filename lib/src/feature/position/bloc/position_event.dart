@@ -7,6 +7,7 @@ class PositionEvent extends Equatable {
 }
 
 class FetchPositionStarted extends PositionEvent {}
+class FetchAllPositionStarted extends PositionEvent{}
 
 class InitializePositionStarted extends PositionEvent {}
 

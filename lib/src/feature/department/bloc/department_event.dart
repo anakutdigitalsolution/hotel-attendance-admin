@@ -7,6 +7,7 @@ class DepartmentEvent extends Equatable {
 }
 
 class FetchDepartmentStarted extends DepartmentEvent {}
+class FetchAllDepartmentStarted extends DepartmentEvent{}
 
 class InitializeDepartmentStarted extends DepartmentEvent {}
 

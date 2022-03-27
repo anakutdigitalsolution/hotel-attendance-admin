@@ -16,7 +16,6 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
   int page = 1;
   @override
   Stream<LeaveState> mapEventToState(LeaveEvent event) async* {
-    
     if (event is InitializeLeaveStarted) {
       yield InitializingLeave();
       try {
@@ -116,6 +115,24 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
             fromDate: event.fromDate,
             // date: event.date,
             toDate: event.toDate);
+        yield AddedLeave();
+        yield FetchingLeave();
+        print(leavemodel.length);
+        leavemodel.clear();
+        leavemodel =
+            await leaveRepository.getleave(page: 1, rowperpage: rowperpage);
+        print(leavemodel.length);
+        yield FetchedLeave();
+      } catch (e) {
+        log(e.toString());
+        yield ErrorAddingLeave(error: e.toString());
+      }
+    }
+    if (event is UpdateLeaveStatusStarted) {
+      yield AddingLeave();
+      try {
+        await leaveRepository.editleaveStatus(
+            id: event.id, status: event.status);
         yield AddedLeave();
         yield FetchingLeave();
         print(leavemodel.length);

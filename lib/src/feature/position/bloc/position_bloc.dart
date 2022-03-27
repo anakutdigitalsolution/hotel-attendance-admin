@@ -54,6 +54,22 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
         yield ErrorFetchingPosition(error: e.toString());
       }
     }
+    if (event is FetchAllPositionStarted) {
+      yield FetchingPosition();
+      try {
+        // Future.delayed(Duration(milliseconds: 200));
+        page = 1;
+        if (positionList.length != 0) {
+          positionList.clear();
+        }
+        positionList = await positionRepository.getAllPosition();
+
+        yield FetchedPosition();
+      } catch (e) {
+        log(e.toString());
+        yield ErrorFetchingPosition(error: e.toString());
+      }
+    }
 
     if (event is RefreshPositionStarted) {
       yield FetchingPosition();

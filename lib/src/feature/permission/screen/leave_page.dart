@@ -9,6 +9,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'add_leave.dart';
 import 'edit_leave.dart';
+import 'edit_leave_status.dart';
 
 class LeavePage extends StatefulWidget {
   @override
@@ -20,7 +21,10 @@ class _LeavePageState extends State<LeavePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: standardAppBar(context, "Leave Page"),
-      body: Container(margin: EdgeInsets.only(top: 10, bottom: 10)),
+      body: Container(
+        margin: EdgeInsets.only(top: 10, bottom: 10),
+        child: WantedBody(),
+      ),
       floatingActionButton: Container(
         child: FloatingActionButton(
             backgroundColor: Colors.lightBlueAccent,
@@ -268,7 +272,8 @@ class _WantedBodyState extends State<WantedBody> {
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                    builder: (con) => EditLeave(
+                                                    builder: (con) =>
+                                                        EditLeaveStatus(
                                                           leaveModel: BlocProvider
                                                                   .of<LeaveBloc>(
                                                                       context)

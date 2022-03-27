@@ -26,16 +26,34 @@ class PositionRepository {
       throw e;
     }
   }
+
+  Future<List<PositionModel>> getAllPosition() async {
+    try {
+      String url = mainUrl + "position";
+
+      Response response = await apiProvider.get(url, null, null);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.data);
+        List<PositionModel> leave = [];
+        response.data["data"].forEach((data) {
+          leave.add(PositionModel.fromJson(data));
+        });
+        return leave;
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> addPosition({
     required String name,
     required String type,
   }) async {
     try {
       String url = mainUrl + "position/add";
-      Map body = {
-        "position_name": name,
-        "type":type
-      };
+      Map body = {"position_name": name, "type": type};
       Response response = await apiProvider.post(url, body, null);
 
       print(response.statusCode);
@@ -58,10 +76,7 @@ class PositionRepository {
   }) async {
     try {
       String url = mainUrl + "position/edit/$id";
-      Map body = {
-        "position_name": name,
-        "type":type
-      };
+      Map body = {"position_name": name, "type": type};
       Response response = await apiProvider.put(url, body);
 
       print(response.statusCode);

@@ -27,6 +27,27 @@ class TimetableRepository {
     }
   }
 
+  Future<List<TimetableModel>> getAllTimetable(
+     ) async {
+    try {
+      String url = mainUrl + "timetable";
+
+      Response response = await apiProvider.get(url, null, null);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.data);
+        List<TimetableModel> leave = [];
+        response.data["data"].forEach((data) {
+          leave.add(TimetableModel.fromJson(data));
+        });
+        return leave;
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> addTimetable({
     required String name,
     required String onDuty,

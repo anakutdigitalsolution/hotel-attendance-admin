@@ -10,6 +10,8 @@ class LeaveEvent extends Equatable {
 class InitializeLeaveStarted extends LeaveEvent{}
 class FetchLeaveStarted extends LeaveEvent{}
 class RefreshLeaveStarted extends LeaveEvent{}
+
+
 class AddLeaveStarted extends LeaveEvent {
   final String employeeId;
   final String leaveTypeId;
@@ -47,6 +49,14 @@ class UpdateLeaveStarted extends LeaveEvent {
       required this.toDate,
       required this.employeeId
       });
+}
+
+class UpdateLeaveStatusStarted extends LeaveEvent{
+  final String id;
+  final String status;
+  UpdateLeaveStatusStarted({
+    required this.id,required this.status
+  });
 }
 class DeleteLeaveStarted extends LeaveEvent {
   final String id;

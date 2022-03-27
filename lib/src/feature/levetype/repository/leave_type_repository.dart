@@ -28,9 +28,29 @@ class LeaveTypeRepository {
     }
   }
 
+  Future<List<LeaveTypeModel>> getAllleaveType() async {
+    try {
+      String url = mainUrl + "leavetypes";
+
+      Response response = await apiProvider.get(url, null, null);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.data);
+        List<LeaveTypeModel> leave = [];
+        response.data["data"].forEach((data) {
+          leave.add(LeaveTypeModel.fromJson(data));
+        });
+        return leave;
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> addLeaveType({
     required String name,
-     required String note,
+    required String note,
   }) async {
     try {
       String url = mainUrl + "leavetype/add";
@@ -55,8 +75,8 @@ class LeaveTypeRepository {
 
   Future<void> editLeaveType({
     required String id,
-   required String name,
-     required String note,
+    required String name,
+    required String note,
   }) async {
     try {
       String url = mainUrl + "leavetype/edit/$id";

@@ -58,7 +58,18 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
         yield ErrorFetchingDepartment(error: e.toString());
       }
     }
-
+    if (event is FetchAllDepartmentStarted) {
+      yield FetchingDepartment();
+      try {
+        if (departmentList.length != 0) {
+          departmentList.clear();
+        }
+        departmentList = await departmentRepository.getAlldepartment();
+        yield FetchedDepartment();
+      } catch (e) {
+        yield ErrorFetchingDepartment(error: e.toString());
+      }
+    }
     if (event is RefreshDepartmentStarted) {
       yield FetchingDepartment();
       try {

@@ -44,8 +44,8 @@ class _AddScheduleState extends State<AddSchedule> {
           },
           child: BlocListener<EmployeeBloc, EmployeeState>(
               listener: (context, stae) {
-                if (stae is InitializingEmployee) {
-                  // loadingDialogs(context);
+                if (stae is FetchingEmployee) {
+                  loadingDialogs(context);
                   print("fetching data");
                 }
                 if (stae is ErrorFetchingEmployee) {
@@ -53,9 +53,9 @@ class _AddScheduleState extends State<AddSchedule> {
                   print("errir");
                   errorSnackBar(text: stae.error.toString(), context: context);
                 }
-                if (stae is InitializedEmployee) {
+                if (stae is FetchedEmployee) {
                   print("hi");
-                  // Navigator.pop(context);
+                  Navigator.pop(context);
                   customModal(
                       context,
                       BlocProvider.of<EmployeeBloc>(context)
@@ -73,7 +73,7 @@ class _AddScheduleState extends State<AddSchedule> {
               },
               child: BlocListener<TimetableBloc, TimetableState>(
                 listener: (context, state) {
-                  if (state is InitializingTimetable) {
+                  if (state is FetchingTimetable) {
                     loadingDialogs(context);
                   }
                   if (state is ErrorFetchingTimetable) {
@@ -81,7 +81,7 @@ class _AddScheduleState extends State<AddSchedule> {
                     errorSnackBar(
                         text: state.error.toString(), context: context);
                   }
-                  if (state is InitializedTimetable) {
+                  if (state is FetchedTimetable) {
                     Navigator.pop(context);
                     customModal(
                         context,
@@ -112,7 +112,7 @@ class _AddScheduleState extends State<AddSchedule> {
                               controller: _empCtl,
                               onTap: () {
                                 BlocProvider.of<EmployeeBloc>(context)
-                                    .add(InitializeEmployeeStarted());
+                                    .add(FetchAllEmployeeStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -138,10 +138,10 @@ class _AddScheduleState extends State<AddSchedule> {
                             ),
                             SizedBox(height: 15),
                             TextFormField(
-                              controller: _empCtl,
+                              controller: _timeCtrl,
                               onTap: () {
                                 BlocProvider.of<TimetableBloc>(context)
-                                    .add(InitializeTimetableStarted());
+                                    .add(FetchAllTimetableStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,

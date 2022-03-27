@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
@@ -9,9 +10,10 @@ import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'add_leave_type.dart';
+import 'edit_leave_type.dart';
 
 class LeaveTypePage extends StatefulWidget {
-  const LeaveTypePage({ Key? key }) : super(key: key);
+  const LeaveTypePage({Key? key}) : super(key: key);
 
   @override
   State<LeaveTypePage> createState() => _LeaveTypePageState();
@@ -20,7 +22,7 @@ class LeaveTypePage extends StatefulWidget {
 class _LeaveTypePageState extends State<LeaveTypePage> {
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       appBar: standardAppBar(context, "Leavetype Page"),
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
@@ -30,8 +32,8 @@ class _LeaveTypePageState extends State<LeaveTypePage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddLeaveType()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AddLeaveType()));
             }),
       ),
     );
@@ -39,7 +41,7 @@ class _LeaveTypePageState extends State<LeaveTypePage> {
 }
 
 class Body extends StatefulWidget {
-  const Body({ Key? key }) : super(key: key);
+  const Body({Key? key}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -66,8 +68,7 @@ class _BodyState extends State<Body> {
               child: Text("No Data"),
             );
           }
-          print(
-              "length ${BlocProvider.of<LeaveTypeBloc>(context).leavetype}");
+          print("length ${BlocProvider.of<LeaveTypeBloc>(context).leavetype}");
 
           return BlocListener<LeaveTypeBloc, LeaveTypeState>(
             listener: (context, state) {
@@ -90,7 +91,8 @@ class _BodyState extends State<Body> {
             },
             child: SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<LeaveTypeBloc>(context).add(RefreshLeaveTypeStarted());
+                BlocProvider.of<LeaveTypeBloc>(context)
+                    .add(RefreshLeaveTypeStarted());
               },
               onLoading: () {
                 if (BlocProvider.of<LeaveTypeBloc>(context).state
@@ -144,52 +146,56 @@ class _BodyState extends State<Body> {
                                 Text(
                                   "${BlocProvider.of<LeaveTypeBloc>(context).leavetype[index].name}",
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      ),
+                                    color: Colors.black,
+                                  ),
                                 )
                               ],
                             ),
-                            
-                             Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      CupertinoButton(
-                                          padding: EdgeInsets.all(1.0),
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.edit),
-                                            ],
-                                          ),
-                                          onPressed: () {
-                                            // Navigator.push(
-                                            //     context,
-                                            //     MaterialPageRoute(
-                                            //         builder: (con) => EditDepartment(
-                                            //               departmentModel: BlocProvider.of<DepartmentBlc>(context).departmentList[index],
-                                            //             )));
-                                          }),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      CupertinoButton(
-                                          padding: EdgeInsets.all(1.0),
-                                          color: Colors.red,
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.delete),
-                                            ],
-                                          ),
-                                          onPressed: () {
-                                            print(
-                                                "id ${BlocProvider.of<LeaveTypeBloc>(context).leavetype[index].id}");
-                                            BlocProvider.of<LeaveTypeBloc>(context)
-                                                .add(DeleteLeaveTypeStarted(id: BlocProvider.of<LeaveTypeBloc>(context).leavetype[index].id)
-                                                  );
-                                          }),
-                                    ],
-                                  )
-                               
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                CupertinoButton(
+                                    padding: EdgeInsets.all(1.0),
+                                    color: Colors.green,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.edit),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (con) => EditLeaveType(
+                                                    leaveTypeModel: BlocProvider
+                                                            .of<LeaveTypeBloc>(
+                                                                context)
+                                                        .leavetype[index],
+                                                  )));
+                                    }),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                CupertinoButton(
+                                    padding: EdgeInsets.all(1.0),
+                                    color: Colors.red,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.delete),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      print(
+                                          "id ${BlocProvider.of<LeaveTypeBloc>(context).leavetype[index].id}");
+                                      BlocProvider.of<LeaveTypeBloc>(context)
+                                          .add(DeleteLeaveTypeStarted(
+                                              id: BlocProvider.of<
+                                                      LeaveTypeBloc>(context)
+                                                  .leavetype[index]
+                                                  .id));
+                                    }),
+                              ],
+                            )
                           ],
                         ),
                       ),

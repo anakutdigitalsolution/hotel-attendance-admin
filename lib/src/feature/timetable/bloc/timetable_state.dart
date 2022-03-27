@@ -8,6 +8,7 @@ class TimetableState extends Equatable {
 class InitializingTimetable extends TimetableState{}
 class InitializedTimetable extends TimetableState{}
 
+
 class FetchingTimetable extends TimetableState {}
 
 class FetchedTimetable extends TimetableState {}

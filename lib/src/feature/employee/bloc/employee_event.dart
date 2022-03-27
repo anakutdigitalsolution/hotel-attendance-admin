@@ -12,6 +12,9 @@ class FetchEmloyeeStarted extends EmployeeEvent {}
 class InitializeEmployeeStarted extends EmployeeEvent {}
 
 class RefreshEmployeeStarted extends EmployeeEvent {}
+class FetchAllEmployeeStarted extends EmployeeEvent{}
+
+
 
 class AddEmployeeStarted extends EmployeeEvent {
  final String name;

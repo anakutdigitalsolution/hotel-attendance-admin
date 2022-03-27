@@ -27,6 +27,26 @@ class DepartmentRepository {
     }
   }
 
+  Future<List<DepartmentModel>> getAlldepartment() async {
+    try {
+      String url = mainUrl + "department";
+
+      Response response = await apiProvider.get(url, null, null);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.data);
+        List<DepartmentModel> leave = [];
+        response.data["data"].forEach((data) {
+          leave.add(DepartmentModel.fromJson(data));
+        });
+        return leave;
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> addDepartment({
     required String name,
   }) async {

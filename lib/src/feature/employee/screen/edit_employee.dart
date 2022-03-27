@@ -82,6 +82,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                   errorSnackBar(text: state.error.toString(), context: context);
                 }
                 if (state is FetchedDepartment) {
+                  Navigator.pop(context);
                   customModal(
                       context,
                       BlocProvider.of<DepartmentBlc>(context)
@@ -108,6 +109,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                         text: state.error.toString(), context: context);
                   }
                   if (state is FetchedPosition) {
+                    Navigator.pop(context);
                     customModal(
                         context,
                         BlocProvider.of<PositionBlc>(context)
@@ -257,7 +259,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                               controller: _departmentIdCtrl,
                               onTap: () {
                                 BlocProvider.of<DepartmentBlc>(context)
-                                    .add(RefreshDepartmentStarted());
+                                    .add(FetchAllDepartmentStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -286,7 +288,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                               controller: _positionIdCtrl,
                               onTap: () {
                                 BlocProvider.of<PositionBlc>(context)
-                                    .add(RefreshPositionStarted());
+                                    .add(FetchAllPositionStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -353,17 +355,31 @@ class _EditEmployeeState extends State<EditEmployee> {
             ),
             color: Colors.blue,
             onPressed: () {
+              String depart = "";
+              String position = "";
               if (_formKey!.currentState!.validate()) {
-                DepartmentModel departId =
-                    BlocProvider.of<DepartmentBlc>(context)
-                        .departmentList
-                        .firstWhere((element) =>
-                            element.name == _departmentIdCtrl.text);
+                if (_departmentIdCtrl.text !=
+                    widget.employeeModel.departmentModel.name) {
+                  DepartmentModel departId =
+                      BlocProvider.of<DepartmentBlc>(context)
+                          .departmentList
+                          .firstWhere((element) =>
+                              element.name == _departmentIdCtrl.text);
+                  depart = departId.id;
+                } else {
+                  depart = widget.employeeModel.departmentModel.id;
+                }
+                if (_positionIdCtrl.text !=
+                    widget.employeeModel.positionModel.positionName) {
+                  PositionModel posiId = BlocProvider.of<PositionBlc>(context)
+                      .positionList
+                      .firstWhere((element) =>
+                          element.positionName == _positionIdCtrl.text);
+                  position = posiId.id;
+                } else {
+                  position = widget.employeeModel.positionModel.id;
+                }
 
-                PositionModel posiId = BlocProvider.of<PositionBlc>(context)
-                    .positionList
-                    .firstWhere((element) =>
-                        element.positionName == _positionIdCtrl.text);
                 BlocProvider.of<EmployeeBloc>(context).add(UpdateEmployeeStarted(
                     id: widget.employeeModel.id,
                     name: _nameCtrl.text,
@@ -371,8 +387,8 @@ class _EditEmployeeState extends State<EditEmployee> {
                     // username: _usernameCtrl.text,
                     img: "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png",
                     // password: _passwordCtrl.text,
-                    positionId: posiId.id,
-                    departmentId: departId.id,
+                    positionId: position,
+                    departmentId: depart,
                     storeId: "1",
                     phoneNumber: _phoneNumberCtrl.text,
                     address: _addressCtrl.text));

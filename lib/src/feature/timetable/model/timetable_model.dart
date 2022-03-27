@@ -7,8 +7,8 @@ class TimetableModel {
     return TimetableModel(
         id: json["id"].toString(),
         timetableName: json["timetable_name"],
-        offDutyTime: json["on_duty_time"],
-        onDutyTtime: json["off_duty_time"]);
+        offDutyTime: json["off_duty_time"],
+        onDutyTtime: json["on_duty_time"]);
   }
   TimetableModel(
       {required this.id,

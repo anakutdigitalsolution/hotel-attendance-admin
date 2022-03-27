@@ -6,6 +6,8 @@ abstract class EmployeeState extends Equatable{
   List<Object?> get props => [];
 }
 class InitializingEmployee extends EmployeeState{}
+class FetchingAllEmployee extends EmployeeState{}
+class FetchedAllEmployee extends EmployeeState{}
 class InitializedEmployee extends EmployeeState{}
 class FetchingEmployee extends EmployeeState{}
 class FetchedEmployee extends EmployeeState{}

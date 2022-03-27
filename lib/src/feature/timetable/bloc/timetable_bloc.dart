@@ -32,6 +32,19 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
         yield ErrorFetchingTimetable(error: e.toString());
       }
     }
+    if (event is FetchAllTimetableStarted) {
+      yield FetchingTimetable();
+      try {
+        if (timetableList.length != 0) {
+          timetableList.clear();
+        }
+        timetableList = await departmentRepository.getAllTimetable();
+        yield FetchedTimetable();
+      } catch (e) {
+        log(e.toString());
+        yield ErrorFetchingTimetable(error: e.toString());
+      }
+    }
     if (event is FetchTimetableStarted) {
       yield FetchingTimetable();
       try {

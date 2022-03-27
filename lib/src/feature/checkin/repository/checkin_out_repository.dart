@@ -28,21 +28,13 @@ class CheckInOutRepository {
   }
 
   Future<void> checkin(
-      {required String checkinTime,
-      required String lat,
-      required String lon,
-      required String locationId,
-      required String date,
-      required String timetableId}) async {
+      {required String checkinTime, required String employeeId}) async {
     try {
-      String url = mainUrl + "checkin";
+      String url = mainUrl + "checkin/add";
       Map body = {
         // "type": "company",
         "checkin_time": checkinTime,
-        "lat": lat,
-        "lon": lon,
-        "location_id": locationId,
-        "date": date,
+        "employee_id": employeeId,
         // "timetable_id": timetableId
       };
 
@@ -62,21 +54,16 @@ class CheckInOutRepository {
   }
 
   Future<void> checkout(
-      {required String checkoutTime,
-      required String lat,
-      required String lon,
-      required String locationId,
-      required String date,
-      required String timetableId}) async {
+      {required String id,
+      required String checkoutTime,
+      required String employeeId}) async {
     try {
-      String url = mainUrl + "checkout";
+      String url = mainUrl + "checkout/edit/$id";
       Map body = {
         // "type": "company",
         "checkout_time": checkoutTime,
-        "lat": lat,
-        "lon": lon,
-        "location_id": locationId,
-        "date": date,
+        "employee_id": employeeId,
+
         // "timetable_id": timetableId
       };
 

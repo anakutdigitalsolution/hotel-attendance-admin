@@ -7,6 +7,7 @@ class TimetabletEvent extends Equatable {
 }
 
 class FetchTimetableStarted extends TimetabletEvent {}
+class FetchAllTimetableStarted extends TimetabletEvent{}
 
 class InitializeTimetableStarted extends TimetabletEvent {}
 

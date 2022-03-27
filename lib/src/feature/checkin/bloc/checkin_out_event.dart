@@ -6,39 +6,29 @@ abstract class CheckInOutEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class InitializeCheckinStarted extends CheckInOutEvent{}
-class FetchCheckinStarted extends CheckInOutEvent{}
+class InitializeCheckinStarted extends CheckInOutEvent {}
 
-class RefreshCheckinStarted extends CheckInOutEvent{}
+class FetchCheckinStarted extends CheckInOutEvent {}
+
+class RefreshCheckinStarted extends CheckInOutEvent {}
+
 class AddCheckinStarted extends CheckInOutEvent {
   final String checkinTime;
-  final String lat;
-  final String lon;
-  final String locationId;
-  final String date;
-  final String timetableId;
-  AddCheckinStarted(
-      {required this.checkinTime,
-      required this.lat,
-      required this.lon,
-      required this.locationId,
-      required this.date,
-      required this.timetableId});
+  final String employeeId;
+
+  AddCheckinStarted({
+    required this.checkinTime,
+    required this.employeeId,
+  });
 }
 
 class AddCheckoutStarted extends CheckInOutEvent {
+  final String id;
   final String checkoutTime;
-  final String lat;
-  final String lon;
-  final String locationId;
-  final String date;
-  final String timetableId;
-  AddCheckoutStarted(
-      {required this.checkoutTime,
-      required this.lat,
-      required this.lon,
-      required this.locationId,
-      required this.date,
-      required this.timetableId});
+  final String employeeId;
+  AddCheckoutStarted({
+    required this.checkoutTime,
+    required this.id,
+    required this.employeeId,
+  });
 }
-

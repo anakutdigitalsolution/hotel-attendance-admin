@@ -34,6 +34,35 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         yield ErrorFetchingEmployee(error: e.toString());
       }
     }
+    if (event is RefreshEmployeeStarted) {
+      yield FetchingEmployee();
+      try {
+        page = 1;
+        if (emploList.length != 0) {
+          emploList.clear();
+        }
+        List<EmployeeModel> _departmentList = await departmentRepository
+            .getEmployee(rowPerpage: rowperpage, page: page);
+
+        emploList.addAll(_departmentList);
+        yield FetchedEmployee();
+      } catch (e) {
+        log(e.toString());
+        yield ErrorFetchingEmployee(error: e.toString());
+      }
+    }
+    if (event is FetchAllEmployeeStarted) {
+      yield FetchingEmployee();
+      try {
+        if (emploList.length != 0) {
+          emploList.clear();
+        }
+        emploList = await departmentRepository.getAllEmployee();
+        yield FetchedEmployee();
+      } catch (e) {
+        yield ErrorFetchingEmployee(error: e.toString());
+      }
+    }
     if (event is FetchEmloyeeStarted) {
       yield FetchingEmployee();
       try {
@@ -43,12 +72,13 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         emploList.addAll(_departmentList);
         page++;
         print(page);
-        print(_departmentList.length);
-        if (_departmentList.length < rowperpage) {
-          yield EndofEmployeeList();
-        } else {
-          yield FetchedEmployee();
-        }
+        yield FetchedEmployee();
+        // print(_departmentList.length);
+        // if (_departmentList.length < rowperpage) {
+        //   yield EndofEmployeeList();
+        // } else {
+        //   yield FetchedEmployee();
+        // }
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingEmployee(error: e.toString());
