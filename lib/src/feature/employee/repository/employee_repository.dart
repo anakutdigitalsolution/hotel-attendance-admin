@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
@@ -52,6 +51,9 @@ class EmployeeRepository {
     required String name,
     required String gender,
     required String img,
+    required String email,
+    required String dob,
+    required String officeTel,
     required String username,
     required String password,
     required String positionId,
@@ -61,11 +63,14 @@ class EmployeeRepository {
     required String address,
   }) async {
     try {
-      String url = mainUrl + "employee/add";
+      String url = mainUrl + "employees/add";
       Map body = {
         "name": name,
         "gender": gender,
         "username": username,
+        "email": email,
+        "dob": dob,
+        "office_tel": officeTel,
         "password": password,
         "profile_url": img,
         "position_id": positionId,
@@ -92,6 +97,9 @@ class EmployeeRepository {
     required String id,
     required String name,
     required String gender,
+    required String email,
+    required String dob,
+    required String officeTel,
     required String img,
     // required String username,
     // required String password,
@@ -102,12 +110,13 @@ class EmployeeRepository {
     required String address,
   }) async {
     try {
-      String url = mainUrl + "employee/edit/$id";
+      String url = mainUrl + "employees/edit/$id";
       Map body = {
         "name": name,
         "gender": gender,
-        // "username": username,
-        // "password": password,
+        "email": email,
+        "dob": dob,
+        "office_tel": officeTel,
         "profile_url": img,
         "position_id": positionId,
         "department_id": departmentId,

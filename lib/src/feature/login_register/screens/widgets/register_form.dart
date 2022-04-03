@@ -48,7 +48,7 @@ class _RegisterFormState extends State<RegisterForm> {
         } else if (state is Registered) {
           // change save token in auth to verifypage
           BlocProvider.of<AuthenticationBloc>(context)
-              .add(AuthenticationStarted(userModel: state.userModel));
+              .add(AuthenticationStarted(user: state.userModel));
           // BlocProvider.of<>(context)
           Navigator.of(context).pop();
           // Navigator.of(context).pop();

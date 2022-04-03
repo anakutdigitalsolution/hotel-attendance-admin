@@ -19,6 +19,8 @@ class _AddTimetableState extends State<AddTimetable> {
   final TextEditingController _reasonCtrl = TextEditingController();
   final TextEditingController _ondutyCtrl = TextEditingController();
   final TextEditingController _ofDutyCtrl = TextEditingController();
+  final TextEditingController _lateMnCtrl = TextEditingController();
+  final TextEditingController _earlyMnCtrl = TextEditingController();
   //  final TextEditingController _reasonCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
 
@@ -123,6 +125,51 @@ class _AddTimetableState extends State<AddTimetable> {
                         },
                       ),
                       SizedBox(height: 15),
+                      TextFormField(
+                        controller: _lateMnCtrl,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                              borderSide: new BorderSide(
+                                width: 1,
+                              ),
+                            ),
+                            isDense: true,
+                            labelText: "Late minutes"),
+                        // validator: (value) {
+                        //   if (value!.isEmpty) {
+                        //     return 'Off duty';
+                        //   }
+                        //   return null;
+                        // },
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _earlyMnCtrl,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                              borderSide: new BorderSide(
+                                width: 1,
+                              ),
+                            ),
+                            isDense: true,
+                            labelText: "Early minutes"),
+                        // validator: (value) {
+                        //   if (value!.isEmpty) {
+                        //     return 'Off duty';
+                        //   }
+                        //   return null;
+                        // },
+                      ),
                     ],
                   ),
                 ),
@@ -146,7 +193,9 @@ class _AddTimetableState extends State<AddTimetable> {
                 BlocProvider.of<TimetableBloc>(context).add(AddTimetableStarted(
                     name: _reasonCtrl.text,
                     offDuty: _ofDutyCtrl.text,
-                    onDuty: _ondutyCtrl.text));
+                    onDuty: _ondutyCtrl.text,
+                    lateMn: _lateMnCtrl.text,
+                    earlyMn: _earlyMnCtrl.text));
               }
             },
             padding: EdgeInsets.symmetric(vertical: 10),

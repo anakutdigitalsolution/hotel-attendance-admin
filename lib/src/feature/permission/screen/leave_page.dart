@@ -25,16 +25,16 @@ class _LeavePageState extends State<LeavePage> {
         margin: EdgeInsets.only(top: 10, bottom: 10),
         child: WantedBody(),
       ),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-            backgroundColor: Colors.lightBlueAccent,
-            child: Icon(Icons.add),
-            elevation: 0,
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddLeave()));
-            }),
-      ),
+      // floatingActionButton: Container(
+      //   child: FloatingActionButton(
+      //       backgroundColor: Colors.lightBlueAccent,
+      //       child: Icon(Icons.add),
+      //       elevation: 0,
+      //       onPressed: () {
+      //         Navigator.push(
+      //             context, MaterialPageRoute(builder: (context) => AddLeave()));
+      //       }),
+      // ),
     );
   }
 }

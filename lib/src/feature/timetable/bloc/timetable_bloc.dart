@@ -10,6 +10,8 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
   List<TimetableModel> timetableList = [];
   int rowperpage = 12;
   int page = 1;
+  String lateMn = "";
+  String earlyMn = "";
   @override
   Stream<TimetableState> mapEventToState(TimetabletEvent event) async* {
     if (event is InitializeTimetableStarted) {
@@ -88,8 +90,20 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
     if (event is AddTimetableStarted) {
       yield AddingTimetable();
       try {
+        if (event.lateMn == null || event.lateMn == "") {
+          lateMn = "0";
+        }
+        if (event.earlyMn == null || event.earlyMn == "") {
+          earlyMn = "0";
+        }
+        print(earlyMn);
+        print(lateMn);
         await departmentRepository.addTimetable(
-            name: event.name, onDuty: event.onDuty, offDuty: event.offDuty);
+            name: event.name,
+            onDuty: event.onDuty,
+            offDuty: event.offDuty,
+            lateMn: lateMn,
+            earlyMn: earlyMn);
 
         yield AddedTimetable();
         yield FetchingTimetable();
@@ -107,12 +121,19 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
     if (event is UpdateTimetableStarted) {
       yield AddingTimetable();
       try {
+        if (event.lateMn == null || event.lateMn == "") {
+          lateMn = "0";
+        }
+        if (event.earlyMn == null || event.earlyMn == "") {
+          earlyMn = "0";
+        }
         await departmentRepository.editTimetable(
             id: event.id,
             name: event.name,
             onDuty: event.onDuty,
-            offDuty: event.offDuty);
-
+            offDuty: event.offDuty,
+            lateMn: event.lateMn!,
+            earlyMn: event.earlyMn!);
         yield AddedTimetable();
         yield FetchingTimetable();
         print(timetableList.length);

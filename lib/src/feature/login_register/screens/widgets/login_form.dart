@@ -44,8 +44,9 @@ class _LoginFormState extends State<LoginForm> {
           // EasyLoading.show(status: "loading...");
           loadingDialogs(context);
         } else if (state is Logged) {
+          print(state.userModel.token);
           BlocProvider.of<AuthenticationBloc>(context)
-              .add(AuthenticationStarted(userModel: state.userModel));
+              .add(AuthenticationStarted(user: state.userModel));
           Navigator.of(context).pop();
           // EasyLoading.dismiss();
           // print(state.userModel.verifyStatus);

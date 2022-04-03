@@ -19,6 +19,8 @@ class _EditTimetableState extends State<EditTimetable> {
   final TextEditingController _reasonCtrl = TextEditingController();
   final TextEditingController _ondutyCtrl = TextEditingController();
   final TextEditingController _ofDutyCtrl = TextEditingController();
+  final TextEditingController _lateMnCtrl = TextEditingController();
+  final TextEditingController _earlyMnCtrl = TextEditingController();
   //  final TextEditingController _reasonCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   @override
@@ -26,6 +28,8 @@ class _EditTimetableState extends State<EditTimetable> {
     _reasonCtrl.text = widget.timetableModel.timetableName;
     _ondutyCtrl.text = widget.timetableModel.onDutyTtime;
     _ofDutyCtrl.text = widget.timetableModel.offDutyTime;
+    _lateMnCtrl.text = widget.timetableModel.lateMn!;
+    _earlyMnCtrl.text = widget.timetableModel.earlyMn!;
     super.initState();
   }
 
@@ -130,6 +134,51 @@ class _EditTimetableState extends State<EditTimetable> {
                         },
                       ),
                       SizedBox(height: 15),
+                      TextFormField(
+                        controller: _lateMnCtrl,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                              borderSide: new BorderSide(
+                                width: 1,
+                              ),
+                            ),
+                            isDense: true,
+                            labelText: "Late minutes"),
+                        // validator: (value) {
+                        //   if (value!.isEmpty) {
+                        //     return 'Off duty';
+                        //   }
+                        //   return null;
+                        // },
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _earlyMnCtrl,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                              borderSide: new BorderSide(
+                                width: 1,
+                              ),
+                            ),
+                            isDense: true,
+                            labelText: "Early minutes"),
+                        // validator: (value) {
+                        //   if (value!.isEmpty) {
+                        //     return 'Off duty';
+                        //   }
+                        //   return null;
+                        // },
+                      ),
                     ],
                   ),
                 ),
@@ -155,7 +204,9 @@ class _EditTimetableState extends State<EditTimetable> {
                         id: widget.timetableModel.id,
                         name: _reasonCtrl.text,
                         offDuty: _ofDutyCtrl.text,
-                        onDuty: _ondutyCtrl.text));
+                        onDuty: _ondutyCtrl.text,
+                        lateMn: _lateMnCtrl.text,
+                        earlyMn: _earlyMnCtrl.text));
               }
             },
             padding: EdgeInsets.symmetric(vertical: 10),

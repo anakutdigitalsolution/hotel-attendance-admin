@@ -9,7 +9,7 @@ class NotificationRepository {
   ApiProvider apiProvider = ApiProvider();
   Future<List<NotificationModel>> getNotification() async {
     try {
-      String url = mainUrl + "notification";
+      String url = mainUrl + "notifications";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);

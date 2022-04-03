@@ -10,7 +10,7 @@ class CheckInOutRepository {
   Future<List<CheckinModel>> getcheckin(
       {required int page, required int rowperpage}) async {
     try {
-      String url = mainUrl + "me/attendance?page_size=$rowperpage&page=$page";
+      String url = mainUrl + "attendances?page_size=$rowperpage&page=$page";
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
@@ -30,7 +30,7 @@ class CheckInOutRepository {
   Future<void> checkin(
       {required String checkinTime, required String employeeId}) async {
     try {
-      String url = mainUrl + "checkin/add";
+      String url = mainUrl + "checkins/add";
       Map body = {
         // "type": "company",
         "checkin_time": checkinTime,
@@ -58,7 +58,7 @@ class CheckInOutRepository {
       required String checkoutTime,
       required String employeeId}) async {
     try {
-      String url = mainUrl + "checkout/edit/$id";
+      String url = mainUrl + "checkouts/edit/$id";
       Map body = {
         // "type": "company",
         "checkout_time": checkoutTime,

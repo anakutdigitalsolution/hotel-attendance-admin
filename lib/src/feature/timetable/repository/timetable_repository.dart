@@ -9,7 +9,7 @@ class TimetableRepository {
   Future<List<TimetableModel>> getTimetable(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "timetable?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "timetables?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -27,10 +27,9 @@ class TimetableRepository {
     }
   }
 
-  Future<List<TimetableModel>> getAllTimetable(
-     ) async {
+  Future<List<TimetableModel>> getAllTimetable() async {
     try {
-      String url = mainUrl + "timetable";
+      String url = mainUrl + "timetables";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -52,14 +51,21 @@ class TimetableRepository {
     required String name,
     required String onDuty,
     required String offDuty,
+    required String lateMn,
+    required String earlyMn,
   }) async {
     try {
-      String url = mainUrl + "timetable/add";
+      String url = mainUrl + "timetables/add";
+
       Map body = {
         "timetable_name": name,
         "on_duty_time": onDuty,
         "off_duty_time": offDuty,
+        "late_minute": lateMn,
+        "early_leave": earlyMn
       };
+      print(lateMn);
+      print(earlyMn);
 
       Response response = await apiProvider.post(url, body, null);
 
@@ -81,13 +87,17 @@ class TimetableRepository {
     required String name,
     required String onDuty,
     required String offDuty,
+    required String lateMn,
+    required String earlyMn,
   }) async {
     try {
-      String url = mainUrl + "timetable/edit/$id";
+      String url = mainUrl + "timetables/edit/$id";
       Map body = {
         "timetable_name": name,
         "on_duty_time": onDuty,
         "off_duty_time": offDuty,
+        "late_minute": lateMn,
+        "early_leave": earlyMn
       };
       Response response = await apiProvider.put(url, body);
 
@@ -109,7 +119,7 @@ class TimetableRepository {
   }) async {
     try {
       print(id);
-      String url = mainUrl + "timetable/delete/$id";
+      String url = mainUrl + "timetables/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);

@@ -56,7 +56,7 @@ class LeaveRepository {
       // required String date,
       required String toDate}) async {
     try {
-      String url = mainUrl + "leave/add";
+      String url = mainUrl + "leaves/add";
       Map body = {
         // "type": "company",
         "employee_id": employeeId,
@@ -91,7 +91,7 @@ class LeaveRepository {
       required String employeeId,
       required String toDate}) async {
     try {
-      String url = mainUrl + "leave/edit/$id";
+      String url = mainUrl + "leaves/edit/$id";
       Map body = {
         // "type": "company",
         "employee_id": employeeId,
@@ -122,7 +122,7 @@ class LeaveRepository {
     required String status,
   }) async {
     try {
-      String url = mainUrl + "leave/edit/$id";
+      String url = mainUrl + "leaves/edit/$id";
       Map body = {
         // "type": "company",
         "status": status,
@@ -146,7 +146,7 @@ class LeaveRepository {
     required String id,
   }) async {
     try {
-      String url = mainUrl + "leave/delete/$id";
+      String url = mainUrl + "leaves/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
@@ -12,6 +14,9 @@ import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class AddEmployee extends StatefulWidget {
   const AddEmployee({Key? key}) : super(key: key);
@@ -25,13 +30,54 @@ class _AddEmployeeState extends State<AddEmployee> {
   final TextEditingController _genderCtrl = TextEditingController();
   final TextEditingController _usernameCtrl = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
-  final TextEditingController _imgCtrl = TextEditingController();
+
   final TextEditingController _addressCtrl = TextEditingController();
-  final TextEditingController _storeIdCtrl = TextEditingController();
+  final TextEditingController _officeTelCtrl = TextEditingController();
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _dobCtrl = TextEditingController();
   final TextEditingController _positionIdCtrl = TextEditingController();
   final TextEditingController _departmentIdCtrl = TextEditingController();
   final TextEditingController _phoneNumberCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  File? _image;
+  DateTime? date;
+  DateTime dateNow = DateTime.now();
+  String? dateToday;
+  @override
+  void initState() {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy/MM/dd').format(now);
+    // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
+    dateToday = formattedDate.toString();
+    super.initState();
+  }
+
+  _dialogDate({required TextEditingController controller}) async {
+    DatePicker.showDatePicker(context,
+            showTitleActions: true,
+            minTime: DateTime(2018, 01, 01),
+            maxTime: DateTime(2030, 01, 01),
+            theme: DatePickerTheme(
+                headerColor: Colors.blueGrey,
+                backgroundColor: Colors.white,
+                itemStyle: TextStyle(
+                    color: Colors.black,
+                    // fontWeight: FontWeight.bold,
+                    fontSize: 18),
+                doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
+            onChanged: (date) {},
+            onConfirm: (date) {},
+            currentTime: DateTime.now(),
+            locale: LocaleType.en)
+        .then((value) {
+      setState(() {
+        date = value;
+        String formateDate = DateFormat('yyyy/MM/dd').format(date!);
+        controller.text = formateDate.toString();
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -170,6 +216,44 @@ class _AddEmployeeState extends State<AddEmployee> {
                             ),
                             SizedBox(height: 15),
                             TextFormField(
+                              controller: _dobCtrl,
+                              keyboardType: TextInputType.text,
+                              onTap: () {
+                                _dialogDate(controller: _dobCtrl);
+                              },
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(15),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                    borderSide: new BorderSide(
+                                      width: 1,
+                                    ),
+                                  ),
+                                  isDense: true,
+                                  labelText: "Date of Birth"),
+                             
+                            ),
+                            SizedBox(height: 15),
+                            TextFormField(
+                              controller: _emailCtrl,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(15),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                    borderSide: new BorderSide(
+                                      width: 1,
+                                    ),
+                                  ),
+                                  isDense: true,
+                                  labelText: "Email"),
+                            ),
+                            SizedBox(height: 15),
+                            TextFormField(
                               controller: _usernameCtrl,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
@@ -213,6 +297,23 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 }
                                 return null;
                               },
+                            ),
+                            SizedBox(height: 15),
+                            TextFormField(
+                              controller: _officeTelCtrl,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(15),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                    borderSide: new BorderSide(
+                                      width: 1,
+                                    ),
+                                  ),
+                                  isDense: true,
+                                  labelText: "Office Tel"),
                             ),
                             SizedBox(height: 15),
                             TextFormField(
@@ -318,6 +419,46 @@ class _AddEmployeeState extends State<AddEmployee> {
                               //   return null;
                               // },
                             ),
+                            SizedBox(height: 15),
+                            GestureDetector(
+                                onTap: () {
+                                  _showPicker(context);
+                                },
+                                child: (_image == null)
+                                    ? Container(
+                                        width:
+                                            (MediaQuery.of(context).size.width /
+                                                    10) *
+                                                4,
+                                        height:
+                                            (MediaQuery.of(context).size.width /
+                                                    10) *
+                                                4,
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.all(0),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: FittedBox(
+                                          fit: BoxFit.fill,
+                                          child: Icon(
+                                            Icons.add_a_photo_outlined,
+                                            color: Colors.grey[600],
+                                            size: (MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    10) *
+                                                3,
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        // height: MediaQuery.of(context).size.width / 3,
+                                        width:
+                                            (MediaQuery.of(context).size.width /
+                                                    10) *
+                                                7,
+                                        child: Image.file(_image!)))
                           ],
                         ),
                       ),
@@ -352,13 +493,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                 BlocProvider.of<EmployeeBloc>(context).add(AddEmployeeStarted(
                     name: _nameCtrl.text,
                     gender: _genderCtrl.text,
+                    dob: _dobCtrl.text,
+                    email: _emailCtrl.text,
                     username: _usernameCtrl.text,
-                    img:
-                        "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png",
+                    img: _image!,
                     password: _passwordCtrl.text,
                     positionId: posiId.id,
                     departmentId: departId.id,
                     storeId: "1",
+                    officeTel: _officeTelCtrl.text,
                     phoneNumber: _phoneNumberCtrl.text,
                     address: _addressCtrl.text));
               }
@@ -372,6 +515,45 @@ class _AddEmployeeState extends State<AddEmployee> {
             )),
       ),
     );
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        // _imgFromGallery();
+                        Helper.imgFromGallery((image) {
+                          setState(() {
+                            _image = image;
+                          });
+                        });
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      Helper.imgFromCamera((image) {
+                        setState(() {
+                          _image = image;
+                        });
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   void _showDialog(context) {

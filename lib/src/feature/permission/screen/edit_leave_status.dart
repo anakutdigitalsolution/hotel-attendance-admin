@@ -52,7 +52,7 @@ class _EditLeaveStatusState extends State<EditLeaveStatus> {
                         SizedBox(height: 15),
                         TextFormField(
                           controller: _genderCtrl,
-                          keyboardType: TextInputType.text,
+                          // keyboardType: TextInputType.text,
                           decoration: InputDecoration(
                               suffixIcon: Icon(Icons.arrow_drop_down),
                               contentPadding: EdgeInsets.all(15),
@@ -130,7 +130,34 @@ class _EditLeaveStatusState extends State<EditLeaveStatus> {
   }
 
   void _showDialog(context) {
-    showDialog(
+    // showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return AlertDialog(
+    //         title: Text('Alert'),
+    //         content: Text("Are you want to leave?"),
+    //         actions: <Widget>[
+    //           FlatButton(
+    //             onPressed: () {
+    //               Navigator.pop(context);
+    //             },
+    //             child: Text('NO'),
+    //           ),
+    //           FlatButton(
+    //             onPressed: () {
+    //               BlocProvider.of<
+    //                           AuthenticationBloc>(
+    //                       context)
+    //                   .add(LogoutPressed());
+    //               Navigator.pop(context);
+    //               Navigator.pop(context);
+    //             },
+    //             child: Text('Yes'),
+    //           ),
+    //         ],
+    //       );
+    //     });
+    showModalBottomSheet(
         context: context,
         builder: (BuildContext bc) {
           return SafeArea(
@@ -138,7 +165,7 @@ class _EditLeaveStatusState extends State<EditLeaveStatus> {
               child: new Wrap(
                 children: <Widget>[
                   new ListTile(
-                      title: new Text("Approv"),
+                      title: new Text("Approve"),
                       onTap: () {
                         _genderCtrl.text = "approved";
                         Navigator.of(context).pop();

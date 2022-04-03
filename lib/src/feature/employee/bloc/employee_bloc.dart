@@ -5,12 +5,14 @@ import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.d
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/repository/employee_repository.dart';
+import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 
 class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   EmployeeBloc() : super(InitializingEmployee());
   EmployeeRepository departmentRepository = EmployeeRepository();
   List<EmployeeModel> emploList = [];
   int rowperpage = 12;
+  String? image;
   int page = 1;
   @override
   Stream<EmployeeState> mapEventToState(EmployeeEvent event) async* {
@@ -87,10 +89,18 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     if (event is AddEmployeeStarted) {
       yield AddingEmployee();
       try {
+        if (event.img == null) {
+          image = "";
+        } else {
+          image = await uploadImage(image: event.img!);
+        }
         await departmentRepository.addEmployee(
             name: event.name,
             gender: event.gender,
-            img: event.img,
+            dob: event.dob,
+            email: event.email,
+            officeTel: event.officeTel,
+            img: image!,
             username: event.username,
             password: event.password,
             positionId: event.positionId,
@@ -114,11 +124,19 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     if (event is UpdateEmployeeStarted) {
       yield AddingEmployee();
       try {
+        if (event.img == null) {
+          image = "";
+        } else {
+          image = await uploadImage(image: event.img!);
+        }
         await departmentRepository.editEmployee(
             id: event.id,
             name: event.name,
             gender: event.gender,
-            img: event.img,
+            dob: event.dob,
+            email: event.email,
+            officeTel: event.officeTel,
+            img: image!,
             // username: event.username,
             // password: event.password,
             positionId: event.positionId,

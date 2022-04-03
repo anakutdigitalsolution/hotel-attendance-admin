@@ -9,7 +9,7 @@ class DepartmentRepository {
   Future<List<DepartmentModel>> getdepartment(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "department?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "departments?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -29,7 +29,7 @@ class DepartmentRepository {
 
   Future<List<DepartmentModel>> getAlldepartment() async {
     try {
-      String url = mainUrl + "department";
+      String url = mainUrl + "departments";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -51,7 +51,7 @@ class DepartmentRepository {
     required String name,
   }) async {
     try {
-      String url = mainUrl + "department/add";
+      String url = mainUrl + "departments/add";
       Map body = {
         "department_name": name,
       };
@@ -75,7 +75,7 @@ class DepartmentRepository {
     required String name,
   }) async {
     try {
-      String url = mainUrl + "department/edit/$id";
+      String url = mainUrl + "departments/edit/$id";
       Map body = {
         "department_name": name,
       };
@@ -98,7 +98,7 @@ class DepartmentRepository {
     required String id,
   }) async {
     try {
-      String url = mainUrl + "department/delete/$id";
+      String url = mainUrl + "departments/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);

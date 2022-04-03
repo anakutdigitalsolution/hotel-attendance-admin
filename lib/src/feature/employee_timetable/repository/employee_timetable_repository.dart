@@ -32,7 +32,7 @@ class EmployeeTimetableRepository {
     required String timetableId,
   }) async {
     try {
-      String url = mainUrl + "schedule/add";
+      String url = mainUrl + "schedules/add";
       Map body = {
         "employee_id": employeeId,
         "timetable_id": timetableId,

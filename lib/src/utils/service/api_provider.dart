@@ -68,20 +68,23 @@ class ApiProvider {
 Future<String> uploadImage({required File image}) async {
   try {
     ApiProvider apiProvider = ApiProvider();
+    print(image);
     String fileName = image.path.split('/').last;
     FormData formData = FormData.fromMap({
-      "file": await MultipartFile.fromFile(image.path, filename: fileName),
+      "photo": await MultipartFile.fromFile(image.path, filename: fileName),
     });
     // var secretkey = "anakut";
     // var type = "upload";
 
     Response response = await apiProvider.post(
-        "http://loan.anakutjob.com/loan/upload.php", formData, null);
+        "http://my-attendance-test-demo.herokuapp.com/api/uploads",
+        formData,
+        null);
     print(response.statusCode);
 
     if (response.statusCode == 200 && response.data["code"] == "0") {
       print(response.data);
-      return response.data["image_url"];
+      return response.data["profile_url"];
     } else if (response.data["code"].toString() != "0") {
       throw response.data["message"];
     }

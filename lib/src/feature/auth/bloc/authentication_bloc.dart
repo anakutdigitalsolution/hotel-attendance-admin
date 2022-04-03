@@ -8,27 +8,26 @@ import 'authentication_state.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
-  /// {@macro counter_bloc}
-  AuthenticationBloc() : super(Authenticating());
-  AuthenticationRepository _authenticationRepository =
-      AuthenticationRepository();
   Storage _storage = Storage();
-  UserModel? userModel;
+
+  AuthenticationBloc() : super(Authenticating());
+ 
   @override
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
     if (event is CheckingAuthenticationStarted) {
       yield Initializing();
-      userModel = await _storage.getCurrentUser();
-      if (userModel == null) {
+      // String _token = await _authenticationRepository.getToken();
+      UserModel? _user;
+      await Future.delayed(Duration(milliseconds: 1500), () async {
+        _user = await _storage.getCurrentUser();
+      });
+      if (_user == null) {
         yield NotAuthenticated();
       } else {
-        // if already login  return token
-        // save public in the whole app that use token to access all function
-        ApiProvider.accessToken = userModel!.token;
-        yield Authenticated(userModel: userModel!);
+        ApiProvider.accessToken = _user!.token;
+        yield Authenticated(user: _user!);
       }
-      // String? _token = await _authenticationRepository.getToken();
       // if (_token == null) {
       //   yield NotAuthenticated();
       // } else {
@@ -38,21 +37,17 @@ class AuthenticationBloc
       // }
     }
     if (event is AuthenticationStarted) {
-      yield Authenticating();
-      // if use to login , save token via event
-      await _storage.saveCurrentUser(user: event.userModel);
-      // await _authenticationRepository.saveToken(token: event.userModel);
-      // ApiProvider.accessToken = event.token;
-      // print(userModel!.name);
-      yield Authenticated(userModel: event.userModel);
+      await _storage.saveCurrentUser(user: event.user);
+      ApiProvider.accessToken = event.user.token;
+      yield Authenticated(user: event.user);
     }
     if (event is LogoutPressed) {
       yield LoggingOut();
-      // await _authenticationRepository.removeToken();
-      await _storage.deleteCurrentUser();
       ApiProvider.accessToken = '';
+      await _storage.deleteCurrentUser();
       await Future.delayed(Duration(seconds: 1));
       yield NotAuthenticated();
     }
   }
 }
+

@@ -10,6 +10,7 @@ import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class AttendanceEmployeePage extends StatefulWidget {
   const AttendanceEmployeePage({Key? key}) : super(key: key);
@@ -36,42 +37,59 @@ class _AttendanceEmployeePageState extends State<AttendanceEmployeePage> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<EmployeeBloc>(context).add(InitializeEmployeeStarted());
+    final RefreshController _refreshController = RefreshController();
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.2),
       appBar: standardAppBar(context, "Employee Attendance"),
-      body: Container(
-        child:
-            BlocBuilder<EmployeeBloc, EmployeeState>(builder: (context, state) {
-          if (state is InitializingEmployee) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state is ErrorFetchingEmployee) {
-            Navigator.pop(context);
-            errorSnackBar(text: state.error.toString(), context: context);
-          }
-          if (state is InitializedEmployee) {}
-          return BlocListener<EmployeeBloc, EmployeeState>(
+      body: BlocBuilder<EmployeeBloc, EmployeeState>(builder: (context, state) {
+        if (state is InitializingEmployee) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is ErrorFetchingEmployee) {
+          return Center(
+            child: Text(state.error.toString()),
+          );
+        }
+
+        return BlocListener<CheckInOutBloc, CheckInOutState>(
+          listener: (context, state) {
+            // if (state is FetchedEmployee) {}
+          },
+          child: BlocListener<CheckInOutBloc, CheckInOutState>(
             listener: (context, state) {
-              if (state is FetchedEmployee) {}
+              if (state is AddingCheckin) {
+                loadingDialogs(context);
+              }
+              if (state is ErrorAddingCheckInOut) {
+                Navigator.pop(context);
+                errorSnackBar(text: state.error.toString(), context: context);
+              }
+              if (state is AddedCheckin) {
+                Navigator.pop(context);
+                // BlocProvider.of<EmployeeBloc>(context)
+                //     .add(RefreshEmployeeStarted());
+                // Navigator.pop(context);
+              }
             },
-            child: BlocListener<CheckInOutBloc, CheckInOutState>(
-              listener: (context, state) {
-                if (state is AddingCheckin) {
-                  loadingDialogs(context);
-                }
-                if (state is ErrorAddingCheckInOut) {
-                  Navigator.pop(context);
-                  errorSnackBar(text: state.error.toString(), context: context);
-                }
-                if (state is AddedCheckin) {
-                  Navigator.pop(context);
-                  BlocProvider.of<EmployeeBloc>(context)
-                      .add(RefreshEmployeeStarted());
-                  // Navigator.pop(context);
-                }
+            child: SmartRefresher(
+              onRefresh: () {
+                // BlocProvider.of<TimetableBloc>(context).add(RefreshTimetableStarted());
               },
+              onLoading: () {
+                // if (BlocProvider.of<TimetableBloc>(context).state
+                //     is EndOfTimetableList) {
+                // } else {
+                //   // BlocProvider.of<ProductListingBloc>(context)
+                //   //     .add(FetchProductListStarted(arg: widget.category.id));
+                // }
+                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
+              },
+              enablePullDown: true,
+              enablePullUp: true,
+              cacheExtent: 1,
+              controller: _refreshController,
               child: Container(
                 margin: EdgeInsets.only(left: 20, right: 20, top: 20),
                 child: Column(
@@ -146,146 +164,57 @@ class _AttendanceEmployeePageState extends State<AttendanceEmployeePage> {
                                         ),
                                         BlocProvider.of<EmployeeBloc>(context)
                                                     .emploList[index]
-                                                    .status ==
-                                                "checked"
+                                                    .leaveStatus ==
+                                                "true"
                                             ? Container(
                                                 child: ElevatedButton(
-                                                    child: Text("Checkout",
+                                                    child: Text("Leave",
                                                         style: TextStyle()),
                                                     style: ButtonStyle(
                                                         foregroundColor:
                                                             MaterialStateProperty.all<Color>(
                                                                 Colors.white),
-                                                        backgroundColor: MaterialStateProperty.all<Color>(Colors
-                                                            .amberAccent[700]!),
+                                                        backgroundColor:
+                                                            MaterialStateProperty.all<Color>(
+                                                                Colors.red),
                                                         shape: MaterialStateProperty.all<
                                                                 RoundedRectangleBorder>(
                                                             RoundedRectangleBorder(
-                                                                borderRadius: BorderRadius.circular(18),
-                                                                side: BorderSide(color: Colors.amberAccent[700]!)))),
-                                                    onPressed: (){
-                                                      checkinTime =
-                                                                          checkin!.substring(
-                                                                              11,
-                                                                              19);
-                                                                      print(
-                                                                          checkinTime);
-                                                                      // BlocProvider.of<CheckInOutBloc>(context).add(AddCheckoutStarted(
-                                                                      //   id: ,
-                                                                      //     checkoutTime:
-                                                                      //         checkinTime!,
-                                                                      //     employeeId: BlocProvider.of<EmployeeBloc>(context)
-                                                                      //         .emploList[index]
-                                                                      //         .id));
-                                                    }),
+                                                                borderRadius:
+                                                                    BorderRadius.circular(18),
+                                                                side: BorderSide(color: Colors.red)))),
+                                                    onPressed: () {}),
                                               )
                                             : BlocProvider.of<EmployeeBloc>(
                                                             context)
                                                         .emploList[index]
-                                                        .status ==
-                                                    "leave"
+                                                        .checkinStatus ==
+                                                    "present"
                                                 ? Container(
                                                     child: ElevatedButton(
-                                                        child: Text("Leave",
+                                                        child: Text("Present",
                                                             style: TextStyle()),
                                                         style: ButtonStyle(
                                                             foregroundColor:
-                                                                MaterialStateProperty.all<Color>(Colors
-                                                                    .white),
+                                                                MaterialStateProperty.all<Color>(
+                                                                    Colors
+                                                                        .white),
                                                             backgroundColor:
                                                                 MaterialStateProperty.all<Color>(Colors
-                                                                    .red),
+                                                                    .lightBlue),
                                                             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                                 RoundedRectangleBorder(
                                                                     borderRadius:
                                                                         BorderRadius.circular(18),
-                                                                    side: BorderSide(color: Colors.red)))),
-                                                        onPressed: () => null),
+                                                                    side: BorderSide(color: Colors.lightBlue)))),
+                                                        onPressed: () {}),
                                                   )
                                                 : BlocProvider.of<EmployeeBloc>(
                                                                 context)
                                                             .emploList[index]
-                                                            .status ==
-                                                        "register"
-                                                    ? Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Container(
-                                                            child:
-                                                                ElevatedButton(
-                                                                    child: Text(
-                                                                        "Checkin",
-                                                                        style:
-                                                                            TextStyle()),
-                                                                    style: ButtonStyle(
-                                                                        foregroundColor:
-                                                                            MaterialStateProperty.all<Color>(Colors
-                                                                                .white),
-                                                                        backgroundColor:
-                                                                            MaterialStateProperty.all<Color>(Colors
-                                                                                .green),
-                                                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(18),
-                                                                            side: BorderSide(color: Colors.green)))),
-                                                                    onPressed: () {
-                                                                      checkinTime =
-                                                                          checkin!.substring(
-                                                                              11,
-                                                                              19);
-                                                                      print(
-                                                                          checkinTime);
-                                                                      BlocProvider.of<CheckInOutBloc>(context).add(AddCheckinStarted(
-                                                                          checkinTime:
-                                                                              checkinTime!,
-                                                                          employeeId: BlocProvider.of<EmployeeBloc>(context)
-                                                                              .emploList[index]
-                                                                              .id));
-                                                                    }),
-                                                          ),
-                                                          SizedBox(
-                                                            width: 3,
-                                                          ),
-                                                          Container(
-                                                            child:
-                                                                ElevatedButton(
-                                                                    child: Text(
-                                                                      "Mark",
-                                                                    ),
-                                                                    style: ButtonStyle(
-                                                                        foregroundColor:
-                                                                            MaterialStateProperty.all<Color>(Colors
-                                                                                .white),
-                                                                        backgroundColor:
-                                                                            MaterialStateProperty.all<Color>(Colors
-                                                                                .lightBlue),
-                                                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(18),
-                                                                            side: BorderSide(color: Colors.lightBlue)))),
-                                                                    onPressed: () {
-                                                                      checkinTime =
-                                                                          checkin!.substring(
-                                                                              11,
-                                                                              19);
-                                                                      print(
-                                                                          checkinTime);
-                                                                      BlocProvider.of<CheckInOutBloc>(context).add(AddCheckinStarted(
-                                                                          checkinTime:
-                                                                              checkinTime!,
-                                                                          employeeId: BlocProvider.of<EmployeeBloc>(context)
-                                                                              .emploList[index]
-                                                                              .id));
-                                                                    }),
-                                                          ),
-                                                          // SizedBox(
-                                                          //   width: 5,
-                                                          // ),
-                                                        ],
-                                                      )
-                                                    : Container(
+                                                            .checkinStatus ==
+                                                        "false"
+                                                    ? Container(
                                                         child: ElevatedButton(
                                                             child: Text("Checkin",
                                                                 style:
@@ -324,6 +253,87 @@ class _AttendanceEmployeePageState extends State<AttendanceEmployeePage> {
                                                                           .id));
                                                             }),
                                                       )
+                                                    // : BlocProvider.of<CheckInOutBloc>(
+                                                    //                 context)
+                                                    //             .checkilist[index]
+                                                    //             .status ==
+                                                    //         "present"
+                                                    //     ? Container(
+                                                    //         child: Text(
+                                                    //           "Present",
+                                                    //           textScaleFactor: 1.3,
+                                                    //           style: TextStyle(
+                                                    //               color: Colors.green),
+                                                    //         ),
+                                                    //       )
+                                                    // : BlocProvider.of<CheckInOutBloc>(
+                                                    //                 context)
+                                                    //             .checkilist[index]
+                                                    //             .status ==
+                                                    //         "leave"
+                                                    //     ? Container(
+                                                    //         child: ElevatedButton(
+                                                    //             child: Text("Leave",
+                                                    //                 style:
+                                                    //                     TextStyle()),
+                                                    //             style: ButtonStyle(
+                                                    //                 foregroundColor:
+                                                    //                     MaterialStateProperty.all<Color>(
+                                                    //                         Colors
+                                                    //                             .white),
+                                                    //                 backgroundColor:
+                                                    //                     MaterialStateProperty.all<Color>(Colors
+                                                    //                         .red),
+                                                    //                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                    //                     borderRadius:
+                                                    //                         BorderRadius.circular(18),
+                                                    //                     side: BorderSide(color: Colors.red)))),
+                                                    //             onPressed: () => null),
+                                                    //       )
+                                                    : Container(
+                                                        child: ElevatedButton(
+                                                            child: Text(
+                                                                "Checkout",
+                                                                style:
+                                                                    TextStyle()),
+                                                            style: ButtonStyle(
+                                                                foregroundColor:
+                                                                    MaterialStateProperty.all<Color>(
+                                                                        Colors
+                                                                            .white),
+                                                                backgroundColor:
+                                                                    MaterialStateProperty.all<Color>(
+                                                                        Colors.amberAccent[
+                                                                            700]!),
+                                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(18),
+                                                                    side: BorderSide(color: Colors.amberAccent[700]!)))),
+                                                            onPressed: () {
+                                                              checkinTime =
+                                                                  checkin!
+                                                                      .substring(
+                                                                          11,
+                                                                          19);
+                                                              print(
+                                                                  checkinTime);
+                                                              BlocProvider.of<CheckInOutBloc>(context).add(AddCheckoutStarted(
+                                                                  id: BlocProvider.of<
+                                                                              EmployeeBloc>(
+                                                                          context)
+                                                                      .emploList[
+                                                                          index]
+                                                                      .checkinId!,
+                                                                  checkoutTime:
+                                                                      checkinTime!,
+                                                                  employeeId: BlocProvider.of<
+                                                                              EmployeeBloc>(
+                                                                          context)
+                                                                      .emploList[
+                                                                          index]
+                                                                      .id));
+                                                            }),
+                                                      )
                                       ],
                                     ),
                                   ),
@@ -336,9 +346,9 @@ class _AttendanceEmployeePageState extends State<AttendanceEmployeePage> {
                 ),
               ),
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }

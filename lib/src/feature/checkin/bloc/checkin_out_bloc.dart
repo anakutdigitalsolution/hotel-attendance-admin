@@ -38,12 +38,15 @@ class CheckInOutBloc extends Bloc<CheckInOutEvent, CheckInOutState> {
             page: page, rowperpage: rowperpage);
         // leavemodel.addAll(leaveList);
         print(checkilist.length);
+
         page++;
         print(page);
         print(checkilist.length);
         if (checkilist.length < rowperpage) {
+          print(checkilist.length);
           yield EndOfCheckinList();
         } else {
+          print(checkilist.length);
           yield InitializedCheckin();
         }
       } catch (e) {

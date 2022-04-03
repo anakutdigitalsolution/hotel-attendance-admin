@@ -171,7 +171,7 @@ class _HomePageState extends State<HomePage> {
           preferredSize: Size(double.infinity, 100),
           child: MyAppBar(
             username:
-                "${BlocProvider.of<AuthenticationBloc>(context).userModel!.name}",
+                "${BlocProvider.of<AuthenticationBloc>(context).state.user!.name}",
           )),
       body: ListView(
         clipBehavior: Clip.none,

@@ -42,21 +42,23 @@ class EmployeeDetailTile extends StatelessWidget {
             ],
           ),
           SizedBox(height: 5),
-        employeeModel.address==null?Container():  Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Address : ",
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
-              Expanded(
-                child: Text(
-                  "${employeeModel.address}",
-                  style: Theme.of(context).textTheme.bodyText1,
+          employeeModel.address == null
+              ? Container()
+              : Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Address : ",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    Expanded(
+                      child: Text(
+                        "${employeeModel.address}",
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
           Container(
             margin: EdgeInsets.only(top: 5),
             child: Row(
@@ -69,7 +71,7 @@ class EmployeeDetailTile extends StatelessWidget {
                       .copyWith(color: Colors.orange[800]),
                 ),
                 Text(
-                  employeeModel.positionModel.positionName,
+                  employeeModel.positionModel!.positionName,
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
@@ -87,7 +89,7 @@ class EmployeeDetailTile extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(),
                 ),
                 Text(
-                  employeeModel.departmentModel.name,
+                  employeeModel.departmentModel!.name,
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       fontWeight: FontWeight.bold, color: Colors.purple),
                 ),

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
@@ -13,6 +16,9 @@ import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
+import 'package:intl/intl.dart';
 
 class EditEmployee extends StatefulWidget {
   final EmployeeModel employeeModel;
@@ -34,19 +40,56 @@ class _EditEmployeeState extends State<EditEmployee> {
   final TextEditingController _departmentIdCtrl = TextEditingController();
   final TextEditingController _phoneNumberCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  final TextEditingController _officeTelCtrl = TextEditingController();
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _dobCtrl = TextEditingController();
+  File? _image;
+  DateTime? date;
+  DateTime dateNow = DateTime.now();
+  String? dateToday;
   @override
   void initState() {
     _nameCtrl.text = widget.employeeModel.name;
     widget.employeeModel.address == null
         ? _addressCtrl.text = ""
         : _addressCtrl.text = widget.employeeModel.address!;
-    _departmentIdCtrl.text = widget.employeeModel.departmentModel.name;
-    _positionIdCtrl.text = widget.employeeModel.positionModel.positionName;
+    _departmentIdCtrl.text = widget.employeeModel.departmentModel!.name;
+    _positionIdCtrl.text = widget.employeeModel.positionModel!.positionName;
     _genderCtrl.text = widget.employeeModel.gender;
     widget.employeeModel.phone == null
         ? _phoneNumberCtrl.text = ""
         : _phoneNumberCtrl.text = widget.employeeModel.phone!;
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy/MM/dd').format(now);
+    // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
+    dateToday = formattedDate.toString();
     super.initState();
+  }
+
+  _dialogDate({required TextEditingController controller}) async {
+    DatePicker.showDatePicker(context,
+            showTitleActions: true,
+            minTime: DateTime(2018, 01, 01),
+            maxTime: DateTime(2030, 01, 01),
+            theme: DatePickerTheme(
+                headerColor: Colors.blueGrey,
+                backgroundColor: Colors.white,
+                itemStyle: TextStyle(
+                    color: Colors.black,
+                    // fontWeight: FontWeight.bold,
+                    fontSize: 18),
+                doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
+            onChanged: (date) {},
+            onConfirm: (date) {},
+            currentTime: DateTime.now(),
+            locale: LocaleType.en)
+        .then((value) {
+      setState(() {
+        date = value;
+        String formateDate = DateFormat('yyyy/MM/dd').format(date!);
+        controller.text = formateDate.toString();
+      });
+    });
   }
 
   @override
@@ -186,6 +229,82 @@ class _EditEmployeeState extends State<EditEmployee> {
                               },
                             ),
                             SizedBox(height: 15),
+                            TextFormField(
+                              controller: _emailCtrl,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(15),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                    borderSide: new BorderSide(
+                                      width: 1,
+                                    ),
+                                  ),
+                                  isDense: true,
+                                  labelText: "Email"),
+                            ),
+                            TextFormField(
+                              controller: _dobCtrl,
+                              keyboardType: TextInputType.text,
+                              onTap: () {
+                                _dialogDate(controller: _dobCtrl);
+                              },
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(15),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                    borderSide: new BorderSide(
+                                      width: 1,
+                                    ),
+                                  ),
+                                  isDense: true,
+                                  labelText: "Date of Birth"),
+                            ),
+                            SizedBox(height: 15),
+                            TextFormField(
+                              controller: _usernameCtrl,
+                              readOnly: true,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(15),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                    borderSide: new BorderSide(
+                                      width: 1,
+                                    ),
+                                  ),
+                                  isDense: true,
+                                  labelText: "Username"),
+                              // validator: (value) {
+                              //   if (value!.isEmpty) {
+                              //     return 'Username is required';
+                              //   }
+                              //   return null;
+                              // },
+                            ),
+                            SizedBox(height: 15),
+                            TextFormField(
+                              controller: _officeTelCtrl,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(15),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                    borderSide: new BorderSide(
+                                      width: 1,
+                                    ),
+                                  ),
+                                  isDense: true,
+                                  labelText: "Office Tel"),
+                            ),
                             // TextFormField(
                             //   controller: _usernameCtrl,
                             //   keyboardType: TextInputType.text,
@@ -335,6 +454,78 @@ class _EditEmployeeState extends State<EditEmployee> {
                               //   return null;
                               // },
                             ),
+                            SizedBox(height: 15),
+                            GestureDetector(
+                                onTap: () {
+                                  _showPicker(context);
+                                },
+                                child: Container(
+                                    width: (MediaQuery.of(context).size.width /
+                                            10) *
+                                        8,
+                                    child: (_image == null)
+                                        ? widget.employeeModel.img == null
+                                            ? Container(
+                                                width: (MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        10) *
+                                                    4,
+                                                height: (MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        10) *
+                                                    4,
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.all(0),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                child: FittedBox(
+                                                  fit: BoxFit.fill,
+                                                  child: Icon(
+                                                    Icons.add_a_photo_outlined,
+                                                    color: Colors.grey[600],
+                                                    size:
+                                                        (MediaQuery.of(context)
+                                                                    .size
+                                                                    .width /
+                                                                10) *
+                                                            3,
+                                                  ),
+                                                ),
+                                              )
+                                            : CachedNetworkImage(
+                                                fit: BoxFit.fitWidth,
+                                                // memCacheHeight: 250,
+                                                // memCacheWidth: 250,
+                                                imageUrl:
+                                                    widget.employeeModel.img!,
+                                                errorWidget: (context, a, b) {
+                                                  return FittedBox(
+                                                      fit: BoxFit.fill,
+                                                      child: Icon(
+                                                        Icons
+                                                            .add_a_photo_outlined,
+                                                        color: Colors.grey[600],
+                                                        size: (MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                10) *
+                                                            3,
+                                                      ));
+                                                },
+                                              )
+                                        : Container(
+                                            // height: MediaQuery.of(context).size.width / 3,
+                                            width: (MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    10) *
+                                                7,
+                                            child: Image.file(_image!))))
                           ],
                         ),
                       ),
@@ -359,7 +550,7 @@ class _EditEmployeeState extends State<EditEmployee> {
               String position = "";
               if (_formKey!.currentState!.validate()) {
                 if (_departmentIdCtrl.text !=
-                    widget.employeeModel.departmentModel.name) {
+                    widget.employeeModel.departmentModel!.name) {
                   DepartmentModel departId =
                       BlocProvider.of<DepartmentBlc>(context)
                           .departmentList
@@ -367,31 +558,35 @@ class _EditEmployeeState extends State<EditEmployee> {
                               element.name == _departmentIdCtrl.text);
                   depart = departId.id;
                 } else {
-                  depart = widget.employeeModel.departmentModel.id;
+                  depart = widget.employeeModel.departmentModel!.id;
                 }
                 if (_positionIdCtrl.text !=
-                    widget.employeeModel.positionModel.positionName) {
+                    widget.employeeModel.positionModel!.positionName) {
                   PositionModel posiId = BlocProvider.of<PositionBlc>(context)
                       .positionList
                       .firstWhere((element) =>
                           element.positionName == _positionIdCtrl.text);
                   position = posiId.id;
                 } else {
-                  position = widget.employeeModel.positionModel.id;
+                  position = widget.employeeModel.positionModel!.id;
                 }
 
-                BlocProvider.of<EmployeeBloc>(context).add(UpdateEmployeeStarted(
-                    id: widget.employeeModel.id,
-                    name: _nameCtrl.text,
-                    gender: _genderCtrl.text,
-                    // username: _usernameCtrl.text,
-                    img: "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png",
-                    // password: _passwordCtrl.text,
-                    positionId: position,
-                    departmentId: depart,
-                    storeId: "1",
-                    phoneNumber: _phoneNumberCtrl.text,
-                    address: _addressCtrl.text));
+                BlocProvider.of<EmployeeBloc>(context)
+                    .add(UpdateEmployeeStarted(
+                        id: widget.employeeModel.id,
+                        name: _nameCtrl.text,
+                        gender: _genderCtrl.text,
+                        dob: _dobCtrl.text,
+                        email: _emailCtrl.text,
+                        officeTel: _officeTelCtrl.text,
+                        // username: _usernameCtrl.text,
+                        img: _image!,
+                        // password: _passwordCtrl.text,
+                        positionId: position,
+                        departmentId: depart,
+                        storeId: "1",
+                        phoneNumber: _phoneNumberCtrl.text,
+                        address: _addressCtrl.text));
               }
             },
             padding: EdgeInsets.symmetric(vertical: 10),
@@ -403,6 +598,45 @@ class _EditEmployeeState extends State<EditEmployee> {
             )),
       ),
     );
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        // _imgFromGallery();
+                        Helper.imgFromGallery((image) {
+                          setState(() {
+                            _image = image;
+                          });
+                        });
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      Helper.imgFromCamera((image) {
+                        setState(() {
+                          _image = image;
+                        });
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   void _showDialog(context) {

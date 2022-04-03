@@ -88,7 +88,7 @@ class MyApp extends StatelessWidget {
               // Locale('zh', 'CN'),
             ],
             debugShowCheckedModeBanner: false,
-            title: 'Opentech Institute',
+            title: 'Attendance Admin',
             theme: ThemeData(
               primarySwatch: Colors.blue,
             ),

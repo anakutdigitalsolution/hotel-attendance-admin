@@ -94,7 +94,7 @@ class _LandingPageState extends State<LandingPage> {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, state) {
       if (state is Authenticated) {
-        print("toke ${state.userModel.token} and name ${state.userModel.name}");
+        print("toke ${state.user.token} and name ${state.user.name}");
         return HomePage();
       }
       if (state is NotAuthenticated) {

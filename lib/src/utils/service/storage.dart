@@ -58,7 +58,11 @@ class Storage {
     await storage.write(key: "name", value: user.name);
     await storage.write(key: "email", value: user.email);
     await storage.write(key: "token", value: user.token);
-   
+    print(user.id);
+    print(user.name);
+    print(user.email);
+    print(user.token);
+
     // await storage.write(key: "type", value: user.type.toString());
     return;
   }
@@ -80,8 +84,9 @@ class Storage {
         email: _email,
         token: _token,
       );
+    } else {
+      return null;
     }
-    return null;
   }
 
   Future<void> deleteCurrentUser() async {

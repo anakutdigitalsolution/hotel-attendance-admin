@@ -9,7 +9,7 @@ class PositionRepository {
   Future<List<PositionModel>> getPosition(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "position?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "positions?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -29,7 +29,7 @@ class PositionRepository {
 
   Future<List<PositionModel>> getAllPosition() async {
     try {
-      String url = mainUrl + "position";
+      String url = mainUrl + "positions";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -52,7 +52,7 @@ class PositionRepository {
     required String type,
   }) async {
     try {
-      String url = mainUrl + "position/add";
+      String url = mainUrl + "positions/add";
       Map body = {"position_name": name, "type": type};
       Response response = await apiProvider.post(url, body, null);
 
@@ -75,7 +75,7 @@ class PositionRepository {
     required String type,
   }) async {
     try {
-      String url = mainUrl + "position/edit/$id";
+      String url = mainUrl + "positions/edit/$id";
       Map body = {"position_name": name, "type": type};
       Response response = await apiProvider.put(url, body);
 
@@ -96,7 +96,7 @@ class PositionRepository {
     required String id,
   }) async {
     try {
-      String url = mainUrl + "position/delete/$id";
+      String url = mainUrl + "positions/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);
