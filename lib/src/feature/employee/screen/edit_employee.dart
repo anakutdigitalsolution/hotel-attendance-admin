@@ -245,6 +245,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   isDense: true,
                                   labelText: "Email"),
                             ),
+                             SizedBox(height: 15),
                             TextFormField(
                               controller: _dobCtrl,
                               keyboardType: TextInputType.text,
@@ -305,6 +306,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   isDense: true,
                                   labelText: "Office Tel"),
                             ),
+                            SizedBox(height: 15),
                             // TextFormField(
                             //   controller: _usernameCtrl,
                             //   keyboardType: TextInputType.text,
@@ -500,8 +502,8 @@ class _EditEmployeeState extends State<EditEmployee> {
                                                 fit: BoxFit.fitWidth,
                                                 // memCacheHeight: 250,
                                                 // memCacheWidth: 250,
-                                                imageUrl:
-                                                    widget.employeeModel.img!,
+                                                imageUrl:"http://my-attendance-test-demo.herokuapp.com/${widget.employeeModel.img!}"
+                                                  ,
                                                 errorWidget: (context, a, b) {
                                                   return FittedBox(
                                                       fit: BoxFit.fill,

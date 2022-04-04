@@ -8,3 +8,4 @@ const String timetable = '/timetable';
 const String schedule = '/schedule';
 const String leave = '/leave';
 const String leavetype = '/leavetype';
+const String report = '/report';

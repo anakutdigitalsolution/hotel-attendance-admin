@@ -93,6 +93,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
           image = "";
         } else {
           image = await uploadImage(image: event.img!);
+          print(image);
         }
         await departmentRepository.addEmployee(
             name: event.name,

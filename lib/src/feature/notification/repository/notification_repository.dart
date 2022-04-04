@@ -1,42 +1,40 @@
- 
- import 'package:dio/dio.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee_timetable/model/employee_timetable_model.dart';
+import 'package:dio/dio.dart';
+
+import 'package:hotle_attendnce_admin/src/feature/notification/model/notification_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
-class EmployeeTimetableRepository {
+class NotificationRepository {
   String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
-  Future<List<EmployeeTimetablModel>> getSchedule(
-      {required int rowPerpage, required int page}) async {
+  Future<List<NotificationModel>> getNotification({required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "schedules";
- 
+      String url = mainUrl + "notifications?page_size=$rowPerpage&page=$page";
+
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
-        List<EmployeeTimetablModel> leave = [];
+        List<NotificationModel> anounce = [];
         response.data["data"].forEach((data) {
-          leave.add(EmployeeTimetablModel.fromJson(data));
+          anounce.add(NotificationModel.fromJson(data));
         });
-        return leave;
+        return anounce;
       }
       throw CustomException.generalException();
     } catch (e) {
       throw e;
     }
   }
-
-  Future<void> addSchedule({
-    required String employeeId,
-    required String timetableId,
+  Future<void> addNotification({
+    required String title,
+    required String des,
   }) async {
     try {
-      String url = mainUrl + "schedules/add";
+      String url = mainUrl + "notifications/add";
       Map body = {
-        "employee_id": employeeId,
-        "timetable_id": timetableId,
+        "title": title,
+        "body":des
       };
       Response response = await apiProvider.post(url, body, null);
 
@@ -53,16 +51,16 @@ class EmployeeTimetableRepository {
     }
   }
 
-  Future<void> editSchedule({
+  Future<void> editNotification({
     required String id,
-    required String employeeId,
-    required String timetableId,
+     required String title,
+    required String des,
   }) async {
     try {
-      String url = mainUrl + "schedule/edit/$id";
+      String url = mainUrl + "notifications/edit/$id";
       Map body = {
-        "employee_id": employeeId,
-        "timetable_id": timetableId,
+        "title": title,
+        "body":des
       };
       Response response = await apiProvider.put(url, body);
 
@@ -78,15 +76,14 @@ class EmployeeTimetableRepository {
       throw e;
     }
   }
-  Future<void> deleteSchedule({
+
+  Future<void> deleteNotification({
     required String id,
-   
   }) async {
     try {
-      String url = mainUrl + "schedule/delete/$id";
-      
-      Response response = await apiProvider.delete(url, null);
+      String url = mainUrl + "notifications/delete/$id";
 
+      Response response = await apiProvider.delete(url, null);
       print(response.statusCode);
       if (response.statusCode == 200 && response.data["code"] == 0) {
         print(response.data);

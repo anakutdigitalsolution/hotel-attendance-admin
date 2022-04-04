@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
         "iconColor": Colors.green,
         "image": "assets/icon/report.png",
         "onPressed": () {
-          Navigator.pushNamed(context, attendance);
+          Navigator.pushNamed(context, report);
         }
       },
       {
