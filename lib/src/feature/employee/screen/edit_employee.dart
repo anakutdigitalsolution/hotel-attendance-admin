@@ -266,7 +266,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   labelText: "Date of Birth"),
                             ),
                             SizedBox(height: 15),
-                            TextFormField(
+                            TextFormField(  
                               controller: _usernameCtrl,
                               readOnly: true,
                               keyboardType: TextInputType.text,

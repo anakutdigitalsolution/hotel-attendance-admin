@@ -17,6 +17,16 @@ class _NotificationPageState extends State<NotificationPage> {
     BlocProvider.of<NotificationBloc>(context).add(FetchNotificationStarted());
     return Scaffold(
       appBar: standardAppBar(context, "Notification"),
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+            backgroundColor: Colors.lightBlueAccent,
+            child: Icon(Icons.add),
+            elevation: 0,
+            onPressed: () {
+              // Navigator.push(
+              //     context, MaterialPageRoute(builder: (context) => AddDepartment()));
+            }),
+      ),
       body: Container(
         child: BlocBuilder<NotificationBloc, NotificationState>(
             bloc: BlocProvider.of<NotificationBloc>(context),
