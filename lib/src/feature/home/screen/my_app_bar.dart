@@ -1,3 +1,4 @@
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/notification_page.dart';
 import 'package:flutter/material.dart';
 
@@ -50,10 +51,8 @@ class _MyAppBarState extends State<MyAppBar> {
                     size: 38,
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (con) => NotificationPage()));
+                     Navigator.pushNamed(context, notification);
+                    
                   },
                 ),
               )

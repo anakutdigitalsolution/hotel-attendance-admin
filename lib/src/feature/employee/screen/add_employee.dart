@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
@@ -86,17 +87,15 @@ class _AddEmployeeState extends State<AddEmployee> {
         return BlocListener<EmployeeBloc, EmployeeState>(
             listener: (context, state) {
               if (state is AddingEmployee) {
-                loadingDialogs(context);
+                EasyLoading.show(status: "loading....");
               }
               if (state is ErorrAddingEmployee) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               }
               if (state is AddedEmployee) {
-                // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                Navigator.pop(context);
-                Navigator.pop(context);
+               EasyLoading.dismiss();
+              Navigator.pop(context);
 
                 print("success");
               }
@@ -490,13 +489,17 @@ class _AddEmployeeState extends State<AddEmployee> {
                     .positionList
                     .firstWhere((element) =>
                         element.positionName == _positionIdCtrl.text);
+                if(_image ==null){
+
+                }
+                print(_image);
                 BlocProvider.of<EmployeeBloc>(context).add(AddEmployeeStarted(
                     name: _nameCtrl.text,
                     gender: _genderCtrl.text,
                     dob: _dobCtrl.text,
                     email: _emailCtrl.text,
                     username: _usernameCtrl.text,
-                    img: _image!,
+                    img: _image,
                     password: _passwordCtrl.text,
                     positionId: posiId.id,
                     departmentId: departId.id,

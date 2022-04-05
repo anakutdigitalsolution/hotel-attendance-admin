@@ -582,7 +582,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                         email: _emailCtrl.text,
                         officeTel: _officeTelCtrl.text,
                         // username: _usernameCtrl.text,
-                        img: _image!,
+                        img: _image,
                         // password: _passwordCtrl.text,
                         positionId: position,
                         departmentId: depart,

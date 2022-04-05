@@ -1,20 +1,21 @@
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/model/notification_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
 
   @override
-  _NotificationPageState createState() => _NotificationPageState();
+  State<NotificationPage> createState() => _NotificationPageState();
 }
 
 class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<NotificationBloc>(context).add(FetchNotificationStarted());
     return Scaffold(
       appBar: standardAppBar(context, "Notification"),
       floatingActionButton: Container(
@@ -23,29 +24,73 @@ class _NotificationPageState extends State<NotificationPage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              // Navigator.push(
-              //     context, MaterialPageRoute(builder: (context) => AddDepartment()));
+              Navigator.pushNamed(context, addNotification);
             }),
       ),
       body: Container(
-        child: BlocBuilder<NotificationBloc, NotificationState>(
-            bloc: BlocProvider.of<NotificationBloc>(context),
-            builder: (context, state) {
-              if (state is FetchedNotification) {
-                if (BlocProvider.of<NotificationBloc>(context)
-                        .notificationModel
-                        .length ==
-                    0) {
-                  return Center(
-                      child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("No notification",
-                          style: TextStyle(color: Colors.grey[400]))
-                    ],
-                  ));
-                }
-                return Container(
+          margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
+    );
+  }
+}
+
+class Body extends StatefulWidget {
+  const Body({Key? key}) : super(key: key);
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  final RefreshController _refreshController = RefreshController();
+  @override
+  Widget build(BuildContext context) {
+    BlocProvider.of<NotificationBloc>(context)
+        .add(InitializeNotificationStarted());
+    return BlocBuilder<NotificationBloc, NotificationState>(
+        
+        builder: (context, state) {
+          if (state is FetchingNotification) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is ErrorFetchingNotification) {
+            return Center(
+                child: Container(child: Text(state.error.toString())));
+          } else {
+            if (BlocProvider.of<NotificationBloc>(context)
+                    .notificationModel
+                    .length ==
+                0) {
+              return Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("No notification",
+                      style: TextStyle(color: Colors.grey[400]))
+                ],
+              ));
+            }
+            return BlocListener<NotificationBloc, NotificationState>(
+                listener: (context, state) {
+                  if (state is FetchedNotification) {
+                    _refreshController.loadComplete();
+                  _refreshController.refreshCompleted();
+                  }
+                },
+                child: SmartRefresher(
+                  onRefresh: () {
+                    BlocProvider.of<NotificationBloc>(context)
+                        .add(RefreshNotificationStarted());
+                  },
+                  onLoading: () {
+                    BlocProvider.of<NotificationBloc>(context)
+                        .add(FetchNotificationStarted());
+                  },
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  cacheExtent: 1,
+                  controller: _refreshController,
                   child: ListView.builder(
                       itemCount: BlocProvider.of<NotificationBloc>(context)
                           .notificationModel
@@ -86,7 +131,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                         ),
                                         Text(
                                           " " + '02/28/2022',
-                                          style: TextStyle(color: Colors.black),
+                                          style:
+                                              TextStyle(color: Colors.black),
                                         ),
                                       ],
                                     ),
@@ -102,7 +148,8 @@ class _NotificationPageState extends State<NotificationPage> {
                                         // ),
                                         Text(
                                           " " +
-                                              BlocProvider.of<NotificationBloc>(
+                                              BlocProvider.of<
+                                                          NotificationBloc>(
                                                       context)
                                                   .notificationModel[index]
                                                   .title,
@@ -118,17 +165,8 @@ class _NotificationPageState extends State<NotificationPage> {
                           ),
                         );
                       }),
-                );
-              }
-              if (state is ErrorFetchingNotification) {
-                return Center(
-                    child: Container(child: Text(state.error.toString())));
-              }
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }),
-      ),
-    );
+                ));
+          }
+        });
   }
 }

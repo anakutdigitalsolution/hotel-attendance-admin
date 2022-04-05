@@ -9,3 +9,5 @@ const String schedule = '/schedule';
 const String leave = '/leave';
 const String leavetype = '/leavetype';
 const String report = '/report';
+const String notification = '/notification';
+const String addNotification = '/addNotification';

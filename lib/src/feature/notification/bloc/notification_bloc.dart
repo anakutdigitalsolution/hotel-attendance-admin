@@ -36,6 +36,22 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         yield ErrorFetchingNotification(error: e.toString());
       }
     }
+    if(event is RefreshNotificationStarted){
+      yield FetchingNotification();
+      try {
+        page =1;
+        if(notificationModel.length !=0){
+          notificationModel.clear();
+        }
+        List<NotificationModel> _temlist = await _notificationRepository.getNotification(rowPerpage: rowperpage, page: page);
+        notificationModel.addAll(_temlist);
+        yield FetchedNotification();
+      } catch (e) {
+        log(e.toString());
+        yield ErrorFetchingNotification(error: e.toString());
+      }
+      
+    }
     if(event is InitializeNotificationStarted){
       yield FetchingNotification();
       try {

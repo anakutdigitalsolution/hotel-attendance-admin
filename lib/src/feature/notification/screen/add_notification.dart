@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/bloc/notification_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/bloc/notification_state.dart';
@@ -24,14 +25,14 @@ class _AddNotificationState extends State<AddNotification> {
       body: Builder(builder: (context){
         return BlocListener<NotificationBloc,NotificationState>(listener: (context,state){
           if(state is AddingNotification){
-
+               EasyLoading.show(status: "loading....");
           }
           if(state is ErrorAddingNotification){
             Navigator.pop(context);
             errorSnackBar(text: state.error.toString(), context: context);
           }
           if(state is AddedNotification){
-            Navigator.pop(context);
+            EasyLoading.dismiss();
             Navigator.pop(context);
           }
         },child: ListView(
