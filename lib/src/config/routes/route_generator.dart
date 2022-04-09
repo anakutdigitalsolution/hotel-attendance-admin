@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/shedule_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/holiday/screen/add_holiday.dart';
+import 'package:hotle_attendnce_admin/src/feature/holiday/screen/holiday_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/screen/leave_type_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/screen/leave_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
@@ -40,6 +42,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => LeavePage());
       case leavetype:
         return MaterialPageRoute(builder: (_) => LeaveTypePage());
+      case holiday:
+        return MaterialPageRoute(builder: (_) => HolidayPage());
+      case addHoliday:
+        return MaterialPageRoute(builder: (_) => AddHoliday());
 
       // case editProduct:
       //   if (args is Product) {

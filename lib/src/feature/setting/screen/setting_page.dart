@@ -121,20 +121,24 @@ class _SettingPageState extends State<SettingPage> {
                 onPressed: () {
                   Navigator.pushNamed(context, timetable);
                 }),
-             SizedBox(
+            SizedBox(
               height: 10,
             ),
             settingitem(
                 name: "Leave Type",
                 icon: Icons.people,
                 onPressed: () {
-                  Navigator.pushNamed(context, leavetype );
+                  Navigator.pushNamed(context, leavetype);
                 }),
             SizedBox(
               height: 10,
             ),
             settingitem(
-                name: "Notification", icon: Icons.people, onPressed: () {}),
+                name: "Holiday",
+                icon: Icons.people,
+                onPressed: () {
+                  Navigator.pushNamed(context, holiday);
+                }),
             SizedBox(
               height: 10,
             ),
