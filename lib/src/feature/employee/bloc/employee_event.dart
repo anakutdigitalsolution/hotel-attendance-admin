@@ -60,6 +60,7 @@ class UpdateEmployeeStarted extends EmployeeEvent {
   final String storeId;
   final String phoneNumber;
   final String address;
+  final String imgUrl;
   UpdateEmployeeStarted(
       {required this.id,
       required this.name,
@@ -68,6 +69,7 @@ class UpdateEmployeeStarted extends EmployeeEvent {
       required this.email,
       required this.officeTel,
       required this.img,
+      required this.imgUrl,
       required this.phoneNumber,
       required this.positionId,
       required this.departmentId,

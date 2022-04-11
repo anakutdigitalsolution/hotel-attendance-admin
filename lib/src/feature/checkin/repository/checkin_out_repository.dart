@@ -67,7 +67,10 @@ class CheckInOutRepository {
         // "timetable_id": timetableId
       };
 
-      Response response = await apiProvider.post(url, body, null);
+      Response response = await apiProvider.put(
+        url,
+        body,
+      );
 
       print(response.statusCode);
       if (response.statusCode == 200 && response.data["code"] == 0) {

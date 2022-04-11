@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
@@ -86,16 +87,14 @@ class _AddEmployeeState extends State<AddEmployee> {
         return BlocListener<EmployeeBloc, EmployeeState>(
             listener: (context, state) {
               if (state is AddingEmployee) {
-                loadingDialogs(context);
+                EasyLoading.show(status: "loading....");
               }
               if (state is ErorrAddingEmployee) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               }
               if (state is AddedEmployee) {
-                // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                Navigator.pop(context);
+                EasyLoading.dismiss();
                 Navigator.pop(context);
 
                 print("success");
@@ -171,7 +170,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -195,7 +194,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -225,7 +224,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -233,7 +232,6 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   ),
                                   isDense: true,
                                   labelText: "Date of Birth"),
-                             
                             ),
                             SizedBox(height: 15),
                             TextFormField(
@@ -260,7 +258,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -283,7 +281,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -306,7 +304,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -323,7 +321,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -352,7 +350,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -381,7 +379,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -391,7 +389,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   labelText: "select position"),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'password is required';
+                                  return 'position is required';
                                 }
                                 return null;
                               },
@@ -404,7 +402,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -458,7 +456,63 @@ class _AddEmployeeState extends State<AddEmployee> {
                                             (MediaQuery.of(context).size.width /
                                                     10) *
                                                 7,
-                                        child: Image.file(_image!)))
+                                        child: Image.file(_image!))),
+                            SizedBox(height: 30),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: 30, right: 30, bottom: 10),
+                              height: 50,
+                              width: double.infinity,
+                              child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    // side: BorderSide(color: Colors.red)
+                                  ),
+                                  color: Colors.blue,
+                                  onPressed: () {
+                                    if (_formKey!.currentState!.validate()) {
+                                      DepartmentModel departId =
+                                          BlocProvider.of<DepartmentBlc>(
+                                                  context)
+                                              .departmentList
+                                              .firstWhere((element) =>
+                                                  element.name ==
+                                                  _departmentIdCtrl.text);
+
+                                      PositionModel posiId =
+                                          BlocProvider.of<PositionBlc>(context)
+                                              .positionList
+                                              .firstWhere((element) =>
+                                                  element.positionName ==
+                                                  _positionIdCtrl.text);
+                                      if (_image == null) {}
+                                      print(_image);
+                                      BlocProvider.of<EmployeeBloc>(context)
+                                          .add(AddEmployeeStarted(
+                                              name: _nameCtrl.text,
+                                              gender: _genderCtrl.text,
+                                              dob: _dobCtrl.text,
+                                              email: _emailCtrl.text,
+                                              username: _usernameCtrl.text,
+                                              img: _image,
+                                              password: _passwordCtrl.text,
+                                              positionId: posiId.id,
+                                              departmentId: departId.id,
+                                              storeId: "1",
+                                              officeTel: _officeTelCtrl.text,
+                                              phoneNumber:
+                                                  _phoneNumberCtrl.text,
+                                              address: _addressCtrl.text));
+                                    }
+                                  },
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    "Submit",
+                                    // AppLocalizations.of(context)!.translate("submit")!,
+                                    textScaleFactor: 1.2,
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                            ),
                           ],
                         ),
                       ),
@@ -468,52 +522,7 @@ class _AddEmployeeState extends State<AddEmployee> {
               ),
             ));
       }),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        height: 50,
-        width: double.infinity,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              // side: BorderSide(color: Colors.red)
-            ),
-            color: Colors.blue,
-            onPressed: () {
-              if (_formKey!.currentState!.validate()) {
-                DepartmentModel departId =
-                    BlocProvider.of<DepartmentBlc>(context)
-                        .departmentList
-                        .firstWhere((element) =>
-                            element.name == _departmentIdCtrl.text);
-
-                PositionModel posiId = BlocProvider.of<PositionBlc>(context)
-                    .positionList
-                    .firstWhere((element) =>
-                        element.positionName == _positionIdCtrl.text);
-                BlocProvider.of<EmployeeBloc>(context).add(AddEmployeeStarted(
-                    name: _nameCtrl.text,
-                    gender: _genderCtrl.text,
-                    dob: _dobCtrl.text,
-                    email: _emailCtrl.text,
-                    username: _usernameCtrl.text,
-                    img: _image!,
-                    password: _passwordCtrl.text,
-                    positionId: posiId.id,
-                    departmentId: departId.id,
-                    storeId: "1",
-                    officeTel: _officeTelCtrl.text,
-                    phoneNumber: _phoneNumberCtrl.text,
-                    address: _addressCtrl.text));
-              }
-            },
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              "Submit",
-              // AppLocalizations.of(context)!.translate("submit")!,
-              textScaleFactor: 1.2,
-              style: TextStyle(color: Colors.white),
-            )),
-      ),
+      // bottomNavigationBar:
     );
   }
 

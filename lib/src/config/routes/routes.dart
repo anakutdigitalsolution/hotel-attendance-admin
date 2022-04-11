@@ -8,5 +8,10 @@ const String timetable = '/timetable';
 const String schedule = '/schedule';
 const String leave = '/leave';
 const String leavetype = '/leavetype';
+
 const String holiday = '/holiday';
 const String addHoliday = '/addHoliday';
+const String report = '/report';
+const String notification = '/notification';
+const String addNotification = '/addNotification';
+

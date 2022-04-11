@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
@@ -59,6 +60,7 @@ class _EditEmployeeState extends State<EditEmployee> {
     widget.employeeModel.phone == null
         ? _phoneNumberCtrl.text = ""
         : _phoneNumberCtrl.text = widget.employeeModel.phone!;
+    _usernameCtrl.text = widget.employeeModel.username!;
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy/MM/dd').format(now);
     // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
@@ -100,16 +102,17 @@ class _EditEmployeeState extends State<EditEmployee> {
         return BlocListener<EmployeeBloc, EmployeeState>(
             listener: (context, state) {
               if (state is AddingEmployee) {
-                loadingDialogs(context);
+                EasyLoading.show(status: "loading...");
+                // loadingDialogs(context);
               }
               if (state is ErorrAddingEmployee) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               }
               if (state is AddedEmployee) {
-                // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                Navigator.pop(context);
+                EasyLoading.dismiss();
+                EasyLoading.showSuccess("Sucess");
+                // EasyLoading.dismiss();
                 Navigator.pop(context);
 
                 print("success");
@@ -185,7 +188,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -209,7 +212,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -236,7 +239,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -245,6 +248,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   isDense: true,
                                   labelText: "Email"),
                             ),
+                            SizedBox(height: 15),
                             TextFormField(
                               controller: _dobCtrl,
                               keyboardType: TextInputType.text,
@@ -255,7 +259,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -268,12 +272,12 @@ class _EditEmployeeState extends State<EditEmployee> {
                             TextFormField(
                               controller: _usernameCtrl,
                               readOnly: true,
-                              keyboardType: TextInputType.text,
+                              // keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -296,7 +300,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -305,6 +309,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   isDense: true,
                                   labelText: "Office Tel"),
                             ),
+                            SizedBox(height: 15),
                             // TextFormField(
                             //   controller: _usernameCtrl,
                             //   keyboardType: TextInputType.text,
@@ -358,7 +363,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -387,7 +392,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -416,7 +421,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -439,7 +444,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -501,7 +506,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                                 // memCacheHeight: 250,
                                                 // memCacheWidth: 250,
                                                 imageUrl:
-                                                    widget.employeeModel.img!,
+                                                    "http://my-attendance-test-demo.herokuapp.com/${widget.employeeModel.img!}",
                                                 errorWidget: (context, a, b) {
                                                   return FittedBox(
                                                       fit: BoxFit.fill,
@@ -525,7 +530,82 @@ class _EditEmployeeState extends State<EditEmployee> {
                                                         .width /
                                                     10) *
                                                 7,
-                                            child: Image.file(_image!))))
+                                            child: Image.file(_image!)))),
+                            SizedBox(height: 30),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  left: 30, right: 30, bottom: 10),
+                              height: 50,
+                              width: double.infinity,
+                              child: FlatButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    // side: BorderSide(color: Colors.red)
+                                  ),
+                                  color: Colors.blue,
+                                  onPressed: () {
+                                    String depart = "";
+                                    String position = "";
+                                    if (_formKey!.currentState!.validate()) {
+                                      if (_departmentIdCtrl.text !=
+                                          widget.employeeModel.departmentModel!
+                                              .name) {
+                                        DepartmentModel departId =
+                                            BlocProvider.of<DepartmentBlc>(
+                                                    context)
+                                                .departmentList
+                                                .firstWhere((element) =>
+                                                    element.name ==
+                                                    _departmentIdCtrl.text);
+                                        depart = departId.id;
+                                      } else {
+                                        depart = widget
+                                            .employeeModel.departmentModel!.id;
+                                      }
+                                      if (_positionIdCtrl.text !=
+                                          widget.employeeModel.positionModel!
+                                              .positionName) {
+                                        PositionModel posiId =
+                                            BlocProvider.of<PositionBlc>(
+                                                    context)
+                                                .positionList
+                                                .firstWhere((element) =>
+                                                    element.positionName ==
+                                                    _positionIdCtrl.text);
+                                        position = posiId.id;
+                                      } else {
+                                        position = widget
+                                            .employeeModel.positionModel!.id;
+                                      }
+
+                                      BlocProvider.of<EmployeeBloc>(context)
+                                          .add(UpdateEmployeeStarted(
+                                              id: widget.employeeModel.id,
+                                              name: _nameCtrl.text,
+                                              gender: _genderCtrl.text,
+                                              dob: _dobCtrl.text,
+                                              email: _emailCtrl.text,
+                                              officeTel: _officeTelCtrl.text,
+                                              // username: _usernameCtrl.text,
+                                              img: _image,
+                                              imgUrl: widget.employeeModel.img!,
+                                              // password: _passwordCtrl.text,
+                                              positionId: position,
+                                              departmentId: depart,
+                                              storeId: "1",
+                                              phoneNumber:
+                                                  _phoneNumberCtrl.text,
+                                              address: _addressCtrl.text));
+                                    }
+                                  },
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    "Submit",
+                                    // AppLocalizations.of(context)!.translate("submit")!,
+                                    textScaleFactor: 1.2,
+                                    style: TextStyle(color: Colors.white),
+                                  )),
+                            ),
                           ],
                         ),
                       ),
@@ -535,68 +615,6 @@ class _EditEmployeeState extends State<EditEmployee> {
               ),
             ));
       }),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        height: 50,
-        width: double.infinity,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              // side: BorderSide(color: Colors.red)
-            ),
-            color: Colors.blue,
-            onPressed: () {
-              String depart = "";
-              String position = "";
-              if (_formKey!.currentState!.validate()) {
-                if (_departmentIdCtrl.text !=
-                    widget.employeeModel.departmentModel!.name) {
-                  DepartmentModel departId =
-                      BlocProvider.of<DepartmentBlc>(context)
-                          .departmentList
-                          .firstWhere((element) =>
-                              element.name == _departmentIdCtrl.text);
-                  depart = departId.id;
-                } else {
-                  depart = widget.employeeModel.departmentModel!.id;
-                }
-                if (_positionIdCtrl.text !=
-                    widget.employeeModel.positionModel!.positionName) {
-                  PositionModel posiId = BlocProvider.of<PositionBlc>(context)
-                      .positionList
-                      .firstWhere((element) =>
-                          element.positionName == _positionIdCtrl.text);
-                  position = posiId.id;
-                } else {
-                  position = widget.employeeModel.positionModel!.id;
-                }
-
-                BlocProvider.of<EmployeeBloc>(context)
-                    .add(UpdateEmployeeStarted(
-                        id: widget.employeeModel.id,
-                        name: _nameCtrl.text,
-                        gender: _genderCtrl.text,
-                        dob: _dobCtrl.text,
-                        email: _emailCtrl.text,
-                        officeTel: _officeTelCtrl.text,
-                        // username: _usernameCtrl.text,
-                        img: _image!,
-                        // password: _passwordCtrl.text,
-                        positionId: position,
-                        departmentId: depart,
-                        storeId: "1",
-                        phoneNumber: _phoneNumberCtrl.text,
-                        address: _addressCtrl.text));
-              }
-            },
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              "Submit",
-              // AppLocalizations.of(context)!.translate("submit")!,
-              textScaleFactor: 1.2,
-              style: TextStyle(color: Colors.white),
-            )),
-      ),
     );
   }
 

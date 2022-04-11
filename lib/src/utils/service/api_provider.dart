@@ -70,8 +70,10 @@ Future<String> uploadImage({required File image}) async {
     ApiProvider apiProvider = ApiProvider();
     print(image);
     String fileName = image.path.split('/').last;
+    print(fileName);
+   
     FormData formData = FormData.fromMap({
-      "photo": await MultipartFile.fromFile(image.path, filename: fileName),
+      "file": await MultipartFile.fromFile(image.path, filename: fileName),
     });
     // var secretkey = "anakut";
     // var type = "upload";
@@ -82,14 +84,15 @@ Future<String> uploadImage({required File image}) async {
         null);
     print(response.statusCode);
 
-    if (response.statusCode == 200 && response.data["code"] == "0") {
-      print(response.data);
+    if (response.statusCode == 200 ) {
+      print(response.data["profile_url"]);
       return response.data["profile_url"];
     } else if (response.data["code"].toString() != "0") {
       throw response.data["message"];
     }
     throw CustomException.generalException();
   } catch (e) {
+    print(e.toString());
     throw e;
   }
 }

@@ -8,7 +8,7 @@ import 'package:hotle_attendnce_admin/src/feature/employee/repository/employee_r
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 
 class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
-  EmployeeBloc() : super(InitializingEmployee());
+  EmployeeBloc() : super(FetchingEmployee());
   EmployeeRepository departmentRepository = EmployeeRepository();
   List<EmployeeModel> emploList = [];
   int rowperpage = 12;
@@ -68,19 +68,21 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     if (event is FetchEmloyeeStarted) {
       yield FetchingEmployee();
       try {
+        print(page);
         List<EmployeeModel> _departmentList = await departmentRepository
             .getEmployee(rowPerpage: rowperpage, page: page);
 
         emploList.addAll(_departmentList);
         page++;
         print(page);
-        yield FetchedEmployee();
-        // print(_departmentList.length);
-        // if (_departmentList.length < rowperpage) {
-        //   yield EndofEmployeeList();
-        // } else {
-        //   yield FetchedEmployee();
-        // }
+        print(emploList.length);
+        // yield FetchedEmployee();
+        print(_departmentList.length);
+        if (_departmentList.length < rowperpage) {
+          yield EndofEmployeeList();
+        } else {
+          yield FetchedEmployee();
+        }
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingEmployee(error: e.toString());
@@ -93,6 +95,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
           image = "";
         } else {
           image = await uploadImage(image: event.img!);
+          print(image);
         }
         await departmentRepository.addEmployee(
             name: event.name,
@@ -125,7 +128,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
       yield AddingEmployee();
       try {
         if (event.img == null) {
-          image = "";
+          image = event.imgUrl;
         } else {
           image = await uploadImage(image: event.img!);
         }

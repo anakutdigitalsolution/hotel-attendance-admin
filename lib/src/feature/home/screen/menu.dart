@@ -21,8 +21,8 @@
 //         height: MediaQuery.of(context).size.height,
 //         child: StaggeredGridView.count(
 //           crossAxisCount: 2,
-//           crossAxisSpacing: 10,
-//           mainAxisSpacing: 10,
+          // crossAxisSpacing: 10,
+          // mainAxisSpacing: 10,
 //           children: [
 //             Material(
 //               color: Colors.white,

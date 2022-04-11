@@ -17,6 +17,7 @@ class EmployeeModel {
   final String? checkinStatus;
   final String? leaveStatus;
   final String? checkinId;
+  final String? username;
   // final LeaveModel? leaveModel;
   final PositionModel? positionModel;
   final DepartmentModel? departmentModel;
@@ -32,6 +33,7 @@ class EmployeeModel {
       gender: json["gender"],
       img: json["profile_url"],
       phone: json["employee_phone"],
+      username: json["username"],
       address: json["address"],
       status: json["status"],
       positionId: json["position_id"].toString(),
@@ -62,6 +64,7 @@ class EmployeeModel {
       required this.status,
       required this.positionId,
       // required this.timetableId,
+      required this.username,
       required this.storeId,
       required this.positionModel,
       required this.departmentModel,

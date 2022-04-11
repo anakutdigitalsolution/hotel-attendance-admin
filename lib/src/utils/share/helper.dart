@@ -7,6 +7,21 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
 class Helper {
+  String intToStringWithPrefixZero(int value) {
+    if (value.toString().length == 1) {
+      return "0" + value.toString();
+    }
+    return value.toString();
+  }
+
+  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+  }
+
+  DateTime findLastDateOfTheWeek(DateTime dateTime) {
+    return dateTime
+        .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
+  }
   static String convertToKhmerPhoneNumber({required String number}) {
     return number;
   }

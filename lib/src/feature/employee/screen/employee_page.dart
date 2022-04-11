@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/add_employee.dart';
@@ -49,14 +50,13 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  @override
   final RefreshController _refreshController = RefreshController();
   Widget build(BuildContext context) {
-    BlocProvider.of<EmployeeBloc>(context).add(InitializeEmployeeStarted());
+    BlocProvider.of<EmployeeBloc>(context).add(FetchEmloyeeStarted());
 
     return BlocBuilder<EmployeeBloc, EmployeeState>(
       builder: (context, state) {
-        if (state is InitializingEmployee) {
+        if (state is FetchingEmployee) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -83,14 +83,12 @@ class _BodyState extends State<Body> {
                 _refreshController.loadNoData();
               }
               if (state is AddingEmployee) {
-                loadingDialogs(context);
+                EasyLoading.show(status: "loading....");
               } else if (state is ErorrAddingEmployee) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               } else if (state is AddedEmployee) {
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                // Navigator.pop(context);
-                Navigator.pop(context);
+                EasyLoading.dismiss();
               }
             },
             child: SmartRefresher(
@@ -99,12 +97,15 @@ class _BodyState extends State<Body> {
                     .add(RefreshEmployeeStarted());
               },
               onLoading: () {
-                if (BlocProvider.of<EmployeeBloc>(context).state
-                    is EndofEmployeeList) {
-                } else {
-                  // BlocProvider.of<ProductListingBloc>(context)
-                  //     .add(FetchProductListStarted(arg: widget.category.id));
-                }
+                BlocProvider.of<EmployeeBloc>(context)
+                    .add(FetchEmloyeeStarted());
+                _refreshController.loadComplete();
+                // if (BlocProvider.of<EmployeeBloc>(context).state
+                //     is EndofEmployeeList) {
+                // } else {
+                //  BlocProvider.of<EmployeeBloc>(context)
+                //     .add(FetchEmloyeeStarted());
+                // }
                 // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
               },
               enablePullDown: true,
