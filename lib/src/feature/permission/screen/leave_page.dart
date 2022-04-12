@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
@@ -11,6 +12,7 @@ import 'add_leave.dart';
 import 'edit_leave.dart';
 import 'edit_leave_status.dart';
 
+LeaveBloc leaveBloc = LeaveBloc();
 class LeavePage extends StatefulWidget {
   @override
   _LeavePageState createState() => _LeavePageState();
@@ -45,14 +47,16 @@ class WantedBody extends StatefulWidget {
 }
 
 class _WantedBodyState extends State<WantedBody> {
+  final RefreshController _refreshController = RefreshController();
   @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-    BlocProvider.of<LeaveBloc>(context).add(InitializeLeaveStarted());
-    final RefreshController _refreshController = RefreshController();
-    return BlocBuilder<LeaveBloc, LeaveState>(
+    leaveBloc.add(FetchLeaveStarted());
+    
+    return BlocBuilder(
+      bloc: leaveBloc,
       builder: (context, state) {
-        if (state is InitializingLeave) {
+        if (state is FetchingLeave) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -61,15 +65,16 @@ class _WantedBodyState extends State<WantedBody> {
             child: Text(state.error),
           );
         } else {
-          if (BlocProvider.of<LeaveBloc>(context).leavemodel.length == 0) {
+          if (leaveBloc.leavemodel.length == 0) {
             return Center(
               child: Text("No Data"),
             );
           }
           print(
-              "length ${BlocProvider.of<LeaveBloc>(context).leavemodel.length}");
+              "length ${leaveBloc.leavemodel.length}");
 
-          return BlocListener<LeaveBloc, LeaveState>(
+          return BlocListener(
+            bloc: leaveBloc,
             listener: (context, state) {
               if (state is FetchedLeave) {
                 _refreshController.loadComplete();
@@ -79,26 +84,28 @@ class _WantedBodyState extends State<WantedBody> {
                 _refreshController.loadNoData();
               }
               if (state is AddingLeave) {
-                loadingDialogs(context);
+               EasyLoading.show(status: "loading....");
               } else if (state is ErrorAddingLeave) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               } else if (state is AddedLeave) {
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                Navigator.pop(context);
+                EasyLoading.dismiss();
+                EasyLoading.showSuccess("Sucess");
               }
             },
             child: SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<LeaveBloc>(context).add(RefreshLeaveStarted());
+                leaveBloc.add(RefreshLeaveStarted());
               },
               onLoading: () {
-                if (BlocProvider.of<LeaveBloc>(context).state
-                    is EndOfLeaveList) {
-                } else {
-                  // BlocProvider.of<ProductListingBloc>(context)
-                  //     .add(FetchProductListStarted(arg: widget.category.id));
-                }
+                leaveBloc.add(FetchLeaveStarted());
+                 _refreshController.loadComplete();
+                // if (BlocProvider.of<LeaveBloc>(context).state
+                //     is EndOfLeaveList) {
+                // } else {
+                //   // BlocProvider.of<ProductListingBloc>(context)
+                //   //     .add(FetchProductListStarted(arg: widget.category.id));
+                // }
                 // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
               },
               enablePullDown: true,
@@ -107,7 +114,7 @@ class _WantedBodyState extends State<WantedBody> {
               controller: _refreshController,
               child: ListView.builder(
                   itemCount:
-                      BlocProvider.of<LeaveBloc>(context).leavemodel.length,
+                      leaveBloc.leavemodel.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -142,7 +149,7 @@ class _WantedBodyState extends State<WantedBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<LeaveBloc>(context).leavemodel[index].date}",
+                                  "${leaveBloc.leavemodel[index].date}",
                                   style: TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.bold),
@@ -164,7 +171,7 @@ class _WantedBodyState extends State<WantedBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<LeaveBloc>(context).leavemodel[index].employeeModel!.name}",
+                                  "${leaveBloc.leavemodel[index].employeeModel!.name}",
                                   style: TextStyle(
                                       color: Colors.green,
                                       fontWeight: FontWeight.bold),
@@ -186,7 +193,7 @@ class _WantedBodyState extends State<WantedBody> {
                                 Row(
                                   children: [
                                     Text(
-                                      "${BlocProvider.of<LeaveBloc>(context).leavemodel[index].reason} ",
+                                      "${leaveBloc.leavemodel[index].reason} ",
                                       style: TextStyle(
                                           color: Colors.red,
                                           fontWeight: FontWeight.bold),
@@ -215,7 +222,7 @@ class _WantedBodyState extends State<WantedBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<LeaveBloc>(context).leavemodel[index].number}",
+                                  "${leaveBloc.leavemodel[index].number}",
                                 ),
                               ],
                             ),
@@ -232,7 +239,7 @@ class _WantedBodyState extends State<WantedBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<LeaveBloc>(context).leavemodel[index].fromDate}",
+                                  "${leaveBloc.leavemodel[index].fromDate}",
                                 ),
                               ],
                             ),
@@ -249,11 +256,11 @@ class _WantedBodyState extends State<WantedBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<LeaveBloc>(context).leavemodel[index].status}",
+                                  "${leaveBloc.leavemodel[index].status}",
                                 ),
                               ],
                             ),
-                            BlocProvider.of<LeaveBloc>(context)
+                            leaveBloc
                                         .leavemodel[index]
                                         .status ==
                                     "pending"
@@ -274,9 +281,7 @@ class _WantedBodyState extends State<WantedBody> {
                                                 MaterialPageRoute(
                                                     builder: (con) =>
                                                         EditLeaveStatus(
-                                                          leaveModel: BlocProvider
-                                                                  .of<LeaveBloc>(
-                                                                      context)
+                                                          leaveModel: leaveBloc
                                                               .leavemodel[index],
                                                         )));
                                           }),
@@ -293,11 +298,10 @@ class _WantedBodyState extends State<WantedBody> {
                                           ),
                                           onPressed: () {
                                             print(
-                                                "id ${BlocProvider.of<LeaveBloc>(context).leavemodel[index].id}");
-                                            BlocProvider.of<LeaveBloc>(context)
+                                                "id ${leaveBloc.leavemodel[index].id}");
+                                            leaveBloc
                                                 .add(DeleteLeaveStarted(
-                                                    id: BlocProvider.of<
-                                                            LeaveBloc>(context)
+                                                    id: leaveBloc
                                                         .leavemodel[index]
                                                         .id));
                                           }),

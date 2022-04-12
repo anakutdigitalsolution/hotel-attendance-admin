@@ -1,3 +1,5 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
@@ -7,10 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
-import 'add_department.dart';
 import 'edit_department.dart';
 
+DepartmentBlc departmentBlc = DepartmentBlc();
 class DepartmentPage extends StatefulWidget {
   const DepartmentPage({ Key? key }) : super(key: key);
 
@@ -31,8 +32,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddDepartment()));
+              Navigator.pushNamed(context, addDepartment);
             }),
       ),
     );
@@ -50,11 +50,12 @@ class _DepartmentBodyState extends State<DepartmentBody> {
   @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-    BlocProvider.of<DepartmentBlc>(context).add(InitializeDepartmentStarted());
+    departmentBlc.add(FetchDepartmentStarted());
     final RefreshController _refreshController = RefreshController();
-    return BlocBuilder<DepartmentBlc, DepartmentState>(
+    return BlocBuilder(
+      bloc: departmentBlc,
       builder: (context, state) {
-        if (state is InitializingDepartment) {
+        if (state is FetchingDepartment) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -63,15 +64,16 @@ class _DepartmentBodyState extends State<DepartmentBody> {
             child: Text(state.error.toString()),
           );
         } else {
-          if (BlocProvider.of<DepartmentBlc>(context).departmentList.length == 0) {
+          if (departmentBlc.departmentList.length == 0) {
             return Center(
               child: Text("No Data"),
             );
           }
           print(
-              "length ${BlocProvider.of<DepartmentBlc>(context).departmentList.length}");
+              "length ${departmentBlc.departmentList.length}");
 
-          return BlocListener<DepartmentBlc, DepartmentState>(
+          return BlocListener(
+            bloc: departmentBlc,
             listener: (context, state) {
               if (state is FetchedDepartment) {
                 _refreshController.loadComplete();
@@ -81,26 +83,28 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                 _refreshController.loadNoData();
               }
               if (state is AddingDepartment) {
-                loadingDialogs(context);
+                EasyLoading.show(status: "loading....");
               } else if (state is ErrorAddingDepartment) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               } else if (state is AddedDepartment) {
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                Navigator.pop(context);
+                EasyLoading.dismiss();
+                EasyLoading.showSuccess("Sucess");
               }
             },
             child: SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<DepartmentBlc>(context).add(RefreshDepartmentStarted());
+                departmentBlc.add(RefreshDepartmentStarted());
               },
               onLoading: () {
-                if (BlocProvider.of<DepartmentBlc>(context).state
-                    is EndOfDepartmentList) {
-                } else {
-                  // BlocProvider.of<ProductListingBloc>(context)
-                  //     .add(FetchProductListStarted(arg: widget.category.id));
-                }
+                 departmentBlc.add(FetchDepartmentStarted());
+                  _refreshController.loadComplete();
+                // if (departmentBlc.state
+                //     is EndOfDepartmentList) {
+                // } else {
+                //   // BlocProvider.of<ProductListingBloc>(context)
+                //   //     .add(FetchProductListStarted(arg: widget.category.id));
+                // }
                 // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
               },
               enablePullDown: true,
@@ -109,7 +113,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
               controller: _refreshController,
               child: ListView.builder(
                   itemCount:
-                      BlocProvider.of<DepartmentBlc>(context).departmentList.length,
+                      departmentBlc.departmentList.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -144,7 +148,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<DepartmentBlc>(context).departmentList[index].name}",
+                                  "${departmentBlc.departmentList[index].name}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       ),
@@ -168,7 +172,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (con) => EditDepartment(
-                                                          departmentModel: BlocProvider.of<DepartmentBlc>(context).departmentList[index],
+                                                          departmentModel: departmentBlc.departmentList[index],
                                                         )));
                                           }),
                                       SizedBox(
@@ -184,10 +188,10 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                           ),
                                           onPressed: () {
                                             print(
-                                                "id ${BlocProvider.of<DepartmentBlc>(context).departmentList[index].id}");
-                                            BlocProvider.of<DepartmentBlc>(context)
+                                                "id ${departmentBlc.departmentList[index].id}");
+                                            departmentBlc
                                                 .add(DeleteDepartmentStarted(
-                                                    id:BlocProvider.of<DepartmentBlc>(context).departmentList[index]
+                                                    id:departmentBlc.departmentList[index]
                                                         .id));
                                           }),
                                     ],

@@ -1,3 +1,5 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
 
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
@@ -11,6 +13,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'add_position.dart';
 import 'edit_position.dart';
 
+
+PositionBlc positionBlc = PositionBlc();
 class PositionPage extends StatefulWidget {
   const PositionPage({Key? key}) : super(key: key);
 
@@ -31,8 +35,7 @@ class _PositionPageState extends State<PositionPage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddPosition()));
+              Navigator.pushNamed(context, addPosition);
             }),
       ),
     );
@@ -50,11 +53,12 @@ class _PositionBodyState extends State<PositionBody> {
   @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-    BlocProvider.of<PositionBlc>(context).add(InitializePositionStarted());
+    positionBlc.add(FetchPositionStarted());
     final RefreshController _refreshController = RefreshController();
-    return BlocBuilder<PositionBlc, PositionState>(
+    return BlocBuilder(
+      bloc: positionBlc,
       builder: (context, state) {
-        if (state is InitializingPosition) {
+        if (state is FetchingPosition) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -63,15 +67,16 @@ class _PositionBodyState extends State<PositionBody> {
             child: Text(state.error.toString()),
           );
         } else {
-          if (BlocProvider.of<PositionBlc>(context).positionList.length == 0) {
+          if (positionBlc.positionList.length == 0) {
             return Center(
               child: Text("No Data"),
             );
           }
           print(
-              "length ${BlocProvider.of<PositionBlc>(context).positionList.length}");
+              "length ${positionBlc.positionList.length}");
 
-          return BlocListener<PositionBlc, PositionState>(
+          return BlocListener(
+            bloc: positionBlc,
             listener: (context, state) {
               if (state is FetchedPosition) {
                 _refreshController.loadComplete();
@@ -81,28 +86,23 @@ class _PositionBodyState extends State<PositionBody> {
                 _refreshController.loadNoData();
               }
               if (state is AddingPosition) {
-                loadingDialogs(context);
+               EasyLoading.show(status: "loading....");
               } else if (state is ErrorAddingPosition) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               } else if (state is AddedPosition) {
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                Navigator.pop(context);
+                EasyLoading.dismiss();
+                EasyLoading.showSuccess("Sucess");
               }
             },
             child: SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<PositionBlc>(context)
+                positionBlc
                     .add(RefreshPositionStarted());
               },
               onLoading: () {
-                if (BlocProvider.of<PositionBlc>(context).state
-                    is EndOfPositionList) {
-                } else {
-                  // BlocProvider.of<ProductListingBloc>(context)
-                  //     .add(FetchProductListStarted(arg: widget.category.id));
-                }
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
+                positionBlc.add(FetchPositionStarted());
+                 _refreshController.loadComplete();
               },
               enablePullDown: true,
               enablePullUp: true,
@@ -110,7 +110,7 @@ class _PositionBodyState extends State<PositionBody> {
               controller: _refreshController,
               child: ListView.builder(
                   itemCount:
-                      BlocProvider.of<PositionBlc>(context).positionList.length,
+                      positionBlc.positionList.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -145,7 +145,7 @@ class _PositionBodyState extends State<PositionBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<PositionBlc>(context).positionList[index].positionName}",
+                                  "${positionBlc.positionList[index].positionName}",
                                   style: TextStyle(
                                     color: Colors.black,
                                   ),
@@ -168,9 +168,7 @@ class _PositionBodyState extends State<PositionBody> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (con) => EditPosition(
-                                                    positionModel: BlocProvider
-                                                            .of<PositionBlc>(
-                                                                context)
+                                                    positionModel: positionBlc
                                                         .positionList[index],
                                                   )));
                                     }),
@@ -187,11 +185,10 @@ class _PositionBodyState extends State<PositionBody> {
                                     ),
                                     onPressed: () {
                                       print(
-                                          "id ${BlocProvider.of<PositionBlc>(context).positionList[index].id}");
-                                      BlocProvider.of<PositionBlc>(context).add(
+                                          "id ${positionBlc.positionList[index].id}");
+                                      positionBlc.add(
                                           DeletePositionStarted(
-                                              id: BlocProvider.of<PositionBlc>(
-                                                      context)
+                                              id: positionBlc
                                                   .positionList[index]
                                                   .id));
                                     }),

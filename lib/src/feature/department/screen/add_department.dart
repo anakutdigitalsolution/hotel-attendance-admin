@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
+import 'department_page.dart';
 
 class AddDepartment extends StatefulWidget {
-  const AddDepartment({ Key? key }) : super(key: key);
+  const AddDepartment({Key? key}) : super(key: key);
 
   @override
   State<AddDepartment> createState() => _AddDepartmentState();
@@ -22,22 +25,20 @@ class _AddDepartmentState extends State<AddDepartment> {
     return Scaffold(
       appBar: standardAppBar(context, "Add Department"),
       body: Builder(builder: (context) {
-        return BlocListener<DepartmentBlc, DepartmentState>(
+        return BlocListener(
+          bloc: departmentBlc,
           listener: (context, state) {
             if (state is AddingDepartment) {
-              loadingDialogs(context);
+              EasyLoading.show(status: "loading....");
             }
             if (state is ErrorAddingDepartment) {
               Navigator.pop(context);
               errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedDepartment) {
-              // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
-              // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
+              EasyLoading.dismiss();
+              EasyLoading.showSuccess("Sucess");
               Navigator.pop(context);
-              Navigator.pop(context);
-
-              print("success");
             }
           },
           child: ListView(
@@ -48,7 +49,6 @@ class _AddDepartmentState extends State<AddDepartment> {
                   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: Column(
                     children: [
-                      
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _reasonCtrl,
@@ -72,9 +72,14 @@ class _AddDepartmentState extends State<AddDepartment> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 15),
-
-                      
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                       standardBtn(title: "Submit",onTap: (){
+                         if (_formKey!.currentState!.validate()) {
+                                departmentBlc.add(AddDepartmentStarted(
+                                    name: _reasonCtrl.text));
+                              }
+                      })
+                     
                     ],
                   ),
                 ),
@@ -83,29 +88,6 @@ class _AddDepartmentState extends State<AddDepartment> {
           ),
         );
       }),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        height: 50,
-        width: double.infinity,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              // side: BorderSide(color: Colors.red)
-            ),
-            color: Colors.blue,
-            onPressed: () {
-              if (_formKey!.currentState!.validate()) {
-                BlocProvider.of<DepartmentBlc>(context).add(AddDepartmentStarted(name: _reasonCtrl.text));
-              }
-            },
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              "Submit",
-              // AppLocalizations.of(context)!.translate("submit")!,
-              textScaleFactor: 1.2,
-              style: TextStyle(color: Colors.white),
-            )),
-      ),
     );
   }
 }

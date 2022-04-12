@@ -2,18 +2,23 @@ import 'package:hotle_attendnce_admin/src/feature/account/screen/account_page_on
 import 'package:hotle_attendnce_admin/src/feature/checkin/screen/attendance_employee_page.dart';
 
 import 'package:flutter/material.dart';
+import 'package:hotle_attendnce_admin/src/feature/department/screen/add_department.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/add_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/shedule_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/add_holiday.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/holiday_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/levetype/screen/add_leave_type.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/screen/leave_type_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/add_notification.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/notification_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/screen/leave_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/position/screen/add_position.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/report/screen/report_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/screen/add_timetable.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/timetable_page.dart';
 
 import 'routes.dart';
@@ -57,7 +62,16 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case addNotification:
         return MaterialPageRoute(builder: (_) => AddNotification());
-
+      case addDepartment:
+        return MaterialPageRoute(builder: (_) => AddDepartment());
+       case addPosition:
+        return MaterialPageRoute(builder: (_) => AddPosition());
+      case addTimetable:
+        return MaterialPageRoute(builder: (_) => AddTimetable());
+      case addLeavetype:
+        return MaterialPageRoute(builder: (_) => AddLeaveType());
+      case addEmployee:
+        return MaterialPageRoute(builder: (_) => AddEmployee());
       // case editProduct:
       //   if (args is Product) {
       //     return MaterialPageRoute(

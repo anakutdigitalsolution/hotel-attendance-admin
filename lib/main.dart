@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
             create: (BuildContext context) =>
                 AuthenticationBloc()..add(CheckingAuthenticationStarted())),
-        BlocProvider<LeaveBloc>(create: (BuildContext context) => LeaveBloc()),
+        
         BlocProvider<LanguageBloc>(
             create: (BuildContext context) =>
                 LanguageBloc()..add(LanguageLoadStarted())),
@@ -55,22 +55,10 @@ class MyApp extends StatelessWidget {
                 AccountBloc()..add(FetchAccountStarted())),
         BlocProvider<CheckInOutBloc>(
             create: (BuildContext context) => CheckInOutBloc()),
-        BlocProvider<DepartmentBlc>(
-            create: (BuildContext context) => DepartmentBlc()),
-        BlocProvider<NotificationBloc>(
-            create: (BuildContext context) => NotificationBloc()),
-        BlocProvider<EmployeeBloc>(
-            create: (BuildContext context) => EmployeeBloc()),
-        BlocProvider<PositionBlc>(
-            create: (BuildContext context) => PositionBlc()),
-        BlocProvider<TimetableBloc>(
-            create: (BuildContext context) => TimetableBloc()),
-        BlocProvider<EmployeeBloc>(
-            create: (BuildContext context) => EmployeeBloc()),
-        BlocProvider<EmployeeTimetableBloc>(
-            create: (BuildContext context) => EmployeeTimetableBloc()),
-        BlocProvider<LeaveTypeBloc>(
-            create: (BuildContext context) => LeaveTypeBloc()),
+        
+     
+        
+        
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {

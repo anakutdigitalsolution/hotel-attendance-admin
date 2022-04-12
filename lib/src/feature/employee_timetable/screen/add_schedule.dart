@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/employee_timetable_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/screen/timetable_page.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
+
+import 'shedule_page.dart';
 
 class AddSchedule extends StatefulWidget {
   const AddSchedule({Key? key}) : super(key: key);
@@ -28,21 +34,24 @@ class _AddScheduleState extends State<AddSchedule> {
     return Scaffold(
       appBar: standardAppBar(context, "Add Schedule"),
       body: Builder(builder: (context) {
-        return BlocListener<EmployeeTimetableBloc, EmployeeTimetableState>(
+        return BlocListener(
+          bloc: employeeTimetableBloc,
           listener: (context, state) {
             if (state is AddingEmployeeTimetable) {
-              loadingDialogs(context);
+              EasyLoading.show(status: "loading....");
             }
             if (state is ErrorAddingEmployeeTimetable) {
               Navigator.pop(context);
               errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedEmployeeTimetable) {
-              Navigator.pop(context);
+              EasyLoading.dismiss();
+              EasyLoading.showSuccess("Sucess");
               Navigator.pop(context);
             }
           },
-          child: BlocListener<EmployeeBloc, EmployeeState>(
+          child: BlocListener(
+              bloc: employeeBloc,
               listener: (context, stae) {
                 if (stae is FetchingEmployee) {
                   loadingDialogs(context);
@@ -58,7 +67,7 @@ class _AddScheduleState extends State<AddSchedule> {
                   Navigator.pop(context);
                   customModal(
                       context,
-                      BlocProvider.of<EmployeeBloc>(context)
+                      employeeBloc
                           .emploList
                           .map((e) => e.name)
                           .toList(), (value) {
@@ -71,7 +80,8 @@ class _AddScheduleState extends State<AddSchedule> {
                   });
                 }
               },
-              child: BlocListener<TimetableBloc, TimetableState>(
+              child: BlocListener(
+                bloc: timetableBloc,
                 listener: (context, state) {
                   if (state is FetchingTimetable) {
                     loadingDialogs(context);
@@ -85,7 +95,7 @@ class _AddScheduleState extends State<AddSchedule> {
                     Navigator.pop(context);
                     customModal(
                         context,
-                        BlocProvider.of<TimetableBloc>(context)
+                       timetableBloc
                             .timetableList
                             .map((e) => e.timetableName)
                             .toList(), (value) {
@@ -111,7 +121,7 @@ class _AddScheduleState extends State<AddSchedule> {
                             TextFormField(
                               controller: _empCtl,
                               onTap: () {
-                                BlocProvider.of<EmployeeBloc>(context)
+                                employeeBloc
                                     .add(FetchAllEmployeeStarted());
                               },
                               readOnly: true,
@@ -121,7 +131,7 @@ class _AddScheduleState extends State<AddSchedule> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -140,7 +150,7 @@ class _AddScheduleState extends State<AddSchedule> {
                             TextFormField(
                               controller: _timeCtrl,
                               onTap: () {
-                                BlocProvider.of<TimetableBloc>(context)
+                                timetableBloc
                                     .add(FetchAllTimetableStarted());
                               },
                               readOnly: true,
@@ -150,7 +160,7 @@ class _AddScheduleState extends State<AddSchedule> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -165,6 +175,30 @@ class _AddScheduleState extends State<AddSchedule> {
                                 return null;
                               },
                             ),
+                            SizedBox(
+                                height: MediaQuery.of(context).size.height / 4),
+                            standardBtn(
+                                title: "Submit",
+                                onTap: () {
+                                  if (_formKey!.currentState!.validate()) {
+                                    EmployeeModel employeeId =
+                                        employeeBloc
+                                            .emploList
+                                            .firstWhere((element) =>
+                                                element.name == _empCtl.text);
+
+                                    TimetableModel timetableId =
+                                        timetableBloc
+                                            .timetableList
+                                            .firstWhere((element) =>
+                                                element.timetableName ==
+                                                _timeCtrl.text);
+                                    employeeTimetableBloc
+                                        .add(AddEmployeeTimetableStarted(
+                                            employeeId: employeeId.id,
+                                            timetableId: timetableId.id));
+                                  }
+                                })
                           ],
                         ),
                       ),
@@ -174,42 +208,6 @@ class _AddScheduleState extends State<AddSchedule> {
               )),
         );
       }),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        height: 50,
-        width: double.infinity,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              // side: BorderSide(color: Colors.red)
-            ),
-            color: Colors.blue,
-            onPressed: () {
-              if (_formKey!.currentState!.validate()) {
-                EmployeeModel employeeId =
-                    BlocProvider.of<EmployeeBloc>(context)
-                        .emploList
-                        .firstWhere((element) => element.name == _empCtl.text);
-
-                TimetableModel timetableId =
-                    BlocProvider.of<TimetableBloc>(context)
-                        .timetableList
-                        .firstWhere((element) =>
-                            element.timetableName == _timeCtrl.text);
-                BlocProvider.of<EmployeeTimetableBloc>(context).add(
-                    AddEmployeeTimetableStarted(
-                        employeeId: employeeId.id,
-                        timetableId: timetableId.id));
-              }
-            },
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              "Submit",
-              // AppLocalizations.of(context)!.translate("submit")!,
-              textScaleFactor: 1.2,
-              style: TextStyle(color: Colors.white),
-            )),
-      ),
     );
   }
 }

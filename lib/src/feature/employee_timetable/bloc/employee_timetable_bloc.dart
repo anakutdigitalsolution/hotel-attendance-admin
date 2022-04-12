@@ -8,7 +8,7 @@ import 'index.dart';
 
 class EmployeeTimetableBloc
     extends Bloc<EmployeeTimetableEvent, EmployeeTimetableState> {
-  EmployeeTimetableBloc() : super(InitializingEmployeeTimetable());
+  EmployeeTimetableBloc() : super(FetchingEmployeeTimetable());
   EmployeeTimetableRepository employeeTimetableRepository =
       EmployeeTimetableRepository();
 
@@ -18,6 +18,26 @@ class EmployeeTimetableBloc
   @override
   Stream<EmployeeTimetableState> mapEventToState(
       EmployeeTimetableEvent event) async* {
+    if (event is FetchEmloyeeTimetableStarted) {
+      yield FetchingEmployeeTimetable();
+      try {
+        List<EmployeeTimetablModel> _timeList =
+            await employeeTimetableRepository.getSchedule(
+                rowPerpage: rowperpage, page: page);
+        timeList.addAll(_timeList);
+        page++;
+        print(page);
+        print(timeList.length);
+        if (_timeList.length < rowperpage) {
+          yield EndofEmployeeTimetable();
+        } else {
+          yield FetchedEmployeeTimetable();
+        }
+      } catch (e) {
+        log(e.toString());
+        yield ErrorFetchingEmployeeTimetable(error: e.toString());
+      }
+    }
     if (event is InitializeEmployeeTimetableStarted) {
       yield InitializingEmployeeTimetable();
       try {
@@ -37,27 +57,7 @@ class EmployeeTimetableBloc
         yield ErrorFetchingEmployeeTimetable(error: e.toString());
       }
     }
-    if (event is FetchEmloyeeTimetableStarted) {
-      yield FetchingEmployeeTimetable();
-      try {
-        page = 1;
-        List<EmployeeTimetablModel> _timeList =
-            await employeeTimetableRepository.getSchedule(
-                rowPerpage: rowperpage, page: page);
-        timeList.addAll(_timeList);
-        page++;
-        print(page);
-        print(timeList.length);
-        if (_timeList.length < rowperpage) {
-          yield EndofEmployeeTimetable();
-        } else {
-          yield FetchedEmployeeTimetable();
-        }
-      } catch (e) {
-        log(e.toString());
-        yield ErrorFetchingEmployeeTimetable(error: e.toString());
-      }
-    }
+
     if (event is RefreshEmployeeTimetableStarted) {
       yield FetchingEmployeeTimetable();
       try {

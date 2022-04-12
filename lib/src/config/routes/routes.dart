@@ -14,4 +14,10 @@ const String addHoliday = '/addHoliday';
 const String report = '/report';
 const String notification = '/notification';
 const String addNotification = '/addNotification';
+const String addDepartment = '/addDepartment';
+const String addPosition = '/addPosition';
+const String addTimetable = '/addTimetable';
+const String addLeavetype = '/addLeavetype';
+const String addEmployee = '/addEmployee';
+
 

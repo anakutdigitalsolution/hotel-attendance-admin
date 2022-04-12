@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
+
+import 'leave_page.dart';
 
 class EditLeaveStatus extends StatefulWidget {
   final LeaveModel leaveModel;
@@ -23,22 +27,20 @@ class _EditLeaveStatusState extends State<EditLeaveStatus> {
     return Scaffold(
       appBar: standardAppBar(context, "Edit leave"),
       body: Builder(builder: (context) {
-        return BlocListener<LeaveBloc, LeaveState>(
+        return BlocListener(
+            bloc: leaveBloc,
             listener: (context, state) {
               if (state is AddingLeave) {
-                loadingDialogs(context);
+                EasyLoading.show(status: "loading....");
               }
               if (state is ErrorAddingLeave) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               }
               if (state is AddedLeave) {
-                // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
+                EasyLoading.dismiss();
+                EasyLoading.showSuccess("Sucess");
                 Navigator.pop(context);
-                Navigator.pop(context);
-
-                print("success");
               }
             },
             child: ListView(
@@ -58,7 +60,7 @@ class _EditLeaveStatusState extends State<EditLeaveStatus> {
                               contentPadding: EdgeInsets.all(15),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(5.0),
+                                  Radius.circular(15.0),
                                 ),
                                 borderSide: new BorderSide(
                                   width: 1,
@@ -85,7 +87,7 @@ class _EditLeaveStatusState extends State<EditLeaveStatus> {
                               contentPadding: EdgeInsets.all(15),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
-                                  Radius.circular(5.0),
+                                  Radius.circular(15.0),
                                 ),
                                 borderSide: new BorderSide(
                                   width: 1,
@@ -94,6 +96,17 @@ class _EditLeaveStatusState extends State<EditLeaveStatus> {
                               isDense: true,
                               labelText: "Note"),
                         ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height / 4),
+                        standardBtn(
+                            title: "Submit",
+                            onTap: () {
+                              if (_formKey!.currentState!.validate()) {
+                                leaveBloc.add(UpdateLeaveStatusStarted(
+                                    id: widget.leaveModel.id,
+                                    status: _genderCtrl.text));
+                              }
+                            })
                       ],
                     ),
                   ),
@@ -101,31 +114,7 @@ class _EditLeaveStatusState extends State<EditLeaveStatus> {
               ],
             ));
       }),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        height: 50,
-        width: double.infinity,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              // side: BorderSide(color: Colors.red)
-            ),
-            color: Colors.blue,
-            onPressed: () {
-              if (_formKey!.currentState!.validate()) {
-                BlocProvider.of<LeaveBloc>(context).add(
-                    UpdateLeaveStatusStarted(
-                        id: widget.leaveModel.id, status: _genderCtrl.text));
-              }
-            },
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              "Submit",
-              // AppLocalizations.of(context)!.translate("submit")!,
-              textScaleFactor: 1.2,
-              style: TextStyle(color: Colors.white),
-            )),
-      ),
+      
     );
   }
 

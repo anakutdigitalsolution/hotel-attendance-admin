@@ -1,4 +1,6 @@
 
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/timetable_bloc.dart';
 
@@ -13,7 +15,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'add_timetable.dart';
 import 'edit_timetable.dart';
 
-
+TimetableBloc timetableBloc =TimetableBloc();
 class TimetablePage extends StatefulWidget {
   const TimetablePage({ Key? key }) : super(key: key);
 
@@ -34,8 +36,8 @@ class _TimetablePageState extends State<TimetablePage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddTimetable()));
+              Navigator.pushNamed(context, addTimetable);
+              
             }),
       ),
     );
@@ -54,11 +56,12 @@ class _DepartmentBodyState extends State<DepartmentBody> {
   @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-    BlocProvider.of<TimetableBloc>(context).add(InitializeTimetableStarted());
+    timetableBloc.add(FetchTimetableStarted());
     final RefreshController _refreshController = RefreshController();
-    return BlocBuilder<TimetableBloc, TimetableState>(
+    return BlocBuilder(
+      bloc: timetableBloc,
       builder: (context, state) {
-        if (state is InitializingTimetable) {
+        if (state is FetchingTimetable) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -67,15 +70,16 @@ class _DepartmentBodyState extends State<DepartmentBody> {
             child: Text(state.error.toString()),
           );
         } else {
-          if (BlocProvider.of<TimetableBloc>(context).timetableList.length == 0) {
+          if (timetableBloc.timetableList.length == 0) {
             return Center(
               child: Text("No Data"),
             );
           }
           print(
-              "length ${BlocProvider.of<TimetableBloc>(context).timetableList.length}");
+              "length ${timetableBloc.timetableList.length}");
 
-          return BlocListener<TimetableBloc, TimetableState>(
+          return BlocListener(
+            bloc: timetableBloc,
             listener: (context, state) {
               if (state is FetchedTimetable) {
                 _refreshController.loadComplete();
@@ -85,27 +89,23 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                 _refreshController.loadNoData();
               }
               if (state is AddingTimetable) {
-                loadingDialogs(context);
+                EasyLoading.show(status: "loading....");
               } else if (state is ErrorAddingTimetable) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               } else if (state is AddedTimetable) {
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                Navigator.pop(context);
+                EasyLoading.dismiss();
+                EasyLoading.showSuccess("Sucess");
+                
               }
             },
             child: SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<TimetableBloc>(context).add(RefreshTimetableStarted());
+                timetableBloc.add(RefreshTimetableStarted());
               },
               onLoading: () {
-                if (BlocProvider.of<TimetableBloc>(context).state
-                    is EndOfTimetableList) {
-                } else {
-                  // BlocProvider.of<ProductListingBloc>(context)
-                  //     .add(FetchProductListStarted(arg: widget.category.id));
-                }
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
+                    timetableBloc.add(FetchTimetableStarted());
+                     _refreshController.loadComplete();
               },
               enablePullDown: true,
               enablePullUp: true,
@@ -113,7 +113,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
               controller: _refreshController,
               child: ListView.builder(
                   itemCount:
-                      BlocProvider.of<TimetableBloc>(context).timetableList.length,
+                      timetableBloc.timetableList.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -148,7 +148,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<TimetableBloc>(context).timetableList[index].timetableName}",
+                                  "${timetableBloc.timetableList[index].timetableName}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       ),
@@ -170,7 +170,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<TimetableBloc>(context).timetableList[index].onDutyTtime}",
+                                  "${timetableBloc.timetableList[index].onDutyTtime}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       ),
@@ -192,7 +192,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<TimetableBloc>(context).timetableList[index].offDutyTime}",
+                                  "${timetableBloc.timetableList[index].offDutyTime}",
                                   style: TextStyle(
                                       color: Colors.black,
                                       ),
@@ -216,7 +216,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (con) => EditTimetable(
-                                                          timetableModel: BlocProvider.of<TimetableBloc>(context).timetableList[index],
+                                                          timetableModel: timetableBloc.timetableList[index],
                                                         )));
                                           }),
                                       SizedBox(
@@ -232,10 +232,10 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                           ),
                                           onPressed: () {
                                             print(
-                                                "id ${BlocProvider.of<TimetableBloc>(context).timetableList[index].id}");
-                                            BlocProvider.of<TimetableBloc>(context)
+                                                "id ${timetableBloc.timetableList[index].id}");
+                                            timetableBloc
                                                 .add(DeleteTimetableStarted(
-                                                    id:BlocProvider.of<TimetableBloc>(context).timetableList[index]
+                                                    id:timetableBloc.timetableList[index]
                                                         .id));
                                           }),
                                     ],

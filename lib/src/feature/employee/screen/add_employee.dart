@@ -6,18 +6,23 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
+
+import 'employee_page.dart';
 
 class AddEmployee extends StatefulWidget {
   const AddEmployee({Key? key}) : super(key: key);
@@ -84,7 +89,8 @@ class _AddEmployeeState extends State<AddEmployee> {
     return Scaffold(
       appBar: standardAppBar(context, "Add Employee"),
       body: Builder(builder: (context) {
-        return BlocListener<EmployeeBloc, EmployeeState>(
+        return BlocListener(
+            bloc: employeeBloc,
             listener: (context, state) {
               if (state is AddingEmployee) {
                 EasyLoading.show(status: "loading....");
@@ -95,12 +101,13 @@ class _AddEmployeeState extends State<AddEmployee> {
               }
               if (state is AddedEmployee) {
                 EasyLoading.dismiss();
+                // EasyLoading.dismiss();
+                EasyLoading.showSuccess("Sucess");
                 Navigator.pop(context);
-
-                print("success");
               }
             },
-            child: BlocListener<DepartmentBlc, DepartmentState>(
+            child: BlocListener(
+              bloc: departmentBlc,
               listener: (context, state) {
                 if (state is FetchingDepartment) {
                   loadingDialogs(context);
@@ -111,12 +118,9 @@ class _AddEmployeeState extends State<AddEmployee> {
                 }
                 if (state is FetchedDepartment) {
                   Navigator.pop(context);
-                  customModal(
-                      context,
-                      BlocProvider.of<DepartmentBlc>(context)
-                          .departmentList
-                          .map((e) => e.name)
-                          .toList(), (value) {
+                  customModal(context,
+                      departmentBlc.departmentList.map((e) => e.name).toList(),
+                      (value) {
                     _departmentIdCtrl.text = value;
                     // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
                     //     .roomtype
@@ -126,7 +130,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                   });
                 }
               },
-              child: BlocListener<PositionBlc, PositionState>(
+              child: BlocListener(
+                bloc: positionBlc,
                 listener: (context, state) {
                   if (state is FetchingPosition) {
                     loadingDialogs(context);
@@ -140,8 +145,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                     Navigator.pop(context);
                     customModal(
                         context,
-                        BlocProvider.of<PositionBlc>(context)
-                            .positionList
+                        positionBlc.positionList
                             .map((e) => e.positionName)
                             .toList(), (value) {
                       _positionIdCtrl.text = value;
@@ -340,8 +344,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                             TextFormField(
                               controller: _departmentIdCtrl,
                               onTap: () {
-                                BlocProvider.of<DepartmentBlc>(context)
-                                    .add(RefreshDepartmentStarted());
+                               departmentBlc
+                                    .add(FetchAllDepartmentStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -369,8 +373,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                             TextFormField(
                               controller: _positionIdCtrl,
                               onTap: () {
-                                BlocProvider.of<PositionBlc>(context)
-                                    .add(RefreshPositionStarted());
+                               positionBlc
+                                    .add(FetchAllPositionStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -458,61 +462,39 @@ class _AddEmployeeState extends State<AddEmployee> {
                                                 7,
                                         child: Image.file(_image!))),
                             SizedBox(height: 30),
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left: 30, right: 30, bottom: 10),
-                              height: 50,
-                              width: double.infinity,
-                              child: FlatButton(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    // side: BorderSide(color: Colors.red)
-                                  ),
-                                  color: Colors.blue,
-                                  onPressed: () {
-                                    if (_formKey!.currentState!.validate()) {
-                                      DepartmentModel departId =
-                                          BlocProvider.of<DepartmentBlc>(
-                                                  context)
-                                              .departmentList
-                                              .firstWhere((element) =>
-                                                  element.name ==
-                                                  _departmentIdCtrl.text);
+                            standardBtn(
+                                title: "Submit",
+                                onTap: () {
+                                  if (_formKey!.currentState!.validate()) {
+                                    DepartmentModel departId = departmentBlc
+                                        .departmentList
+                                        .firstWhere((element) =>
+                                            element.name ==
+                                            _departmentIdCtrl.text);
 
-                                      PositionModel posiId =
-                                          BlocProvider.of<PositionBlc>(context)
-                                              .positionList
-                                              .firstWhere((element) =>
-                                                  element.positionName ==
-                                                  _positionIdCtrl.text);
-                                      if (_image == null) {}
-                                      print(_image);
-                                      BlocProvider.of<EmployeeBloc>(context)
-                                          .add(AddEmployeeStarted(
-                                              name: _nameCtrl.text,
-                                              gender: _genderCtrl.text,
-                                              dob: _dobCtrl.text,
-                                              email: _emailCtrl.text,
-                                              username: _usernameCtrl.text,
-                                              img: _image,
-                                              password: _passwordCtrl.text,
-                                              positionId: posiId.id,
-                                              departmentId: departId.id,
-                                              storeId: "1",
-                                              officeTel: _officeTelCtrl.text,
-                                              phoneNumber:
-                                                  _phoneNumberCtrl.text,
-                                              address: _addressCtrl.text));
-                                    }
-                                  },
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Text(
-                                    "Submit",
-                                    // AppLocalizations.of(context)!.translate("submit")!,
-                                    textScaleFactor: 1.2,
-                                    style: TextStyle(color: Colors.white),
-                                  )),
-                            ),
+                                    PositionModel posiId = positionBlc
+                                        .positionList
+                                        .firstWhere((element) =>
+                                            element.positionName ==
+                                            _positionIdCtrl.text);
+                                    if (_image == null) {}
+                                    print(_image);
+                                    employeeBloc.add(AddEmployeeStarted(
+                                        name: _nameCtrl.text,
+                                        gender: _genderCtrl.text,
+                                        dob: _dobCtrl.text,
+                                        email: _emailCtrl.text,
+                                        username: _usernameCtrl.text,
+                                        img: _image,
+                                        password: _passwordCtrl.text,
+                                        positionId: posiId.id,
+                                        departmentId: departId.id,
+                                        storeId: "1",
+                                        officeTel: _officeTelCtrl.text,
+                                        phoneNumber: _phoneNumberCtrl.text,
+                                        address: _addressCtrl.text));
+                                  }
+                                })
                           ],
                         ),
                       ),

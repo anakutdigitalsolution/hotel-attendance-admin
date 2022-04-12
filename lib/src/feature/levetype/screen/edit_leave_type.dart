@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/model/leave_type_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
+
+import 'leave_type_page.dart';
 
 class EditLeaveType extends StatefulWidget {
   final LeaveTypeModel leaveTypeModel;
-  const EditLeaveType({ required this.leaveTypeModel }) ;
+  const EditLeaveType({required this.leaveTypeModel});
 
   @override
   State<EditLeaveType> createState() => _EditLeaveTypeState();
@@ -16,13 +20,15 @@ class EditLeaveType extends StatefulWidget {
 
 class _EditLeaveTypeState extends State<EditLeaveType> {
   final TextEditingController _nameCtrl = TextEditingController();
-    final TextEditingController _noteCtrl = TextEditingController();
+  final TextEditingController _noteCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
-  
+
   @override
   void initState() {
     _nameCtrl.text = widget.leaveTypeModel.name;
-    widget.leaveTypeModel.note == null || widget.leaveTypeModel.note== "" ?_nameCtrl.text="":_nameCtrl.text= widget.leaveTypeModel.note!;
+    widget.leaveTypeModel.note == null || widget.leaveTypeModel.note == ""
+        ? _nameCtrl.text = ""
+        : _nameCtrl.text = widget.leaveTypeModel.note!;
     super.initState();
   }
 
@@ -31,22 +37,20 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
     return Scaffold(
       appBar: standardAppBar(context, "Edit Leavetype"),
       body: Builder(builder: (context) {
-        return BlocListener<LeaveTypeBloc, LeaveTypeState>(
+        return BlocListener(
+          bloc: leaveTypeBloc,
           listener: (context, state) {
             if (state is AddingLeaveType) {
-              loadingDialogs(context);
+              EasyLoading.show(status: "loading....");
             }
             if (state is ErrorAddingLeaveType) {
               Navigator.pop(context);
               errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedLeaveType) {
-              // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
-              // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
+              EasyLoading.dismiss();
+              EasyLoading.showSuccess("Sucess");
               Navigator.pop(context);
-              Navigator.pop(context);
-
-              print("success");
             }
           },
           child: ListView(
@@ -57,7 +61,6 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
                   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: Column(
                     children: [
-                      
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _nameCtrl,
@@ -66,7 +69,7 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
+                                Radius.circular(15.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -89,7 +92,7 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
+                                Radius.circular(15.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -104,8 +107,17 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
                         //   return null;
                         // },
                       ),
-
-                      
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      standardBtn(
+                          title: "Submit",
+                          onTap: () {
+                            if (_formKey!.currentState!.validate()) {
+                              leaveTypeBloc.add(UpdateLeaveTypeStarted(
+                                  id: widget.leaveTypeModel.id,
+                                  name: _nameCtrl.text,
+                                  note: _noteCtrl.text));
+                            }
+                          })
                     ],
                   ),
                 ),
@@ -114,29 +126,6 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
           ),
         );
       }),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        height: 50,
-        width: double.infinity,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              // side: BorderSide(color: Colors.red)
-            ),
-            color: Colors.blue,
-            onPressed: () {
-              if (_formKey!.currentState!.validate()) {
-                BlocProvider.of<LeaveTypeBloc>(context).add(UpdateLeaveTypeStarted(id: widget.leaveTypeModel.id,name: _nameCtrl.text, note: _noteCtrl.text));
-              }
-            },
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              "Submit",
-              // AppLocalizations.of(context)!.translate("submit")!,
-              textScaleFactor: 1.2,
-              style: TextStyle(color: Colors.white),
-            )),
-      ),
     );
   }
 }

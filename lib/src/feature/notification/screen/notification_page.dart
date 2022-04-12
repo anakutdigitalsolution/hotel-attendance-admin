@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+NotificationBloc notificationBloc = NotificationBloc();
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
 
@@ -44,10 +45,10 @@ class _BodyState extends State<Body> {
   final RefreshController _refreshController = RefreshController();
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<NotificationBloc>(context)
-        .add(InitializeNotificationStarted());
-    return BlocBuilder<NotificationBloc, NotificationState>(
-        
+    notificationBloc
+        .add(FetchNotificationStarted());
+    return BlocBuilder(
+        bloc: notificationBloc,
         builder: (context, state) {
           if (state is FetchingNotification) {
             return Center(
@@ -58,7 +59,7 @@ class _BodyState extends State<Body> {
             return Center(
                 child: Container(child: Text(state.error.toString())));
           } else {
-            if (BlocProvider.of<NotificationBloc>(context)
+            if (notificationBloc
                     .notificationModel
                     .length ==
                 0) {
@@ -71,28 +72,31 @@ class _BodyState extends State<Body> {
                 ],
               ));
             }
-            return BlocListener<NotificationBloc, NotificationState>(
+            return BlocListener(
+              bloc: notificationBloc,
                 listener: (context, state) {
                   if (state is FetchedNotification) {
                     _refreshController.loadComplete();
-                  _refreshController.refreshCompleted();
+                     _refreshController.refreshCompleted();
                   }
                 },
                 child: SmartRefresher(
                   onRefresh: () {
-                    BlocProvider.of<NotificationBloc>(context)
+                    notificationBloc
                         .add(RefreshNotificationStarted());
+                        
                   },
                   onLoading: () {
-                    BlocProvider.of<NotificationBloc>(context)
+                    notificationBloc
                         .add(FetchNotificationStarted());
+                         _refreshController.loadComplete();
                   },
                   enablePullDown: true,
                   enablePullUp: true,
                   cacheExtent: 1,
                   controller: _refreshController,
                   child: ListView.builder(
-                      itemCount: BlocProvider.of<NotificationBloc>(context)
+                      itemCount: notificationBloc
                           .notificationModel
                           .length,
                       itemBuilder: (context, index) {
@@ -148,9 +152,7 @@ class _BodyState extends State<Body> {
                                         // ),
                                         Text(
                                           " " +
-                                              BlocProvider.of<
-                                                          NotificationBloc>(
-                                                      context)
+                                             notificationBloc
                                                   .notificationModel[index]
                                                   .title,
                                           style: TextStyle(

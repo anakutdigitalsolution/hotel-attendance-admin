@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/bloc/index.dart';
@@ -11,6 +12,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'add_leave_type.dart';
 import 'edit_leave_type.dart';
+
+LeaveTypeBloc leaveTypeBloc = LeaveTypeBloc();
 
 class LeaveTypePage extends StatefulWidget {
   const LeaveTypePage({Key? key}) : super(key: key);
@@ -32,8 +35,7 @@ class _LeaveTypePageState extends State<LeaveTypePage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddLeaveType()));
+              Navigator.pushNamed(context, addLeavetype);
             }),
       ),
     );
@@ -48,13 +50,15 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+      final RefreshController _refreshController = RefreshController();
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<LeaveTypeBloc>(context).add(InitializeLeaveTypeStarted());
-    final RefreshController _refreshController = RefreshController();
-    return BlocBuilder<LeaveTypeBloc, LeaveTypeState>(
+    leaveTypeBloc.add(FetchLeaveTypeStarted());
+
+    return BlocBuilder(
+      bloc: leaveTypeBloc,
       builder: (context, state) {
-        if (state is InitializingLeaveType) {
+        if (state is FetchingLeaveType) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -63,14 +67,15 @@ class _BodyState extends State<Body> {
             child: Text(state.error.toString()),
           );
         } else {
-          if (BlocProvider.of<LeaveTypeBloc>(context).leavetype.length == 0) {
+          if (leaveTypeBloc.leavetype.length == 0) {
             return Center(
               child: Text("No Data"),
             );
           }
-          print("length ${BlocProvider.of<LeaveTypeBloc>(context).leavetype}");
+          print("length ${leaveTypeBloc.leavetype.length}");
 
-          return BlocListener<LeaveTypeBloc, LeaveTypeState>(
+          return BlocListener(
+            bloc: leaveTypeBloc,
             listener: (context, state) {
               if (state is FetchedLeaveType) {
                 _refreshController.loadComplete();
@@ -80,27 +85,29 @@ class _BodyState extends State<Body> {
                 _refreshController.loadNoData();
               }
               if (state is AddingLeaveType) {
-                loadingDialogs(context);
+                EasyLoading.show(status: "loading....");
               } else if (state is ErrorAddingLeaveType) {
                 Navigator.pop(context);
                 errorSnackBar(text: state.error.toString(), context: context);
               } else if (state is AddedLeaveType) {
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                Navigator.pop(context);
+                 EasyLoading.dismiss();
+                EasyLoading.showSuccess("Sucess");
               }
             },
             child: SmartRefresher(
               onRefresh: () {
-                BlocProvider.of<LeaveTypeBloc>(context)
+               leaveTypeBloc
                     .add(RefreshLeaveTypeStarted());
               },
               onLoading: () {
-                if (BlocProvider.of<LeaveTypeBloc>(context).state
-                    is EndOfLeaveTypeList) {
-                } else {
-                  // BlocProvider.of<ProductListingBloc>(context)
-                  //     .add(FetchProductListStarted(arg: widget.category.id));
-                }
+                leaveTypeBloc.add(FetchLeaveTypeStarted());
+                 _refreshController.loadComplete();
+                // if (BlocProvider.of<LeaveTypeBloc>(context).state
+                //     is EndOfLeaveTypeList) {
+                // } else {
+                //   // BlocProvider.of<ProductListingBloc>(context)
+                //   //     .add(FetchProductListStarted(arg: widget.category.id));
+                // }
                 // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
               },
               enablePullDown: true,
@@ -109,7 +116,7 @@ class _BodyState extends State<Body> {
               controller: _refreshController,
               child: ListView.builder(
                   itemCount:
-                      BlocProvider.of<LeaveTypeBloc>(context).leavetype.length,
+                      leaveTypeBloc.leavetype.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -144,7 +151,7 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                                 Text(
-                                  "${BlocProvider.of<LeaveTypeBloc>(context).leavetype[index].name}",
+                                  "${leaveTypeBloc.leavetype[index].name}",
                                   style: TextStyle(
                                     color: Colors.black,
                                   ),
@@ -167,9 +174,7 @@ class _BodyState extends State<Body> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (con) => EditLeaveType(
-                                                    leaveTypeModel: BlocProvider
-                                                            .of<LeaveTypeBloc>(
-                                                                context)
+                                                    leaveTypeModel: leaveTypeBloc
                                                         .leavetype[index],
                                                   )));
                                     }),
@@ -186,11 +191,10 @@ class _BodyState extends State<Body> {
                                     ),
                                     onPressed: () {
                                       print(
-                                          "id ${BlocProvider.of<LeaveTypeBloc>(context).leavetype[index].id}");
-                                      BlocProvider.of<LeaveTypeBloc>(context)
+                                          "id ${leaveTypeBloc.leavetype[index].id}");
+                                      leaveTypeBloc
                                           .add(DeleteLeaveTypeStarted(
-                                              id: BlocProvider.of<
-                                                      LeaveTypeBloc>(context)
+                                              id: leaveTypeBloc
                                                   .leavetype[index]
                                                   .id));
                                     }),

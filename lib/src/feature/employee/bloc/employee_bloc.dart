@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
@@ -16,6 +15,30 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   int page = 1;
   @override
   Stream<EmployeeState> mapEventToState(EmployeeEvent event) async* {
+    if (event is FetchEmloyeeStarted) {
+      yield FetchingEmployee();
+      try {
+        print(page);
+        List<EmployeeModel> _departmentList = await departmentRepository
+            .getEmployee(rowPerpage: rowperpage, page: page);
+
+        emploList.addAll(_departmentList);
+        page++;
+        print(page);
+        print(emploList.length);
+        // yield FetchedEmployee();
+        print(_departmentList.length);
+        if (_departmentList.length < rowperpage) {
+          print(emploList.length);
+          yield EndofEmployeeList();
+        } else {
+          yield FetchedEmployee();
+        }
+      } catch (e) {
+        log(e.toString());
+        yield ErrorFetchingEmployee(error: e.toString());
+      }
+    }
     if (event is InitializeEmployeeStarted) {
       yield InitializingEmployee();
       try {
@@ -65,29 +88,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         yield ErrorFetchingEmployee(error: e.toString());
       }
     }
-    if (event is FetchEmloyeeStarted) {
-      yield FetchingEmployee();
-      try {
-        print(page);
-        List<EmployeeModel> _departmentList = await departmentRepository
-            .getEmployee(rowPerpage: rowperpage, page: page);
-
-        emploList.addAll(_departmentList);
-        page++;
-        print(page);
-        print(emploList.length);
-        // yield FetchedEmployee();
-        print(_departmentList.length);
-        if (_departmentList.length < rowperpage) {
-          yield EndofEmployeeList();
-        } else {
-          yield FetchedEmployee();
-        }
-      } catch (e) {
-        log(e.toString());
-        yield ErrorFetchingEmployee(error: e.toString());
-      }
-    }
+    
     if (event is AddEmployeeStarted) {
       yield AddingEmployee();
       try {

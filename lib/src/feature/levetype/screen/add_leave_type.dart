@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
+
+import 'leave_type_page.dart';
 
 class AddLeaveType extends StatefulWidget {
-  const AddLeaveType({ Key? key }) : super(key: key);
+  const AddLeaveType({Key? key}) : super(key: key);
 
   @override
   State<AddLeaveType> createState() => _AddLeaveTypeState();
@@ -14,29 +18,27 @@ class AddLeaveType extends StatefulWidget {
 
 class _AddLeaveTypeState extends State<AddLeaveType> {
   final TextEditingController _nameCtrl = TextEditingController();
-    final TextEditingController _noteCtrl = TextEditingController();
+  final TextEditingController _noteCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: standardAppBar(context, "Add Leavetype"),
       body: Builder(builder: (context) {
-        return BlocListener<LeaveTypeBloc, LeaveTypeState>(
+        return BlocListener(
+          bloc: leaveTypeBloc,
           listener: (context, state) {
             if (state is AddingLeaveType) {
-              loadingDialogs(context);
+              EasyLoading.show(status: "loading....");
             }
             if (state is ErrorAddingLeaveType) {
               Navigator.pop(context);
               errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedLeaveType) {
-              // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
-              // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
+              EasyLoading.dismiss();
+              EasyLoading.showSuccess("Sucess");
               Navigator.pop(context);
-              Navigator.pop(context);
-
-              print("success");
             }
           },
           child: ListView(
@@ -47,7 +49,6 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
                   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   child: Column(
                     children: [
-                      
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _nameCtrl,
@@ -56,7 +57,7 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
+                                Radius.circular(15.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -79,7 +80,7 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
+                                Radius.circular(15.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -94,8 +95,15 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
                         //   return null;
                         // },
                       ),
-
-                      
+                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      standardBtn(
+                          title: "Submit",
+                          onTap: () {
+                            if (_formKey!.currentState!.validate()) {
+                              leaveTypeBloc.add(AddLeaveTypeStarted(
+                                  name: _nameCtrl.text, note: _noteCtrl.text));
+                            }
+                          })
                     ],
                   ),
                 ),
@@ -104,29 +112,7 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
           ),
         );
       }),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        height: 50,
-        width: double.infinity,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              // side: BorderSide(color: Colors.red)
-            ),
-            color: Colors.blue,
-            onPressed: () {
-              if (_formKey!.currentState!.validate()) {
-                BlocProvider.of<LeaveTypeBloc>(context).add(AddLeaveTypeStarted(name: _nameCtrl.text, note: _noteCtrl.text));
-              }
-            },
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              "Submit",
-              // AppLocalizations.of(context)!.translate("submit")!,
-              textScaleFactor: 1.2,
-              style: TextStyle(color: Colors.white),
-            )),
-      ),
+      
     );
   }
 }

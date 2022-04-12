@@ -47,11 +47,12 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
+     holidayBloc.add(FetchHolidayStarted());
   }
 
   @override
   Widget build(BuildContext context) {
-    holidayBloc.add(FetchHolidayStarted());
+   
     return BlocConsumer(
       bloc: holidayBloc,
       listener: (context, state) {
@@ -98,8 +99,13 @@ class _BodyState extends State<Body> {
               holidayBloc.add(RefreshHolidayStarted());
             },
             onLoading: () {
-              holidayBloc.add(FetchHolidayStarted());
-              _refreshController.loadComplete();
+              if(holidayBloc.state is EndOfHolidayList){
+                 _refreshController.loadNoData();
+              }else{
+                holidayBloc.add(FetchHolidayStarted());
+              }
+              
+              // _refreshController.loadComplete();
               // _refreshController.loadNoData();
             },
             child: ListView.builder(
