@@ -18,18 +18,12 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
       yield InitializingPosition();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        page = 1;
-        positionList = await positionRepository.getPosition(
-            rowPerpage: rowperpage, page: page);
-
+        List<PositionModel> _departmentList = await positionRepository
+            .getPosition(rowPerpage: rowperpage, page: page);
+        positionList.addAll(_departmentList);
         page++;
         print(page);
-        print(positionList.length);
-        if (positionList.length < rowperpage) {
-          yield EndOfPositionList();
-        } else {
-          yield InitializedPosition();
-        }
+        yield InitializedPosition();
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingPosition(error: e.toString());

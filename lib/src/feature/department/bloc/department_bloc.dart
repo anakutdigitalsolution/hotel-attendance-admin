@@ -19,18 +19,14 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
       yield InitializingDepartment();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        page = 1;
-        departmentList = await departmentRepository.getdepartment(
-            rowPerpage: rowperpage, page: page);
+        List<DepartmentModel> _departmentList = await departmentRepository
+            .getdepartment(rowPerpage: rowperpage, page: page);
+        departmentList.addAll(_departmentList);
 
         page++;
         print(page);
         print(departmentList.length);
-        if (departmentList.length < rowperpage) {
-          yield EndOfDepartmentList();
-        } else {
-          yield InitializedDepartment();
-        }
+        yield InitializedDepartment();
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingDepartment(error: e.toString());

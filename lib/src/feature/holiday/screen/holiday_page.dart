@@ -47,12 +47,13 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-     holidayBloc.add(FetchHolidayStarted());
+    holidayBloc.holidaylist.clear();
+    holidayBloc.page = 1;
+    holidayBloc.add(InitializeHolidayStarted());
   }
 
   @override
   Widget build(BuildContext context) {
-   
     return BlocConsumer(
       bloc: holidayBloc,
       listener: (context, state) {
@@ -61,6 +62,7 @@ class _BodyState extends State<Body> {
           _refreshController.refreshCompleted();
         }
         if (state is EndOfHolidayList) {
+          print("nodata");
           _refreshController.loadNoData();
         }
         if (state is AddingHoliday) {
@@ -76,7 +78,7 @@ class _BodyState extends State<Body> {
         }
       },
       builder: (context, state) {
-        if (state is FetchingHoliday) {
+        if (state is InitializingHoliday) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -99,12 +101,13 @@ class _BodyState extends State<Body> {
               holidayBloc.add(RefreshHolidayStarted());
             },
             onLoading: () {
-              if(holidayBloc.state is EndOfHolidayList){
-                 _refreshController.loadNoData();
-              }else{
+              if (holidayBloc.state is EndOfHolidayList) {
+                _refreshController.loadNoData();
+                print("no data");
+              } else {
                 holidayBloc.add(FetchHolidayStarted());
               }
-              
+
               // _refreshController.loadComplete();
               // _refreshController.loadNoData();
             },

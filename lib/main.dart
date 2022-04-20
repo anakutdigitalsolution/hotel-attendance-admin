@@ -4,19 +4,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/route_generator.dart';
-import 'package:hotle_attendnce_admin/src/feature/account/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/auth/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/language/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/levetype/bloc/leave_type_bloc.dart';
-import 'package:hotle_attendnce_admin/src/feature/notification/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/position/bloc/position_bloc.dart';
-import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/timetable_bloc.dart';
-
-import 'src/feature/employee_timetable/bloc/index.dart';
 import 'src/feature/landing/landing_page.dart';
 
 ///Receive message when app is in background solution for on message
@@ -46,19 +36,15 @@ class MyApp extends StatelessWidget {
         BlocProvider<AuthenticationBloc>(
             create: (BuildContext context) =>
                 AuthenticationBloc()..add(CheckingAuthenticationStarted())),
-        
+
         BlocProvider<LanguageBloc>(
             create: (BuildContext context) =>
                 LanguageBloc()..add(LanguageLoadStarted())),
-        BlocProvider<AccountBloc>(
-            create: (BuildContext context) =>
-                AccountBloc()..add(FetchAccountStarted())),
+        // BlocProvider<AccountBloc>(
+        //     create: (BuildContext context) =>
+        //         AccountBloc()..add(FetchAccountStarted())),
         BlocProvider<CheckInOutBloc>(
             create: (BuildContext context) => CheckInOutBloc()),
-        
-     
-        
-        
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {

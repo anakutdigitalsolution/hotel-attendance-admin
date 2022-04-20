@@ -18,17 +18,14 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
       yield InitializingTimetable();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        page = 1;
-        timetableList = await departmentRepository.getTimetable(
-            rowPerpage: rowperpage, page: page);
+        List<TimetableModel> _departmentList = await departmentRepository
+            .getTimetable(rowPerpage: rowperpage, page: page);
+
+        timetableList.addAll(_departmentList);
         page++;
         print(page);
         print(timetableList.length);
-        if (timetableList.length < rowperpage) {
-          yield EndOfTimetableList();
-        } else {
-          yield InitializedTimetable();
-        }
+        yield InitializedTimetable();
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingTimetable(error: e.toString());

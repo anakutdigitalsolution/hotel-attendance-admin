@@ -50,58 +50,41 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-      final RefreshController _refreshController = RefreshController();
+  final RefreshController _refreshController = RefreshController();
+  @override
+  void initState() {
+    leaveTypeBloc.add(InitializeLeaveTypeStarted());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    leaveTypeBloc.add(FetchLeaveTypeStarted());
-
-    return BlocBuilder(
-      bloc: leaveTypeBloc,
-      builder: (context, state) {
-        if (state is FetchingLeaveType) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is ErrorFetchingLeaveType) {
-          return Center(
-            child: Text(state.error.toString()),
-          );
-        } else {
-          if (leaveTypeBloc.leavetype.length == 0) {
+    return BlocConsumer(
+        bloc: leaveTypeBloc,
+        builder: (context, state) {
+          if (state is InitializingLeaveType) {
             return Center(
-              child: Text("No Data"),
+              child: CircularProgressIndicator(),
             );
-          }
-          print("length ${leaveTypeBloc.leavetype.length}");
+          } else if (state is ErrorFetchingLeaveType) {
+            return Center(
+              child: Text(state.error.toString()),
+            );
+          } else {
+            if (leaveTypeBloc.leavetype.length == 0) {
+              return Center(
+                child: Text("No Data"),
+              );
+            }
+            print("length ${leaveTypeBloc.leavetype.length}");
 
-          return BlocListener(
-            bloc: leaveTypeBloc,
-            listener: (context, state) {
-              if (state is FetchedLeaveType) {
-                _refreshController.loadComplete();
-                _refreshController.refreshCompleted();
-              }
-              if (state is EndOfDepartmentList) {
-                _refreshController.loadNoData();
-              }
-              if (state is AddingLeaveType) {
-                EasyLoading.show(status: "loading....");
-              } else if (state is ErrorAddingLeaveType) {
-                Navigator.pop(context);
-                errorSnackBar(text: state.error.toString(), context: context);
-              } else if (state is AddedLeaveType) {
-                 EasyLoading.dismiss();
-                EasyLoading.showSuccess("Sucess");
-              }
-            },
-            child: SmartRefresher(
+            return SmartRefresher(
               onRefresh: () {
-               leaveTypeBloc
-                    .add(RefreshLeaveTypeStarted());
+                leaveTypeBloc.add(RefreshLeaveTypeStarted());
               },
               onLoading: () {
                 leaveTypeBloc.add(FetchLeaveTypeStarted());
-                 _refreshController.loadComplete();
+                _refreshController.loadComplete();
                 // if (BlocProvider.of<LeaveTypeBloc>(context).state
                 //     is EndOfLeaveTypeList) {
                 // } else {
@@ -115,8 +98,7 @@ class _BodyState extends State<Body> {
               cacheExtent: 1,
               controller: _refreshController,
               child: ListView.builder(
-                  itemCount:
-                      leaveTypeBloc.leavetype.length,
+                  itemCount: leaveTypeBloc.leavetype.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -174,8 +156,9 @@ class _BodyState extends State<Body> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (con) => EditLeaveType(
-                                                    leaveTypeModel: leaveTypeBloc
-                                                        .leavetype[index],
+                                                    leaveTypeModel:
+                                                        leaveTypeBloc
+                                                            .leavetype[index],
                                                   )));
                                     }),
                                 SizedBox(
@@ -192,11 +175,9 @@ class _BodyState extends State<Body> {
                                     onPressed: () {
                                       print(
                                           "id ${leaveTypeBloc.leavetype[index].id}");
-                                      leaveTypeBloc
-                                          .add(DeleteLeaveTypeStarted(
-                                              id: leaveTypeBloc
-                                                  .leavetype[index]
-                                                  .id));
+                                      leaveTypeBloc.add(DeleteLeaveTypeStarted(
+                                          id: leaveTypeBloc
+                                              .leavetype[index].id));
                                     }),
                               ],
                             )
@@ -205,10 +186,26 @@ class _BodyState extends State<Body> {
                       ),
                     );
                   }),
-            ),
-          );
-        }
-      },
-    );
+            );
+          }
+        },
+        listener: (context, state) {
+          if (state is FetchedLeaveType) {
+            _refreshController.loadComplete();
+            _refreshController.refreshCompleted();
+          }
+          if (state is EndOfDepartmentList) {
+            _refreshController.loadNoData();
+          }
+          if (state is AddingLeaveType) {
+            EasyLoading.show(status: "loading....");
+          } else if (state is ErrorAddingLeaveType) {
+            Navigator.pop(context);
+            errorSnackBar(text: state.error.toString(), context: context);
+          } else if (state is AddedLeaveType) {
+            EasyLoading.dismiss();
+            EasyLoading.showSuccess("Sucess");
+          }
+        });
   }
 }

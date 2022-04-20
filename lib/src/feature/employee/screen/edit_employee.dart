@@ -105,14 +105,14 @@ class _EditEmployeeState extends State<EditEmployee> {
       appBar: standardAppBar(context, "Edit Employee"),
       body: Builder(builder: (context) {
         return BlocListener(
-           bloc: employeeBloc,
+            bloc: employeeBloc,
             listener: (context, state) {
               if (state is AddingEmployee) {
                 EasyLoading.show(status: "loading...");
                 // loadingDialogs(context);
               }
               if (state is ErorrAddingEmployee) {
-                Navigator.pop(context);
+                EasyLoading.dismiss();
                 errorSnackBar(text: state.error.toString(), context: context);
               }
               if (state is AddedEmployee) {
@@ -136,12 +136,9 @@ class _EditEmployeeState extends State<EditEmployee> {
                 }
                 if (state is FetchedDepartment) {
                   Navigator.pop(context);
-                  customModal(
-                      context,
-                     departmentBlc
-                          .departmentList
-                          .map((e) => e.name)
-                          .toList(), (value) {
+                  customModal(context,
+                      departmentBlc.departmentList.map((e) => e.name).toList(),
+                      (value) {
                     _departmentIdCtrl.text = value;
                     // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
                     //     .roomtype
@@ -152,7 +149,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                 }
               },
               child: BlocListener(
-                 bloc: positionBlc,
+                bloc: positionBlc,
                 listener: (context, state) {
                   if (state is FetchingPosition) {
                     loadingDialogs(context);
@@ -166,8 +163,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                     Navigator.pop(context);
                     customModal(
                         context,
-                       positionBlc
-                            .positionList
+                        positionBlc.positionList
                             .map((e) => e.positionName)
                             .toList(), (value) {
                       _positionIdCtrl.text = value;
@@ -390,8 +386,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                             TextFormField(
                               controller: _departmentIdCtrl,
                               onTap: () {
-                                departmentBlc
-                                    .add(FetchAllDepartmentStarted());
+                                departmentBlc.add(FetchAllDepartmentStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -419,8 +414,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                             TextFormField(
                               controller: _positionIdCtrl,
                               onTap: () {
-                               positionBlc
-                                    .add(FetchAllPositionStarted());
+                                positionBlc.add(FetchAllPositionStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -544,58 +538,53 @@ class _EditEmployeeState extends State<EditEmployee> {
                                 title: "Update",
                                 onTap: () {
                                   String depart = "";
-                                    String position = "";
-                                    if (_formKey!.currentState!.validate()) {
-                                      if (_departmentIdCtrl.text !=
-                                          widget.employeeModel.departmentModel!
-                                              .name) {
-                                        DepartmentModel departId =
-                                            departmentBlc
-                                                .departmentList
-                                                .firstWhere((element) =>
-                                                    element.name ==
-                                                    _departmentIdCtrl.text);
-                                        depart = departId.id;
-                                      } else {
-                                        depart = widget
-                                            .employeeModel.departmentModel!.id;
-                                      }
-                                      if (_positionIdCtrl.text !=
-                                          widget.employeeModel.positionModel!
-                                              .positionName) {
-                                        PositionModel posiId =
-                                           positionBlc
-                                                .positionList
-                                                .firstWhere((element) =>
-                                                    element.positionName ==
-                                                    _positionIdCtrl.text);
-                                        position = posiId.id;
-                                      } else {
-                                        position = widget
-                                            .employeeModel.positionModel!.id;
-                                      }
-
-                                      employeeBloc
-                                          .add(UpdateEmployeeStarted(
-                                              id: widget.employeeModel.id,
-                                              name: _nameCtrl.text,
-                                              gender: _genderCtrl.text,
-                                              dob: _dobCtrl.text,
-                                              email: _emailCtrl.text,
-                                              officeTel: _officeTelCtrl.text,
-                                              // username: _usernameCtrl.text,
-                                              img: _image,
-                                              imgUrl: widget.employeeModel.img!,
-                                              // password: _passwordCtrl.text,
-                                              positionId: position,
-                                              departmentId: depart,
-                                              storeId: "1",
-                                              phoneNumber:
-                                                  _phoneNumberCtrl.text,
-                                              address: _addressCtrl.text));
+                                  String position = "";
+                                  if (_formKey!.currentState!.validate()) {
+                                    if (_departmentIdCtrl.text !=
+                                        widget.employeeModel.departmentModel!
+                                            .name) {
+                                      DepartmentModel departId = departmentBlc
+                                          .departmentList
+                                          .firstWhere((element) =>
+                                              element.name ==
+                                              _departmentIdCtrl.text);
+                                      depart = departId.id;
+                                    } else {
+                                      depart = widget
+                                          .employeeModel.departmentModel!.id;
                                     }
+                                    if (_positionIdCtrl.text !=
+                                        widget.employeeModel.positionModel!
+                                            .positionName) {
+                                      PositionModel posiId = positionBlc
+                                          .positionList
+                                          .firstWhere((element) =>
+                                              element.positionName ==
+                                              _positionIdCtrl.text);
+                                      position = posiId.id;
+                                    } else {
+                                      position = widget
+                                          .employeeModel.positionModel!.id;
+                                    }
+
+                                    employeeBloc.add(UpdateEmployeeStarted(
+                                        id: widget.employeeModel.id,
+                                        name: _nameCtrl.text,
+                                        gender: _genderCtrl.text,
+                                        dob: _dobCtrl.text,
+                                        email: _emailCtrl.text,
+                                        officeTel: _officeTelCtrl.text,
+                                        // username: _usernameCtrl.text,
+                                        img: _image,
+                                        imgUrl: widget.employeeModel.img!,
+                                        // password: _passwordCtrl.text,
+                                        positionId: position,
+                                        departmentId: depart,
+                                        storeId: "1",
+                                        phoneNumber: _phoneNumberCtrl.text,
+                                        address: _addressCtrl.text));
+                                  }
                                 })
-                            
                           ],
                         ),
                       ),

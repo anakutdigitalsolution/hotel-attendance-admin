@@ -96,8 +96,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                 EasyLoading.show(status: "loading....");
               }
               if (state is ErorrAddingEmployee) {
-                Navigator.pop(context);
-                errorSnackBar(text: state.error.toString(), context: context);
+                EasyLoading.dismiss();
+                EasyLoading.showError(state.error.toString());
               }
               if (state is AddedEmployee) {
                 EasyLoading.dismiss();
@@ -344,8 +344,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             TextFormField(
                               controller: _departmentIdCtrl,
                               onTap: () {
-                               departmentBlc
-                                    .add(FetchAllDepartmentStarted());
+                                departmentBlc.add(FetchAllDepartmentStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -373,8 +372,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             TextFormField(
                               controller: _positionIdCtrl,
                               onTap: () {
-                               positionBlc
-                                    .add(FetchAllPositionStarted());
+                                positionBlc.add(FetchAllPositionStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,

@@ -20,19 +20,13 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       yield InitializingLeave();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        page = 1;
-        leavemodel =
+        List<LeaveModel> leaveList =
             await leaveRepository.getleave(page: page, rowperpage: rowperpage);
-        // leavemodel.addAll(leaveList);
+        leavemodel.addAll(leaveList);
         print(leaveList.length);
         page++;
         print(page);
-        print(leaveList.length);
-        if (leaveList.length < rowperpage) {
-          yield EndOfLeaveList();
-        } else {
-          yield InitializedLeave();
-        }
+        yield InitializedLeave();
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingLeave(error: e.toString());

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 NotificationBloc notificationBloc = NotificationBloc();
+
 class NotificationPage extends StatefulWidget {
   const NotificationPage({Key? key}) : super(key: key);
 
@@ -45,9 +46,8 @@ class _BodyState extends State<Body> {
   final RefreshController _refreshController = RefreshController();
   @override
   Widget build(BuildContext context) {
-    notificationBloc
-        .add(FetchNotificationStarted());
-    return BlocBuilder(
+    notificationBloc.add(FetchNotificationStarted());
+    return BlocConsumer(
         bloc: notificationBloc,
         builder: (context, state) {
           if (state is FetchingNotification) {
@@ -59,10 +59,7 @@ class _BodyState extends State<Body> {
             return Center(
                 child: Container(child: Text(state.error.toString())));
           } else {
-            if (notificationBloc
-                    .notificationModel
-                    .length ==
-                0) {
+            if (notificationBloc.notificationModel.length == 0) {
               return Center(
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -72,102 +69,93 @@ class _BodyState extends State<Body> {
                 ],
               ));
             }
-            return BlocListener(
-              bloc: notificationBloc,
-                listener: (context, state) {
-                  if (state is FetchedNotification) {
-                    _refreshController.loadComplete();
-                     _refreshController.refreshCompleted();
-                  }
-                },
-                child: SmartRefresher(
-                  onRefresh: () {
-                    notificationBloc
-                        .add(RefreshNotificationStarted());
-                        
-                  },
-                  onLoading: () {
-                    notificationBloc
-                        .add(FetchNotificationStarted());
-                         _refreshController.loadComplete();
-                  },
-                  enablePullDown: true,
-                  enablePullUp: true,
-                  cacheExtent: 1,
-                  controller: _refreshController,
-                  child: ListView.builder(
-                      itemCount: notificationBloc
-                          .notificationModel
-                          .length,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            // Navigator.push(context, MaterialPageRoute(builder: (con)=>));
-                          },
-                          child: Card(
-                            child: Container(
-                              // margin: EdgeInsets.only(bottom: 8, left: 8, right: 8),
-                              padding: EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(6),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 1,
-                                    offset: Offset(
-                                        0, 0), // changes position of shadow
-                                  ),
-                                ],
+            return SmartRefresher(
+              onRefresh: () {
+                notificationBloc.add(RefreshNotificationStarted());
+              },
+              onLoading: () {
+                notificationBloc.add(FetchNotificationStarted());
+                _refreshController.loadComplete();
+              },
+              enablePullDown: true,
+              enablePullUp: true,
+              cacheExtent: 1,
+              controller: _refreshController,
+              child: ListView.builder(
+                  itemCount: notificationBloc.notificationModel.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () {
+                        // Navigator.push(context, MaterialPageRoute(builder: (con)=>));
+                      },
+                      child: Card(
+                        child: Container(
+                          // margin: EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 1,
+                                offset:
+                                    Offset(0, 0), // changes position of shadow
                               ),
-                              child: Container(
-                                padding: EdgeInsets.all(8.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
+                            ],
+                          ),
+                          child: Container(
+                            padding: EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      children: [
-                                        Icon(
-                                          Icons.date_range,
-                                          size: 18.0,
-                                          color: Colors.orange[900],
-                                        ),
-                                        Text(
-                                          " " + '02/28/2022',
-                                          style:
-                                              TextStyle(color: Colors.black),
-                                        ),
-                                      ],
+                                    Icon(
+                                      Icons.date_range,
+                                      size: 18.0,
+                                      color: Colors.orange[900],
                                     ),
-                                    SizedBox(
-                                      height: 10.0,
-                                    ),
-                                    Row(
-                                      children: [
-                                        // Icon(
-                                        //   Icons.date_range,
-                                        //   size: 18.0,
-                                        //   color: Colors.orange[900],
-                                        // ),
-                                        Text(
-                                          " " +
-                                             notificationBloc
-                                                  .notificationModel[index]
-                                                  .title,
-                                          style: TextStyle(
-                                              color: Colors.orange[900]),
-                                        ),
-                                      ],
+                                    Text(
+                                      " " + '02/28/2022',
+                                      style: TextStyle(color: Colors.black),
                                     ),
                                   ],
                                 ),
-                              ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Row(
+                                  children: [
+                                    // Icon(
+                                    //   Icons.date_range,
+                                    //   size: 18.0,
+                                    //   color: Colors.orange[900],
+                                    // ),
+                                    Text(
+                                      " " +
+                                          notificationBloc
+                                              .notificationModel[index].title,
+                                      style:
+                                          TextStyle(color: Colors.orange[900]),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      }),
-                ));
+                        ),
+                      ),
+                    );
+                  }),
+            );
+          }
+        },
+        listener: (context, state) {
+          if (state is FetchedNotification) {
+            _refreshController.loadComplete();
+            _refreshController.refreshCompleted();
           }
         });
   }

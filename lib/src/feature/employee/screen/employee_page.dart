@@ -55,10 +55,10 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    employeeBloc.add(FetchEmloyeeStarted());
+    employeeBloc.add(InitializeEmployeeStarted());
   }
+
   Widget build(BuildContext context) {
-    
     return BlocConsumer(
       bloc: employeeBloc,
       listener: (context, state) {
@@ -80,7 +80,7 @@ class _BodyState extends State<Body> {
         }
       },
       builder: (context, state) {
-        if (state is FetchingEmployee) {
+        if (state is InitializingEmployee) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -99,12 +99,12 @@ class _BodyState extends State<Body> {
               employeeBloc.add(RefreshEmployeeStarted());
             },
             onLoading: () {
-              if(employeeBloc.state is EndofEmployeeList){
+              if (employeeBloc.state is EndofEmployeeList) {
                 _refreshController.loadNoData();
-              }else{
-                 employeeBloc.add(FetchEmloyeeStarted());
+              } else {
+                employeeBloc.add(FetchEmloyeeStarted());
               }
-             
+
               // _refreshController.loadComplete();
               // if (BlocProvider.of<EmployeeBloc>(context).state
               //     is EndofEmployeeList) {

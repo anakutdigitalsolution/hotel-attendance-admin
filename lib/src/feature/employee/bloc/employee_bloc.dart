@@ -43,17 +43,20 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
       yield InitializingEmployee();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        page = 1;
-        emploList = await departmentRepository.getEmployee(
-            rowPerpage: rowperpage, page: page);
+        print(page);
+        List<EmployeeModel> _departmentList = await departmentRepository
+            .getEmployee(rowPerpage: rowperpage, page: page);
+
+        emploList.addAll(_departmentList);
         page++;
         print(page);
         print(emploList.length);
-        if (emploList.length < rowperpage) {
-          yield EndofEmployeeList();
-        } else {
-          yield InitializedEmployee();
-        }
+        yield InitializedEmployee();
+        // if (emploList.length < rowperpage) {
+        //   yield EndofEmployeeList();
+        // } else {
+
+        // }
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingEmployee(error: e.toString());
@@ -70,6 +73,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
             .getEmployee(rowPerpage: rowperpage, page: page);
 
         emploList.addAll(_departmentList);
+        page++;
         yield FetchedEmployee();
       } catch (e) {
         log(e.toString());
@@ -88,7 +92,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         yield ErrorFetchingEmployee(error: e.toString());
       }
     }
-    
+
     if (event is AddEmployeeStarted) {
       yield AddingEmployee();
       try {

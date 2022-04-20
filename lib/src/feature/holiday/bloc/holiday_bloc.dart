@@ -74,6 +74,7 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
         List<HolidayModel> leaveList =
             await leaveRepository.getHoliday(page: 1, rowperpage: rowperpage);
         holidaylist.addAll(leaveList);
+        page++;
         print(leaveList.length);
         yield FetchedHoliday();
       } catch (e) {
@@ -90,12 +91,15 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
             toDate: event.toDate,
             notes: event.note);
         yield AddedHoliday();
-        yield FetchingHoliday();
+        yield InitializingHoliday();
         holidaylist.clear();
-        holidaylist =
-            await leaveRepository.getHoliday(page: 1, rowperpage: rowperpage);
+        holidaylist = await leaveRepository.getHoliday(
+            page: page, rowperpage: rowperpage);
         print(holidaylist.length);
-        yield FetchedHoliday();
+
+        print("page $page");
+        print(holidaylist.length);
+        yield InitializedHoliday();
       } catch (e) {
         log(e.toString());
         yield ErrorAddingHoliday(error: e.toString());
@@ -113,8 +117,11 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
         yield AddedHoliday();
         yield FetchingHoliday();
         holidaylist.clear();
-        holidaylist =
-            await leaveRepository.getHoliday(page: 1, rowperpage: rowperpage);
+        holidaylist = await leaveRepository.getHoliday(
+            page: page, rowperpage: rowperpage);
+        print(holidaylist.length);
+
+        print("page $page");
         print(holidaylist.length);
         yield FetchedHoliday();
       } catch (e) {
@@ -127,12 +134,18 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
       try {
         await leaveRepository.deleteHoliday(id: event.id);
         yield AddedHoliday();
-        yield FetchingHoliday();
         holidaylist.clear();
-        holidaylist =
-            await leaveRepository.getHoliday(page: 1, rowperpage: rowperpage);
+        yield InitializingHoliday();
+        page = 1;
+        List<HolidayModel> _templist = await leaveRepository.getHoliday(
+            page: page, rowperpage: rowperpage);
+        holidaylist.addAll(_templist);
+        // leavemodel.addAll(leaveList);
         print(holidaylist.length);
-        yield FetchedHoliday();
+        page++;
+        print("page $page");
+        print(holidaylist.length);
+        yield InitializedHoliday();
       } catch (e) {
         log(e.toString());
         yield ErrorAddingHoliday(error: e.toString());

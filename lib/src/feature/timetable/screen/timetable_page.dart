@@ -1,4 +1,3 @@
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
@@ -15,9 +14,10 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'add_timetable.dart';
 import 'edit_timetable.dart';
 
-TimetableBloc timetableBloc =TimetableBloc();
+TimetableBloc timetableBloc = TimetableBloc();
+
 class TimetablePage extends StatefulWidget {
-  const TimetablePage({ Key? key }) : super(key: key);
+  const TimetablePage({Key? key}) : super(key: key);
 
   @override
   State<TimetablePage> createState() => _TimetablePageState();
@@ -26,10 +26,11 @@ class TimetablePage extends StatefulWidget {
 class _TimetablePageState extends State<TimetablePage> {
   @override
   Widget build(BuildContext context) {
-     return Scaffold(
+    return Scaffold(
       appBar: standardAppBar(context, "Timetable Page"),
       body: Container(
-          margin: EdgeInsets.only(top: 10, bottom: 10), child: DepartmentBody()),
+          margin: EdgeInsets.only(top: 10, bottom: 10),
+          child: DepartmentBody()),
       floatingActionButton: Container(
         child: FloatingActionButton(
             backgroundColor: Colors.lightBlueAccent,
@@ -37,7 +38,6 @@ class _TimetablePageState extends State<TimetablePage> {
             elevation: 0,
             onPressed: () {
               Navigator.pushNamed(context, addTimetable);
-              
             }),
       ),
     );
@@ -45,75 +45,57 @@ class _TimetablePageState extends State<TimetablePage> {
 }
 
 class DepartmentBody extends StatefulWidget {
-  const DepartmentBody({ Key? key }) : super(key: key);
+  const DepartmentBody({Key? key}) : super(key: key);
 
   @override
   State<DepartmentBody> createState() => _DepartmentBodyState();
 }
 
 class _DepartmentBodyState extends State<DepartmentBody> {
-  
+  final RefreshController _refreshController = RefreshController();
+  void initState() {
+    super.initState();
+
+    timetableBloc.add(InitializeTimetableStarted());
+  }
+
   @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-    timetableBloc.add(FetchTimetableStarted());
-    final RefreshController _refreshController = RefreshController();
-    return BlocBuilder(
-      bloc: timetableBloc,
-      builder: (context, state) {
-        if (state is FetchingTimetable) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is ErrorFetchingTimetable) {
-          return Center(
-            child: Text(state.error.toString()),
-          );
-        } else {
-          if (timetableBloc.timetableList.length == 0) {
-            return Center(
-              child: Text("No Data"),
-            );
-          }
-          print(
-              "length ${timetableBloc.timetableList.length}");
 
-          return BlocListener(
-            bloc: timetableBloc,
-            listener: (context, state) {
-              if (state is FetchedTimetable) {
-                _refreshController.loadComplete();
-                _refreshController.refreshCompleted();
-              }
-              if (state is EndOfTimetableList) {
-                _refreshController.loadNoData();
-              }
-              if (state is AddingTimetable) {
-                EasyLoading.show(status: "loading....");
-              } else if (state is ErrorAddingTimetable) {
-                Navigator.pop(context);
-                errorSnackBar(text: state.error.toString(), context: context);
-              } else if (state is AddedTimetable) {
-                EasyLoading.dismiss();
-                EasyLoading.showSuccess("Sucess");
-                
-              }
-            },
-            child: SmartRefresher(
+    return BlocConsumer(
+        bloc: timetableBloc,
+        builder: (context, state) {
+          if (state is InitializingTimetable) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is ErrorFetchingTimetable) {
+            return Center(
+              child: Text(state.error.toString()),
+            );
+          } else {
+            if (timetableBloc.timetableList.length == 0) {
+              return Center(
+                child: Text("No Data"),
+              );
+            }
+            print("length ${timetableBloc.timetableList.length}");
+
+            return SmartRefresher(
               onRefresh: () {
                 timetableBloc.add(RefreshTimetableStarted());
               },
               onLoading: () {
-                    timetableBloc.add(FetchTimetableStarted());
-                     _refreshController.loadComplete();
+                timetableBloc.add(FetchTimetableStarted());
+                _refreshController.loadComplete();
               },
               enablePullDown: true,
               enablePullUp: true,
               cacheExtent: 1,
               controller: _refreshController,
               child: ListView.builder(
-                  itemCount:
-                      timetableBloc.timetableList.length,
+                  itemCount: timetableBloc.timetableList.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -150,8 +132,8 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                 Text(
                                   "${timetableBloc.timetableList[index].timetableName}",
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      ),
+                                    color: Colors.black,
+                                  ),
                                 )
                               ],
                             ),
@@ -172,8 +154,8 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                 Text(
                                   "${timetableBloc.timetableList[index].onDutyTtime}",
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      ),
+                                    color: Colors.black,
+                                  ),
                                 )
                               ],
                             ),
@@ -194,62 +176,78 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                 Text(
                                   "${timetableBloc.timetableList[index].offDutyTime}",
                                   style: TextStyle(
-                                      color: Colors.black,
-                                      ),
+                                    color: Colors.black,
+                                  ),
                                 )
                               ],
                             ),
-                            
-                             Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      CupertinoButton(
-                                          padding: EdgeInsets.all(1.0),
-                                          color: Colors.green,
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.edit),
-                                            ],
-                                          ),
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (con) => EditTimetable(
-                                                          timetableModel: timetableBloc.timetableList[index],
-                                                        )));
-                                          }),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      CupertinoButton(
-                                          padding: EdgeInsets.all(1.0),
-                                          color: Colors.red,
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.delete),
-                                            ],
-                                          ),
-                                          onPressed: () {
-                                            print(
-                                                "id ${timetableBloc.timetableList[index].id}");
-                                            timetableBloc
-                                                .add(DeleteTimetableStarted(
-                                                    id:timetableBloc.timetableList[index]
-                                                        .id));
-                                          }),
-                                    ],
-                                  )
-                               
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                CupertinoButton(
+                                    padding: EdgeInsets.all(1.0),
+                                    color: Colors.green,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.edit),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (con) => EditTimetable(
+                                                    timetableModel:
+                                                        timetableBloc
+                                                                .timetableList[
+                                                            index],
+                                                  )));
+                                    }),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                CupertinoButton(
+                                    padding: EdgeInsets.all(1.0),
+                                    color: Colors.red,
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.delete),
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      print(
+                                          "id ${timetableBloc.timetableList[index].id}");
+                                      timetableBloc.add(DeleteTimetableStarted(
+                                          id: timetableBloc
+                                              .timetableList[index].id));
+                                    }),
+                              ],
+                            )
                           ],
                         ),
                       ),
                     );
                   }),
-            ),
-          );
-        }
-      },
-    );
+            );
+          }
+        },
+        listener: (context, state) {
+          if (state is FetchedTimetable) {
+            _refreshController.loadComplete();
+            _refreshController.refreshCompleted();
+          }
+          if (state is EndOfTimetableList) {
+            _refreshController.loadNoData();
+          }
+          if (state is AddingTimetable) {
+            EasyLoading.show(status: "loading....");
+          } else if (state is ErrorAddingTimetable) {
+            Navigator.pop(context);
+            errorSnackBar(text: state.error.toString(), context: context);
+          } else if (state is AddedTimetable) {
+            EasyLoading.dismiss();
+            EasyLoading.showSuccess("Sucess");
+          }
+        });
   }
 }

@@ -13,8 +13,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'add_position.dart';
 import 'edit_position.dart';
 
-
 PositionBlc positionBlc = PositionBlc();
+
 class PositionPage extends StatefulWidget {
   const PositionPage({Key? key}) : super(key: key);
 
@@ -50,15 +50,33 @@ class PositionBody extends StatefulWidget {
 }
 
 class _PositionBodyState extends State<PositionBody> {
+  final RefreshController _refreshController = RefreshController();
   @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
     positionBlc.add(FetchPositionStarted());
-    final RefreshController _refreshController = RefreshController();
-    return BlocBuilder(
+    return BlocConsumer(
       bloc: positionBlc,
+      listener: (context, state) {
+        if (state is FetchedPosition) {
+          _refreshController.loadComplete();
+          _refreshController.refreshCompleted();
+        }
+        if (state is EndOfPositionList) {
+          _refreshController.loadNoData();
+        }
+        if (state is AddingPosition) {
+          EasyLoading.show(status: "loading....");
+        } else if (state is ErrorAddingPosition) {
+          Navigator.pop(context);
+          errorSnackBar(text: state.error.toString(), context: context);
+        } else if (state is AddedPosition) {
+          EasyLoading.dismiss();
+          EasyLoading.showSuccess("Sucess");
+        }
+      },
       builder: (context, state) {
-        if (state is FetchingPosition) {
+        if (state is InitializingPosition) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -72,134 +90,107 @@ class _PositionBodyState extends State<PositionBody> {
               child: Text("No Data"),
             );
           }
-          print(
-              "length ${positionBlc.positionList.length}");
-
-          return BlocListener(
-            bloc: positionBlc,
-            listener: (context, state) {
-              if (state is FetchedPosition) {
-                _refreshController.loadComplete();
-                _refreshController.refreshCompleted();
-              }
-              if (state is EndOfPositionList) {
-                _refreshController.loadNoData();
-              }
-              if (state is AddingPosition) {
-               EasyLoading.show(status: "loading....");
-              } else if (state is ErrorAddingPosition) {
-                Navigator.pop(context);
-                errorSnackBar(text: state.error.toString(), context: context);
-              } else if (state is AddedPosition) {
-                EasyLoading.dismiss();
-                EasyLoading.showSuccess("Sucess");
-              }
+          print("length ${positionBlc.positionList.length}");
+          return SmartRefresher(
+            onRefresh: () {
+              positionBlc.add(RefreshPositionStarted());
             },
-            child: SmartRefresher(
-              onRefresh: () {
-                positionBlc
-                    .add(RefreshPositionStarted());
-              },
-              onLoading: () {
-                positionBlc.add(FetchPositionStarted());
-                 _refreshController.loadComplete();
-              },
-              enablePullDown: true,
-              enablePullUp: true,
-              cacheExtent: 1,
-              controller: _refreshController,
-              child: ListView.builder(
-                  itemCount:
-                      positionBlc.positionList.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      margin:
-                          EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                        borderRadius: BorderRadius.circular(6.0),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 0,
-                            blurRadius: 3,
-                            offset: Offset(0, 0), // changes position of shadow
+            onLoading: () {
+              positionBlc.add(FetchPositionStarted());
+              _refreshController.loadComplete();
+            },
+            enablePullDown: true,
+            enablePullUp: true,
+            cacheExtent: 1,
+            controller: _refreshController,
+            child: ListView.builder(
+                itemCount: positionBlc.positionList.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin:
+                        EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                      borderRadius: BorderRadius.circular(6.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 0,
+                          blurRadius: 3,
+                          offset: Offset(0, 0), // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            // mainAxisAlignment:
+                            //     MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  "Name :",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              Text(
+                                "${positionBlc.positionList[index].positionName}",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              CupertinoButton(
+                                  padding: EdgeInsets.all(1.0),
+                                  color: Colors.green,
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.edit),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (con) => EditPosition(
+                                                  positionModel: positionBlc
+                                                      .positionList[index],
+                                                )));
+                                  }),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              CupertinoButton(
+                                  padding: EdgeInsets.all(1.0),
+                                  color: Colors.red,
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.delete),
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    print(
+                                        "id ${positionBlc.positionList[index].id}");
+                                    positionBlc.add(DeletePositionStarted(
+                                        id: positionBlc
+                                            .positionList[index].id));
+                                  }),
+                            ],
+                          )
                         ],
                       ),
-                      child: Container(
-                        padding: EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              // mainAxisAlignment:
-                              //     MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Text(
-                                    "Name :",
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ),
-                                Text(
-                                  "${positionBlc.positionList[index].positionName}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                CupertinoButton(
-                                    padding: EdgeInsets.all(1.0),
-                                    color: Colors.green,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.edit),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (con) => EditPosition(
-                                                    positionModel: positionBlc
-                                                        .positionList[index],
-                                                  )));
-                                    }),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                CupertinoButton(
-                                    padding: EdgeInsets.all(1.0),
-                                    color: Colors.red,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.delete),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      print(
-                                          "id ${positionBlc.positionList[index].id}");
-                                      positionBlc.add(
-                                          DeletePositionStarted(
-                                              id: positionBlc
-                                                  .positionList[index]
-                                                  .id));
-                                    }),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  }),
-            ),
+                    ),
+                  );
+                }),
           );
         }
       },

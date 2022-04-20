@@ -13,6 +13,7 @@ import 'edit_leave.dart';
 import 'edit_leave_status.dart';
 
 LeaveBloc leaveBloc = LeaveBloc();
+
 class LeavePage extends StatefulWidget {
   @override
   _LeavePageState createState() => _LeavePageState();
@@ -49,57 +50,42 @@ class WantedBody extends StatefulWidget {
 class _WantedBodyState extends State<WantedBody> {
   final RefreshController _refreshController = RefreshController();
   @override
+  void initState() {
+    super.initState();
+
+    leaveBloc.add(InitializeLeaveStarted());
+  }
+
+  @override
   Widget build(BuildContext context) {
     //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-    leaveBloc.add(FetchLeaveStarted());
-    
-    return BlocBuilder(
-      bloc: leaveBloc,
-      builder: (context, state) {
-        if (state is FetchingLeave) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is ErrorFetchingLeave) {
-          return Center(
-            child: Text(state.error),
-          );
-        } else {
-          if (leaveBloc.leavemodel.length == 0) {
-            return Center(
-              child: Text("No Data"),
-            );
-          }
-          print(
-              "length ${leaveBloc.leavemodel.length}");
 
-          return BlocListener(
-            bloc: leaveBloc,
-            listener: (context, state) {
-              if (state is FetchedLeave) {
-                _refreshController.loadComplete();
-                _refreshController.refreshCompleted();
-              }
-              if (state is EndOfLeaveList) {
-                _refreshController.loadNoData();
-              }
-              if (state is AddingLeave) {
-               EasyLoading.show(status: "loading....");
-              } else if (state is ErrorAddingLeave) {
-                Navigator.pop(context);
-                errorSnackBar(text: state.error.toString(), context: context);
-              } else if (state is AddedLeave) {
-                EasyLoading.dismiss();
-                EasyLoading.showSuccess("Sucess");
-              }
-            },
-            child: SmartRefresher(
+    return BlocConsumer(
+        bloc: leaveBloc,
+        builder: (context, state) {
+          if (state is InitializingLeave) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (state is ErrorFetchingLeave) {
+            return Center(
+              child: Text(state.error),
+            );
+          } else {
+            if (leaveBloc.leavemodel.length == 0) {
+              return Center(
+                child: Text("No Data"),
+              );
+            }
+            print("length ${leaveBloc.leavemodel.length}");
+
+            return SmartRefresher(
               onRefresh: () {
                 leaveBloc.add(RefreshLeaveStarted());
               },
               onLoading: () {
                 leaveBloc.add(FetchLeaveStarted());
-                 _refreshController.loadComplete();
+                _refreshController.loadComplete();
                 // if (BlocProvider.of<LeaveBloc>(context).state
                 //     is EndOfLeaveList) {
                 // } else {
@@ -113,8 +99,7 @@ class _WantedBodyState extends State<WantedBody> {
               cacheExtent: 1,
               controller: _refreshController,
               child: ListView.builder(
-                  itemCount:
-                      leaveBloc.leavemodel.length,
+                  itemCount: leaveBloc.leavemodel.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -260,10 +245,7 @@ class _WantedBodyState extends State<WantedBody> {
                                 ),
                               ],
                             ),
-                            leaveBloc
-                                        .leavemodel[index]
-                                        .status ==
-                                    "pending"
+                            leaveBloc.leavemodel[index].status == "pending"
                                 ? Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
@@ -282,7 +264,8 @@ class _WantedBodyState extends State<WantedBody> {
                                                     builder: (con) =>
                                                         EditLeaveStatus(
                                                           leaveModel: leaveBloc
-                                                              .leavemodel[index],
+                                                                  .leavemodel[
+                                                              index],
                                                         )));
                                           }),
                                       SizedBox(
@@ -299,11 +282,9 @@ class _WantedBodyState extends State<WantedBody> {
                                           onPressed: () {
                                             print(
                                                 "id ${leaveBloc.leavemodel[index].id}");
-                                            leaveBloc
-                                                .add(DeleteLeaveStarted(
-                                                    id: leaveBloc
-                                                        .leavemodel[index]
-                                                        .id));
+                                            leaveBloc.add(DeleteLeaveStarted(
+                                                id: leaveBloc
+                                                    .leavemodel[index].id));
                                           }),
                                     ],
                                   )
@@ -313,10 +294,26 @@ class _WantedBodyState extends State<WantedBody> {
                       ),
                     );
                   }),
-            ),
-          );
-        }
-      },
-    );
+            );
+          }
+        },
+        listener: (context, state) {
+          if (state is FetchedLeave) {
+            _refreshController.loadComplete();
+            _refreshController.refreshCompleted();
+          }
+          if (state is EndOfLeaveList) {
+            _refreshController.loadNoData();
+          }
+          if (state is AddingLeave) {
+            EasyLoading.show(status: "loading....");
+          } else if (state is ErrorAddingLeave) {
+            Navigator.pop(context);
+            errorSnackBar(text: state.error.toString(), context: context);
+          } else if (state is AddedLeave) {
+            EasyLoading.dismiss();
+            EasyLoading.showSuccess("Sucess");
+          }
+        });
   }
 }

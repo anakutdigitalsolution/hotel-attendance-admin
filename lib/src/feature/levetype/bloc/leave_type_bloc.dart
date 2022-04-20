@@ -17,18 +17,12 @@ class LeaveTypeBloc extends Bloc<LeaveTypeEvent, LeaveTypeState> {
       yield InitializingLeaveType();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        page = 1;
-        leavetype = await departmentRepository.getleaveType(
-            rowPerpage: rowperpage, page: page);
-
+        List<LeaveTypeModel> _departmentList = await departmentRepository
+            .getleaveType(rowPerpage: rowperpage, page: page);
+        leavetype.addAll(_departmentList);
         page++;
-        print(page);
         print(leavetype.length);
-        if (leavetype.length < rowperpage) {
-          yield EndOfLeaveTypeList();
-        } else {
-          yield InitializedLeaveType();
-        }
+        yield InitializedLeaveType();
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingLeaveType(error: e.toString());

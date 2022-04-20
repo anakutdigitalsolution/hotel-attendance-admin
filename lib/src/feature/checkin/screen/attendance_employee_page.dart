@@ -8,10 +8,8 @@ import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/checkin_out_state
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/screen/widget/attendance_tile.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -45,6 +43,7 @@ class _BodyState extends State<Body> {
   String? checkin;
   String? data;
   String? checkinTime;
+  final RefreshController _refreshController = RefreshController();
   @override
   void initState() {
     DateTime now = DateTime.now();
@@ -52,56 +51,57 @@ class _BodyState extends State<Body> {
     // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
     checkin = formattedDate.toString();
     super.initState();
+    employeeBloc.add(InitializeEmployeeStarted());
   }
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<EmployeeBloc>(context).add(InitializeEmployeeStarted());
-    final RefreshController _refreshController = RefreshController();
-    return BlocBuilder<EmployeeBloc, EmployeeState>(builder: (context, state) {
-      if (state is FetchingEmployee) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-      if (state is ErrorFetchingEmployee) {
-        return Center(
-          child: Text(state.error.toString()),
-        );
-      }
-
-      return BlocListener<CheckInOutBloc, CheckInOutState>(
-        listener: (context, state) {
-          // if (state is FetchedEmployee) {}
-        },
-        child: BlocListener<CheckInOutBloc, CheckInOutState>(
-          listener: (context, state) {
-            if (state is AddingCheckin) {
-              EasyLoading.show(status: "loading....");
-            }
-            if (state is ErrorAddingCheckInOut) {
-              EasyLoading.dismiss();
-              EasyLoading.showToast(state.error.toString());
-            }
-            if (state is AddedCheckin) {
-              EasyLoading.dismiss();
-              EasyLoading.showSuccess("Sucess");
-              BlocProvider.of<EmployeeBloc>(context)
-                  .add(RefreshEmployeeStarted());
-            }
-          },
-          child: SmartRefresher(
+    return BlocConsumer(
+      bloc: employeeBloc,
+      listener: (context, state) {
+        if (state is FetchedEmployee) {
+          _refreshController.loadComplete();
+          _refreshController.refreshCompleted();
+        }
+        if (state is EndofEmployeeList) {
+          _refreshController.loadNoData();
+        }
+        if (state is AddingCheckin) {
+          EasyLoading.show(status: "loading....");
+        }
+        if (state is ErrorAddingCheckInOut) {
+          EasyLoading.dismiss();
+          EasyLoading.showToast(state.error.toString());
+        }
+        if (state is AddedCheckin) {
+          EasyLoading.dismiss();
+          EasyLoading.showSuccess("Sucess");
+          BlocProvider.of<EmployeeBloc>(context).add(RefreshEmployeeStarted());
+        }
+      },
+      builder: (context, state) {
+        if (state is InitializingEmployee) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (state is ErrorFetchingEmployee) {
+          return Center(
+            child: Text(state.error.toString()),
+          );
+        } else {
+          return SmartRefresher(
             onRefresh: () {
+              employeeBloc.add(RefreshEmployeeStarted());
+
               // BlocProvider.of<TimetableBloc>(context).add(RefreshTimetableStarted());
             },
             onLoading: () {
-              // if (BlocProvider.of<TimetableBloc>(context).state
-              //     is EndOfTimetableList) {
-              // } else {
-              //   // BlocProvider.of<ProductListingBloc>(context)
-              //   //     .add(FetchProductListStarted(arg: widget.category.id));
-              // }
-              // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
+              if (employeeBloc.state is EndofEmployeeList) {
+                _refreshController.loadNoData();
+              } else {
+                employeeBloc.add(FetchEmloyeeStarted());
+              }
             },
             enablePullDown: true,
             enablePullUp: true,
@@ -115,17 +115,15 @@ class _BodyState extends State<Body> {
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     children: [
-                      ...BlocProvider.of<EmployeeBloc>(context)
-                          .emploList
-                          .map((e) => AttendanceTile(
-                                employeeModel: e,
-                              ))
+                      ...employeeBloc.emploList.map((e) => AttendanceTile(
+                            employeeModel: e,
+                          ))
                     ],
                   )),
             ),
-          ),
-        ),
-      );
-    });
+          );
+        }
+      },
+    );
   }
 }
