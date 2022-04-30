@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
@@ -6,6 +8,7 @@ import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'add_leave.dart';
@@ -298,6 +301,9 @@ class _WantedBodyState extends State<WantedBody> {
           }
         },
         listener: (context, state) {
+          if (state is ErrorFetchingLeave) {
+            Helper.handleState(state: state, context: context);
+          }
           if (state is FetchedLeave) {
             _refreshController.loadComplete();
             _refreshController.refreshCompleted();

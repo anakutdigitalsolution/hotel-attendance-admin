@@ -4,11 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
+
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_bloc.dart';
+
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
@@ -35,6 +35,7 @@ class EditEmployee extends StatefulWidget {
 }
 
 class _EditEmployeeState extends State<EditEmployee> {
+  
   final TextEditingController _nameCtrl = TextEditingController();
   final TextEditingController _genderCtrl = TextEditingController();
   final TextEditingController _usernameCtrl = TextEditingController();

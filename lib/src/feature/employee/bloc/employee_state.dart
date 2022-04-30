@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:hotle_attendnce_admin/src/utils/share/app_constant.dart';
 
 abstract class EmployeeState extends Equatable{
    EmployeeState([List props = const []]) : super();
@@ -23,7 +24,7 @@ class ErorrAddingEmployee extends EmployeeState{
     required this.error
   });
 }
-class ErrorFetchingEmployee extends EmployeeState{
+class ErrorFetchingEmployee extends EmployeeState with ErrorState{
   final dynamic error;
   ErrorFetchingEmployee({
     required this.error

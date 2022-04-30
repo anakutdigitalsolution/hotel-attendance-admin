@@ -1,5 +1,4 @@
- 
- import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/model/employee_timetable_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
@@ -10,8 +9,8 @@ class EmployeeTimetableRepository {
   Future<List<EmployeeTimetablModel>> getSchedule(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "schedules";
- 
+      String url = mainUrl + "schedules?page_size=$rowPerpage&page=$page";
+
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
@@ -59,7 +58,7 @@ class EmployeeTimetableRepository {
     required String timetableId,
   }) async {
     try {
-      String url = mainUrl + "schedule/edit/$id";
+      String url = mainUrl + "schedules/edit/$id";
       Map body = {
         "employee_id": employeeId,
         "timetable_id": timetableId,
@@ -78,13 +77,13 @@ class EmployeeTimetableRepository {
       throw e;
     }
   }
+
   Future<void> deleteSchedule({
     required String id,
-   
   }) async {
     try {
-      String url = mainUrl + "schedule/delete/$id";
-      
+      String url = mainUrl + "schedules/delete/$id";
+
       Response response = await apiProvider.delete(url, null);
 
       print(response.statusCode);

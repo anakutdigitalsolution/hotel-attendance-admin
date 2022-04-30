@@ -4,7 +4,7 @@ AppBar standardAppBar(BuildContext context, String text) {
   return AppBar(
     brightness: Brightness.light,
     elevation: 0,
-    backgroundColor: Theme.of(context).primaryColor,
+    backgroundColor: Colors.blue,
     leading: IconButton(
       icon: Icon(
         Icons.arrow_back_outlined,
@@ -14,7 +14,7 @@ AppBar standardAppBar(BuildContext context, String text) {
         Navigator.of(context).pop();
       },
     ),
-    centerTitle: true,
+    // centerTitle: true,
     title: Text(
       text,
       style: TextStyle(color: Colors.white, fontFamily: 'BattambangRegular'),

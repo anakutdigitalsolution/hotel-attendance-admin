@@ -26,6 +26,7 @@ class AddSchedule extends StatefulWidget {
 }
 
 class _AddScheduleState extends State<AddSchedule> {
+  EmployeeBloc employeeBloc = EmployeeBloc();
   final TextEditingController _empCtl = TextEditingController();
   final TextEditingController _timeCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
@@ -41,8 +42,8 @@ class _AddScheduleState extends State<AddSchedule> {
               EasyLoading.show(status: "loading....");
             }
             if (state is ErrorAddingEmployeeTimetable) {
-              Navigator.pop(context);
-              errorSnackBar(text: state.error.toString(), context: context);
+              EasyLoading.dismiss();
+              EasyLoading.showError(state.error.toString());
             }
             if (state is AddedEmployeeTimetable) {
               EasyLoading.dismiss();
@@ -65,12 +66,9 @@ class _AddScheduleState extends State<AddSchedule> {
                 if (stae is FetchedEmployee) {
                   print("hi");
                   Navigator.pop(context);
-                  customModal(
-                      context,
-                      employeeBloc
-                          .emploList
-                          .map((e) => e.name)
-                          .toList(), (value) {
+                  customModal(context,
+                      employeeBloc.emploList.map((e) => e.name).toList(),
+                      (value) {
                     _empCtl.text = value;
                     // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
                     //     .roomtype
@@ -95,9 +93,9 @@ class _AddScheduleState extends State<AddSchedule> {
                     Navigator.pop(context);
                     customModal(
                         context,
-                       timetableBloc
-                            .timetableList
-                            .map((e) => e.timetableName)
+                        timetableBloc.timetableList
+                            .map((e) =>
+                                "${e.timetableName} from ${e.onDutyTtime} to ${e.offDutyTime}")
                             .toList(), (value) {
                       _timeCtrl.text = value;
                       // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
@@ -121,8 +119,7 @@ class _AddScheduleState extends State<AddSchedule> {
                             TextFormField(
                               controller: _empCtl,
                               onTap: () {
-                                employeeBloc
-                                    .add(FetchAllEmployeeStarted());
+                                employeeBloc.add(FetchAllEmployeeStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -150,8 +147,7 @@ class _AddScheduleState extends State<AddSchedule> {
                             TextFormField(
                               controller: _timeCtrl,
                               onTap: () {
-                                timetableBloc
-                                    .add(FetchAllTimetableStarted());
+                                timetableBloc.add(FetchAllTimetableStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -181,20 +177,18 @@ class _AddScheduleState extends State<AddSchedule> {
                                 title: "Submit",
                                 onTap: () {
                                   if (_formKey!.currentState!.validate()) {
-                                    EmployeeModel employeeId =
-                                        employeeBloc
-                                            .emploList
-                                            .firstWhere((element) =>
-                                                element.name == _empCtl.text);
+                                    EmployeeModel employeeId = employeeBloc
+                                        .emploList
+                                        .firstWhere((element) =>
+                                            element.name == _empCtl.text);
 
-                                    TimetableModel timetableId =
-                                        timetableBloc
-                                            .timetableList
-                                            .firstWhere((element) =>
-                                                element.timetableName ==
-                                                _timeCtrl.text);
-                                    employeeTimetableBloc
-                                        .add(AddEmployeeTimetableStarted(
+                                    TimetableModel timetableId = timetableBloc
+                                        .timetableList
+                                        .firstWhere((e) =>
+                                            "${e.timetableName} from ${e.onDutyTtime} to ${e.offDutyTime}" ==
+                                            _timeCtrl.text);
+                                    employeeTimetableBloc.add(
+                                        AddEmployeeTimetableStarted(
                                             employeeId: employeeId.id,
                                             timetableId: timetableId.id));
                                   }

@@ -19,6 +19,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
       yield FetchingEmployee();
       try {
         print(page);
+        print(emploList.length);
         List<EmployeeModel> _departmentList = await departmentRepository
             .getEmployee(rowPerpage: rowperpage, page: page);
 
@@ -52,11 +53,6 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         print(page);
         print(emploList.length);
         yield InitializedEmployee();
-        // if (emploList.length < rowperpage) {
-        //   yield EndofEmployeeList();
-        // } else {
-
-        // }
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingEmployee(error: e.toString());

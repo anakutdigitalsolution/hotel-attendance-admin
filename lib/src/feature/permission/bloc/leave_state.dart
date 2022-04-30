@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:hotle_attendnce_admin/src/utils/share/app_constant.dart';
 
 class LeaveState extends Equatable {
   LeaveState([List props = const []]) : super();
@@ -19,7 +20,7 @@ class EndOfLeaveList extends LeaveState {}
 
 
 
-class ErrorFetchingLeave extends LeaveState {
+class ErrorFetchingLeave extends LeaveState with ErrorState {
   final dynamic error;
   ErrorFetchingLeave({required this.error});
 }

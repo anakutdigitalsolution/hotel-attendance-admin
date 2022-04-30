@@ -1,17 +1,31 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-
 import 'package:hotle_attendnce_admin/src/feature/report/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 
 class ReportTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ReportBloc, ReportState>(
+    return BlocConsumer<ReportBloc, ReportState>(
+      listener: (context, state) {
+        if (state is ErrorFetchedReport) {
+          Helper.handleState(state: state, context: context);
+        }
+      },
       builder: (context, state) {
+        if (state is ErrorFetchedReport) {
+          // errorSnackBar(text: state.error, context: context);
+          return TextButton(
+            child: Text("Retry"),
+            onPressed: () {},
+          );
+        }
         if (state is FetchedReport) {
           return Column(
             children: [
@@ -69,7 +83,7 @@ class ReportTile extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                               state.report.late,
+                              state.report.late,
                               textScaleFactor: 2.3,
                               style: TextStyle(
                                   color: Colors.blue,
@@ -79,7 +93,7 @@ class ReportTile extends StatelessWidget {
                               height: 5,
                             ),
                             Text(
-                             "Late",
+                              "Late",
                               textScaleFactor: 1.2,
                               // style: TextStyle(),
                             )
@@ -115,7 +129,7 @@ class ReportTile extends StatelessWidget {
                           children: [
                             FittedBox(
                                 child: Text(
-                               state.report.checkin,
+                              state.report.checkin,
                               textScaleFactor: 1.8,
                               style: TextStyle(
                                   color: Colors.green[800],
@@ -146,7 +160,7 @@ class ReportTile extends StatelessWidget {
                               height: 5,
                             ),
                             Text(
-                             "Check out",
+                              "Check out",
                               textScaleFactor: 1.1,
                             )
                           ],
@@ -324,152 +338,11 @@ class ReportTile extends StatelessWidget {
             ],
           );
         }
-        if (state is ErrorFetchedReport) {
-          // errorSnackBar(text: state.error, context: context);
-          return TextButton(
-            child: Text("Retry"),
-            onPressed: () {},
-          );
-        }
         return Container(
           child: Center(
             child: CircularProgressIndicator(),
           ),
         );
-        // return Container(
-        //   decoration: new BoxDecoration(
-        //     borderRadius: BorderRadius.circular(10),
-        //     color: Colors.grey[200],
-        //   ),
-        //   padding: EdgeInsets.all(15),
-        //   child: Column(
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: [
-        //       Align(
-        //         alignment: Alignment.centerLeft,
-        //         child: DropdownButton<String>(
-        //           hint: Text(
-        //             'Date',
-        //             // AppLocalizations.of(context).translate(
-        //             //     BlocProvider.of<ReportBloc>(context).dateRange),
-        //             textScaleFactor: 1.1,
-        //           ),
-        //           items: ['Today', 'This week', 'This month', 'This year', "Custom"]
-        //               .map((String value) {
-        //             return DropdownMenuItem<String>(value: value, child: Text(value)
-        //                 // Text(AppLocalizations.of(context).translate(value)),
-        //                 );
-        //           }).toList(),
-        //           onChanged: (value) {
-        //             if (value == "Custom") {
-        //               showPickerDateRange(context);
-        //             } else {}
-        //             BlocProvider.of<ReportBloc>(context)
-        //                 .add(FetchReportStarted(dateRange: value));
-        //           },
-        //         ),
-        //       ),
-        //       SizedBox(
-        //         height: 10,
-        //       ),
-        //       //  Divider(),
-        //       Row(
-        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //         children: [
-        //           Column(
-        //             children: [
-        //               Text(
-
-        //                 "$" + state.report.income.toStringAsFixed(2),
-        //                 textScaleFactor: 2.3,
-        //                 style: TextStyle(
-        //                     color: Colors.blue, fontWeight: FontWeight.bold),
-        //               ),
-        //               SizedBox(
-        //                 height: 5,
-        //               ),
-        //               Text(
-        //                 'Income',
-        //                 // AppLocalizations.of(context).translate("income"),
-        //                 textScaleFactor: 1.2,
-        //                 // style: TextStyle(),
-        //               )
-        //             ],
-        //           ),
-        //           Column(
-        //             children: [
-        //               Text(
-        //                 '$100',
-        //                 // "$" + state.report.expense.toStringAsFixed(2),
-        //                 textScaleFactor: 1.8,
-        //                 style: TextStyle(
-        //                     color: Colors.red, fontWeight: FontWeight.bold),
-        //               ),
-        //               SizedBox(
-        //                 height: 5,
-        //               ),
-        //               Text(
-        //                 'Expense',
-        //                 // AppLocalizations.of(context).translate("expensePay"),
-        //                 textScaleFactor: 1.2,
-        //                 // style: TextStyle(),
-        //               )
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //       SizedBox(height: 40),
-        //       Row(
-        //         mainAxisAlignment: MainAxisAlignment.center,
-        //         crossAxisAlignment: CrossAxisAlignment.center,
-        //         children: [
-        //           Column(
-        //             children: [
-        //               FittedBox(
-        //                   child: Text(
-        //                 '$200',
-        //                 // "$" + state.report.profit.toStringAsFixed(2),
-        //                 textScaleFactor: 1.8,
-        //                 style: TextStyle(
-        //                     color: Colors.green[800], fontWeight: FontWeight.bold),
-        //               )),
-        //               SizedBox(
-        //                 height: 5,
-        //               ),
-        //               Text(
-        //                 'Profit',
-        //                 // AppLocalizations.of(context).translate("profit"),
-        //                 textScaleFactor: 1.1,
-        //               )
-        //             ],
-        //           ),
-        //           SizedBox(width: 30),
-        //           Column(
-        //             children: [
-        //               FittedBox(
-        //                   child: Text(
-        //                 '10',
-        //                 // state.report.sales.toString(),
-        //                 textScaleFactor: 1.8,
-        //                 style: TextStyle(
-        //                     color: Colors.orange[800], fontWeight: FontWeight.bold),
-        //               )),
-        //               SizedBox(
-        //                 height: 5,
-        //               ),
-        //               Text(
-        //                 'Checkout',
-        //                 // AppLocalizations.of(context).translate("saleCount"),
-        //                 textScaleFactor: 1.1,
-        //               )
-        //             ],
-        //           ),
-        //         ],
-        //       ),
-        //     ],
-        //   ),
-        // );
       },
     );
     // return BlocBuilder<ReportBloc, ReportState>(

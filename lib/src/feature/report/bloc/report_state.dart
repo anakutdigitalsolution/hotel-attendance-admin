@@ -1,5 +1,6 @@
 
 import 'package:hotle_attendnce_admin/src/feature/report/model/report_model.dart';
+import 'package:hotle_attendnce_admin/src/utils/share/app_constant.dart';
 import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
@@ -17,7 +18,7 @@ class FetchedReport extends ReportState {
   FetchedReport({required this.report});
 }
 
-class ErrorFetchedReport extends ReportState {
+class ErrorFetchedReport extends ReportState with ErrorState {
   final dynamic error;
   ErrorFetchedReport({@required this.error});
 }

@@ -8,7 +8,7 @@ import 'index.dart';
 
 class EmployeeTimetableBloc
     extends Bloc<EmployeeTimetableEvent, EmployeeTimetableState> {
-  EmployeeTimetableBloc() : super(FetchingEmployeeTimetable());
+  EmployeeTimetableBloc() : super(InitializingEmployeeTimetable());
   EmployeeTimetableRepository employeeTimetableRepository =
       EmployeeTimetableRepository();
 
@@ -21,14 +21,19 @@ class EmployeeTimetableBloc
     if (event is FetchEmloyeeTimetableStarted) {
       yield FetchingEmployeeTimetable();
       try {
+        print(page);
         List<EmployeeTimetablModel> _timeList =
             await employeeTimetableRepository.getSchedule(
                 rowPerpage: rowperpage, page: page);
+
         timeList.addAll(_timeList);
         page++;
         print(page);
         print(timeList.length);
+        // yield FetchedEmployee();
+        print(_timeList.length);
         if (_timeList.length < rowperpage) {
+          print(timeList.length);
           yield EndofEmployeeTimetable();
         } else {
           yield FetchedEmployeeTimetable();
@@ -41,22 +46,62 @@ class EmployeeTimetableBloc
     if (event is InitializeEmployeeTimetableStarted) {
       yield InitializingEmployeeTimetable();
       try {
-        page = 1;
-        timeList = await employeeTimetableRepository.getSchedule(
-            rowPerpage: rowperpage, page: page);
+        // Future.delayed(Duration(milliseconds: 200));
+        print(page);
+        List<EmployeeTimetablModel> _timeList =
+            await employeeTimetableRepository.getSchedule(
+                rowPerpage: rowperpage, page: page);
+
+        timeList.addAll(_timeList);
         page++;
         print(page);
         print(timeList.length);
-        if (timeList.length < rowperpage) {
-          yield EndofEmployeeTimetable();
-        } else {
-          yield InitializedEmployeeTimetable();
-        }
+        yield InitializedEmployeeTimetable();
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingEmployeeTimetable(error: e.toString());
       }
     }
+    // if (event is FetchEmloyeeTimetableStarted) {
+    //   yield FetchingEmployeeTimetable();
+    //   try {
+    //     print(page);
+    //     print(timeList.length);
+    //     List<EmployeeTimetablModel> _timeList =
+    //         await employeeTimetableRepository.getSchedule(
+    //             rowPerpage: rowperpage, page: page);
+    //     timeList.addAll(_timeList);
+    //     page++;
+    //     print(page);
+    //     print(timeList.length);
+    //     if (_timeList.length < rowperpage) {
+    //       print(timeList.length);
+    //       yield EndofEmployeeTimetable();
+    //     } else {
+    //       print(timeList.length);
+    //       yield FetchedEmployeeTimetable();
+    //     }
+    //   } catch (e) {
+    //     log(e.toString());
+    //     yield ErrorFetchingEmployeeTimetable(error: e.toString());
+    //   }
+    // }
+    // if (event is InitializeEmployeeTimetableStarted) {
+    //   yield InitializingEmployeeTimetable();
+    //   try {
+    //     List<EmployeeTimetablModel> _timeList =
+    //         await employeeTimetableRepository.getSchedule(
+    //             rowPerpage: rowperpage, page: page);
+    //     timeList.addAll(_timeList);
+    //     page++;
+    //     print(page);
+    //     print(timeList.length);
+    //     yield InitializedEmployeeTimetable();
+    //   } catch (e) {
+    //     log(e.toString());
+    //     yield ErrorFetchingEmployeeTimetable(error: e.toString());
+    //   }
+    // }
 
     if (event is RefreshEmployeeTimetableStarted) {
       yield FetchingEmployeeTimetable();

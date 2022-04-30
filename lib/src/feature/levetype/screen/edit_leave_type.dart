@@ -21,14 +21,18 @@ class EditLeaveType extends StatefulWidget {
 class _EditLeaveTypeState extends State<EditLeaveType> {
   final TextEditingController _nameCtrl = TextEditingController();
   final TextEditingController _noteCtrl = TextEditingController();
+  final TextEditingController _scopeCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     _nameCtrl.text = widget.leaveTypeModel.name;
+    widget.leaveTypeModel.scope == null
+        ? _scopeCtrl.text = ""
+        : _scopeCtrl.text = widget.leaveTypeModel.scope!;
     widget.leaveTypeModel.note == null || widget.leaveTypeModel.note == ""
-        ? _nameCtrl.text = ""
-        : _nameCtrl.text = widget.leaveTypeModel.note!;
+        ? _noteCtrl.text = ""
+        : _noteCtrl.text = widget.leaveTypeModel.note!;
     super.initState();
   }
 
@@ -80,6 +84,29 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Leavetype name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _scopeCtrl,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15.0),
+                              ),
+                              borderSide: new BorderSide(
+                                width: 1,
+                              ),
+                            ),
+                            isDense: true,
+                            labelText: "Scope "),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Scope is required';
                           }
                           return null;
                         },

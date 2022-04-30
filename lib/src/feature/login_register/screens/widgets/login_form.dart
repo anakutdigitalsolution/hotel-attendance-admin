@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/auth/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/login_register/bloc/login/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
@@ -42,12 +43,14 @@ class _LoginFormState extends State<LoginForm> {
       listener: (context, dynamic state) {
         if (state is Logging) {
           // EasyLoading.show(status: "loading...");
-          loadingDialogs(context);
+          EasyLoading.show(status: 'loading...');
         } else if (state is Logged) {
+          EasyLoading.dismiss();
           print(state.userModel.token);
           BlocProvider.of<AuthenticationBloc>(context)
               .add(AuthenticationStarted(user: state.userModel));
-          Navigator.of(context).pop();
+          EasyLoading.showSuccess('Success');
+          // Navigator.of(context).pop();
           // EasyLoading.dismiss();
           // print(state.userModel.verifyStatus);
           // if (state.userModel.verifyStatus == "pending") {
@@ -71,8 +74,9 @@ class _LoginFormState extends State<LoginForm> {
 
           // Navigator.of(context).pop();
         } else if (state is ErrorLogin) {
-          Navigator.of(context).pop();
-          errorSnackBar(text: state.error, context: context);
+          EasyLoading.dismiss();
+          EasyLoading.showError(state.error.toString());
+          // errorSnackBar(text: state.error, context: context);
         }
       },
       child: Form(

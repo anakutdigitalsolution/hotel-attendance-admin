@@ -6,6 +6,10 @@ import 'package:hotle_attendnce_admin/src/feature/department/screen/add_departme
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/add_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee_timetable/model/employee_timetable_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/add_schedule.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/edit_schedule.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/schedule_page_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/shedule_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/add_holiday.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/holiday_page.dart';
@@ -46,6 +50,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => TimetablePage());
       case schedule:
         return MaterialPageRoute(builder: (_) => SchedulePage());
+       case schedules:
+        return MaterialPageRoute(builder: (_) => ScheduleEmployeePage());
       case leave:
         return MaterialPageRoute(builder: (_) => LeavePage());
       case leavetype:
@@ -64,7 +70,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AddNotification());
       case addDepartment:
         return MaterialPageRoute(builder: (_) => AddDepartment());
-       case addPosition:
+      case addPosition:
         return MaterialPageRoute(builder: (_) => AddPosition());
       case addTimetable:
         return MaterialPageRoute(builder: (_) => AddTimetable());
@@ -72,14 +78,14 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AddLeaveType());
       case addEmployee:
         return MaterialPageRoute(builder: (_) => AddEmployee());
-      // case editProduct:
-      //   if (args is Product) {
-      //     return MaterialPageRoute(
-      //         builder: (_) => EditProductPage(
-      //               product: args,
-      //             ));
-      //   }
-      //   return _errorRoute();
+      case addschedule:
+        return MaterialPageRoute(builder: (_) => AddSchedule());
+      case editschedule:
+        if (args is EmployeeTimetablModel) {
+          return MaterialPageRoute(
+              builder: (_) => EditSchedule(employeeTimetablModel: args));
+        }
+        return _errorRoute();
       // case editCustomer:
       //   if (args is Customer) {
       //     return MaterialPageRoute(

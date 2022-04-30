@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/checkin_out_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/checkin_out_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/screen/widget/attendance_tile.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -38,6 +37,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  EmployeeBloc employeeBloc = EmployeeBloc();
   DateTime? date;
   DateTime dateNow = DateTime.now();
   String? checkin;
@@ -59,6 +59,9 @@ class _BodyState extends State<Body> {
     return BlocConsumer(
       bloc: employeeBloc,
       listener: (context, state) {
+        if (state is ErrorFetchingEmployee) {
+          Helper.handleState(state: state.error, context: context);
+        }
         if (state is FetchedEmployee) {
           _refreshController.loadComplete();
           _refreshController.refreshCompleted();

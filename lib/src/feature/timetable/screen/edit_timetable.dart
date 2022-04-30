@@ -31,8 +31,12 @@ class _EditTimetableState extends State<EditTimetable> {
     _reasonCtrl.text = widget.timetableModel.timetableName;
     _ondutyCtrl.text = widget.timetableModel.onDutyTtime;
     _ofDutyCtrl.text = widget.timetableModel.offDutyTime;
-    _lateMnCtrl.text = widget.timetableModel.lateMn!;
-    _earlyMnCtrl.text = widget.timetableModel.earlyMn!;
+    widget.timetableModel.lateMn == null
+        ? _lateMnCtrl.text = "0"
+        : _lateMnCtrl.text = widget.timetableModel.lateMn!;
+    widget.timetableModel.earlyMn == null
+        ? _earlyMnCtrl.text = "0"
+        : _earlyMnCtrl.text = widget.timetableModel.earlyMn!;
     super.initState();
   }
 
@@ -48,8 +52,8 @@ class _EditTimetableState extends State<EditTimetable> {
               EasyLoading.show(status: "loading....");
             }
             if (state is ErrorAddingTimetable) {
-              Navigator.pop(context);
-              errorSnackBar(text: state.error.toString(), context: context);
+              EasyLoading.dismiss();
+              EasyLoading.showError(state.error.toString());
             }
             if (state is AddedTimetable) {
               EasyLoading.dismiss();
@@ -185,14 +189,13 @@ class _EditTimetableState extends State<EditTimetable> {
                           title: "Update",
                           onTap: () {
                             if (_formKey!.currentState!.validate()) {
-                              timetableBloc.add(
-                                  UpdateTimetableStarted(
-                                      id: widget.timetableModel.id,
-                                      name: _reasonCtrl.text,
-                                      offDuty: _ofDutyCtrl.text,
-                                      onDuty: _ondutyCtrl.text,
-                                      lateMn: _lateMnCtrl.text,
-                                      earlyMn: _earlyMnCtrl.text));
+                              timetableBloc.add(UpdateTimetableStarted(
+                                  id: widget.timetableModel.id,
+                                  name: _reasonCtrl.text,
+                                  offDuty: _ofDutyCtrl.text,
+                                  onDuty: _ondutyCtrl.text,
+                                  lateMn: _lateMnCtrl.text,
+                                  earlyMn: _earlyMnCtrl.text));
                             }
                           })
                     ],
@@ -203,7 +206,6 @@ class _EditTimetableState extends State<EditTimetable> {
           ),
         );
       }),
-      
     );
   }
 }

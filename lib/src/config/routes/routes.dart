@@ -6,6 +6,7 @@ const String employee = '/employee';
 const String position = '/position';
 const String timetable = '/timetable';
 const String schedule = '/schedule';
+const String schedules = '/schedules';
 const String leave = '/leave';
 const String leavetype = '/leavetype';
 
@@ -19,5 +20,7 @@ const String addPosition = '/addPosition';
 const String addTimetable = '/addTimetable';
 const String addLeavetype = '/addLeavetype';
 const String addEmployee = '/addEmployee';
+const String addschedule = '/addschedule';
+const String editschedule = '/editschedule';
 
 

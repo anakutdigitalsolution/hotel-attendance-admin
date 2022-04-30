@@ -1,32 +1,22 @@
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/screen/add_employee.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/screen/edit_employee.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_detail_page.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/screen/widget/employee_tile.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
- EmployeeBloc employeeBloc = EmployeeBloc();
-class EmployeePage extends StatefulWidget {
-  const EmployeePage({Key? key}) : super(key: key);
 
-  @override
-  State<EmployeePage> createState() => _EmployeePageState();
-}
+ScheduleBloc scheduleBloc = ScheduleBloc();
 
-class _EmployeePageState extends State<EmployeePage> {
+class ScheduleEmployeePage extends StatelessWidget {
+  const ScheduleEmployeePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.2),
-      appBar: standardAppBar(context, "Employee Page"),
+      appBar: standardAppBar(context, "Employee Schedule"),
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
       floatingActionButton: Container(
@@ -35,7 +25,7 @@ class _EmployeePageState extends State<EmployeePage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.pushNamed(context, addEmployee);
+              Navigator.pushNamed(context, addschedule);
             }),
       ),
     );
@@ -50,63 +40,62 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
- 
   final RefreshController _refreshController = RefreshController();
   @override
   void initState() {
     super.initState();
-    employeeBloc.add(InitializeEmployeeStarted());
+    scheduleBloc.add(InitializeScheduleStarted());
   }
 
   Widget build(BuildContext context) {
     return BlocConsumer(
-      bloc: employeeBloc,
+      bloc: scheduleBloc,
       listener: (context, state) {
-        if (state is ErrorFetchingEmployee) {
+        if (state is ErrorFetchingSchedule) {
           Helper.handleState(state: state, context: context);
         }
-        if (state is FetchedEmployee) {
+        if (state is FetchedSchedule) {
           _refreshController.loadComplete();
           _refreshController.refreshCompleted();
         }
-        if (state is EndofEmployeeList) {
+        if (state is EndofScheduleList) {
           _refreshController.loadNoData();
         }
-        if (state is AddingEmployee) {
-          EasyLoading.show(status: "loading....");
-        } else if (state is ErorrAddingEmployee) {
-          EasyLoading.dismiss();
-          EasyLoading.showError(state.error.toString());
-          // errorSnackBar(text: state.error.toString(), context: context);
-        } else if (state is AddedEmployee) {
-          EasyLoading.dismiss();
-          EasyLoading.showSuccess("Sucess");
-        }
+        // if (state is AddingEmployee) {
+        //   EasyLoading.show(status: "loading....");
+        // } else if (state is ErorrAddingEmployee) {
+        //   EasyLoading.dismiss();
+        //   EasyLoading.showError(state.error.toString());
+        //   // errorSnackBar(text: state.error.toString(), context: context);
+        // } else if (state is AddedEmployee) {
+        //   EasyLoading.dismiss();
+        //   EasyLoading.showSuccess("Sucess");
+        // }
       },
       builder: (context, state) {
-        if (state is InitializingEmployee) {
+        if (state is InitializingSchedule) {
           return Center(
             child: CircularProgressIndicator(),
           );
-        } else if (state is ErrorFetchingEmployee) {
+        } else if (state is ErrorFetchingSchedule) {
           return Center(
             child: Text(state.error.toString()),
           );
         } else {
-          if (employeeBloc.emploList.length == 0) {
+          if (scheduleBloc.timeList.length == 0) {
             return Center(
               child: Text("No Data"),
             );
           }
           return SmartRefresher(
             onRefresh: () {
-              employeeBloc.add(RefreshEmployeeStarted());
+              scheduleBloc.add(RefreshScheduleStarted());
             },
             onLoading: () {
-              if (employeeBloc.state is EndofEmployeeList) {
+              if (scheduleBloc.state is EndofScheduleList) {
                 _refreshController.loadNoData();
               } else {
-                employeeBloc.add(FetchEmloyeeStarted());
+                scheduleBloc.add(FetchScheduleStarted());
               }
 
               // _refreshController.loadComplete();
@@ -123,7 +112,7 @@ class _BodyState extends State<Body> {
             cacheExtent: 1,
             controller: _refreshController,
             child: ListView.builder(
-                itemCount: employeeBloc.emploList.length,
+                itemCount: scheduleBloc.timeList.length,
                 itemBuilder: (context, index) {
                   return Container(
                     color: Colors.white,
@@ -134,12 +123,12 @@ class _BodyState extends State<Body> {
                           padding: EdgeInsets.all(20),
                         ),
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EmployeeDetailPage(
-                                      employeeModel:
-                                          employeeBloc.emploList[index])));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => EmployeeDetailPage(
+                          //             employeeModel:
+                          //                 employeeBloc.emploList[index])));
                         },
                         child: Row(
                           children: [
@@ -162,7 +151,8 @@ class _BodyState extends State<Body> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        employeeBloc.emploList[index].name,
+                                        scheduleBloc.timeList[index]
+                                            .employeeModel!.name,
                                         textAlign: TextAlign.right,
                                         style: Theme.of(context)
                                             .textTheme
@@ -172,26 +162,21 @@ class _BodyState extends State<Body> {
                                     ],
                                   ),
                                   SizedBox(height: 10),
-                                  employeeBloc.emploList[index].phone == null
-                                      ? Text("")
-                                      : Text(
-                                          employeeBloc.emploList[index].phone!,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2,
-                                          textAlign: TextAlign.right,
-                                        ),
+                                  Text(
+                                    scheduleBloc.timeList[index].timetableModel!
+                                        .onDutyTtime,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle2,
+                                    textAlign: TextAlign.right,
+                                  ),
                                   SizedBox(height: 10),
-                                  employeeBloc.emploList[index].address == null
-                                      ? Text("")
-                                      : Text(
-                                          employeeBloc
-                                              .emploList[index].address!,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle2,
-                                          textAlign: TextAlign.right,
-                                        ),
+                                  Text(
+                                    scheduleBloc.timeList[index].timetableModel!
+                                        .offDutyTime,
+                                    style:
+                                        Theme.of(context).textTheme.subtitle2,
+                                    textAlign: TextAlign.right,
+                                  ),
 
                                   // Text(
                                   //         ": ${customer.balance}",
@@ -228,13 +213,8 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (con) => EditEmployee(
-                                                employeeModel: employeeBloc
-                                                    .emploList[index],
-                                              )));
+                                  Navigator.pushNamed(context, editschedule,
+                                      arguments: scheduleBloc.timeList[index]);
                                 }),
                             SizedBox(
                               width: 3,
@@ -248,10 +228,8 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                                 onPressed: () {
-                                  print(
-                                      "id ${employeeBloc.emploList[index].id}");
-                                  employeeBloc.add(DeleteEmployeeStarted(
-                                      id: employeeBloc.emploList[index].id));
+                                  scheduleBloc.add(DeleteScheduleStarted(
+                                      id: scheduleBloc.timeList[index].id));
                                 }),
                           ],
                         )),

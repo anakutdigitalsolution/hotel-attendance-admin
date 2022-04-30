@@ -16,6 +16,7 @@ class LeaveTypeRepository {
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
+       
         List<LeaveTypeModel> leave = [];
         response.data["data"].forEach((data) {
           leave.add(LeaveTypeModel.fromJson(data));
@@ -53,7 +54,7 @@ class LeaveTypeRepository {
     required String note,
   }) async {
     try {
-      String url = mainUrl + "leavetype/add";
+      String url = mainUrl + "leavetypes/add";
       Map body = {
         "leave_type": name,
         "notes": note,
@@ -79,7 +80,7 @@ class LeaveTypeRepository {
     required String note,
   }) async {
     try {
-      String url = mainUrl + "leavetype/edit/$id";
+      String url = mainUrl + "leavetypes/edit/$id";
       Map body = {
         "leave_type": name,
         "notes": note,
@@ -103,7 +104,7 @@ class LeaveTypeRepository {
     required String id,
   }) async {
     try {
-      String url = mainUrl + "leavetype/delete/$id";
+      String url = mainUrl + "leavetypes/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);

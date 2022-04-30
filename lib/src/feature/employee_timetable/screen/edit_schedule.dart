@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/model/employee_timetable_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/shedule_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/screen/timetable_page.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
 class EditSchedule extends StatefulWidget {
   final EmployeeTimetablModel employeeTimetablModel;
@@ -26,7 +31,9 @@ class _EditScheduleState extends State<EditSchedule> {
   List<String>? time;
   @override
   void initState() {
-    _empCtl.text = widget.employeeTimetablModel.employeeModel.name;
+    _empCtl.text = widget.employeeTimetablModel.employeeModel!.name;
+    _timeCtrl.text =
+        "${widget.employeeTimetablModel.timetableModel!.timetableName} from ${widget.employeeTimetablModel.timetableModel!.onDutyTtime} to ${widget.employeeTimetablModel.timetableModel!.offDutyTime}";
     // time = widget.employeeTimetablModel.timetableList
     //     .map((e) => e.timetableName)
     //     .toList();
@@ -38,37 +45,37 @@ class _EditScheduleState extends State<EditSchedule> {
     return Scaffold(
       appBar: standardAppBar(context, "Edit Schedule"),
       body: Builder(builder: (context) {
-        return BlocListener<EmployeeTimetableBloc, EmployeeTimetableState>(
+        return BlocListener(
+          bloc: employeeTimetableBloc,
           listener: (context, state) {
             if (state is AddingEmployeeTimetable) {
-              loadingDialogs(context);
+              EasyLoading.show(status: 'loading...');
             }
             if (state is ErrorAddingEmployeeTimetable) {
-              Navigator.pop(context);
-              errorSnackBar(text: state.error.toString(), context: context);
+              EasyLoading.dismiss();
+              EasyLoading.showError(state.error.toString());
             }
             if (state is AddedEmployeeTimetable) {
-              Navigator.pop(context);
+              EasyLoading.dismiss();
+              EasyLoading.showSuccess('Success');
               Navigator.pop(context);
             }
           },
-          child: BlocListener<EmployeeBloc, EmployeeState>(
+          child: BlocListener(
+              bloc: employeeBloc,
               listener: (context, state) {
-                if (state is InitializingEmployee) {
+                if (state is FetchingEmployee) {
                   loadingDialogs(context);
                 }
                 if (state is ErrorFetchingEmployee) {
                   Navigator.pop(context);
                   errorSnackBar(text: state.error.toString(), context: context);
                 }
-                if (state is InitializedEmployee) {
+                if (state is FetchedEmployee) {
                   Navigator.pop(context);
-                  customModal(
-                      context,
-                      BlocProvider.of<EmployeeBloc>(context)
-                          .emploList
-                          .map((e) => e.name)
-                          .toList(), (value) {
+                  customModal(context,
+                      employeeBloc.emploList.map((e) => e.name).toList(),
+                      (value) {
                     _empCtl.text = value;
                     // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
                     //     .roomtype
@@ -78,9 +85,10 @@ class _EditScheduleState extends State<EditSchedule> {
                   });
                 }
               },
-              child: BlocListener<TimetableBloc, TimetableState>(
+              child: BlocListener(
+                bloc: timetableBloc,
                 listener: (context, state) {
-                  if (state is InitializingTimetable) {
+                  if (state is FetchingTimetable) {
                     loadingDialogs(context);
                   }
                   if (state is ErrorFetchingTimetable) {
@@ -88,13 +96,13 @@ class _EditScheduleState extends State<EditSchedule> {
                     errorSnackBar(
                         text: state.error.toString(), context: context);
                   }
-                  if (state is InitializedTimetable) {
+                  if (state is FetchedTimetable) {
                     Navigator.pop(context);
                     customModal(
                         context,
-                        BlocProvider.of<TimetableBloc>(context)
-                            .timetableList
-                            .map((e) => e.timetableName)
+                        timetableBloc.timetableList
+                            .map((e) =>
+                                "${e.timetableName} from ${e.onDutyTtime} to ${e.offDutyTime}")
                             .toList(), (value) {
                       _timeCtrl.text = value;
                       // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
@@ -118,8 +126,7 @@ class _EditScheduleState extends State<EditSchedule> {
                             TextFormField(
                               controller: _empCtl,
                               onTap: () {
-                                BlocProvider.of<EmployeeBloc>(context)
-                                    .add(InitializeEmployeeStarted());
+                                employeeBloc.add(FetchAllEmployeeStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -145,10 +152,9 @@ class _EditScheduleState extends State<EditSchedule> {
                             ),
                             SizedBox(height: 15),
                             TextFormField(
-                              controller: _empCtl,
+                              controller: _timeCtrl,
                               onTap: () {
-                                BlocProvider.of<TimetableBloc>(context)
-                                    .add(InitializeTimetableStarted());
+                                timetableBloc.add(FetchAllTimetableStarted());
                               },
                               readOnly: true,
                               keyboardType: TextInputType.text,
@@ -172,6 +178,50 @@ class _EditScheduleState extends State<EditSchedule> {
                                 return null;
                               },
                             ),
+                            SizedBox(
+                                height: MediaQuery.of(context).size.height / 4),
+                            standardBtn(
+                                title: "Update",
+                                onTap: () {
+                                  if (_formKey!.currentState!.validate()) {
+                                    String employee = "";
+                                    String time = "";
+                                    if (_empCtl.text !=
+                                        widget.employeeTimetablModel
+                                            .employeeModel!.name) {
+                                      EmployeeModel employeeId = employeeBloc
+                                          .emploList
+                                          .firstWhere((element) =>
+                                              element.name == _empCtl.text);
+                                      employee = employeeId.id;
+                                      print("employee id change $employee");
+                                    } else {
+                                      print("employee id same");
+                                      employee = widget
+                                          .employeeTimetablModel.employeeId;
+                                    }
+                                    if (_timeCtrl.text !=
+                                        "${widget.employeeTimetablModel.timetableModel!.timetableName} from ${widget.employeeTimetablModel.timetableModel!.onDutyTtime} to ${widget.employeeTimetablModel.timetableModel!.offDutyTime}") {
+                                      TimetableModel timetableId = timetableBloc
+                                          .timetableList
+                                          .firstWhere((e) =>
+                                              "${e.timetableName} from ${e.onDutyTtime} to ${e.offDutyTime}" ==
+                                              _timeCtrl.text);
+                                      time = timetableId.id;
+                                      print("time change $time");
+                                    } else {
+                                      time = widget
+                                          .employeeTimetablModel.timetaleId;
+                                      print("time not change");
+                                    }
+
+                                    employeeTimetableBloc.add(
+                                        UpdateEmployeeTimetableStarted(
+                                            id: widget.employeeTimetablModel.id,
+                                            employeeId: employee,
+                                            timetableId: time));
+                                  }
+                                })
                           ],
                         ),
                       ),
@@ -181,42 +231,6 @@ class _EditScheduleState extends State<EditSchedule> {
               )),
         );
       }),
-      bottomNavigationBar: Container(
-        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-        height: 50,
-        width: double.infinity,
-        child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              // side: BorderSide(color: Colors.red)
-            ),
-            color: Colors.blue,
-            onPressed: () {
-              if (_formKey!.currentState!.validate()) {
-                EmployeeModel employeeId =
-                    BlocProvider.of<EmployeeBloc>(context)
-                        .emploList
-                        .firstWhere((element) => element.name == _empCtl.text);
-
-                TimetableModel timetableId =
-                    BlocProvider.of<TimetableBloc>(context)
-                        .timetableList
-                        .firstWhere((element) =>
-                            element.timetableName == _timeCtrl.text);
-                // BlocProvider.of<EmployeeTimetableBloc>(context).add(
-                //     UpdateEmployeeTimetableStarted(
-                //       id: widget.employeeTimetablModel.id,
-                //         employeeId: employeeId.id, timetableId: timetableId.id));
-              }
-            },
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Text(
-              "Submit",
-              // AppLocalizations.of(context)!.translate("submit")!,
-              textScaleFactor: 1.2,
-              style: TextStyle(color: Colors.white),
-            )),
-      ),
     );
   }
 }

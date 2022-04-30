@@ -19,6 +19,7 @@ class AddLeaveType extends StatefulWidget {
 class _AddLeaveTypeState extends State<AddLeaveType> {
   final TextEditingController _nameCtrl = TextEditingController();
   final TextEditingController _noteCtrl = TextEditingController();
+  final TextEditingController _scopeCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -74,6 +75,29 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
                       ),
                       SizedBox(height: 15),
                       TextFormField(
+                        controller: _scopeCtrl,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(15),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15.0),
+                              ),
+                              borderSide: new BorderSide(
+                                width: 1,
+                              ),
+                            ),
+                            isDense: true,
+                            labelText: "Scope "),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Scope is required';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
                         controller: _noteCtrl,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
@@ -112,7 +136,6 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
           ),
         );
       }),
-      
     );
   }
 }

@@ -141,6 +141,46 @@ class _BodyState extends State<Body> {
                               ],
                             ),
                             Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Scope :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${leaveTypeBloc.leavetype[index].scope}",
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Note :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                leaveTypeBloc.leavetype[index].note == null
+                                    ? Text("")
+                                    : Text(
+                                        "${leaveTypeBloc.leavetype[index].note}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      )
+                              ],
+                            ),
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 CupertinoButton(
@@ -200,8 +240,8 @@ class _BodyState extends State<Body> {
           if (state is AddingLeaveType) {
             EasyLoading.show(status: "loading....");
           } else if (state is ErrorAddingLeaveType) {
-            Navigator.pop(context);
-            errorSnackBar(text: state.error.toString(), context: context);
+            EasyLoading.dismiss();
+            EasyLoading.showError(state.error.toString());
           } else if (state is AddedLeaveType) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Sucess");

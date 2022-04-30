@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/model/notification_model.dart';
@@ -44,9 +45,13 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final RefreshController _refreshController = RefreshController();
+  void initState() {
+    super.initState();
+    notificationBloc.add(InitializeNotificationStarted());
+  }
+
   @override
   Widget build(BuildContext context) {
-    notificationBloc.add(FetchNotificationStarted());
     return BlocConsumer(
         bloc: notificationBloc,
         builder: (context, state) {
@@ -74,8 +79,11 @@ class _BodyState extends State<Body> {
                 notificationBloc.add(RefreshNotificationStarted());
               },
               onLoading: () {
-                notificationBloc.add(FetchNotificationStarted());
-                _refreshController.loadComplete();
+                if (notificationBloc.state is EndOfNotificationList) {
+                  _refreshController.loadNoData();
+                } else {
+                  notificationBloc.add(FetchNotificationStarted());
+                }
               },
               enablePullDown: true,
               enablePullUp: true,
@@ -156,6 +164,20 @@ class _BodyState extends State<Body> {
           if (state is FetchedNotification) {
             _refreshController.loadComplete();
             _refreshController.refreshCompleted();
+          }
+          if (state is EndOfNotificationList) {
+            _refreshController.loadNoData();
+          }
+          if (state is AddingNotification) {
+            EasyLoading.show(status: 'loading...');
+          }
+          if (state is ErrorAddingNotification) {
+            EasyLoading.dismiss();
+            EasyLoading.showError(state.error.toString());
+          }
+          if (state is AddedNotification) {
+            EasyLoading.dismiss();
+            EasyLoading.showSuccess('Success');
           }
         });
   }

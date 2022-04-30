@@ -11,15 +11,18 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   NotificationBloc() : super(FetchingNotification());
   List<NotificationModel> notificationModel = [];
   NotificationRepository _notificationRepository = NotificationRepository();
-   int rowperpage = 12;
+  int rowperpage = 12;
   int page = 1;
   @override
   Stream<NotificationState> mapEventToState(NotificationEvent event) async* {
     if (event is FetchNotificationStarted) {
       yield FetchingNotification();
       try {
+        print(page);
+        print(notificationModel.length);
         // Future.delayed(Duration(milliseconds: 200));
-        List<NotificationModel> _temList = await _notificationRepository.getNotification(rowPerpage: rowperpage, page: page);
+        List<NotificationModel> _temList = await _notificationRepository
+            .getNotification(rowPerpage: rowperpage, page: page);
         print(notificationModel.length);
         notificationModel.addAll(_temList);
         page++;
@@ -30,83 +33,83 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         } else {
           yield FetchedNotification();
         }
-        
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingNotification(error: e.toString());
       }
     }
-    if(event is RefreshNotificationStarted){
+    if (event is RefreshNotificationStarted) {
       yield FetchingNotification();
       try {
-        page =1;
-        if(notificationModel.length !=0){
+        page = 1;
+        if (notificationModel.length != 0) {
           notificationModel.clear();
         }
-        List<NotificationModel> _temlist = await _notificationRepository.getNotification(rowPerpage: rowperpage, page: page);
+        List<NotificationModel> _temlist = await _notificationRepository
+            .getNotification(rowPerpage: rowperpage, page: page);
         notificationModel.addAll(_temlist);
         yield FetchedNotification();
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingNotification(error: e.toString());
       }
-      
     }
-    if(event is InitializeNotificationStarted){
+    if (event is InitializeNotificationStarted) {
       yield FetchingNotification();
       try {
-        page =1;
-        notificationModel= await _notificationRepository.getNotification(rowPerpage: rowperpage, page: page);
-        page ++;
-         print(page);
+        List<NotificationModel> _temlist = await _notificationRepository
+            .getNotification(rowPerpage: rowperpage, page: page);
+        notificationModel.addAll(_temlist);
+        page++;
+        print(page);
         print(notificationModel.length);
-        if (notificationModel.length < rowperpage) {
-          yield EndOfNotificationList();
-        } else {
-          yield InitializedNotification();
-        }
-
+        yield InitializedNotification();
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingNotification(error: e.toString());
       }
     }
-    if(event is AddNotificationStarted){
+    if (event is AddNotificationStarted) {
       yield AddingNotification();
       try {
-        await _notificationRepository.addNotification(title: event.title, des: event.des);
+        await _notificationRepository.addNotification(
+            title: event.title, des: event.des);
         yield AddedNotification();
         yield FetchingNotification();
-          notificationModel.clear();
-          notificationModel= await _notificationRepository.getNotification(rowPerpage: rowperpage, page: 1);
+        notificationModel.clear();
+        notificationModel = await _notificationRepository.getNotification(
+            rowPerpage: rowperpage, page: 1);
         yield FetchingNotification();
       } catch (e) {
         log(e.toString());
         yield ErrorAddingNotification(error: e.toString());
       }
     }
-    if(event is UpdateNotificationStarted){
-       yield AddingNotification();
+    if (event is UpdateNotificationStarted) {
+      yield AddingNotification();
       try {
-        await _notificationRepository.editNotification(id: event.id,title: event.title, des: event.des);
+        await _notificationRepository.editNotification(
+            id: event.id, title: event.title, des: event.des);
         yield AddedNotification();
         yield FetchingNotification();
-          notificationModel.clear();
-          notificationModel= await _notificationRepository.getNotification(rowPerpage: rowperpage, page: 1);
+        notificationModel.clear();
+        notificationModel = await _notificationRepository.getNotification(
+            rowPerpage: rowperpage, page: 1);
         yield FetchingNotification();
       } catch (e) {
         log(e.toString());
         yield ErrorAddingNotification(error: e.toString());
       }
     }
-    if(event is DeleteNotificationStarted){
+    if (event is DeleteNotificationStarted) {
       yield AddingNotification();
       try {
         await _notificationRepository.deleteNotification(id: event.id);
         yield AddedNotification();
         yield FetchingNotification();
-          notificationModel.clear();
-          notificationModel= await _notificationRepository.getNotification(rowPerpage: rowperpage, page: 1);
+        notificationModel.clear();
+        notificationModel = await _notificationRepository.getNotification(
+            rowPerpage: rowperpage, page: 1);
         yield FetchingNotification();
       } catch (e) {
         log(e.toString());

@@ -76,7 +76,7 @@ class EmployeeRepository {
         "position_id": positionId,
         "department_id": departmentId,
         "store_id": storeId,
-        "employee_phone": phoneNumber,
+        "phone": phoneNumber,
         "address": address,
       };
       Response response = await apiProvider.post(url, body, null);
@@ -143,7 +143,7 @@ class EmployeeRepository {
     required String id,
   }) async {
     try {
-      String url = mainUrl + "employee/delete/$id";
+      String url = mainUrl + "employees/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);

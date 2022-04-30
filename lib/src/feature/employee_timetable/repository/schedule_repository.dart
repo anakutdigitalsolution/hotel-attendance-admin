@@ -1,23 +1,23 @@
 import 'package:dio/dio.dart';
-import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee_timetable/model/employee_timetable_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
-class TimetableRepository {
+class ScheduleRepository {
   String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
-  Future<List<TimetableModel>> getTimetable(
+  Future<List<EmployeeTimetablModel>> getSchedule(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "timetables?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "schedules?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
-        List<TimetableModel> leave = [];
+        List<EmployeeTimetablModel> leave = [];
         response.data["data"].forEach((data) {
-          leave.add(TimetableModel.fromJson(data));
+          leave.add(EmployeeTimetablModel.fromJson(data));
         });
         return leave;
       }
@@ -27,46 +27,16 @@ class TimetableRepository {
     }
   }
 
-  Future<List<TimetableModel>> getAllTimetable() async {
-    try {
-      String url = mainUrl + "timetables";
-
-      Response response = await apiProvider.get(url, null, null);
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        print(response.data);
-        List<TimetableModel> leave = [];
-        response.data["data"].forEach((data) {
-          leave.add(TimetableModel.fromJson(data));
-        });
-        return leave;
-      }
-      throw CustomException.generalException();
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<void> addTimetable({
-    required String name,
-    required String onDuty,
-    required String offDuty,
-    required String lateMn,
-    required String earlyMn,
+  Future<void> addSchedule({
+    required String employeeId,
+    required String timetableId,
   }) async {
     try {
-      String url = mainUrl + "timetables/add";
-
+      String url = mainUrl + "schedules/add";
       Map body = {
-        "timetable_name": name,
-        "on_duty_time": onDuty,
-        "off_duty_time": offDuty,
-        "late_minute": lateMn,
-        "early_leave": earlyMn
+        "employee_id": employeeId,
+        "timetable_id": timetableId,
       };
-      print(lateMn);
-      print(earlyMn);
-
       Response response = await apiProvider.post(url, body, null);
 
       print(response.statusCode);
@@ -82,22 +52,16 @@ class TimetableRepository {
     }
   }
 
-  Future<void> editTimetable({
+  Future<void> editSchedule({
     required String id,
-    required String name,
-    required String onDuty,
-    required String offDuty,
-    required String lateMn,
-    required String earlyMn,
+    required String employeeId,
+    required String timetableId,
   }) async {
     try {
-      String url = mainUrl + "timetables/edit/$id";
+      String url = mainUrl + "schedules/edit/$id";
       Map body = {
-        "timetable_name": name,
-        "on_duty_time": onDuty,
-        "off_duty_time": offDuty,
-        "late_minute": lateMn,
-        "early_leave": earlyMn
+        "employee_id": employeeId,
+        "timetable_id": timetableId,
       };
       Response response = await apiProvider.put(url, body);
 
@@ -114,14 +78,14 @@ class TimetableRepository {
     }
   }
 
-  Future<void> deleteTimetable({
+  Future<void> deleteSchedule({
     required String id,
   }) async {
     try {
-      print(id);
-      String url = mainUrl + "timetablse/delete/$id";
+      String url = mainUrl + "schedules/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
+
       print(response.statusCode);
       if (response.statusCode == 200 && response.data["code"] == 0) {
         print(response.data);

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:hotle_attendnce_admin/src/utils/share/app_constant.dart';
 
 abstract class EmployeeTimetableState extends Equatable {
   EmployeeTimetableState([List props = const []]) : super();
@@ -19,7 +20,7 @@ class AddingEmployeeTimetable extends EmployeeTimetableState {}
 class AddedEmployeeTimetable extends EmployeeTimetableState {}
 class EndofEmployeeTimetable extends EmployeeTimetableState{}
 
-class ErrorFetchingEmployeeTimetable extends EmployeeTimetableState {
+class ErrorFetchingEmployeeTimetable extends EmployeeTimetableState with ErrorState {
   final dynamic error;
   ErrorFetchingEmployeeTimetable({
     required this.error
