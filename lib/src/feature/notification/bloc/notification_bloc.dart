@@ -48,6 +48,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         List<NotificationModel> _temlist = await _notificationRepository
             .getNotification(rowPerpage: rowperpage, page: page);
         notificationModel.addAll(_temlist);
+        page++;
         yield FetchedNotification();
       } catch (e) {
         log(e.toString());
@@ -77,8 +78,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         yield AddedNotification();
         yield FetchingNotification();
         notificationModel.clear();
-        notificationModel = await _notificationRepository.getNotification(
-            rowPerpage: rowperpage, page: 1);
+        page=1;
+        List<NotificationModel> _temlist = await _notificationRepository
+            .getNotification(rowPerpage: rowperpage, page: page);
+        notificationModel.addAll(_temlist);
+        page++;
         yield FetchingNotification();
       } catch (e) {
         log(e.toString());
@@ -92,9 +96,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             id: event.id, title: event.title, des: event.des);
         yield AddedNotification();
         yield FetchingNotification();
-        notificationModel.clear();
-        notificationModel = await _notificationRepository.getNotification(
-            rowPerpage: rowperpage, page: 1);
+         page=1;
+        List<NotificationModel> _temlist = await _notificationRepository
+            .getNotification(rowPerpage: rowperpage, page: page);
+        notificationModel.addAll(_temlist);
+        page++;
         yield FetchingNotification();
       } catch (e) {
         log(e.toString());
@@ -108,8 +114,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
         yield AddedNotification();
         yield FetchingNotification();
         notificationModel.clear();
-        notificationModel = await _notificationRepository.getNotification(
-            rowPerpage: rowperpage, page: 1);
+         page=1;
+        List<NotificationModel> _temlist = await _notificationRepository
+            .getNotification(rowPerpage: rowperpage, page: page);
+        notificationModel.addAll(_temlist);
+        page++;
         yield FetchingNotification();
       } catch (e) {
         log(e.toString());

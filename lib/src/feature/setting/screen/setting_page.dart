@@ -121,6 +121,15 @@ class _SettingPageState extends State<SettingPage> {
                 onPressed: () {
                   Navigator.pushNamed(context, timetable);
                 }),
+                 SizedBox(
+              height: 10,
+            ),
+            settingitem(
+                name: "Set Working Day",
+                icon: Icons.people,
+                onPressed: () {
+                  Navigator.pushNamed(context, workDay);
+                }),
             SizedBox(
               height: 10,
             ),

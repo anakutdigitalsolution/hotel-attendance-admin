@@ -77,7 +77,7 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
             .getTimetable(rowPerpage: rowperpage, page: page);
         timetableList.addAll(leaveList);
         print(leaveList.length);
-        // page++;
+        page++;
         yield FetchedTimetable();
       } catch (e) {
         log(e.toString());
@@ -106,9 +106,11 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
         yield FetchingTimetable();
         print(timetableList.length);
         timetableList.clear();
-        timetableList = await departmentRepository.getTimetable(
-            rowPerpage: rowperpage, page: 1);
-        print(timetableList.length);
+        page=1;
+        List<TimetableModel> leaveList = await departmentRepository
+            .getTimetable(rowPerpage: rowperpage, page: page);
+        timetableList.addAll(leaveList);
+        page++;
         yield FetchedTimetable();
       } catch (e) {
         log(e.toString());
@@ -135,9 +137,11 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
         yield FetchingTimetable();
         print(timetableList.length);
         timetableList.clear();
-        timetableList = await departmentRepository.getTimetable(
-            rowPerpage: rowperpage, page: 1);
-        print(timetableList.length);
+         page=1;
+        List<TimetableModel> leaveList = await departmentRepository
+            .getTimetable(rowPerpage: rowperpage, page: page);
+        timetableList.addAll(leaveList);
+        page++;
         yield FetchedTimetable();
       } catch (e) {
         log(e.toString());
@@ -153,9 +157,11 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
         yield FetchingTimetable();
         print(timetableList.length);
         timetableList.clear();
-        timetableList = await departmentRepository.getTimetable(
-            rowPerpage: rowperpage, page: 1);
-        print(timetableList.length);
+        page=1;
+        List<TimetableModel> leaveList = await departmentRepository
+            .getTimetable(rowPerpage: rowperpage, page: page);
+        timetableList.addAll(leaveList);
+        page++;
         yield FetchedTimetable();
       } catch (e) {
         log(e.toString());

@@ -1,8 +1,7 @@
 import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
-import 'package:meta/meta.dart';
+
 import 'package:equatable/equatable.dart';
 
-@immutable
 abstract class LoginState extends Equatable {
   LoginState([List props = const []]) : super();
   @override
@@ -24,5 +23,5 @@ class Logging extends LoginState {}
 
 class ErrorLogin extends LoginState {
   final dynamic error;
-  ErrorLogin({@required this.error});
+  ErrorLogin({required this.error});
 }

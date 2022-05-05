@@ -91,15 +91,16 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
             toDate: event.toDate,
             notes: event.note);
         yield AddedHoliday();
-        yield InitializingHoliday();
+        yield FetchingHoliday();
         holidaylist.clear();
-        holidaylist = await leaveRepository.getHoliday(
+        page=1;
+         List<HolidayModel> _templist = await leaveRepository.getHoliday(
             page: page, rowperpage: rowperpage);
-        print(holidaylist.length);
+        holidaylist.addAll(_templist);
 
         print("page $page");
         print(holidaylist.length);
-        yield InitializedHoliday();
+        yield FetchedHoliday();
       } catch (e) {
         log(e.toString());
         yield ErrorAddingHoliday(error: e.toString());
@@ -117,9 +118,10 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
         yield AddedHoliday();
         yield FetchingHoliday();
         holidaylist.clear();
-        holidaylist = await leaveRepository.getHoliday(
+        page=1;
+         List<HolidayModel> _templist = await leaveRepository.getHoliday(
             page: page, rowperpage: rowperpage);
-        print(holidaylist.length);
+        holidaylist.addAll(_templist);
 
         print("page $page");
         print(holidaylist.length);
@@ -135,17 +137,16 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
         await leaveRepository.deleteHoliday(id: event.id);
         yield AddedHoliday();
         holidaylist.clear();
-        yield InitializingHoliday();
-        page = 1;
-        List<HolidayModel> _templist = await leaveRepository.getHoliday(
+         yield FetchingHoliday();
+        holidaylist.clear();
+        page=1;
+         List<HolidayModel> _templist = await leaveRepository.getHoliday(
             page: page, rowperpage: rowperpage);
         holidaylist.addAll(_templist);
-        // leavemodel.addAll(leaveList);
-        print(holidaylist.length);
-        page++;
+
         print("page $page");
         print(holidaylist.length);
-        yield InitializedHoliday();
+        yield FetchedHoliday();
       } catch (e) {
         log(e.toString());
         yield ErrorAddingHoliday(error: e.toString());

@@ -1,7 +1,7 @@
-import 'package:meta/meta.dart';
+
 import 'package:equatable/equatable.dart';
 
-@immutable
+
 abstract class RegisterEvent extends Equatable {
   RegisterEvent([List props = const []]) : super();
   @override

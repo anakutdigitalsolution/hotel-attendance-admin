@@ -75,7 +75,7 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
             .getdepartment(rowPerpage: rowperpage, page: page);
         departmentList.addAll(leaveList);
         print(leaveList.length);
-        // page++;
+        page++;
         yield FetchedDepartment();
       } catch (e) {
         log(e.toString());
@@ -91,9 +91,11 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
         yield FetchingDepartment();
         print(departmentList.length);
         departmentList.clear();
-        departmentList = await departmentRepository.getdepartment(
-            rowPerpage: rowperpage, page: 1);
-        print(departmentList.length);
+        page=1;
+         List<DepartmentModel> _departmentList = await departmentRepository
+            .getdepartment(rowPerpage: rowperpage, page: page);
+        departmentList.addAll(_departmentList);
+        page++;
         yield FetchedDepartment();
       } catch (e) {
         log(e.toString());
@@ -110,9 +112,11 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
         yield FetchingDepartment();
         print(departmentList.length);
         departmentList.clear();
-        departmentList = await departmentRepository.getdepartment(
-            rowPerpage: rowperpage, page: 1);
-        print(departmentList.length);
+        page=1;
+         List<DepartmentModel> _departmentList = await departmentRepository
+            .getdepartment(rowPerpage: rowperpage, page: page);
+        departmentList.addAll(_departmentList);
+        page++;
         yield FetchedDepartment();
       } catch (e) {
         log(e.toString());
@@ -128,9 +132,11 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
         yield FetchingDepartment();
         print(departmentList.length);
         departmentList.clear();
-        departmentList = await departmentRepository.getdepartment(
-            rowPerpage: rowperpage, page: 1);
-        print(departmentList.length);
+       page=1;
+         List<DepartmentModel> _departmentList = await departmentRepository
+            .getdepartment(rowPerpage: rowperpage, page: page);
+        departmentList.addAll(_departmentList);
+        page++;
         yield FetchedDepartment();
       } catch (e) {
         log(e.toString());

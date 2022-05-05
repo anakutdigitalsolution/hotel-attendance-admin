@@ -24,6 +24,7 @@ import 'package:hotle_attendnce_admin/src/feature/report/screen/report_page.dart
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/add_timetable.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/timetable_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/screen/working_day.dart';
 
 import 'routes.dart';
 
@@ -86,6 +87,8 @@ class RouteGenerator {
               builder: (_) => EditSchedule(employeeTimetablModel: args));
         }
         return _errorRoute();
+      case workDay:
+        return MaterialPageRoute(builder: (_) => WorkingDay());
       // case editCustomer:
       //   if (args is Customer) {
       //     return MaterialPageRoute(

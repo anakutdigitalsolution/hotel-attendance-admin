@@ -70,6 +70,7 @@ class LeaveTypeBloc extends Bloc<LeaveTypeEvent, LeaveTypeState> {
         List<LeaveTypeModel> leaveList = await departmentRepository
             .getleaveType(rowPerpage: rowperpage, page: page);
         leavetype.addAll(leaveList);
+        page++;
         print(leaveList.length);
         yield FetchedLeaveType();
       } catch (e) {
@@ -86,8 +87,11 @@ class LeaveTypeBloc extends Bloc<LeaveTypeEvent, LeaveTypeState> {
         yield FetchingLeaveType();
         print(leavetype.length);
         leavetype.clear();
-        leavetype = await departmentRepository.getleaveType(
-            rowPerpage: rowperpage, page: 1);
+        page=1;
+        List<LeaveTypeModel> leaveList = await departmentRepository
+            .getleaveType(rowPerpage: rowperpage, page: page);
+        leavetype.addAll(leaveList);
+        page++;
         yield FetchedLeaveType();
       } catch (e) {
         log(e.toString());
@@ -103,8 +107,11 @@ class LeaveTypeBloc extends Bloc<LeaveTypeEvent, LeaveTypeState> {
         yield FetchingLeaveType();
         print(leavetype.length);
         leavetype.clear();
-        leavetype = await departmentRepository.getleaveType(
-            rowPerpage: rowperpage, page: 1);
+        page=1;
+        List<LeaveTypeModel> leaveList = await departmentRepository
+            .getleaveType(rowPerpage: rowperpage, page: page);
+        leavetype.addAll(leaveList);
+        page++;
         yield FetchedLeaveType();
       } catch (e) {
         log(e.toString());
@@ -119,8 +126,11 @@ class LeaveTypeBloc extends Bloc<LeaveTypeEvent, LeaveTypeState> {
         yield FetchingLeaveType();
         print(leavetype.length);
         leavetype.clear();
-        leavetype = await departmentRepository.getleaveType(
-            rowPerpage: rowperpage, page: 1);
+         page=1;
+        List<LeaveTypeModel> leaveList = await departmentRepository
+            .getleaveType(rowPerpage: rowperpage, page: page);
+        leavetype.addAll(leaveList);
+        page++;
         yield FetchedLeaveType();
       } catch (e) {
         log(e.toString());

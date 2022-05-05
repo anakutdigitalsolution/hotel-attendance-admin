@@ -77,7 +77,7 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
             rowPerpage: rowperpage, page: page);
         positionList.addAll(leaveList);
         print(leaveList.length);
-        // page++;
+        page++;
         yield FetchedPosition();
       } catch (e) {
         log(e.toString());
@@ -94,9 +94,11 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
         yield FetchingPosition();
         print(positionList.length);
         positionList.clear();
-        positionList = await positionRepository.getPosition(
-            rowPerpage: rowperpage, page: 1);
-        print(positionList.length);
+        page =1;
+        List<PositionModel> _departmentList = await positionRepository
+            .getPosition(rowPerpage: rowperpage, page: page);
+        positionList.addAll(_departmentList);
+        page++;
         yield FetchedPosition();
       } catch (e) {
         log(e.toString());
@@ -113,9 +115,11 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
         yield FetchingPosition();
         print(positionList.length);
         positionList.clear();
-        positionList = await positionRepository.getPosition(
-            rowPerpage: rowperpage, page: 1);
-        print(positionList.length);
+        page =1;
+        List<PositionModel> _departmentList = await positionRepository
+            .getPosition(rowPerpage: rowperpage, page: page);
+        positionList.addAll(_departmentList);
+        page++;
         yield FetchedPosition();
       } catch (e) {
         log(e.toString());
@@ -131,9 +135,11 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
         yield FetchingPosition();
         print(positionList.length);
         positionList.clear();
-        positionList = await positionRepository.getPosition(
-            rowPerpage: rowperpage, page: 1);
-        print(positionList.length);
+        page =1;
+        List<PositionModel> _departmentList = await positionRepository
+            .getPosition(rowPerpage: rowperpage, page: page);
+        positionList.addAll(_departmentList);
+        page++;
         yield FetchedPosition();
       } catch (e) {
         log(e.toString());

@@ -1,18 +1,18 @@
-import 'package:meta/meta.dart';
-import 'package:equatable/equatable.dart';
+// import 'package:meta/meta.dart';
+// import 'package:equatable/equatable.dart';
 
-@immutable
-abstract class BannerState extends Equatable {
-  BannerState([List props = const []]) : super();
-  @override
-  List<Object> get props => [];
-}
+// @immutable
+// abstract class BannerState extends Equatable {
+//   BannerState([List props = const []]) : super();
+//   @override
+//   List<Object> get props => [];
+// }
 
-class FetchingBanner extends BannerState {}
+// class FetchingBanner extends BannerState {}
 
-class FetchedBanner extends BannerState {}
+// class FetchedBanner extends BannerState {}
 
-class ErrorFetchingBanner extends BannerState {
-  final dynamic error;
-  ErrorFetchingBanner({@required this.error});
-}
+// class ErrorFetchingBanner extends BannerState {
+//   final dynamic error;
+//   ErrorFetchingBanner({@required this.error});
+// }

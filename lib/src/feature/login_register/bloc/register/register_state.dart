@@ -1,9 +1,8 @@
 import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
-import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
 
 
-@immutable
+
 abstract class RegisterState extends Equatable {
   RegisterState([List props = const []]) : super();
   @override
