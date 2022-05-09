@@ -33,8 +33,8 @@ class _EmployeePageState extends State<EmployeePage> {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AddEmployee()));
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => AddEmployee()));
             }),
       ),
     );
@@ -218,15 +218,15 @@ class _BodyState extends State<Body> {
                                     ],
                                   ),
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (con) => EditEmployee(
-                                                  employeeModel: BlocProvider
-                                                          .of<EmployeeBloc>(
-                                                              context)
-                                                      .emploList[index],
-                                                )));
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (con) => EditEmployee(
+                                    //               employeeModel: BlocProvider
+                                    //                       .of<EmployeeBloc>(
+                                    //                           context)
+                                    //                   .emploList[index],
+                                    //             )));
                                   }),
                               SizedBox(
                                 width: 3,
@@ -352,15 +352,15 @@ class _BodyState extends State<Body> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (con) => EditEmployee(
-                                                    employeeModel: BlocProvider
-                                                            .of<EmployeeBloc>(
-                                                                context)
-                                                        .emploList[index],
-                                                  )));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (con) => EditEmployee(
+                                      //               employeeModel: BlocProvider
+                                      //                       .of<EmployeeBloc>(
+                                      //                           context)
+                                      //                   .emploList[index],
+                                      //             )));
                                     }),
                                 SizedBox(
                                   width: 5,

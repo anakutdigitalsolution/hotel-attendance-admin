@@ -12,6 +12,7 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
   DepartmentRepository _departmentRepository = DepartmentRepository();
   List<DepartmentModel> departmentList = [];
   int rowperpage = 12;
+  int rowpage =30;
   int page = 1;
   @override
   Stream<DepartmentState> mapEventToState(DepartmentEvent event) async* {
@@ -35,12 +36,17 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
     if(event is InitailizeDepartmentByGroupStarted){
        yield InitializingDepartment();
       try {
+        departmentList.clear();
+        // rowpage =20;
+        print("page $page");
+        print(departmentList.length);
         // Future.delayed(Duration(milliseconds: 200));
         List<DepartmentModel> _departmentList = await _departmentRepository
-            .getdepartmentByGroup(rowPerpage: rowperpage, page: page,id: event.id);
+            .getdepartmentByGroup(rowPerpage: rowpage, page: page,id: event.id);
         departmentList.addAll(_departmentList);
 
         page++;
+        
         print(page);
         print(departmentList.length);
         yield InitializedDepartment();

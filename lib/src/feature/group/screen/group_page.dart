@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/screen/widget/group_item.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
@@ -25,7 +26,7 @@ class GroupPage extends StatelessWidget {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              // Navigator.pushNamed(context, addTimetable);
+              Navigator.pushNamed(context, addGroup);
             }),
       ),
     );

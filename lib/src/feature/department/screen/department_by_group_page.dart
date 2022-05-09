@@ -4,11 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/model/group_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-
+DepartmentBlc departmentBlc = DepartmentBlc();
 class DepartmentByGroupPage extends StatelessWidget {
   final GroupModel groupModel;
 

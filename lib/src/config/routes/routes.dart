@@ -23,6 +23,10 @@ const String addTimetable = '/addTimetable';
 const String addLeavetype = '/addLeavetype';
 const String addEmployee = '/addEmployee';
 const String addschedule = '/addschedule';
+const String addWorkingday = '/addWorkingday';
 const String editschedule = '/editschedule';
+const String editWorkingday = '/editWorkingday';
 
+const String addGroup = '/addGroup';
 
+const String editGroup = '/editGroup';

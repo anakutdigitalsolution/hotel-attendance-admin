@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_by_group_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/model/group_model.dart';
@@ -9,6 +10,7 @@ Widget groupItem(
     {required BuildContext context, required GroupModel groupModel}) {
   return InkWell(
     onTap: () {
+     
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -110,15 +112,7 @@ Widget groupItem(
                       ],
                     ),
                     onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (con) => EditTimetable(
-                      //               timetableModel:
-                      //                   timetableBloc
-                      //                           .timetableList[
-                      //                       index],
-                      //             )));
+                       Navigator.pushNamed(context, editGroup,arguments: groupModel);
                     }),
                 SizedBox(
                   width: 5,

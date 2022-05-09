@@ -228,13 +228,13 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (con) => EditEmployee(
-                                                employeeModel: employeeBloc
-                                                    .emploList[index],
-                                              )));
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (con) => EditEmployee(
+                                  //               employeeModel: employeeBloc
+                                  //                   .emploList[index],
+                                  //             )));
                                 }),
                             SizedBox(
                               width: 3,

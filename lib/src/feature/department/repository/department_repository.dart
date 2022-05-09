@@ -29,6 +29,8 @@ class DepartmentRepository {
   Future<List<DepartmentModel>> getdepartmentByGroup(
       {required int rowPerpage, required int page,required String id}) async {
     try {
+      print(id);
+     print(page);
       String url = mainUrl + "departments&group_id=$id?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);

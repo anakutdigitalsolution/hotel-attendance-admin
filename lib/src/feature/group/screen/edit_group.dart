@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
-import 'package:hotle_attendnce_admin/src/feature/group/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/group/model/group_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/screen/group_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
@@ -11,20 +10,36 @@ import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/feature/group/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
-class AddGroup extends StatelessWidget {
-  // const AddGroup({Key? key}) : super(key: key);
-    final TextEditingController _nameCtrl = TextEditingController();
+class EditGroup extends StatefulWidget {
+  final GroupModel groupModel;
+  const EditGroup({required this.groupModel }) ;
+
+  @override
+  State<EditGroup> createState() => _EditGroupState();
+}
+
+class _EditGroupState extends State<EditGroup> {
+  
+  final TextEditingController _nameCtrl = TextEditingController();
     final TextEditingController _noteCtrl = TextEditingController();
     final TextEditingController _workdayCtrl = TextEditingController();
 
      late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+     @override
+  void initState() {
+    _nameCtrl.text = widget.groupModel.name!;
+    widget.groupModel.notes == null?_noteCtrl.text = "":_noteCtrl.text = widget.groupModel.notes!;
+    _workdayCtrl.text = widget.groupModel.workingDayModel!.name!;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: standardAppBar(context, "Add Group department"),
+      appBar: standardAppBar(context, "Edit Group department"),
       body: Builder(builder: (context) {
         return BlocListener(
           bloc: groupBloc,
@@ -151,11 +166,19 @@ class AddGroup extends StatelessWidget {
                         ),
                         SizedBox(height: MediaQuery.of(context).size.height / 5),
                       standardBtn(
-                          title: "Submit",
+                          title: "Update",
                           onTap: () {
                             if (_formKey!.currentState!.validate()) {
-                              WorkingDayModel workingDayModel = workingDayBloc.departmentList.firstWhere((element) => element.name == _workdayCtrl.text);
-                             groupBloc.add(AddGroupStarted(name: _nameCtrl.text, workdayId: workingDayModel.id, notes: _noteCtrl.text));
+                              String workId="";
+                              if(_workdayCtrl.text != widget.groupModel.workingDayModel!.name!){
+                                WorkingDayModel workingDayModel = workingDayBloc.departmentList.firstWhere((element) => element.name == _workdayCtrl.text);
+                                workId= workingDayModel.id;
+                              } else{
+                                workId = widget.groupModel.workingDayModel!.id;
+                              }
+                              print(workId);
+                              
+                             groupBloc.add(UpdateGroupStarted(id: widget.groupModel.id,name: _nameCtrl.text, worddayId: workId, notes: _noteCtrl.text));
                             }
                           })
                       ],

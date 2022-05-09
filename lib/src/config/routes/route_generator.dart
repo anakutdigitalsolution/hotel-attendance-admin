@@ -11,6 +11,9 @@ import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/add_
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/edit_schedule.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/schedule_page_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/shedule_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/group/model/group_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/group/screen/add_group.dart';
+import 'package:hotle_attendnce_admin/src/feature/group/screen/edit_group.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/screen/group_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/add_holiday.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/holiday_page.dart';
@@ -25,6 +28,9 @@ import 'package:hotle_attendnce_admin/src/feature/report/screen/report_page.dart
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/add_timetable.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/timetable_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/screen/add_working_day.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/screen/edit_working_day.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/screen/working_day.dart';
 
 import 'routes.dart';
@@ -42,8 +48,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AccountPage());
       case setting:
         return MaterialPageRoute(builder: (_) => SettingPage());
-      case department:
-        return MaterialPageRoute(builder: (_) => DepartmentPage());
+      // case department:
+      //   return MaterialPageRoute(builder: (_) => DepartmentPage());
       case employee:
         return MaterialPageRoute(builder: (_) => EmployeePage());
       case position:
@@ -70,16 +76,16 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case addNotification:
         return MaterialPageRoute(builder: (_) => AddNotification());
-      case addDepartment:
-        return MaterialPageRoute(builder: (_) => AddDepartment());
+      // case addDepartment:
+      //   return MaterialPageRoute(builder: (_) => AddDepartment());
       case addPosition:
         return MaterialPageRoute(builder: (_) => AddPosition());
       case addTimetable:
         return MaterialPageRoute(builder: (_) => AddTimetable());
       case addLeavetype:
         return MaterialPageRoute(builder: (_) => AddLeaveType());
-      case addEmployee:
-        return MaterialPageRoute(builder: (_) => AddEmployee());
+      // case addEmployee:
+      //   return MaterialPageRoute(builder: (_) => AddEmployee());
       case addschedule:
         return MaterialPageRoute(builder: (_) => AddSchedule());
       case editschedule:
@@ -90,16 +96,28 @@ class RouteGenerator {
         return _errorRoute();
       case workDay:
         return MaterialPageRoute(builder: (_) => WorkingDay());
+       case addWorkingday:
+        return MaterialPageRoute(builder: (_) => AddWorkingDay());
        case group:
         return MaterialPageRoute(builder: (_) => GroupPage());
-      // case editCustomer:
-      //   if (args is Customer) {
-      //     return MaterialPageRoute(
-      //         builder: (_) => EditCustomerPage(
-      //               customer: args,
-      //             ));
-      //   }
-      //   return _errorRoute();
+         case addGroup:
+        return MaterialPageRoute(builder: (_) => AddGroup());
+        case editGroup:
+        if (args is GroupModel) {
+          return MaterialPageRoute(
+              builder: (_) => EditGroup(
+                    groupModel: args,
+                  ));
+        }
+        return _errorRoute();
+      case editWorkingday:
+        if (args is WorkingDayModel) {
+          return MaterialPageRoute(
+              builder: (_) => EditWorkingDay(
+                    workingDayModel: args,
+                  ));
+        }
+        return _errorRoute();
       // case editCategory:
       //   if (args is Category) {
       //     return MaterialPageRoute(
