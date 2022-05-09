@@ -53,7 +53,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
   @override
   void initState() {
     super.initState();
-    
+
     departmentBlc.add(InitializeDepartmentStarted());
   }
 
@@ -74,8 +74,8 @@ class _DepartmentBodyState extends State<DepartmentBody> {
         if (state is AddingDepartment) {
           EasyLoading.show(status: "loading....");
         } else if (state is ErrorAddingDepartment) {
-          Navigator.pop(context);
-          errorSnackBar(text: state.error.toString(), context: context);
+          EasyLoading.dismiss();
+          EasyLoading.showError(state.error.toString());
         } else if (state is AddedDepartment) {
           EasyLoading.dismiss();
           EasyLoading.showSuccess("Sucess");

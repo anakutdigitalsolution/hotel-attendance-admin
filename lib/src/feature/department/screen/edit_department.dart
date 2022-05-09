@@ -24,7 +24,7 @@ class _EditDepartmentState extends State<EditDepartment> {
 
   @override
   void initState() {
-    _reasonCtrl.text = widget.departmentModel.name;
+    _reasonCtrl.text = widget.departmentModel.name!;
     super.initState();
   }
 
@@ -85,7 +85,9 @@ class _EditDepartmentState extends State<EditDepartment> {
                          if (_formKey!.currentState!.validate()) {
                                 departmentBlc.add(UpdateDepartmentStarted(
                                     id: widget.departmentModel.id,
-                                    name: _reasonCtrl.text));
+                                    name: _reasonCtrl.text, locationId: "",
+                                    groupId: "",
+                                    notes: ""));
                               }
                       })
                       

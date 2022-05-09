@@ -76,7 +76,10 @@ class _AddDepartmentState extends State<AddDepartment> {
                        standardBtn(title: "Submit",onTap: (){
                          if (_formKey!.currentState!.validate()) {
                                 departmentBlc.add(AddDepartmentStarted(
-                                    name: _reasonCtrl.text));
+                                    name: _reasonCtrl.text,
+                                    locationId: "",
+                                    groupId: "",
+                                    notes: ""));
                               }
                       })
                      

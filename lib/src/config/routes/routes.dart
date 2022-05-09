@@ -10,6 +10,7 @@ const String schedules = '/schedules';
 const String leave = '/leave';
 const String leavetype = '/leavetype';
 const String workDay = '/workDay';
+const String group = '/group';
 
 const String holiday = '/holiday';
 const String addHoliday = '/addHoliday';

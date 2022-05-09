@@ -1,23 +1,23 @@
 import 'package:dio/dio.dart';
-import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
-class DepartmentRepository {
+class WorkingDayRepository {
   String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
-  Future<List<DepartmentModel>> getdepartment(
+  Future<List<WorkingDayModel>> getWorkdayList(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "departments?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "workdays?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
-        List<DepartmentModel> leave = [];
+        List<WorkingDayModel> leave = [];
         response.data["data"].forEach((data) {
-          leave.add(DepartmentModel.fromJson(data));
+          leave.add(WorkingDayModel.fromJson(data));
         });
         return leave;
       }
@@ -26,18 +26,18 @@ class DepartmentRepository {
       throw e;
     }
   }
-  Future<List<DepartmentModel>> getdepartmentByGroup(
-      {required int rowPerpage, required int page,required String id}) async {
+
+  Future<List<WorkingDayModel>> getAllWorkday() async {
     try {
-      String url = mainUrl + "departments&group_id=$id?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "workdays";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
-        List<DepartmentModel> leave = [];
+        List<WorkingDayModel> leave = [];
         response.data["data"].forEach((data) {
-          leave.add(DepartmentModel.fromJson(data));
+          leave.add(WorkingDayModel.fromJson(data));
         });
         return leave;
       }
@@ -47,39 +47,19 @@ class DepartmentRepository {
     }
   }
 
-  Future<List<DepartmentModel>> getAlldepartment() async {
-    try {
-      String url = mainUrl + "departments";
-
-      Response response = await apiProvider.get(url, null, null);
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        print(response.data);
-        List<DepartmentModel> leave = [];
-        response.data["data"].forEach((data) {
-          leave.add(DepartmentModel.fromJson(data));
-        });
-        return leave;
-      }
-      throw CustomException.generalException();
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<void> addDepartment({
+  Future<void> addWorkDay({
     required String name,
     required String notes,
-    required String groupId,
-    required String locationId,
+    required String workDay,
+    required String offDay,
   }) async {
     try {
-      String url = mainUrl + "departments/add";
+      String url = mainUrl + "workdays/add";
       Map body = {
-        "department_name": name,
-        "group_department_id":groupId,
-        "location_id":locationId,
-        "notes":notes
+        "name": name,
+        "working_day": workDay,
+        "off_day": offDay,
+        "notes": notes
       };
       Response response = await apiProvider.post(url, body, null);
 
@@ -96,20 +76,20 @@ class DepartmentRepository {
     }
   }
 
-  Future<void> editDepartment({
+  Future<void> editWorkday({
     required String id,
     required String name,
-     required String notes,
-    required String groupId,
-    required String locationId,
+    required String notes,
+    required String workDay,
+    required String offDay,
   }) async {
     try {
-      String url = mainUrl + "departments/edit/$id";
+      String url = mainUrl + "workdays/edit/$id";
       Map body = {
-        "department_name": name,
-        "group_department_id":groupId,
-        "location_id":locationId,
-        "notes":notes
+        "name": name,
+        "working_day": workDay,
+        "off_day": offDay,
+        "notes": notes
       };
       Response response = await apiProvider.put(url, body);
 
@@ -126,11 +106,11 @@ class DepartmentRepository {
     }
   }
 
-  Future<void> deleteDepartment({
+  Future<void> deleteWorkday({
     required String id,
   }) async {
     try {
-      String url = mainUrl + "departments/delete/$id";
+      String url = mainUrl + "workdays/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);

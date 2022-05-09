@@ -11,6 +11,7 @@ import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/add_
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/edit_schedule.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/schedule_page_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/shedule_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/group/screen/group_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/add_holiday.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/holiday_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/screen/add_leave_type.dart';
@@ -89,6 +90,8 @@ class RouteGenerator {
         return _errorRoute();
       case workDay:
         return MaterialPageRoute(builder: (_) => WorkingDay());
+       case group:
+        return MaterialPageRoute(builder: (_) => GroupPage());
       // case editCustomer:
       //   if (args is Customer) {
       //     return MaterialPageRoute(

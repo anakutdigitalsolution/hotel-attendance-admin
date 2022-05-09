@@ -1,91 +1,78 @@
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
-import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/timetable_bloc.dart';
-
-import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_event.dart';
+import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/group/model/group_model.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'edit_timetable.dart';
+class DepartmentByGroupPage extends StatelessWidget {
+  final GroupModel groupModel;
 
-TimetableBloc timetableBloc = TimetableBloc();
+  const DepartmentByGroupPage({required this.groupModel});
 
-class TimetablePage extends StatefulWidget {
-  const TimetablePage({Key? key}) : super(key: key);
-
-  @override
-  State<TimetablePage> createState() => _TimetablePageState();
-}
-
-class _TimetablePageState extends State<TimetablePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Timetable Page"),
+      appBar: standardAppBar(context, "${groupModel.name}"),
       body: Container(
-          margin: EdgeInsets.only(top: 10, bottom: 10),
-          child: DepartmentBody()),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-            backgroundColor: Colors.lightBlueAccent,
-            child: Icon(Icons.add),
-            elevation: 0,
-            onPressed: () {
-              Navigator.pushNamed(context, addTimetable);
-            }),
+        child: Body(
+          groupId: groupModel.id,
+        ),
       ),
     );
   }
 }
 
-class DepartmentBody extends StatefulWidget {
-  const DepartmentBody({Key? key}) : super(key: key);
+class Body extends StatefulWidget {
+  final String groupId;
+  const Body({required this.groupId});
 
   @override
-  State<DepartmentBody> createState() => _DepartmentBodyState();
+  State<Body> createState() => _BodyState();
 }
 
-class _DepartmentBodyState extends State<DepartmentBody> {
+class _BodyState extends State<Body> {
   final RefreshController _refreshController = RefreshController();
-  void initState() {
-    super.initState();
 
-    timetableBloc.add(InitializeTimetableStarted());
+  @override
+  void initState() {
+    departmentBlc.add(InitailizeDepartmentByGroupStarted(id: widget.groupId));
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-
     return BlocConsumer(
-        bloc: timetableBloc,
+        bloc: departmentBlc,
         builder: (context, state) {
-          if (state is InitializingTimetable) {
+          if (state is InitializingDepartment) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is ErrorFetchingTimetable) {
+          } else if (state is ErrorFetchingDepartment) {
             return Center(
               child: Text(state.error.toString()),
             );
           } else {
-            if (timetableBloc.timetableList.length == 0) {
+            if (departmentBlc.departmentList.length == 0) {
               return Center(
                 child: Text("No Data"),
               );
             }
-            print("length ${timetableBloc.timetableList.length}");
+            print("length ${departmentBlc.departmentList.length}");
 
             return SmartRefresher(
               onRefresh: () {
-                timetableBloc.add(RefreshTimetableStarted());
+                departmentBlc
+                    .add(RefreshDepartmentByGroupStarted(id: widget.groupId));
               },
               onLoading: () {
-                timetableBloc.add(FetchTimetableStarted());
+                departmentBlc
+                    .add(FetchDepartmentByGroupStarted(id: widget.groupId));
                 _refreshController.loadComplete();
               },
               enablePullDown: true,
@@ -93,8 +80,12 @@ class _DepartmentBodyState extends State<DepartmentBody> {
               cacheExtent: 1,
               controller: _refreshController,
               child: ListView.builder(
-                  itemCount: timetableBloc.timetableList.length,
+                  itemCount: departmentBlc.departmentList.length,
                   itemBuilder: (context, index) {
+                    // return Container(
+                    //   child: Text(departmentBlc
+                    //       .departmentList[index].locationModel!.name!),
+                    // );
                     return Container(
                       margin:
                           EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
@@ -127,12 +118,14 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                     style: TextStyle(color: Colors.black),
                                   ),
                                 ),
-                                Text(
-                                  "${timetableBloc.timetableList[index].timetableName}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                )
+                                departmentBlc.departmentList[index].name == null
+                                    ? Text("")
+                                    : Text(
+                                        "${departmentBlc.departmentList[index].name}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      )
                               ],
                             ),
                             SizedBox(
@@ -145,16 +138,20 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Text(
-                                    "Time in :",
+                                    "Location :",
                                     style: TextStyle(color: Colors.black),
                                   ),
                                 ),
-                                Text(
-                                  "${timetableBloc.timetableList[index].onDutyTtime}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                )
+                                departmentBlc.departmentList[index]
+                                            .locationModel!.name ==
+                                        null
+                                    ? Text("")
+                                    : Text(
+                                        "${departmentBlc.departmentList[index].locationModel!.name}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      )
                               ],
                             ),
                             SizedBox(
@@ -167,16 +164,19 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Text(
-                                    "Time out :",
+                                    "Notes :",
                                     style: TextStyle(color: Colors.black),
                                   ),
                                 ),
-                                Text(
-                                  "${timetableBloc.timetableList[index].offDutyTime}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                )
+                                departmentBlc.departmentList[index].notes ==
+                                        null
+                                    ? Text("")
+                                    : Text(
+                                        "${departmentBlc.departmentList[index].notes}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      )
                               ],
                             ),
                             Row(
@@ -191,15 +191,15 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (con) => EditTimetable(
-                                                    timetableModel:
-                                                        timetableBloc
-                                                                .timetableList[
-                                                            index],
-                                                  )));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (con) => EditTimetable(
+                                      //               timetableModel:
+                                      //                   timetableBloc
+                                      //                           .timetableList[
+                                      //                       index],
+                                      //             )));
                                     }),
                                 SizedBox(
                                   width: 5,
@@ -213,11 +213,11 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      print(
-                                          "id ${timetableBloc.timetableList[index].id}");
-                                      timetableBloc.add(DeleteTimetableStarted(
-                                          id: timetableBloc
-                                              .timetableList[index].id));
+                                      // print(
+                                      //     "id ${groupBloc.departmentList[index].id}");
+                                      // groupBloc.add(DeleteGroupStarted(
+                                      //     id: groupBloc
+                                      //         .departmentList[index].id));
                                     }),
                               ],
                             )
@@ -230,19 +230,19 @@ class _DepartmentBodyState extends State<DepartmentBody> {
           }
         },
         listener: (context, state) {
-          if (state is FetchedTimetable) {
+          if (state is FetchedDepartment) {
             _refreshController.loadComplete();
             _refreshController.refreshCompleted();
           }
-          if (state is EndOfTimetableList) {
+          if (state is EndOfDepartmentList) {
             _refreshController.loadNoData();
           }
-          if (state is AddingTimetable) {
+          if (state is AddingDepartment) {
             EasyLoading.show(status: "loading....");
-          } else if (state is ErrorAddingTimetable) {
+          } else if (state is ErrorAddingDepartment) {
             EasyLoading.dismiss();
             EasyLoading.showError(state.error.toString());
-          } else if (state is AddedTimetable) {
+          } else if (state is AddedDepartment) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Sucess");
           }

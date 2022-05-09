@@ -89,7 +89,7 @@ class EmployeeDetailTile extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(),
                 ),
                 Text(
-                  employeeModel.departmentModel!.name,
+                  employeeModel.departmentModel!.name!,
                   style: Theme.of(context).textTheme.bodyText1!.copyWith(
                       fontWeight: FontWeight.bold, color: Colors.purple),
                 ),

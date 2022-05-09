@@ -60,7 +60,7 @@ class _EditEmployeeState extends State<EditEmployee> {
     widget.employeeModel.address == null
         ? _addressCtrl.text = ""
         : _addressCtrl.text = widget.employeeModel.address!;
-    _departmentIdCtrl.text = widget.employeeModel.departmentModel!.name;
+    _departmentIdCtrl.text = widget.employeeModel.departmentModel!.name!;
     _positionIdCtrl.text = widget.employeeModel.positionModel!.positionName;
     _genderCtrl.text = widget.employeeModel.gender;
     widget.employeeModel.phone == null
@@ -138,7 +138,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                 if (state is FetchedDepartment) {
                   Navigator.pop(context);
                   customModal(context,
-                      departmentBlc.departmentList.map((e) => e.name).toList(),
+                      departmentBlc.departmentList.map((e) => e.name!).toList(),
                       (value) {
                     _departmentIdCtrl.text = value;
                     // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)

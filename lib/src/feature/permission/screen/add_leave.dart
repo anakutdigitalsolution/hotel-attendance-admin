@@ -1,3 +1,4 @@
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
@@ -87,16 +88,16 @@ class _AddLeaveState extends State<AddLeave> {
         return BlocListener<LeaveBloc, LeaveState>(
             listener: (context, state) {
               if (state is AddingLeave) {
-                loadingDialogs(context);
+                EasyLoading.show(status: 'loading...');
               }
               if (state is ErrorAddingLeave) {
-                Navigator.pop(context);
-                errorSnackBar(text: state.error.toString(), context: context);
+                EasyLoading.dismiss();
+                EasyLoading.showError(state.error.toString());
               }
               if (state is AddedLeave) {
                 // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
-                // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
-                Navigator.pop(context);
+                EasyLoading.dismiss();
+                EasyLoading.showSuccess("Success");
                 Navigator.pop(context);
 
                 print("success");

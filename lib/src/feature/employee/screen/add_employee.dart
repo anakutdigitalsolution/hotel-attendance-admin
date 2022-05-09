@@ -117,7 +117,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                 if (state is FetchedDepartment) {
                   Navigator.pop(context);
                   customModal(context,
-                      departmentBlc.departmentList.map((e) => e.name).toList(),
+                      departmentBlc.departmentList.map((e) => e.name!).toList(),
                       (value) {
                     _departmentIdCtrl.text = value;
                     // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)

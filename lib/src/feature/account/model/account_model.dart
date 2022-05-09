@@ -1,4 +1,5 @@
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/location/models/location_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
 
@@ -82,7 +83,7 @@ class StoreModel {
   final String storeName;
   final String service;
   final String locationId;
-  final LocationModel locationModel;
+  final LocationModel? locationModel;
 
   factory StoreModel.fromJson(Map<String, dynamic> json) {
     return StoreModel(
@@ -100,25 +101,25 @@ class StoreModel {
       required this.locationId});
 }
 
-class LocationModel {
-  final String id;
-  final String locationName;
-  final String lat;
-  final String lon;
-  final String addDetail;
+// class LocationModel {
+//   final String id;
+//   final String? locationName;
+//   final String? lat;
+//   final String? lon;
+//   final String? addDetail;
 
-  factory LocationModel.fromJson(Map<String, dynamic> json) {
-    return LocationModel(
-        id: json["id"].toString(),
-        locationName: json["name"],
-        lat: json["lat"],
-        lon: json["lon"],
-        addDetail: json["address_detail"]);
-  }
-  LocationModel(
-      {required this.id,
-      required this.locationName,
-      required this.lat,
-      required this.lon,
-      required this.addDetail});
-}
+//   factory LocationModel.fromJson(Map<String, dynamic> json) {
+//     return LocationModel(
+//         id: json["id"].toString(),
+//         locationName: json["name"],
+//         lat: json["lat"],
+//         lon: json["lon"],
+//         addDetail: json["address_detail"]);
+//   }
+//   LocationModel(
+//       {required this.id,
+//       required this.locationName,
+//       required this.lat,
+//       required this.lon,
+//       required this.addDetail});
+// }

@@ -1,23 +1,24 @@
 import 'package:dio/dio.dart';
-import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/account/model/account_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/location/models/location_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
-class DepartmentRepository {
+class LocationRepository {
   String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
-  Future<List<DepartmentModel>> getdepartment(
+  Future<List<LocationModel>> getLocationList(
       {required int rowPerpage, required int page}) async {
     try {
-      String url = mainUrl + "departments?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "locations?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
-        List<DepartmentModel> leave = [];
+        List<LocationModel> leave = [];
         response.data["data"].forEach((data) {
-          leave.add(DepartmentModel.fromJson(data));
+          leave.add(LocationModel.fromJson(data));
         });
         return leave;
       }
@@ -26,18 +27,18 @@ class DepartmentRepository {
       throw e;
     }
   }
-  Future<List<DepartmentModel>> getdepartmentByGroup(
-      {required int rowPerpage, required int page,required String id}) async {
+
+  Future<List<LocationModel>> getAllLocation() async {
     try {
-      String url = mainUrl + "departments&group_id=$id?page_size=$rowPerpage&page=$page";
+      String url = mainUrl + "locations";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
-        List<DepartmentModel> leave = [];
+        List<LocationModel> leave = [];
         response.data["data"].forEach((data) {
-          leave.add(DepartmentModel.fromJson(data));
+          leave.add(LocationModel.fromJson(data));
         });
         return leave;
       }
@@ -47,39 +48,21 @@ class DepartmentRepository {
     }
   }
 
-  Future<List<DepartmentModel>> getAlldepartment() async {
-    try {
-      String url = mainUrl + "departments";
-
-      Response response = await apiProvider.get(url, null, null);
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        print(response.data);
-        List<DepartmentModel> leave = [];
-        response.data["data"].forEach((data) {
-          leave.add(DepartmentModel.fromJson(data));
-        });
-        return leave;
-      }
-      throw CustomException.generalException();
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  Future<void> addDepartment({
+  Future<void> addLocation({
     required String name,
     required String notes,
-    required String groupId,
-    required String locationId,
+    required String lat,
+    required String lon,
+    required String addressDetail,
   }) async {
     try {
-      String url = mainUrl + "departments/add";
+      String url = mainUrl + "locations/add";
       Map body = {
-        "department_name": name,
-        "group_department_id":groupId,
-        "location_id":locationId,
-        "notes":notes
+        "name": name,
+        "lat": lat,
+        "lon": lon,
+        "address_detail": addressDetail,
+        "notes": notes
       };
       Response response = await apiProvider.post(url, body, null);
 
@@ -96,20 +79,22 @@ class DepartmentRepository {
     }
   }
 
-  Future<void> editDepartment({
+  Future<void> editWorkday({
     required String id,
     required String name,
-     required String notes,
-    required String groupId,
-    required String locationId,
+    required String notes,
+    required String lat,
+    required String lon,
+    required String addressDetail,
   }) async {
     try {
-      String url = mainUrl + "departments/edit/$id";
+      String url = mainUrl + "locations/edit/$id";
       Map body = {
-        "department_name": name,
-        "group_department_id":groupId,
-        "location_id":locationId,
-        "notes":notes
+        "name": name,
+        "lat": lat,
+        "lon": lon,
+        "address_detail": addressDetail,
+        "notes": notes
       };
       Response response = await apiProvider.put(url, body);
 
@@ -126,11 +111,11 @@ class DepartmentRepository {
     }
   }
 
-  Future<void> deleteDepartment({
+  Future<void> deleteLocation({
     required String id,
   }) async {
     try {
-      String url = mainUrl + "departments/delete/$id";
+      String url = mainUrl + "locations/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
       print(response.statusCode);

@@ -98,6 +98,15 @@ class _SettingPageState extends State<SettingPage> {
               height: 10,
             ),
             settingitem(
+                name: "Group Department",
+                icon: Icons.people,
+                onPressed: () {
+                  Navigator.pushNamed(context, group);
+                }),
+            SizedBox(
+              height: 10,
+            ),
+            settingitem(
                 name: "Department",
                 icon: Icons.people,
                 onPressed: () {
@@ -121,7 +130,7 @@ class _SettingPageState extends State<SettingPage> {
                 onPressed: () {
                   Navigator.pushNamed(context, timetable);
                 }),
-                 SizedBox(
+            SizedBox(
               height: 10,
             ),
             settingitem(
