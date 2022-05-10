@@ -7,7 +7,7 @@ import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/model/group_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-DepartmentBlc departmentBlc = DepartmentBlc();
+
 class DepartmentByGroupPage extends StatelessWidget {
   final GroupModel groupModel;
 
@@ -35,6 +35,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  // canot declare public if get product by category
+  DepartmentBlc departmentBlc = DepartmentBlc();
   final RefreshController _refreshController = RefreshController();
 
   @override
@@ -45,9 +47,12 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    // BlocProvider.of<DepartmentBlc>(context)
+    //     .add(InitailizeDepartmentByGroupStarted(id: widget.groupId));
     return BlocConsumer(
         bloc: departmentBlc,
         builder: (context, state) {
+          print(state);
           if (state is InitializingDepartment) {
             return Center(
               child: CircularProgressIndicator(),
@@ -178,48 +183,48 @@ class _BodyState extends State<Body> {
                                       )
                               ],
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                CupertinoButton(
-                                    padding: EdgeInsets.all(1.0),
-                                    color: Colors.green,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.edit),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      // Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(
-                                      //         builder: (con) => EditTimetable(
-                                      //               timetableModel:
-                                      //                   timetableBloc
-                                      //                           .timetableList[
-                                      //                       index],
-                                      //             )));
-                                    }),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                CupertinoButton(
-                                    padding: EdgeInsets.all(1.0),
-                                    color: Colors.red,
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.delete),
-                                      ],
-                                    ),
-                                    onPressed: () {
-                                      // print(
-                                      //     "id ${groupBloc.departmentList[index].id}");
-                                      // groupBloc.add(DeleteGroupStarted(
-                                      //     id: groupBloc
-                                      //         .departmentList[index].id));
-                                    }),
-                              ],
-                            )
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.end,
+                            //   children: [
+                            //     CupertinoButton(
+                            //         padding: EdgeInsets.all(1.0),
+                            //         color: Colors.green,
+                            //         child: Row(
+                            //           children: [
+                            //             Icon(Icons.edit),
+                            //           ],
+                            //         ),
+                            //         onPressed: () {
+                            //           // Navigator.push(
+                            //           //     context,
+                            //           //     MaterialPageRoute(
+                            //           //         builder: (con) => EditTimetable(
+                            //           //               timetableModel:
+                            //           //                   timetableBloc
+                            //           //                           .timetableList[
+                            //           //                       index],
+                            //           //             )));
+                            //         }),
+                            //     SizedBox(
+                            //       width: 5,
+                            //     ),
+                            //     CupertinoButton(
+                            //         padding: EdgeInsets.all(1.0),
+                            //         color: Colors.red,
+                            //         child: Row(
+                            //           children: [
+                            //             Icon(Icons.delete),
+                            //           ],
+                            //         ),
+                            //         onPressed: () {
+                            //           // print(
+                            //           //     "id ${groupBloc.departmentList[index].id}");
+                            //           // groupBloc.add(DeleteGroupStarted(
+                            //           //     id: groupBloc
+                            //           //         .departmentList[index].id));
+                            //         }),
+                            //   ],
+                            // )
                           ],
                         ),
                       ),

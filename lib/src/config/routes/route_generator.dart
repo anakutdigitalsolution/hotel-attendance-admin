@@ -2,8 +2,10 @@ import 'package:hotle_attendnce_admin/src/feature/account/screen/account_page_on
 import 'package:hotle_attendnce_admin/src/feature/checkin/screen/attendance_employee_page.dart';
 
 import 'package:flutter/material.dart';
+import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/add_department.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/department/screen/edit_department.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/add_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/model/employee_timetable_model.dart';
@@ -48,8 +50,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AccountPage());
       case setting:
         return MaterialPageRoute(builder: (_) => SettingPage());
-      // case department:
-      //   return MaterialPageRoute(builder: (_) => DepartmentPage());
+      case department:
+        return MaterialPageRoute(builder: (_) => DepartmentPage());
       case employee:
         return MaterialPageRoute(builder: (_) => EmployeePage());
       case position:
@@ -58,7 +60,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => TimetablePage());
       case schedule:
         return MaterialPageRoute(builder: (_) => SchedulePage());
-       case schedules:
+      case schedules:
         return MaterialPageRoute(builder: (_) => ScheduleEmployeePage());
       case leave:
         return MaterialPageRoute(builder: (_) => LeavePage());
@@ -96,13 +98,13 @@ class RouteGenerator {
         return _errorRoute();
       case workDay:
         return MaterialPageRoute(builder: (_) => WorkingDay());
-       case addWorkingday:
+      case addWorkingday:
         return MaterialPageRoute(builder: (_) => AddWorkingDay());
-       case group:
+      case group:
         return MaterialPageRoute(builder: (_) => GroupPage());
-         case addGroup:
+      case addGroup:
         return MaterialPageRoute(builder: (_) => AddGroup());
-        case editGroup:
+      case editGroup:
         if (args is GroupModel) {
           return MaterialPageRoute(
               builder: (_) => EditGroup(
@@ -118,14 +120,14 @@ class RouteGenerator {
                   ));
         }
         return _errorRoute();
-      // case editCategory:
-      //   if (args is Category) {
-      //     return MaterialPageRoute(
-      //         builder: (_) => EditCategoryPage(
-      //               category: args,
-      //             ));
-      //   }
-      //   return _errorRoute();
+      case editDepartment:
+        if (args is DepartmentModel) {
+          return MaterialPageRoute(
+              builder: (_) => EditDepartment(
+                    departmentModel: args,
+                  ));
+        }
+        return _errorRoute();
 
       default:
         return _errorRoute();

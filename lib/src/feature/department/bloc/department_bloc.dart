@@ -12,7 +12,7 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
   DepartmentRepository _departmentRepository = DepartmentRepository();
   List<DepartmentModel> departmentList = [];
   int rowperpage = 12;
-  int rowpage =30;
+  int rowpage = 30;
   int page = 1;
   @override
   Stream<DepartmentState> mapEventToState(DepartmentEvent event) async* {
@@ -33,20 +33,22 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
         yield ErrorFetchingDepartment(error: e.toString());
       }
     }
-    if(event is InitailizeDepartmentByGroupStarted){
-       yield InitializingDepartment();
+    if (event is InitailizeDepartmentByGroupStarted) {
+      yield InitializingDepartment();
       try {
-        departmentList.clear();
+        // departmentList.clear();
         // rowpage =20;
         print("page $page");
         print(departmentList.length);
+
         // Future.delayed(Duration(milliseconds: 200));
-        List<DepartmentModel> _departmentList = await _departmentRepository
-            .getdepartmentByGroup(rowPerpage: rowpage, page: page,id: event.id);
+        List<DepartmentModel> _departmentList =
+            await _departmentRepository.getdepartmentByGroup(
+                rowPerpage: rowpage, page: page, id: event.id);
         departmentList.addAll(_departmentList);
 
         page++;
-        
+
         print(page);
         print(departmentList.length);
         yield InitializedDepartment();
@@ -55,12 +57,13 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
         yield ErrorFetchingDepartment(error: e.toString());
       }
     }
-    if(event is FetchDepartmentByGroupStarted){
+    if (event is FetchDepartmentByGroupStarted) {
       yield FetchingDepartment();
       try {
         // Future.delayed(Duration(milliseconds: 200));
-        List<DepartmentModel> _departmentList = await _departmentRepository
-            .getdepartmentByGroup(rowPerpage: rowperpage, page: page,id: event.id);
+        List<DepartmentModel> _departmentList =
+            await _departmentRepository.getdepartmentByGroup(
+                rowPerpage: rowperpage, page: page, id: event.id);
         departmentList.addAll(_departmentList);
         page++;
         print(page);
@@ -74,16 +77,17 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
         yield ErrorFetchingDepartment(error: e.toString());
       }
     }
-    if(event is RefreshDepartmentByGroupStarted){
-       yield FetchingDepartment();
+    if (event is RefreshDepartmentByGroupStarted) {
+      yield FetchingDepartment();
       try {
         // Future.delayed(Duration(milliseconds: 200));
         page = 1;
         if (departmentList.length != 0) {
           departmentList.clear();
         }
-        List<DepartmentModel> leaveList = await _departmentRepository
-            .getdepartmentByGroup(rowPerpage: rowperpage, page: page,id: event.id);
+        List<DepartmentModel> leaveList =
+            await _departmentRepository.getdepartmentByGroup(
+                rowPerpage: rowperpage, page: page, id: event.id);
         departmentList.addAll(leaveList);
         print(leaveList.length);
         page++;
@@ -170,8 +174,8 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
     if (event is UpdateDepartmentStarted) {
       yield AddingDepartment();
       try {
-         await _departmentRepository.editDepartment(
-           id: event.id,
+        await _departmentRepository.editDepartment(
+            id: event.id,
             name: event.name,
             notes: event.notes,
             groupId: event.groupId,

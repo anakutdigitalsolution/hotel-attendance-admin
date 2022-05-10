@@ -26,7 +26,7 @@ const String addschedule = '/addschedule';
 const String addWorkingday = '/addWorkingday';
 const String editschedule = '/editschedule';
 const String editWorkingday = '/editWorkingday';
-
+const String editDepartment = '/editDepartment';
 const String addGroup = '/addGroup';
 
 const String editGroup = '/editGroup';

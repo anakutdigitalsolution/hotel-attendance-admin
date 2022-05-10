@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/route_generator.dart';
 import 'package:hotle_attendnce_admin/src/feature/auth/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/language/bloc/index.dart';
 import 'src/feature/landing/landing_page.dart';
 
@@ -40,11 +41,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<LanguageBloc>(
             create: (BuildContext context) =>
                 LanguageBloc()..add(LanguageLoadStarted())),
-        // BlocProvider<AccountBloc>(
-        //     create: (BuildContext context) =>
-        //         AccountBloc()..add(FetchAccountStarted())),
-        BlocProvider<CheckInOutBloc>(
-            create: (BuildContext context) => CheckInOutBloc()),
+
+        // BlocProvider<DepartmentBlc>(
+        //     create: (BuildContext context) => DepartmentBlc()),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {
