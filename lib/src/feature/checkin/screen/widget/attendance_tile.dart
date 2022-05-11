@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
+// import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
+// import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:intl/intl.dart';
 
 class AttendanceTile extends StatefulWidget {

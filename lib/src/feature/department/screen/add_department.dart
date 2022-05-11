@@ -38,7 +38,7 @@ class _AddDepartmentState extends State<AddDepartment> {
       appBar: standardAppBar(context, "Add Department"),
       body: Builder(builder: (context) {
         return BlocListener(
-          bloc: departmentBlc,
+            bloc: departmentBlc,
             listener: (context, state) {
               if (state is AddingDepartment) {
                 EasyLoading.show(status: "loading....");
@@ -112,7 +112,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -191,7 +191,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,

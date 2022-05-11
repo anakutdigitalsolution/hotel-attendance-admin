@@ -30,3 +30,11 @@ class ErrorFetchingEmployee extends EmployeeState with ErrorState{
     required this.error
   });
 }
+// class AddingCheckin extends EmployeeState {}
+// class AddedCheckin extends EmployeeState {}
+// class ErrorAddingCheckInOut extends EmployeeState {
+//   final dynamic error;
+//   ErrorAddingCheckInOut({
+//     required this.error
+//   });
+// }

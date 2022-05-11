@@ -13,7 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
- EmployeeBloc employeeBloc = EmployeeBloc();
+
+EmployeeBloc employeeBloc = EmployeeBloc();
+
 class EmployeePage extends StatefulWidget {
   const EmployeePage({Key? key}) : super(key: key);
 
@@ -50,7 +52,6 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
- 
   final RefreshController _refreshController = RefreshController();
   @override
   void initState() {
@@ -134,12 +135,12 @@ class _BodyState extends State<Body> {
                           padding: EdgeInsets.all(20),
                         ),
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => EmployeeDetailPage(
-                                      employeeModel:
-                                          employeeBloc.emploList[index])));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => EmployeeDetailPage(
+                          //             employeeModel:
+                          //                 employeeBloc.emploList[index])));
                         },
                         child: Row(
                           children: [
@@ -228,13 +229,13 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                                 onPressed: () {
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (con) => EditEmployee(
-                                  //               employeeModel: employeeBloc
-                                  //                   .emploList[index],
-                                  //             )));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (con) => EditEmployee(
+                                                employeeModel: employeeBloc
+                                                    .emploList[index],
+                                              )));
                                 }),
                             SizedBox(
                               width: 3,

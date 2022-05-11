@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:hotle_attendnce_admin/src/feature/account/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
@@ -8,7 +9,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 
 class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   EmployeeBloc() : super(FetchingEmployee());
-  EmployeeRepository departmentRepository = EmployeeRepository();
+  EmployeeRepository _departmentRepository = EmployeeRepository();
   List<EmployeeModel> emploList = [];
   int rowperpage = 12;
   String? image;
@@ -20,7 +21,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
       try {
         print(page);
         print(emploList.length);
-        List<EmployeeModel> _departmentList = await departmentRepository
+        List<EmployeeModel> _departmentList = await _departmentRepository
             .getEmployee(rowPerpage: rowperpage, page: page);
 
         emploList.addAll(_departmentList);
@@ -45,7 +46,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
       try {
         // Future.delayed(Duration(milliseconds: 200));
         print(page);
-        List<EmployeeModel> _departmentList = await departmentRepository
+        List<EmployeeModel> _departmentList = await _departmentRepository
             .getEmployee(rowPerpage: rowperpage, page: page);
 
         emploList.addAll(_departmentList);
@@ -65,7 +66,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         if (emploList.length != 0) {
           emploList.clear();
         }
-        List<EmployeeModel> _departmentList = await departmentRepository
+        List<EmployeeModel> _departmentList = await _departmentRepository
             .getEmployee(rowPerpage: rowperpage, page: page);
 
         emploList.addAll(_departmentList);
@@ -82,7 +83,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         if (emploList.length != 0) {
           emploList.clear();
         }
-        emploList = await departmentRepository.getAllEmployee();
+        emploList = await _departmentRepository.getAllEmployee();
         yield FetchedEmployee();
       } catch (e) {
         yield ErrorFetchingEmployee(error: e.toString());
@@ -98,7 +99,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
           image = await uploadImage(image: event.img!);
           print(image);
         }
-        await departmentRepository.addEmployee(
+        await _departmentRepository.addEmployee(
             name: event.name,
             gender: event.gender,
             dob: event.dob,
@@ -109,15 +110,15 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
             password: event.password,
             positionId: event.positionId,
             departmentId: event.departmentId,
-            storeId: event.storeId,
+            // storeId: event.storeId,
             phoneNumber: event.phoneNumber,
             address: event.address);
         yield AddedEmployee();
         yield FetchingEmployee();
         print(emploList.length);
-         emploList.clear();
-          page =1;
-         List<EmployeeModel> _departmentList = await departmentRepository
+        emploList.clear();
+        page = 1;
+        List<EmployeeModel> _departmentList = await _departmentRepository
             .getEmployee(rowPerpage: rowperpage, page: page);
 
         emploList.addAll(_departmentList);
@@ -137,7 +138,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         } else {
           image = await uploadImage(image: event.img!);
         }
-        await departmentRepository.editEmployee(
+        await _departmentRepository.editEmployee(
             id: event.id,
             name: event.name,
             gender: event.gender,
@@ -149,15 +150,15 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
             // password: event.password,
             positionId: event.positionId,
             departmentId: event.departmentId,
-            storeId: event.storeId,
+            // storeId: event.storeId,
             phoneNumber: event.phoneNumber,
             address: event.address);
         yield AddedEmployee();
         yield FetchingEmployee();
         print(emploList.length);
-         emploList.clear();
-          page =1;
-         List<EmployeeModel> _departmentList = await departmentRepository
+        emploList.clear();
+        page = 1;
+        List<EmployeeModel> _departmentList = await _departmentRepository
             .getEmployee(rowPerpage: rowperpage, page: page);
 
         emploList.addAll(_departmentList);
@@ -172,15 +173,15 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     if (event is DeleteEmployeeStarted) {
       yield AddingEmployee();
       try {
-        await departmentRepository.deleteEmployee(id: event.id);
+        await _departmentRepository.deleteEmployee(id: event.id);
         // yield FetchingEmployee();
 
         yield AddedEmployee();
         yield FetchingEmployee();
         print(emploList.length);
-         emploList.clear();
-          page =1;
-         List<EmployeeModel> _departmentList = await departmentRepository
+        emploList.clear();
+        page = 1;
+        List<EmployeeModel> _departmentList = await _departmentRepository
             .getEmployee(rowPerpage: rowperpage, page: page);
 
         emploList.addAll(_departmentList);
@@ -192,5 +193,52 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         yield ErorrAddingEmployee(error: e.toString());
       }
     }
+
+    // if (event is AddCheckinStarted) {
+    //   yield AddingCheckin();
+    //   try {
+    //     await _departmentRepository.checkin(
+    //         checkinTime: event.checkinTime, employeeId: event.employeeId);
+    //     yield AddedCheckin();
+    //     yield FetchingEmployee();
+    //     print(emploList.length);
+    //     emploList.clear();
+    //     page = 1;
+    //     List<EmployeeModel> _departmentList = await _departmentRepository
+    //         .getEmployee(rowPerpage: rowperpage, page: page);
+
+    //     emploList.addAll(_departmentList);
+    //     page++;
+    //     print(emploList.length);
+    //     yield FetchedEmployee();
+    //   } catch (e) {
+    //     log(e.toString());
+    //     yield ErrorAddingCheckInOut(error: e.toString());
+    //   }
+    // }
+    // if (event is AddCheckoutStarted) {
+    //   yield AddingCheckin();
+    //   try {
+    //     await _departmentRepository.checkout(
+    //         id: event.id,
+    //         checkoutTime: event.checkoutTime,
+    //         employeeId: event.employeeId);
+    //     yield AddedCheckin();
+    //     yield FetchingEmployee();
+    //     print(emploList.length);
+    //     emploList.clear();
+    //     page = 1;
+    //     List<EmployeeModel> _departmentList = await _departmentRepository
+    //         .getEmployee(rowPerpage: rowperpage, page: page);
+
+    //     emploList.addAll(_departmentList);
+    //     page++;
+    //     print(emploList.length);
+    //     yield FetchedEmployee();
+    //   } catch (e) {
+    //     log(e.toString());
+    //     yield ErrorAddingCheckInOut(error: e.toString());
+    //   }
+    // }
   }
 }

@@ -3,29 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
-import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/location/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/location/bloc/location_bloc.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-WorkingDayBloc workingDayBloc = WorkingDayBloc();
-class WorkingDay extends StatelessWidget {
-  const WorkingDay({Key? key}) : super(key: key);
+LocationBloc locationBloc = LocationBloc();
+
+class LocationPage extends StatelessWidget {
+  // const Location({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-      appBar: standardAppBar(context, "Working Day"),
-     body: Container(
-          margin: EdgeInsets.only(top: 10, bottom: 10),
-          child: Body()),
+      appBar: standardAppBar(context, "Location QR"),
+      body: Container(
+          margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
       floatingActionButton: Container(
         child: FloatingActionButton(
             backgroundColor: Colors.lightBlue,
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              Navigator.pushNamed(context, addWorkingday);
+              Navigator.pushNamed(context, addLocation);
             }),
       ),
     );
@@ -33,7 +33,7 @@ class WorkingDay extends StatelessWidget {
 }
 
 class Body extends StatefulWidget {
-  const Body({ Key? key }) : super(key: key);
+  const Body({Key? key}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -44,35 +44,36 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
 
-    workingDayBloc.add(InitializeWorkingdayStarted());
+    locationBloc.add(InitializeLocationStarted());
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
-        bloc: workingDayBloc,
+        bloc: locationBloc,
         builder: (context, state) {
-          if (state is InitializingWorkingDay) {
+          if (state is InitializingLocation) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          } else if (state is ErrorFetchingWorkingDay) {
+          } else if (state is ErrorFetchingLocation) {
             return Center(
               child: Text(state.error.toString()),
             );
           } else {
-            if (workingDayBloc.departmentList.length == 0) {
+            if (locationBloc.departmentList.length == 0) {
               return Center(
                 child: Text("No Data"),
               );
             }
-            print("length ${workingDayBloc.departmentList.length}");
+            print("length ${locationBloc.departmentList.length}");
 
             return SmartRefresher(
               onRefresh: () {
-                workingDayBloc.add(RefreshWorkingdayStarted());
+                locationBloc.add(RefreshLocationStarted());
               },
               onLoading: () {
-                workingDayBloc.add(FetchWoringdayStarted());
+                locationBloc.add(FetchLocationStarted());
                 _refreshController.loadComplete();
               },
               enablePullDown: true,
@@ -80,7 +81,7 @@ class _BodyState extends State<Body> {
               cacheExtent: 1,
               controller: _refreshController,
               child: ListView.builder(
-                  itemCount: workingDayBloc.departmentList.length,
+                  itemCount: locationBloc.departmentList.length,
                   itemBuilder: (context, index) {
                     return Container(
                       margin:
@@ -115,7 +116,7 @@ class _BodyState extends State<Body> {
                                   ),
                                 ),
                                 Text(
-                                  "${workingDayBloc.departmentList[index].name}",
+                                  "${locationBloc.departmentList[index].name}",
                                   style: TextStyle(
                                     color: Colors.black,
                                   ),
@@ -132,19 +133,18 @@ class _BodyState extends State<Body> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Text(
-                                    "Work Day :",
+                                    "Latitude :",
                                     style: TextStyle(color: Colors.black),
                                   ),
                                 ),
                                 Text(
-                                  "${workingDayBloc.departmentList[index].workingDay}",
+                                  "${locationBloc.departmentList[index].lat}",
                                   style: TextStyle(
                                     color: Colors.black,
                                   ),
                                 )
                               ],
                             ),
-                            
                             SizedBox(
                               height: 5.0,
                             ),
@@ -155,12 +155,12 @@ class _BodyState extends State<Body> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 10),
                                   child: Text(
-                                    "Off day :",
+                                    "Longtitue:",
                                     style: TextStyle(color: Colors.black),
                                   ),
                                 ),
                                 Text(
-                                  "${workingDayBloc.departmentList[index].offDay}",
+                                  "${locationBloc.departmentList[index].long}",
                                   style: TextStyle(
                                     color: Colors.black,
                                   ),
@@ -181,12 +181,14 @@ class _BodyState extends State<Body> {
                                     style: TextStyle(color: Colors.black),
                                   ),
                                 ),
-                             workingDayBloc.departmentList[index].notes==null?Text(""):   Text(
-                                  "${workingDayBloc.departmentList[index].notes}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                )
+                                locationBloc.departmentList[index].notes == null
+                                    ? Text("")
+                                    : Text(
+                                        "${locationBloc.departmentList[index].notes}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      )
                               ],
                             ),
                             Row(
@@ -201,7 +203,9 @@ class _BodyState extends State<Body> {
                                       ],
                                     ),
                                     onPressed: () {
-                                     Navigator.pushNamed(context, editWorkingday,arguments: workingDayBloc.departmentList[index]);
+                                      Navigator.pushNamed(context, editLocation,
+                                          arguments: locationBloc
+                                              .departmentList[index]);
                                     }),
                                 SizedBox(
                                   width: 5,
@@ -216,9 +220,10 @@ class _BodyState extends State<Body> {
                                     ),
                                     onPressed: () {
                                       print(
-                                          "id ${workingDayBloc.departmentList[index].id}");
-                                      workingDayBloc.add(DeleteWorkingdayStarted(
-                                          id: workingDayBloc.departmentList[index].id));
+                                          "id ${locationBloc.departmentList[index].id}");
+                                      locationBloc.add(DeletLocationStarted(
+                                          id: locationBloc
+                                              .departmentList[index].id));
                                     }),
                               ],
                             )
@@ -231,23 +236,22 @@ class _BodyState extends State<Body> {
           }
         },
         listener: (context, state) {
-          if (state is FetchedWorkingDay) {
+          if (state is FetchedLocation) {
             _refreshController.loadComplete();
             _refreshController.refreshCompleted();
           }
-          if (state is EndOfWorkingDayList) {
+          if (state is EndOfLocationList) {
             _refreshController.loadNoData();
           }
-          if (state is AddingWorkingDay) {
+          if (state is AddingLocation) {
             EasyLoading.show(status: "loading....");
-          } else if (state is ErrorAddingWorkingDay) {
+          } else if (state is ErrorAddingLocation) {
             EasyLoading.dismiss();
             EasyLoading.showError(state.error.toString());
-          } else if (state is AddedWorkingDay) {
+          } else if (state is AddedLocation) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Sucess");
           }
         });
   }
 }
-

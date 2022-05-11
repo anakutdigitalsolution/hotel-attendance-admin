@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) =>
                 LanguageBloc()..add(LanguageLoadStarted())),
 
-        // BlocProvider<DepartmentBlc>(
-        //     create: (BuildContext context) => DepartmentBlc()),
+        BlocProvider<CheckInOutBloc>(
+            create: (BuildContext context) => CheckInOutBloc()),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {

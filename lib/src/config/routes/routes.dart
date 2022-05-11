@@ -11,11 +11,12 @@ const String leave = '/leave';
 const String leavetype = '/leavetype';
 const String workDay = '/workDay';
 const String group = '/group';
-
-const String holiday = '/holiday';
-const String addHoliday = '/addHoliday';
+const String location = '/location';
 const String report = '/report';
+const String holiday = '/holiday';
 const String notification = '/notification';
+
+const String addHoliday = '/addHoliday';
 const String addNotification = '/addNotification';
 const String addDepartment = '/addDepartment';
 const String addPosition = '/addPosition';
@@ -24,9 +25,11 @@ const String addLeavetype = '/addLeavetype';
 const String addEmployee = '/addEmployee';
 const String addschedule = '/addschedule';
 const String addWorkingday = '/addWorkingday';
+const String addLocation = '/addLocation';
+
 const String editschedule = '/editschedule';
 const String editWorkingday = '/editWorkingday';
 const String editDepartment = '/editDepartment';
 const String addGroup = '/addGroup';
-
 const String editGroup = '/editGroup';
+const String editLocation = '/editLocation';

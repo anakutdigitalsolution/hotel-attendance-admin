@@ -37,6 +37,7 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  // CheckInOutBloc checkInOutBloc = CheckInOutBloc();
   EmployeeBloc employeeBloc = EmployeeBloc();
   DateTime? date;
   DateTime dateNow = DateTime.now();
@@ -56,6 +57,81 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder(
+        bloc: employeeBloc,
+        builder: (context, state) {
+          if (state is InitializingEmployee) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is ErrorFetchingEmployee) {
+            Helper.handleState(state: state.error, context: context);
+          }
+          return BlocListener(
+            bloc: employeeBloc,
+            listener: (context, state) {
+              if (state is ErrorFetchingEmployee) {
+                Helper.handleState(state: state.error, context: context);
+              }
+              if (state is FetchedEmployee) {
+                _refreshController.loadComplete();
+                _refreshController.refreshCompleted();
+              }
+              if (state is EndofEmployeeList) {
+                _refreshController.loadNoData();
+              }
+            },
+            child: BlocListener<CheckInOutBloc, CheckInOutState>(
+              listener: (context, state) {
+                if (state is AddingCheckin) {
+                  EasyLoading.show(status: "loading....");
+                }
+                if (state is ErrorAddingCheckInOut) {
+                  EasyLoading.dismiss();
+                  EasyLoading.showToast(state.error.toString());
+                }
+                if (state is AddedCheckin) {
+                  EasyLoading.dismiss();
+                  EasyLoading.showSuccess("Sucess");
+                  employeeBloc.add(RefreshEmployeeStarted());
+                }
+              },
+              child: SmartRefresher(
+                onRefresh: () {
+                  employeeBloc.add(RefreshEmployeeStarted());
+
+                  // BlocProvider.of<TimetableBloc>(context).add(RefreshTimetableStarted());
+                },
+                onLoading: () {
+                  if (employeeBloc.state is EndofEmployeeList) {
+                    _refreshController.loadNoData();
+                  } else {
+                    employeeBloc.add(FetchEmloyeeStarted());
+                  }
+                },
+                enablePullDown: true,
+                enablePullUp: true,
+                cacheExtent: 1,
+                controller: _refreshController,
+                child: SingleChildScrollView(
+                  child: Container(
+                      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                      child: StaggeredGrid.count(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        children: [
+                          ...employeeBloc.emploList.map((e) => AttendanceTile(
+                                employeeModel: e,
+                              ))
+                        ],
+                      )),
+                ),
+              ),
+            ),
+          );
+        });
     return BlocConsumer(
       bloc: employeeBloc,
       listener: (context, state) {
@@ -69,18 +145,18 @@ class _BodyState extends State<Body> {
         if (state is EndofEmployeeList) {
           _refreshController.loadNoData();
         }
-        if (state is AddingCheckin) {
-          EasyLoading.show(status: "loading....");
-        }
-        if (state is ErrorAddingCheckInOut) {
-          EasyLoading.dismiss();
-          EasyLoading.showToast(state.error.toString());
-        }
-        if (state is AddedCheckin) {
-          EasyLoading.dismiss();
-          EasyLoading.showSuccess("Sucess");
-          BlocProvider.of<EmployeeBloc>(context).add(RefreshEmployeeStarted());
-        }
+        // if (state is AddingCheckin) {
+        //   EasyLoading.show(status: "loading....");
+        // }
+        // if (state is ErrorAddingCheckInOut) {
+        //   EasyLoading.dismiss();
+        //   EasyLoading.showToast(state.error.toString());
+        // }
+        // if (state is AddedCheckin) {
+        //   EasyLoading.dismiss();
+        //   EasyLoading.showSuccess("Sucess");
+        //   // BlocProvider.of<EmployeeBloc>(context).add(RefreshEmployeeStarted());
+        // }
       },
       builder: (context, state) {
         if (state is InitializingEmployee) {

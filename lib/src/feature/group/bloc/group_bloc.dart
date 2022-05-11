@@ -52,7 +52,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         yield ErrorFetchingGroup(error: e.toString());
       }
     }
-    if (event is FetchAllDepartmentStarted) {
+    if (event is FetchAllGroupStarted) {
       yield FetchingGroup();
       try {
         if (departmentList.length != 0) {

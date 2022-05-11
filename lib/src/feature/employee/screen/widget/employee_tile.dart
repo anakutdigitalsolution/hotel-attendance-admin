@@ -17,11 +17,11 @@ Widget customerTile({required EmployeeModel? employeeModel}) {
               padding: EdgeInsets.all(20),
             ),
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          EmployeeDetailPage(employeeModel: employeeModel!)));
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(
+              //         builder: (context) =>
+              //             EmployeeDetailPage(employeeModel: employeeModel!)));
             },
             child: Row(
               children: [

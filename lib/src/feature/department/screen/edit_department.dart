@@ -45,7 +45,7 @@ class _EditDepartmentState extends State<EditDepartment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Add Department"),
+      appBar: standardAppBar(context, "Edit Department"),
       body: Builder(builder: (context) {
         return BlocListener(
             bloc: departmentBlc,
@@ -122,7 +122,7 @@ class _EditDepartmentState extends State<EditDepartment> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -201,7 +201,7 @@ class _EditDepartmentState extends State<EditDepartment> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
+                                      Radius.circular(15.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,

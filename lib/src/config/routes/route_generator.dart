@@ -21,6 +21,10 @@ import 'package:hotle_attendnce_admin/src/feature/holiday/screen/add_holiday.dar
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/holiday_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/screen/add_leave_type.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/screen/leave_type_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/location/models/location_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/location/screens/add_location.dart';
+import 'package:hotle_attendnce_admin/src/feature/location/screens/edit_location.dart';
+import 'package:hotle_attendnce_admin/src/feature/location/screens/location_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/add_notification.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/notification_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/screen/leave_page.dart';
@@ -46,8 +50,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AttendanceEmployeePage());
       // case saleReport:
       //   return MaterialPageRoute(builder: (_) => SaleReportPage());
-      case account:
-        return MaterialPageRoute(builder: (_) => AccountPage());
+      // case account:
+      //   return MaterialPageRoute(builder: (_) => AccountPage());
       case setting:
         return MaterialPageRoute(builder: (_) => SettingPage());
       case department:
@@ -78,16 +82,16 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case addNotification:
         return MaterialPageRoute(builder: (_) => AddNotification());
-      // case addDepartment:
-      //   return MaterialPageRoute(builder: (_) => AddDepartment());
+      case addDepartment:
+        return MaterialPageRoute(builder: (_) => AddDepartment());
       case addPosition:
         return MaterialPageRoute(builder: (_) => AddPosition());
       case addTimetable:
         return MaterialPageRoute(builder: (_) => AddTimetable());
       case addLeavetype:
         return MaterialPageRoute(builder: (_) => AddLeaveType());
-      // case addEmployee:
-      //   return MaterialPageRoute(builder: (_) => AddEmployee());
+      case addEmployee:
+        return MaterialPageRoute(builder: (_) => AddEmployee());
       case addschedule:
         return MaterialPageRoute(builder: (_) => AddSchedule());
       case editschedule:
@@ -128,7 +132,18 @@ class RouteGenerator {
                   ));
         }
         return _errorRoute();
-
+      case location:
+        return MaterialPageRoute(builder: (_) => LocationPage());
+      case addLocation:
+        return MaterialPageRoute(builder: (_) => AddLocation());
+      case editLocation:
+        if (args is LocationModel) {
+          return MaterialPageRoute(
+              builder: (_) => EditLocation(
+                    locationModel: args,
+                  ));
+        }
+        return _errorRoute();
       default:
         return _errorRoute();
     }

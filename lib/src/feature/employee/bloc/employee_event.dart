@@ -28,7 +28,7 @@ class AddEmployeeStarted extends EmployeeEvent {
   final String password;
   final String positionId;
   final String departmentId;
-  final String storeId;
+  // final String storeId;
   final String phoneNumber;
   final String address;
   AddEmployeeStarted(
@@ -42,7 +42,7 @@ class AddEmployeeStarted extends EmployeeEvent {
       required this.password,
       required this.positionId,
       required this.departmentId,
-      required this.storeId,
+      // required this.storeId,
       required this.phoneNumber,
       required this.address});
 }
@@ -83,5 +83,25 @@ class DeleteEmployeeStarted extends EmployeeEvent {
   // final String date;
   DeleteEmployeeStarted({
     required this.id,
+  });
+}
+class AddCheckinStarted extends EmployeeEvent {
+  final String checkinTime;
+  final String employeeId;
+
+  AddCheckinStarted({
+    required this.checkinTime,
+    required this.employeeId,
+  });
+}
+
+class AddCheckoutStarted extends EmployeeEvent {
+  final String id;
+  final String checkoutTime;
+  final String employeeId;
+  AddCheckoutStarted({
+    required this.checkoutTime,
+    required this.id,
+    required this.employeeId,
   });
 }

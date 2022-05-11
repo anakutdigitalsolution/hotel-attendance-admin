@@ -107,6 +107,15 @@ class _SettingPageState extends State<SettingPage> {
               height: 10,
             ),
             settingitem(
+                name: "Location",
+                icon: Icons.people,
+                onPressed: () {
+                  Navigator.pushNamed(context, location);
+                }),
+            SizedBox(
+              height: 10,
+            ),
+            settingitem(
                 name: "Department",
                 icon: Icons.people,
                 onPressed: () {

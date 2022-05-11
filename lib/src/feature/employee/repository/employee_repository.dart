@@ -58,7 +58,7 @@ class EmployeeRepository {
     required String password,
     required String positionId,
     required String departmentId,
-    required String storeId,
+    // required String storeId,
     required String phoneNumber,
     required String address,
   }) async {
@@ -75,7 +75,7 @@ class EmployeeRepository {
         "profile_url": img,
         "position_id": positionId,
         "department_id": departmentId,
-        "store_id": storeId,
+        // "store_id": storeId,
         "phone": phoneNumber,
         "address": address,
       };
@@ -105,7 +105,7 @@ class EmployeeRepository {
     // required String password,
     required String positionId,
     required String departmentId,
-    required String storeId,
+    // required String storeId,
     required String phoneNumber,
     required String address,
   }) async {
@@ -120,7 +120,7 @@ class EmployeeRepository {
         "profile_url": img,
         "position_id": positionId,
         "department_id": departmentId,
-        "store_id": storeId,
+        // "store_id": storeId,
         "employee_phone": phoneNumber,
         "address": address,
       };
@@ -146,6 +146,63 @@ class EmployeeRepository {
       String url = mainUrl + "employees/delete/$id";
 
       Response response = await apiProvider.delete(url, null);
+      print(response.statusCode);
+      if (response.statusCode == 200 && response.data["code"] == 0) {
+        print(response.data);
+        return;
+      } else if (response.data["code"].toString() != "0") {
+        throw response.data["message"];
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+  Future<void> checkin(
+      {required String checkinTime, required String employeeId}) async {
+    try {
+      String url = mainUrl + "checkins/add";
+      Map body = {
+        // "type": "company",
+        "checkin_time": checkinTime,
+        "employee_id": employeeId,
+        // "timetable_id": timetableId
+      };
+
+      Response response = await apiProvider.post(url, body, null);
+
+      print(response.statusCode);
+      if (response.statusCode == 200 && response.data["code"] == 0) {
+        print(response.data);
+        return;
+      } else if (response.data["code"].toString() != "0") {
+        throw response.data["message"];
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> checkout(
+      {required String id,
+      required String checkoutTime,
+      required String employeeId}) async {
+    try {
+      String url = mainUrl + "checkouts/edit/$id";
+      Map body = {
+        // "type": "company",
+        "checkout_time": checkoutTime,
+        "employee_id": employeeId,
+
+        // "timetable_id": timetableId
+      };
+
+      Response response = await apiProvider.put(
+        url,
+        body,
+      );
+
       print(response.statusCode);
       if (response.statusCode == 200 && response.data["code"] == 0) {
         print(response.data);
