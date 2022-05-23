@@ -6,11 +6,11 @@ class LeaveEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class InitializeLeaveStarted extends LeaveEvent {}
 
-class InitializeLeaveStarted extends LeaveEvent{}
-class FetchLeaveStarted extends LeaveEvent{}
-class RefreshLeaveStarted extends LeaveEvent{}
+class FetchLeaveStarted extends LeaveEvent {}
 
+class RefreshLeaveStarted extends LeaveEvent {}
 
 class AddLeaveStarted extends LeaveEvent {
   final String employeeId;
@@ -20,17 +20,17 @@ class AddLeaveStarted extends LeaveEvent {
   final String fromDate;
   final String toDate;
   // final String date;
-  AddLeaveStarted(
-      {
-        required this.employeeId,
-      required this.leaveTypeId,
-      required this.reason,
-      required this.number,
-      required this.fromDate,
-      required this.toDate,
-      // required this.date
-      });
+  AddLeaveStarted({
+    required this.employeeId,
+    required this.leaveTypeId,
+    required this.reason,
+    required this.number,
+    required this.fromDate,
+    required this.toDate,
+    // required this.date
+  });
 }
+
 class UpdateLeaveStarted extends LeaveEvent {
   final String id;
   final String leaveTypeId;
@@ -40,29 +40,25 @@ class UpdateLeaveStarted extends LeaveEvent {
   final String toDate;
   final String employeeId;
   UpdateLeaveStarted(
-      {
-        required this.id,
+      {required this.id,
       required this.leaveTypeId,
       required this.reason,
       required this.number,
       required this.fromDate,
       required this.toDate,
-      required this.employeeId
-      });
+      required this.employeeId});
 }
 
-class UpdateLeaveStatusStarted extends LeaveEvent{
+class UpdateLeaveStatusStarted extends LeaveEvent {
   final String id;
   final String status;
-  UpdateLeaveStatusStarted({
-    required this.id,required this.status
-  });
+  UpdateLeaveStatusStarted({required this.id, required this.status});
 }
+
 class DeleteLeaveStarted extends LeaveEvent {
   final String id;
   // final String date;
-  DeleteLeaveStarted(
-      {
-        required this.id,
-      });
+  DeleteLeaveStarted({
+    required this.id,
+  });
 }

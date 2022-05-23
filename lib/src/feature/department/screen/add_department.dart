@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/group/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/group/model/group_model.dart';
+
 import 'package:hotle_attendnce_admin/src/feature/location/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/models/location_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/working_day_bloc.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/working_day_event.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/working_day_state.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
@@ -26,7 +29,8 @@ class AddDepartment extends StatefulWidget {
 
 class _AddDepartmentState extends State<AddDepartment> {
   LocationBloc _locationBloc = LocationBloc();
-  GroupBloc _groupBloc = GroupBloc();
+  // GroupBloc _groupBloc = GroupBloc();
+  WorkingDayBloc _workingDayBloc = WorkingDayBloc();
   final TextEditingController _reasonCtrl = TextEditingController();
   final TextEditingController _groupIdCtrl = TextEditingController();
   final TextEditingController _locationCtrl = TextEditingController();
@@ -56,20 +60,23 @@ class _AddDepartmentState extends State<AddDepartment> {
               }
             },
             child: BlocListener(
-              bloc: _groupBloc,
+              bloc: _workingDayBloc,
               listener: (context, state) {
-                if (state is FetchingGroup) {
+                if (state is FetchingWorkingDay) {
                   loadingDialogs(context);
                 }
-                if (state is ErrorFetchingGroup) {
+                if (state is ErrorFetchingWorkingDay) {
                   Navigator.pop(context);
                   errorSnackBar(text: state.toString(), context: context);
                 }
-                if (state is FetchedGroup) {
+                if (state is FetchedWorkingDay) {
                   Navigator.pop(context);
-                  customModal(context,
-                      _groupBloc.departmentList.map((e) => e.name!).toList(),
-                      (value) {
+                  customModal(
+                      context,
+                      _workingDayBloc.departmentList
+                          .map((e) =>
+                              "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}")
+                          .toList(), (value) {
                     _groupIdCtrl.text = value;
                   });
                 }
@@ -131,7 +138,8 @@ class _AddDepartmentState extends State<AddDepartment> {
                             TextFormField(
                               controller: _groupIdCtrl,
                               onTap: () {
-                                _groupBloc.add(FetchAllGroupStarted());
+                                _workingDayBloc
+                                    .add(FetchAllWorkingdayStarted());
                               },
                               readOnly: true,
                               // keyboardType: TextInputType.text,
@@ -147,10 +155,10 @@ class _AddDepartmentState extends State<AddDepartment> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "Choose group  "),
+                                  labelText: "Choose work days  "),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'group is required.';
+                                  return 'workday is required.';
                                 }
                                 return null;
                               },
@@ -217,14 +225,15 @@ class _AddDepartmentState extends State<AddDepartment> {
                                         .departmentList
                                         .firstWhere((element) =>
                                             element.name == _locationCtrl.text);
-                                    GroupModel groupModel = _groupBloc
-                                        .departmentList
-                                        .firstWhere((element) =>
-                                            element.name == _groupIdCtrl.text);
+                                    WorkingDayModel workingDayModel =
+                                        _workingDayBloc.departmentList
+                                            .firstWhere((e) =>
+                                                "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
+                                                _groupIdCtrl.text);
                                     departmentBlc.add(AddDepartmentStarted(
                                         name: _reasonCtrl.text,
                                         locationId: locationModel.id,
-                                        groupId: groupModel.id,
+                                        workId: workingDayModel.id,
                                         notes: _noteCtrl.text));
                                   }
                                 })

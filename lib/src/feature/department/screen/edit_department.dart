@@ -7,6 +7,8 @@ import 'package:hotle_attendnce_admin/src/feature/group/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/model/group_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/models/location_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
@@ -25,7 +27,7 @@ class EditDepartment extends StatefulWidget {
 
 class _EditDepartmentState extends State<EditDepartment> {
   LocationBloc _locationBloc = LocationBloc();
-  GroupBloc _groupBloc = GroupBloc();
+  WorkingDayBloc _workingDayBloc = WorkingDayBloc();
   final TextEditingController _reasonCtrl = TextEditingController();
   final TextEditingController _groupIdCtrl = TextEditingController();
   final TextEditingController _locationCtrl = TextEditingController();
@@ -38,8 +40,15 @@ class _EditDepartmentState extends State<EditDepartment> {
         ? _noteCtrl.text = ""
         : _noteCtrl.text = widget.departmentModel.notes!;
     _locationCtrl.text = widget.departmentModel.locationModel!.name!;
-    _groupIdCtrl.text = widget.departmentModel.groupModel!.name!;
+    _groupIdCtrl.text = widget.departmentModel.workingDayModel!.name!;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _locationBloc.close();
+    _workingDayBloc.close();
+    super.dispose();
   }
 
   @override
@@ -66,20 +75,23 @@ class _EditDepartmentState extends State<EditDepartment> {
               }
             },
             child: BlocListener(
-              bloc: _groupBloc,
+              bloc: _workingDayBloc,
               listener: (context, state) {
-                if (state is FetchingGroup) {
+                if (state is FetchingWorkingDay) {
                   loadingDialogs(context);
                 }
-                if (state is ErrorFetchingGroup) {
+                if (state is ErrorFetchingWorkingDay) {
                   Navigator.pop(context);
                   errorSnackBar(text: state.toString(), context: context);
                 }
-                if (state is FetchedGroup) {
+                if (state is FetchedWorkingDay) {
                   Navigator.pop(context);
-                  customModal(context,
-                      _groupBloc.departmentList.map((e) => e.name!).toList(),
-                      (value) {
+                  customModal(
+                      context,
+                      _workingDayBloc.departmentList
+                          .map((e) =>
+                              "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}")
+                          .toList(), (value) {
                     _groupIdCtrl.text = value;
                   });
                 }
@@ -141,7 +153,8 @@ class _EditDepartmentState extends State<EditDepartment> {
                             TextFormField(
                               controller: _groupIdCtrl,
                               onTap: () {
-                                _groupBloc.add(FetchAllGroupStarted());
+                                _workingDayBloc
+                                    .add(FetchAllWorkingdayStarted());
                               },
                               readOnly: true,
                               // keyboardType: TextInputType.text,
@@ -157,10 +170,10 @@ class _EditDepartmentState extends State<EditDepartment> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "Choose group  "),
+                                  labelText: "Choose work days  "),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'group is required.';
+                                  return 'workday is required.';
                                 }
                                 return null;
                               },
@@ -224,18 +237,17 @@ class _EditDepartmentState extends State<EditDepartment> {
                                 onTap: () {
                                   if (_formKey!.currentState!.validate()) {
                                     String locationId = "";
-                                    String groupId = "";
+                                    String workId = "";
                                     if (_groupIdCtrl.text !=
-                                        widget.departmentModel.groupModel!
-                                            .name!) {
-                                      GroupModel groupModel = _groupBloc
-                                          .departmentList
-                                          .firstWhere((element) =>
-                                              element.name ==
-                                              _groupIdCtrl.text);
-                                      groupId = groupModel.id;
+                                        "${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}") {
+                                      WorkingDayModel workingDayModel =
+                                          _workingDayBloc.departmentList
+                                              .firstWhere((e) =>
+                                                  "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
+                                                  _groupIdCtrl.text);
+                                      workId = workingDayModel.id;
                                     } else {
-                                      groupId = widget.departmentModel.groupId!;
+                                      workId = widget.departmentModel.workId!;
                                     }
                                     if (_locationCtrl.text !=
                                         widget.departmentModel.locationModel!
@@ -255,7 +267,7 @@ class _EditDepartmentState extends State<EditDepartment> {
                                         id: widget.departmentModel.id,
                                         name: _reasonCtrl.text,
                                         locationId: locationId,
-                                        groupId: groupId,
+                                        workId: workId,
                                         notes: _noteCtrl.text));
                                   }
                                 })

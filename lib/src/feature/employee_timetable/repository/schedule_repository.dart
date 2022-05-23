@@ -4,7 +4,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class ScheduleRepository {
-  String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
+  String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
   Future<List<EmployeeTimetablModel>> getSchedule(
       {required int rowPerpage, required int page}) async {
@@ -34,7 +34,7 @@ class ScheduleRepository {
     try {
       String url = mainUrl + "schedules/add";
       Map body = {
-        "employee_id": employeeId,
+        "user_id": employeeId,
         "timetable_id": timetableId,
       };
       Response response = await apiProvider.post(url, body, null);
@@ -60,7 +60,7 @@ class ScheduleRepository {
     try {
       String url = mainUrl + "schedules/edit/$id";
       Map body = {
-        "employee_id": employeeId,
+        "user_id": employeeId,
         "timetable_id": timetableId,
       };
       Response response = await apiProvider.put(url, body);

@@ -5,9 +5,10 @@ import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class NotificationRepository {
-  String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
+  String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
-  Future<List<NotificationModel>> getNotification({required int rowPerpage, required int page}) async {
+  Future<List<NotificationModel>> getNotification(
+      {required int rowPerpage, required int page}) async {
     try {
       String url = mainUrl + "notifications?page_size=$rowPerpage&page=$page";
 
@@ -26,16 +27,14 @@ class NotificationRepository {
       throw e;
     }
   }
+
   Future<void> addNotification({
     required String title,
     required String des,
   }) async {
     try {
       String url = mainUrl + "notifications/add";
-      Map body = {
-        "title": title,
-        "body":des
-      };
+      Map body = {"title": title, "body": des};
       Response response = await apiProvider.post(url, body, null);
 
       print(response.statusCode);
@@ -53,15 +52,12 @@ class NotificationRepository {
 
   Future<void> editNotification({
     required String id,
-     required String title,
+    required String title,
     required String des,
   }) async {
     try {
       String url = mainUrl + "notifications/edit/$id";
-      Map body = {
-        "title": title,
-        "body":des
-      };
+      Map body = {"title": title, "body": des};
       Response response = await apiProvider.put(url, body);
 
       print(response.statusCode);

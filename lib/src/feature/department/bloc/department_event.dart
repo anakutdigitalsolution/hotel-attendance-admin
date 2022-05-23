@@ -29,12 +29,12 @@ class RefreshDepartmentStarted extends DepartmentEvent {}
 
 class AddDepartmentStarted extends DepartmentEvent {
   final String name;
-  final String groupId;
+  final String workId;
   final String locationId;
   final String notes;
   AddDepartmentStarted(
       {required this.name,
-      required this.groupId,
+      required this.workId,
       required this.locationId,
       required this.notes});
 }
@@ -42,13 +42,13 @@ class AddDepartmentStarted extends DepartmentEvent {
 class UpdateDepartmentStarted extends DepartmentEvent {
   final String id;
   final String name;
-  final String groupId;
+  final String workId;
   final String locationId;
   final String notes;
   UpdateDepartmentStarted(
       {required this.id,
       required this.name,
-      required this.groupId,
+      required this.workId,
       required this.locationId,
       required this.notes});
 }

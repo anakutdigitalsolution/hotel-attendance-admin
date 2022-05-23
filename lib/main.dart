@@ -8,6 +8,7 @@ import 'package:hotle_attendnce_admin/src/feature/auth/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/language/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/permission/bloc/leave_bloc.dart';
 import 'src/feature/landing/landing_page.dart';
 
 ///Receive message when app is in background solution for on message
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
 
         BlocProvider<CheckInOutBloc>(
             create: (BuildContext context) => CheckInOutBloc()),
+        // BlocProvider<LeaveBloc>(create: (BuildContext context) => LeaveBloc()),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(
         builder: (context, state) {

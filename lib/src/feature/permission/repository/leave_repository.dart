@@ -5,7 +5,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class LeaveRepository {
-  String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
+  String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
   // Future<List<LeaveTypeModel>> getleavetype() async {
   //   try {
@@ -59,7 +59,7 @@ class LeaveRepository {
       String url = mainUrl + "leaves/add";
       Map body = {
         // "type": "company",
-        "employee_id": employeeId,
+        "user_id": employeeId,
         "reason": reason,
         "number": number,
         "from_date": fromDate,
@@ -94,7 +94,7 @@ class LeaveRepository {
       String url = mainUrl + "leaves/edit/$id";
       Map body = {
         // "type": "company",
-        "employee_id": employeeId,
+        "user_id": employeeId,
         "reason": reason,
         "number": number,
         "from_date": fromDate,

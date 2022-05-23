@@ -4,7 +4,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class DepartmentRepository {
-  String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
+   String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
   Future<List<DepartmentModel>> getdepartment(
       {required int rowPerpage, required int page}) async {
@@ -26,12 +26,14 @@ class DepartmentRepository {
       throw e;
     }
   }
+
   Future<List<DepartmentModel>> getdepartmentByGroup(
-      {required int rowPerpage, required int page,required String id}) async {
+      {required int rowPerpage, required int page, required String id}) async {
     try {
       print(id);
-     print(page);
-      String url = mainUrl + "departments&group_id=$id?page_size=$rowPerpage&page=$page";
+      print(page);
+      String url =
+          mainUrl + "departments&group_id=$id?page_size=$rowPerpage&page=$page";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -72,16 +74,16 @@ class DepartmentRepository {
   Future<void> addDepartment({
     required String name,
     required String notes,
-    required String groupId,
+    required String workId,
     required String locationId,
   }) async {
     try {
       String url = mainUrl + "departments/add";
       Map body = {
         "department_name": name,
-        "group_department_id":groupId,
-        "location_id":locationId,
-        "notes":notes
+        "workday_id": workId,
+        "location_id": locationId,
+        "notes": notes
       };
       Response response = await apiProvider.post(url, body, null);
 
@@ -101,17 +103,17 @@ class DepartmentRepository {
   Future<void> editDepartment({
     required String id,
     required String name,
-     required String notes,
-    required String groupId,
+    required String notes,
+    required String workId,
     required String locationId,
   }) async {
     try {
       String url = mainUrl + "departments/edit/$id";
       Map body = {
         "department_name": name,
-        "group_department_id":groupId,
-        "location_id":locationId,
-        "notes":notes
+        "workday_id": workId,
+        "location_id": locationId,
+        "notes": notes
       };
       Response response = await apiProvider.put(url, body);
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
@@ -61,16 +62,16 @@ class _BodyState extends State<Body> {
         if (state is EndofScheduleList) {
           _refreshController.loadNoData();
         }
-        // if (state is AddingEmployee) {
-        //   EasyLoading.show(status: "loading....");
-        // } else if (state is ErorrAddingEmployee) {
-        //   EasyLoading.dismiss();
-        //   EasyLoading.showError(state.error.toString());
-        //   // errorSnackBar(text: state.error.toString(), context: context);
-        // } else if (state is AddedEmployee) {
-        //   EasyLoading.dismiss();
-        //   EasyLoading.showSuccess("Sucess");
-        // }
+        if (state is AddingSchedule) {
+          EasyLoading.show(status: "loading....");
+        } else if (state is ErorrAddingSchedule) {
+          EasyLoading.dismiss();
+          EasyLoading.showError(state.error.toString());
+          // errorSnackBar(text: state.error.toString(), context: context);
+        } else if (state is AddedSchedule) {
+          EasyLoading.dismiss();
+          EasyLoading.showSuccess("Sucess");
+        }
       },
       builder: (context, state) {
         if (state is InitializingSchedule) {

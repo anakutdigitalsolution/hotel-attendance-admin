@@ -57,7 +57,7 @@ class UpdateEmployeeStarted extends EmployeeEvent {
   final File? img;
   final String positionId;
   final String departmentId;
-  final String storeId;
+  // final String storeId;
   final String phoneNumber;
   final String address;
   final String imgUrl;
@@ -73,7 +73,7 @@ class UpdateEmployeeStarted extends EmployeeEvent {
       required this.phoneNumber,
       required this.positionId,
       required this.departmentId,
-      required this.storeId,
+      // required this.storeId,
       required this.address});
 }
 

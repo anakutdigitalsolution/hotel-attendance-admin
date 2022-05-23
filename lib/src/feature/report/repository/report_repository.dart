@@ -5,13 +5,13 @@ import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class ReportRepository {
   ApiProvider apiProvider = ApiProvider();
+  String mainUrl = "https://banban-hr.herokuapp.com/api/";
   Future<ReportModel> getReport(
       {required String startDate, required String endDate}) async {
     try {
       print(startDate);
       print(endDate);
-      String url =
-          "http://my-attendance-test-demo.herokuapp.com/api/reports?from_date=$startDate&to_date=$endDate";
+      String url = mainUrl + "reports?from_date=$startDate&to_date=$endDate";
       Response response = await apiProvider.get(url, null, null);
 
       if (response.statusCode == 200 && response.data["code"] == 0) {

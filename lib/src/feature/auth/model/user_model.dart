@@ -2,9 +2,7 @@ class UserModel {
   final String? id;
   final String token;
   final String? name;
-  // final String? email
   final String? email;
-  // final String? verifyStatus;
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -12,7 +10,6 @@ class UserModel {
       token: json["token"],
       name: json["user"]["name"],
       email: json["user"]["email"],
-      // verifyStatus: json["user"]["verify_status"]==null
     );
   }
   UserModel({
@@ -20,8 +17,5 @@ class UserModel {
     required this.token,
     required this.name,
     required this.email,
-    // required this.
-
-    // required this.verifyStatus
   });
 }

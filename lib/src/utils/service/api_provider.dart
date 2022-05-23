@@ -71,7 +71,7 @@ Future<String> uploadImage({required File image}) async {
     print(image);
     String fileName = image.path.split('/').last;
     print(fileName);
-   
+
     FormData formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(image.path, filename: fileName),
     });
@@ -79,12 +79,10 @@ Future<String> uploadImage({required File image}) async {
     // var type = "upload";
 
     Response response = await apiProvider.post(
-        "http://my-attendance-test-demo.herokuapp.com/api/uploads",
-        formData,
-        null);
+        "https://banban-hr.herokuapp.com/api/uploads", formData, null);
     print(response.statusCode);
 
-    if (response.statusCode == 200 ) {
+    if (response.statusCode == 200) {
       print(response.data["profile_url"]);
       return response.data["profile_url"];
     } else if (response.data["code"].toString() != "0") {

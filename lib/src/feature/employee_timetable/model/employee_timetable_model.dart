@@ -14,9 +14,9 @@ class EmployeeTimetablModel {
     //   time.add(TimetableModel.fromJson(val));
     // });
     return EmployeeTimetablModel(
-      id: json["id"].toString(),
-      employeeId: json["employee_id"].toString(),
-      timetaleId:json["timetable_id"].toString(),
+        id: json["id"].toString(),
+        employeeId: json["user_id"].toString(),
+        timetaleId: json["timetable_id"].toString(),
         employeeModel: json["emplyee"] == null
             ? null
             : EmployeeModel.fromJson(json["emplyee"]),
@@ -26,10 +26,9 @@ class EmployeeTimetablModel {
   }
 
   EmployeeTimetablModel(
-      {
-        required this.id,
-        required this.employeeId,
-        required this.employeeModel,
-        required this.timetaleId,
-         required this.timetableModel});
+      {required this.id,
+      required this.employeeId,
+      required this.employeeModel,
+      required this.timetaleId,
+      required this.timetableModel});
 }

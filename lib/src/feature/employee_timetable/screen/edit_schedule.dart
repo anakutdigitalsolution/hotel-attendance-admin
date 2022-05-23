@@ -6,6 +6,7 @@ import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/model/employee_timetable_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/schedule_page_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/shedule_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
@@ -46,18 +47,18 @@ class _EditScheduleState extends State<EditSchedule> {
       appBar: standardAppBar(context, "Edit Schedule"),
       body: Builder(builder: (context) {
         return BlocListener(
-          bloc: employeeTimetableBloc,
+          bloc: scheduleBloc,
           listener: (context, state) {
-            if (state is AddingEmployeeTimetable) {
-              EasyLoading.show(status: 'loading...');
+            if (state is AddingSchedule) {
+              EasyLoading.show(status: "loading....");
             }
-            if (state is ErrorAddingEmployeeTimetable) {
+            if (state is ErorrAddingSchedule) {
               EasyLoading.dismiss();
               EasyLoading.showError(state.error.toString());
             }
-            if (state is AddedEmployeeTimetable) {
+            if (state is AddedSchedule) {
               EasyLoading.dismiss();
-              EasyLoading.showSuccess('Success');
+              EasyLoading.showSuccess("Sucess");
               Navigator.pop(context);
             }
           },
@@ -215,8 +216,8 @@ class _EditScheduleState extends State<EditSchedule> {
                                       print("time not change");
                                     }
 
-                                    employeeTimetableBloc.add(
-                                        UpdateEmployeeTimetableStarted(
+                                    scheduleBloc.add(
+                                        UpdateScheduleStarted(
                                             id: widget.employeeTimetablModel.id,
                                             employeeId: employee,
                                             timetableId: time));

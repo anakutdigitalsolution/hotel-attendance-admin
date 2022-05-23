@@ -12,7 +12,6 @@ import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-// EmployeeBloc employeeBloc = EmployeeBloc();
 
 class AttendanceEmployeePage extends StatelessWidget {
   const AttendanceEmployeePage({Key? key}) : super(key: key);

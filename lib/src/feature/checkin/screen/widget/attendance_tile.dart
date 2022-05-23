@@ -59,7 +59,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
                       ? Image.asset("assets/icon/avartar.png")
                       : CachedNetworkImage(
                           imageUrl:
-                              "http://my-attendance-test-demo.herokuapp.com/${widget.employeeModel.img}",
+                              "https://banban-hr.herokuapp.com/${widget.employeeModel.img}",
                         ),
                 ),
               ),
@@ -74,7 +74,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
                   child: Text("${widget.employeeModel.name}"),
                 ),
               ),
-              widget.employeeModel.leaveStatus == "true"
+              widget.employeeModel.checkinStatus == "leave"
                   ? Container(
                       child: ElevatedButton(
                           child: Text("Leave", style: TextStyle()),

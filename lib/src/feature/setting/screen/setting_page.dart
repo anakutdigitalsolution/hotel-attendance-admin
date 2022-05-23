@@ -97,15 +97,15 @@ class _SettingPageState extends State<SettingPage> {
             SizedBox(
               height: 10,
             ),
-            settingitem(
-                name: "Group Department",
-                icon: Icons.people,
-                onPressed: () {
-                  Navigator.pushNamed(context, group);
-                }),
-            SizedBox(
-              height: 10,
-            ),
+            // settingitem(
+            //     name: "Group Department",
+            //     icon: Icons.people,
+            //     onPressed: () {
+            //       Navigator.pushNamed(context, group);
+            //     }),
+            // SizedBox(
+            //   height: 10,
+            // ),
             settingitem(
                 name: "Location",
                 icon: Icons.people,
@@ -173,36 +173,36 @@ class _SettingPageState extends State<SettingPage> {
             SizedBox(
               height: 10,
             ),
-            settingitem(
-                name: "Logout",
-                icon: Icons.exit_to_app_outlined,
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Alert'),
-                          content: Text("Are you want to leave?"),
-                          actions: <Widget>[
-                            FlatButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: Text('NO'),
-                            ),
-                            FlatButton(
-                              onPressed: () {
-                                BlocProvider.of<AuthenticationBloc>(context)
-                                    .add(LogoutPressed());
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                              },
-                              child: Text('Yes'),
-                            ),
-                          ],
-                        );
-                      });
-                })
+            // settingitem(
+            //     name: "Logout",
+            //     icon: Icons.exit_to_app_outlined,
+            //     onPressed: () {
+            //       showDialog(
+            //           context: context,
+            //           builder: (BuildContext context) {
+            //             return AlertDialog(
+            //               title: Text('Alert'),
+            //               content: Text("Are you want to leave?"),
+            //               actions: <Widget>[
+            //                 FlatButton(
+            //                   onPressed: () {
+            //                     Navigator.pop(context);
+            //                   },
+            //                   child: Text('NO'),
+            //                 ),
+            //                 FlatButton(
+            //                   onPressed: () {
+            //                     BlocProvider.of<AuthenticationBloc>(context)
+            //                         .add(LogoutPressed());
+            //                     Navigator.pop(context);
+            //                     Navigator.pop(context);
+            //                   },
+            //                   child: Text('Yes'),
+            //                 ),
+            //               ],
+            //             );
+            //           });
+            //     })
 
             // GridView.builder(
             //   padding: EdgeInsets.only(top: 0, right: 15, bottom: 15, left: 15),

@@ -4,7 +4,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class EmployeeRepository {
-  String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
+  String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
   Future<List<EmployeeModel>> getEmployee(
       {required int rowPerpage, required int page}) async {
@@ -101,11 +101,8 @@ class EmployeeRepository {
     required String dob,
     required String officeTel,
     required String img,
-    // required String username,
-    // required String password,
     required String positionId,
     required String departmentId,
-    // required String storeId,
     required String phoneNumber,
     required String address,
   }) async {
@@ -120,7 +117,6 @@ class EmployeeRepository {
         "profile_url": img,
         "position_id": positionId,
         "department_id": departmentId,
-        // "store_id": storeId,
         "employee_phone": phoneNumber,
         "address": address,
       };
@@ -158,15 +154,14 @@ class EmployeeRepository {
       throw e;
     }
   }
+
   Future<void> checkin(
       {required String checkinTime, required String employeeId}) async {
     try {
       String url = mainUrl + "checkins/add";
       Map body = {
-        // "type": "company",
         "checkin_time": checkinTime,
-        "employee_id": employeeId,
-        // "timetable_id": timetableId
+        "user_id": employeeId,
       };
 
       Response response = await apiProvider.post(url, body, null);
@@ -193,7 +188,7 @@ class EmployeeRepository {
       Map body = {
         // "type": "company",
         "checkout_time": checkoutTime,
-        "employee_id": employeeId,
+        "user_id": employeeId,
 
         // "timetable_id": timetableId
       };

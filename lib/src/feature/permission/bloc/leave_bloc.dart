@@ -88,8 +88,8 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         yield FetchingLeave();
         print(leavemodel.length);
         leavemodel.clear();
-        page=1;
-         List<LeaveModel> leaveList =
+        page = 1;
+        List<LeaveModel> leaveList =
             await leaveRepository.getleave(page: page, rowperpage: rowperpage);
         leavemodel.addAll(leaveList);
         print(leaveList.length);
@@ -116,8 +116,8 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         yield FetchingLeave();
         print(leavemodel.length);
         leavemodel.clear();
-        page=1;
-         List<LeaveModel> leaveList =
+        page = 1;
+        List<LeaveModel> leaveList =
             await leaveRepository.getleave(page: page, rowperpage: rowperpage);
         leavemodel.addAll(leaveList);
         print(leaveList.length);
@@ -137,8 +137,8 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         yield FetchingLeave();
         print(leavemodel.length);
         leavemodel.clear();
-       page=1;
-         List<LeaveModel> leaveList =
+        page = 1;
+        List<LeaveModel> leaveList =
             await leaveRepository.getleave(page: page, rowperpage: rowperpage);
         leavemodel.addAll(leaveList);
         print(leaveList.length);
@@ -157,11 +157,11 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
           // employeeId: event.employeeId,
         );
         yield AddedLeave();
-       yield FetchingLeave();
+        yield FetchingLeave();
         print(leavemodel.length);
         leavemodel.clear();
-       page=1;
-         List<LeaveModel> leaveList =
+        page = 1;
+        List<LeaveModel> leaveList =
             await leaveRepository.getleave(page: page, rowperpage: rowperpage);
         leavemodel.addAll(leaveList);
         print(leaveList.length);

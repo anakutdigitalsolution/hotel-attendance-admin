@@ -7,6 +7,7 @@ import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/employee_timetable_bloc.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/schedule_page_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/timetable_page.dart';
@@ -36,16 +37,16 @@ class _AddScheduleState extends State<AddSchedule> {
       appBar: standardAppBar(context, "Add Schedule"),
       body: Builder(builder: (context) {
         return BlocListener(
-          bloc: employeeTimetableBloc,
+          bloc: scheduleBloc,
           listener: (context, state) {
-            if (state is AddingEmployeeTimetable) {
+            if (state is AddingSchedule) {
               EasyLoading.show(status: "loading....");
             }
-            if (state is ErrorAddingEmployeeTimetable) {
+            if (state is ErorrAddingSchedule) {
               EasyLoading.dismiss();
               EasyLoading.showError(state.error.toString());
             }
-            if (state is AddedEmployeeTimetable) {
+            if (state is AddedSchedule) {
               EasyLoading.dismiss();
               EasyLoading.showSuccess("Sucess");
               Navigator.pop(context);
@@ -187,8 +188,8 @@ class _AddScheduleState extends State<AddSchedule> {
                                         .firstWhere((e) =>
                                             "${e.timetableName} from ${e.onDutyTtime} to ${e.offDutyTime}" ==
                                             _timeCtrl.text);
-                                    employeeTimetableBloc.add(
-                                        AddEmployeeTimetableStarted(
+                                    scheduleBloc.add(
+                                        AddScheduleStarted(
                                             employeeId: employeeId.id,
                                             timetableId: timetableId.id));
                                   }

@@ -508,7 +508,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                                 // memCacheHeight: 250,
                                                 // memCacheWidth: 250,
                                                 imageUrl:
-                                                    "http://my-attendance-test-demo.herokuapp.com/${widget.employeeModel.img!}",
+                                                    "https://banban-hr.herokuapp.com/${widget.employeeModel.img!}",
                                                 errorWidget: (context, a, b) {
                                                   return FittedBox(
                                                       fit: BoxFit.fill,
@@ -586,7 +586,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                         // password: _passwordCtrl.text,
                                         positionId: position,
                                         departmentId: depart,
-                                        storeId: "1",
+                                        // storeId: "1",
                                         phoneNumber: _phoneNumberCtrl.text,
                                         address: _addressCtrl.text));
                                   }

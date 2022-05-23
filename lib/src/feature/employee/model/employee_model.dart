@@ -1,7 +1,7 @@
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_model.dart';
+
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
+
 
 class EmployeeModel {
   final String id;
@@ -9,13 +9,13 @@ class EmployeeModel {
   final String gender;
   final String? img;
   final String? phone;
-  final String? status;
+  // final String? status;
   final String? positionId;
   // final String timetableId;
   // final String? storeId;
   final String? address;
   final String? checkinStatus;
-  final String? leaveStatus;
+  // final String? leaveStatus;
   final String? checkinId;
   final String? username;
   // final LeaveModel? leaveModel;
@@ -35,15 +35,13 @@ class EmployeeModel {
       phone: json["employee_phone"],
       username: json["username"],
       address: json["address"],
-      status: json["status"],
+      // status: json["status"],
       positionId: json["position_id"].toString(),
-      // timetableId: json["timetable_id"].toString(),
-      // storeId: json["store_id"].toString(),
+      
       checkinStatus: json["checkin_status"],
-      leaveStatus: json["leave_status"],
+      // leaveStatus: json["leave_status"],
       checkinId: json["checkin_id"].toString(),
-      // leaveModel:
-      //     json["leave"] == null ? null : LeaveModel.fromJson(json["leave"]),
+     
       positionModel: json["position"] == null
           ? null
           : PositionModel.fromJson(json["position"]),
@@ -61,7 +59,7 @@ class EmployeeModel {
       required this.address,
       required this.img,
       required this.phone,
-      required this.status,
+      // required this.status,
       required this.positionId,
       // required this.timetableId,
       required this.username,
@@ -70,6 +68,6 @@ class EmployeeModel {
       required this.departmentModel,
       // required this.leaveModel,
       required this.checkinStatus,
-      required this.leaveStatus,
+      // required this.leaveStatus,
       required this.checkinId});
 }

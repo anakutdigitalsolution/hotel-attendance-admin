@@ -4,7 +4,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class PositionRepository {
-  String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
+  String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
   Future<List<PositionModel>> getPosition(
       {required int rowPerpage, required int page}) async {

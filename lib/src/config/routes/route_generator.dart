@@ -62,8 +62,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PositionPage());
       case timetable:
         return MaterialPageRoute(builder: (_) => TimetablePage());
-      case schedule:
-        return MaterialPageRoute(builder: (_) => SchedulePage());
+      // case schedule:
+      //   return MaterialPageRoute(builder: (_) => SchedulePage());
       case schedules:
         return MaterialPageRoute(builder: (_) => ScheduleEmployeePage());
       case leave:

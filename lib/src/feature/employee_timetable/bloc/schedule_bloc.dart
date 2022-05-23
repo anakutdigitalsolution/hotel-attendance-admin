@@ -75,5 +75,68 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
         yield ErrorFetchingSchedule(error: e.toString());
       }
     }
+    if (event is AddScheduleStarted) {
+      yield AddingSchedule();
+      try {
+        await _scheduleRepository.addSchedule(
+            employeeId: event.employeeId, timetableId: event.timetableId);
+        yield AddedSchedule();
+        yield FetchingSchedule();
+        timeList.clear();
+        page = 1;
+        List<EmployeeTimetablModel> _departmentList = await _scheduleRepository
+            .getSchedule(rowPerpage: rowperpage, page: page);
+
+        timeList.addAll(_departmentList);
+        page++;
+        yield FetchedSchedule();
+      } catch (e) {
+        log(e.toString());
+        yield ErorrAddingSchedule(error: e.toString());
+      }
+    }
+    if (event is UpdateScheduleStarted) {
+      yield AddingSchedule();
+      try {
+        await _scheduleRepository.editSchedule(
+            id: event.id,
+            employeeId: event.employeeId,
+            timetableId: event.timetableId);
+        yield AddedSchedule();
+        yield FetchingSchedule();
+        timeList.clear();
+        page = 1;
+        List<EmployeeTimetablModel> _departmentList = await _scheduleRepository
+            .getSchedule(rowPerpage: rowperpage, page: page);
+
+        timeList.addAll(_departmentList);
+        page++;
+        yield FetchedSchedule();
+      } catch (e) {
+        log(e.toString());
+        yield ErorrAddingSchedule(error: e.toString());
+      }
+    }
+    if (event is DeleteScheduleStarted) {
+      yield AddingSchedule();
+      try {
+        await _scheduleRepository.deleteSchedule(
+          id: event.id,
+        );
+        yield AddedSchedule();
+        yield FetchingSchedule();
+        timeList.clear();
+        page = 1;
+        List<EmployeeTimetablModel> _departmentList = await _scheduleRepository
+            .getSchedule(rowPerpage: rowperpage, page: page);
+
+        timeList.addAll(_departmentList);
+        page++;
+        yield FetchedSchedule();
+      } catch (e) {
+        log(e.toString());
+        yield ErorrAddingSchedule(error: e.toString());
+      }
+    }
   }
 }

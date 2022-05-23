@@ -6,7 +6,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 class CheckInOutRepository {
   ApiProvider apiProvider = ApiProvider();
   // String mainUrl = "http://10.0.2.2:8000/api/";
-  String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
+  String mainUrl = "https://banban-hr.herokuapp.com/api/";
   Future<List<CheckinModel>> getcheckin(
       {required int page, required int rowperpage}) async {
     try {
@@ -34,7 +34,7 @@ class CheckInOutRepository {
       Map body = {
         // "type": "company",
         "checkin_time": checkinTime,
-        "employee_id": employeeId,
+        "user_id": employeeId,
         // "timetable_id": timetableId
       };
 
@@ -62,7 +62,7 @@ class CheckInOutRepository {
       Map body = {
         // "type": "company",
         "checkout_time": checkoutTime,
-        "employee_id": employeeId,
+        "user_id": employeeId,
 
         // "timetable_id": timetableId
       };

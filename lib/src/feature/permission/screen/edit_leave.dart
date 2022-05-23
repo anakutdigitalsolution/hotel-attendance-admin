@@ -36,10 +36,10 @@ class _EditLeaveState extends State<EditLeave> {
   String? dateToday;
   @override
   void initState() {
-    _fromCtrl.text = widget.leaveModel.fromDate;
-    _toCtrl.text = widget.leaveModel.toDate;
-    _reasonCtrl.text = widget.leaveModel.reason;
-    _numCtrl.text = widget.leaveModel.number;
+    _fromCtrl.text = widget.leaveModel.fromDate!;
+    _toCtrl.text = widget.leaveModel.toDate!;
+    _reasonCtrl.text = widget.leaveModel.reason!;
+    _numCtrl.text = widget.leaveModel.number!;
     _leaveCtrl.text = widget.leaveModel.leaveTypeModel!.name;
     _emCtrl.text = widget.leaveModel.employeeModel!.name;
     DateTime now = DateTime.now();

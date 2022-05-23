@@ -5,7 +5,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class LeaveTypeRepository {
-  String mainUrl = "http://my-attendance-test-demo.herokuapp.com/api/";
+  String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
   Future<List<LeaveTypeModel>> getleaveType(
       {required int rowPerpage, required int page}) async {
@@ -16,7 +16,7 @@ class LeaveTypeRepository {
       print(response.statusCode);
       if (response.statusCode == 200) {
         print(response.data);
-       
+
         List<LeaveTypeModel> leave = [];
         response.data["data"].forEach((data) {
           leave.add(LeaveTypeModel.fromJson(data));
