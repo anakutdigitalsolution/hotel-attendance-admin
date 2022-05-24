@@ -28,7 +28,33 @@ class _EmployeePageState extends State<EmployeePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.2),
-      appBar: standardAppBar(context, "Employee Page"),
+      appBar: AppBar(
+        brightness: Brightness.light,
+        elevation: 0,
+        backgroundColor: Colors.blue,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_outlined,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        // centerTitle: true,
+        title: Text(
+          "Employee page",
+          style:
+              TextStyle(color: Colors.white, fontFamily: 'BattambangRegular'),
+          textScaleFactor: 1.1,
+        ),
+        actions: [
+          Icon(Icons.restore),
+          SizedBox(
+            width: 10,
+          )
+        ],
+      ),
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
       floatingActionButton: Container(

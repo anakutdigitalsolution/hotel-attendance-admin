@@ -29,7 +29,7 @@ class WorkingDayRepository {
 
   Future<List<WorkingDayModel>> getAllWorkday() async {
     try {
-      String url = mainUrl + "workdays";
+      String url = mainUrl + "workdays/all";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);

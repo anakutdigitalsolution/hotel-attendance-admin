@@ -29,7 +29,7 @@ class PositionRepository {
 
   Future<List<PositionModel>> getAllPosition() async {
     try {
-      String url = mainUrl + "positions";
+      String url = mainUrl + "positions/all";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);

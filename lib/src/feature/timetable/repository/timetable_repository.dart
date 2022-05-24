@@ -4,7 +4,7 @@ import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
 class TimetableRepository {
-   String mainUrl = "https://banban-hr.herokuapp.com/api/";
+  String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider apiProvider = ApiProvider();
   Future<List<TimetableModel>> getTimetable(
       {required int rowPerpage, required int page}) async {
@@ -29,7 +29,7 @@ class TimetableRepository {
 
   Future<List<TimetableModel>> getAllTimetable() async {
     try {
-      String url = mainUrl + "timetables";
+      String url = mainUrl + "timetables/all";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);

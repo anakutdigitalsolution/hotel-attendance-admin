@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';

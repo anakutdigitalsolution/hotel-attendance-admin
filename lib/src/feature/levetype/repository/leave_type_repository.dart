@@ -31,7 +31,7 @@ class LeaveTypeRepository {
 
   Future<List<LeaveTypeModel>> getAllleaveType() async {
     try {
-      String url = mainUrl + "leavetypes";
+      String url = mainUrl + "leavetypes/all";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);

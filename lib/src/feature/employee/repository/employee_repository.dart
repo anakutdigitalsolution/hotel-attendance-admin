@@ -29,7 +29,7 @@ class EmployeeRepository {
 
   Future<List<EmployeeModel>> getAllEmployee() async {
     try {
-      String url = mainUrl + "employees";
+      String url = mainUrl + "employees/all";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -154,6 +154,7 @@ class EmployeeRepository {
       throw e;
     }
   }
+  
 
   Future<void> checkin(
       {required String checkinTime, required String employeeId}) async {
@@ -185,6 +186,37 @@ class EmployeeRepository {
       required String employeeId}) async {
     try {
       String url = mainUrl + "checkouts/edit/$id";
+      Map body = {
+        // "type": "company",
+        "checkout_time": checkoutTime,
+        "user_id": employeeId,
+
+        // "timetable_id": timetableId
+      };
+
+      Response response = await apiProvider.put(
+        url,
+        body,
+      );
+
+      print(response.statusCode);
+      if (response.statusCode == 200 && response.data["code"] == 0) {
+        print(response.data);
+        return;
+      } else if (response.data["code"].toString() != "0") {
+        throw response.data["message"];
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+  Future<void> resetPassword(
+      {required String id,
+      required String checkoutTime,
+      required String employeeId}) async {
+    try {
+      String url = mainUrl + "employees/reset-password/$id";
       Map body = {
         // "type": "company",
         "checkout_time": checkoutTime,
