@@ -154,7 +154,6 @@ class EmployeeRepository {
       throw e;
     }
   }
-  
 
   Future<void> checkin(
       {required String checkinTime, required String employeeId}) async {
@@ -211,16 +210,16 @@ class EmployeeRepository {
       throw e;
     }
   }
-  Future<void> resetPassword(
+
+  Future<String> resetPassword(
       {required String id,
-      required String checkoutTime,
-      required String employeeId}) async {
+      required String oldpassowrd,
+      required String newpassowrd}) async {
     try {
       String url = mainUrl + "employees/reset-password/$id";
       Map body = {
-        // "type": "company",
-        "checkout_time": checkoutTime,
-        "user_id": employeeId,
+        "old_password": oldpassowrd,
+        "new_password": newpassowrd,
 
         // "timetable_id": timetableId
       };
@@ -233,7 +232,7 @@ class EmployeeRepository {
       print(response.statusCode);
       if (response.statusCode == 200 && response.data["code"] == 0) {
         print(response.data);
-        return;
+        return response.data["token"];
       } else if (response.data["code"].toString() != "0") {
         throw response.data["message"];
       }

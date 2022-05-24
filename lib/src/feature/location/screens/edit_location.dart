@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/models/location_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/screens/location_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/location/screens/widgets/lat_long.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
@@ -59,6 +60,7 @@ class _EditLocationState extends State<EditLocation> {
           },
           child: ListView(
             children: [
+              LatLong(),
               Form(
                 key: _formKey,
                 child: Container(

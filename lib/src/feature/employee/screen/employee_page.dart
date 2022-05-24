@@ -4,6 +4,7 @@ import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/add_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/edit_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_detail_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/reset_password.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/widget/employee_tile.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
@@ -49,7 +50,12 @@ class _EmployeePageState extends State<EmployeePage> {
           textScaleFactor: 1.1,
         ),
         actions: [
-          Icon(Icons.restore),
+          InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ResetPassword()));
+              },
+              child: Icon(Icons.restore)),
           SizedBox(
             width: 10,
           )

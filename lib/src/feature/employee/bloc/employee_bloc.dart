@@ -193,6 +193,21 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         yield ErorrAddingEmployee(error: e.toString());
       }
     }
+    if (event is ChangePasswordButtonPressed) {
+      yield Changing();
+      try {
+        await Future.delayed(Duration(milliseconds: 500));
+        final String accessToken =
+            await _departmentRepository.resetPassword(
+              id: event.id,
+                oldpassowrd: event.oldpass,
+                newpassowrd: event.newpass,
+               );
+        yield Changed(accessToken: accessToken);
+      } catch (e) {
+        yield ChangeFailed(error: e.toString());
+      }
+    }
 
     // if (event is AddCheckinStarted) {
     //   yield AddingCheckin();

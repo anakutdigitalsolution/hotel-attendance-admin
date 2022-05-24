@@ -85,6 +85,7 @@ class DeleteEmployeeStarted extends EmployeeEvent {
     required this.id,
   });
 }
+
 class AddCheckinStarted extends EmployeeEvent {
   final String checkinTime;
   final String employeeId;
@@ -104,4 +105,13 @@ class AddCheckoutStarted extends EmployeeEvent {
     required this.id,
     required this.employeeId,
   });
+}
+
+class ChangePasswordButtonPressed extends EmployeeEvent {
+  ChangePasswordButtonPressed(
+      {required this.id, required this.oldpass, required this.newpass});
+  final String oldpass;
+  final String newpass;
+  final String id;
+  // final String username;
 }

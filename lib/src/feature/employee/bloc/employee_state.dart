@@ -38,3 +38,19 @@ class ErrorFetchingEmployee extends EmployeeState with ErrorState{
 //     required this.error
 //   });
 // }
+
+class ChangeFailed extends EmployeeState {
+  final dynamic error;
+
+  ChangeFailed({required this.error});
+
+  @override
+  List<Object> get props => [error];
+}
+
+class Changed extends EmployeeState {
+  Changed({required this.accessToken});
+  final String accessToken;
+}
+
+class Changing extends EmployeeState {}
