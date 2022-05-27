@@ -32,3 +32,10 @@ class AddCheckoutStarted extends CheckInOutEvent {
     required this.employeeId,
   });
 }
+
+class MarkAbsentStarted extends CheckInOutEvent{
+  final String userId;
+  MarkAbsentStarted({
+    required this.userId
+  });
+}

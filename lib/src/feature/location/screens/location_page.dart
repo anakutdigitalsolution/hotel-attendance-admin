@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/bloc/location_bloc.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -219,11 +220,42 @@ class _BodyState extends State<Body> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      print(
-                                          "id ${locationBloc.departmentList[index].id}");
-                                      locationBloc.add(DeletLocationStarted(
-                                          id: locationBloc
-                                              .departmentList[index].id));
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Alert'),
+                                              content: Text(
+                                                  "Do want to delete this record?"),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('No',
+                                                      style: TextStyle(
+                                                          color: Colors.red)),
+                                                ),
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    print(
+                                                        "id ${locationBloc.departmentList[index].id}");
+                                                    locationBloc.add(
+                                                        DeletLocationStarted(
+                                                            id: locationBloc
+                                                                .departmentList[
+                                                                    index]
+                                                                .id));
+                                                  },
+                                                  child: Text(
+                                                    'Yes',
+                                                    style: TextStyle(
+                                                        color: Colors.blue),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          });
                                     }),
                               ],
                             )
@@ -247,7 +279,7 @@ class _BodyState extends State<Body> {
             EasyLoading.show(status: "loading....");
           } else if (state is ErrorAddingLocation) {
             EasyLoading.dismiss();
-            EasyLoading.showError(state.error.toString());
+            errorSnackBar(text: state.error.toString(), context: context);
           } else if (state is AddedLocation) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Sucess");

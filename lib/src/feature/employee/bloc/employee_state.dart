@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/app_constant.dart';
 
 abstract class EmployeeState extends Equatable{
@@ -51,6 +52,12 @@ class ChangeFailed extends EmployeeState {
 class Changed extends EmployeeState {
   Changed({required this.accessToken});
   final String accessToken;
+}
+class ChangedAdmin extends EmployeeState{
+  final UserModel userModel;
+  ChangedAdmin({
+    required this.userModel
+  });
 }
 
 class Changing extends EmployeeState {}

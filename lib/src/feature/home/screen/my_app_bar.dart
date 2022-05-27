@@ -53,13 +53,13 @@ class _MyAppBarState extends State<MyAppBar> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: Text('Alert'),
-                              content: Text("Are you want to leave?"),
+                              content: Text("Do you want to leave?"),
                               actions: <Widget>[
                                 FlatButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text('NO'),
+                                  child: Text('No',style: TextStyle(color: Colors.red),),
                                 ),
                                 FlatButton(
                                   onPressed: () {
@@ -68,7 +68,7 @@ class _MyAppBarState extends State<MyAppBar> {
                                     Navigator.pop(context);
                                     // Navigator.pop(context);
                                   },
-                                  child: Text('Yes'),
+                                  child: Text('Yes',style: TextStyle(color: Colors.blue)),
                                 ),
                               ],
                             );

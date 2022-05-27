@@ -68,7 +68,7 @@ class _PositionBodyState extends State<PositionBody> {
         if (state is AddingPosition) {
           EasyLoading.show(status: "loading....");
         } else if (state is ErrorAddingPosition) {
-          Navigator.pop(context);
+          EasyLoading.dismiss();
           errorSnackBar(text: state.error.toString(), context: context);
         } else if (state is AddedPosition) {
           EasyLoading.dismiss();
@@ -178,11 +178,42 @@ class _PositionBodyState extends State<PositionBody> {
                                     ],
                                   ),
                                   onPressed: () {
-                                    print(
-                                        "id ${positionBlc.positionList[index].id}");
-                                    positionBlc.add(DeletePositionStarted(
-                                        id: positionBlc
-                                            .positionList[index].id));
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Alert'),
+                                            content: Text(
+                                                "Do want to delete this record?"),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('No',
+                                                    style: TextStyle(
+                                                        color: Colors.red)),
+                                              ),
+                                              FlatButton(
+                                                onPressed: () {
+                                                  print(
+                                                      "id ${positionBlc.positionList[index].id}");
+                                                  positionBlc.add(
+                                                      DeletePositionStarted(
+                                                          id: positionBlc
+                                                              .positionList[
+                                                                  index]
+                                                              .id));
+                                                },
+                                                child: Text(
+                                                  'Yes',
+                                                  style: TextStyle(
+                                                      color: Colors.blue),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   }),
                             ],
                           )

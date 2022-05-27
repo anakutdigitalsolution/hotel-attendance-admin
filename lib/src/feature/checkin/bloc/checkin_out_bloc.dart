@@ -110,5 +110,16 @@ class CheckInOutBloc extends Bloc<CheckInOutEvent, CheckInOutState> {
         yield ErrorAddingCheckInOut(error: e.toString());
       }
     }
+    if(event is MarkAbsentStarted){
+       yield AddingCheckin();
+      try {
+        await checkInOutRepository.markAbsent(userId: event.userId);
+        yield AddedCheckin();
+       
+      } catch (e) {
+        log(e.toString());
+        yield ErrorAddingCheckInOut(error: e.toString());
+      }
+    }
   }
 }

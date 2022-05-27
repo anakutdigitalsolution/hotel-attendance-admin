@@ -213,11 +213,42 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      print(
-                                          "id ${timetableBloc.timetableList[index].id}");
-                                      timetableBloc.add(DeleteTimetableStarted(
-                                          id: timetableBloc
-                                              .timetableList[index].id));
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Alert'),
+                                              content: Text(
+                                                  "Do want to delete this record?"),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('No',
+                                                        style: TextStyle(
+                                                          color: Colors.red)),
+                                                ),
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    print(
+                                                        "id ${timetableBloc.timetableList[index].id}");
+                                                    timetableBloc.add(
+                                                        DeleteTimetableStarted(
+                                                            id: timetableBloc
+                                                                .timetableList[
+                                                                    index]
+                                                                .id));
+                                                  },
+                                                  child: Text(
+                                                    'Yes',
+                                                    style: TextStyle(
+                                                        color: Colors.blue),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          });
                                     }),
                               ],
                             )
@@ -241,7 +272,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
             EasyLoading.show(status: "loading....");
           } else if (state is ErrorAddingTimetable) {
             EasyLoading.dismiss();
-            EasyLoading.showError(state.error.toString());
+           errorSnackBar(text: state.error.toString(), context: context);
           } else if (state is AddedTimetable) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Sucess");

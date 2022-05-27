@@ -115,3 +115,11 @@ class ChangePasswordButtonPressed extends EmployeeEvent {
   final String id;
   // final String username;
 }
+
+class AdminPasswordStarted extends EmployeeEvent{
+  AdminPasswordStarted(
+      { required this.oldpass, required this.newpass});
+  final String oldpass;
+  final String newpass;
+  
+}

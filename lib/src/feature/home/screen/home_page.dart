@@ -5,6 +5,7 @@ import 'package:hotle_attendnce_admin/src/feature/home/screen/menu.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page.dart';
 // import 'package:geolocator/geolocator.dart';
 // import 'package:location/location.dart';
 
@@ -152,6 +153,7 @@ class _HomePageState extends State<HomePage> {
         "iconColor": Colors.green,
         "image": "assets/icon/settings.png",
         "onPressed": () {
+          // Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingPage()));
           Navigator.pushNamed(context, setting);
         }
       },

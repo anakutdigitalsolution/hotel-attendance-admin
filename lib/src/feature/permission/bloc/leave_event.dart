@@ -6,11 +6,20 @@ class LeaveEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitializeLeaveStarted extends LeaveEvent {}
+class InitializeLeaveStarted extends LeaveEvent {
+  final String? dateRange;
+  InitializeLeaveStarted({required this.dateRange});
+}
 
-class FetchLeaveStarted extends LeaveEvent {}
+class FetchLeaveStarted extends LeaveEvent {
+   final String? dateRange;
+  FetchLeaveStarted({required this.dateRange});
+}
 
-class RefreshLeaveStarted extends LeaveEvent {}
+class RefreshLeaveStarted extends LeaveEvent {
+  final String? dateRange;
+  RefreshLeaveStarted({required this.dateRange});
+}
 
 class AddLeaveStarted extends LeaveEvent {
   final String employeeId;

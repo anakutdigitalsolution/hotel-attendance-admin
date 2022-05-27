@@ -9,6 +9,7 @@ import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/language/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/leave_bloc.dart';
+import 'src/appLocalizations.dart';
 import 'src/feature/landing/landing_page.dart';
 
 ///Receive message when app is in background solution for on message
@@ -55,7 +56,7 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
-              // AppLocalizations.delegate,
+              AppLocalizations.delegate,
             ],
             supportedLocales: [
               Locale('en', 'US'),

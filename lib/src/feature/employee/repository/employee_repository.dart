@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
@@ -217,6 +218,36 @@ class EmployeeRepository {
       required String newpassowrd}) async {
     try {
       String url = mainUrl + "employees/reset-password/$id";
+      Map body = {
+        "old_password": oldpassowrd,
+        "new_password": newpassowrd,
+
+        // "timetable_id": timetableId
+      };
+
+      Response response = await apiProvider.put(
+        url,
+        body,
+      );
+
+      print(response.statusCode);
+      if (response.statusCode == 200 && response.data["code"] == 0) {
+        print(response.data);
+        return response.data["token"];
+      } else if (response.data["code"].toString() != "0") {
+        throw response.data["message"];
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+  Future<UserModel> resetAdminPassword(
+      {required String id,
+      required String oldpassowrd,
+      required String newpassowrd}) async {
+    try {
+      String url = mainUrl + "admins/reset-password";
       Map body = {
         "old_password": oldpassowrd,
         "new_password": newpassowrd,

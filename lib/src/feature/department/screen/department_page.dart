@@ -75,7 +75,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
           EasyLoading.show(status: "loading....");
         } else if (state is ErrorAddingDepartment) {
           EasyLoading.dismiss();
-          EasyLoading.showError(state.error.toString());
+          errorSnackBar(text: state.error.toString(), context: context);
         } else if (state is AddedDepartment) {
           EasyLoading.dismiss();
           EasyLoading.showSuccess("Sucess");
@@ -233,11 +233,42 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                     ],
                                   ),
                                   onPressed: () {
-                                    print(
-                                        "id ${departmentBlc.departmentList[index].id}");
-                                    departmentBlc.add(DeleteDepartmentStarted(
-                                        id: departmentBlc
-                                            .departmentList[index].id));
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Alert'),
+                                            content: Text(
+                                                "Do want to delete this record?"),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('No',
+                                                    style: TextStyle(
+                                                        color: Colors.red)),
+                                              ),
+                                              FlatButton(
+                                                onPressed: () {
+                                                  print(
+                                                      "id ${departmentBlc.departmentList[index].id}");
+                                                  departmentBlc.add(
+                                                      DeleteDepartmentStarted(
+                                                          id: departmentBlc
+                                                              .departmentList[
+                                                                  index]
+                                                              .id));
+                                                },
+                                                child: Text(
+                                                  'Yes',
+                                                  style: TextStyle(
+                                                      color: Colors.blue),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        });
                                   }),
                             ],
                           )

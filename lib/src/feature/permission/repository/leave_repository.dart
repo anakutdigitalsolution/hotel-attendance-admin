@@ -28,9 +28,14 @@ class LeaveRepository {
   // }
 
   Future<List<LeaveModel>> getleave(
-      {required int page, required int rowperpage}) async {
+      {
+        required int page, 
+        required int rowperpage,
+         required String startDate,
+        required String endDate
+        }) async {
     try {
-      String url = mainUrl + "leaves?page_size=$rowperpage&page=$page";
+      String url = mainUrl + "leaves?from_date=$startDate&to_date=$endDate&page_size=$rowperpage&page=$page";
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {

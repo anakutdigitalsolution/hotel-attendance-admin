@@ -9,6 +9,8 @@ import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
 import 'package:intl/intl.dart';
 
+import 'action_btn.dart';
+
 class AttendanceTile extends StatefulWidget {
   final EmployeeModel employeeModel;
 
@@ -36,7 +38,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 4 / 4.5,
+      aspectRatio: 4 / 6,
       child: Card(
         // color: Colors.greenAccent.withOpacity(0.5),
         elevation: 5,
@@ -49,6 +51,7 @@ class _AttendanceTileState extends State<AttendanceTile> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
+                margin: EdgeInsets.only(bottom: 10),
                 width: 100,
                 height: 100,
                 child: ClipRRect(
@@ -69,140 +72,104 @@ class _AttendanceTileState extends State<AttendanceTile> {
               //   child: Text("Admin Rock"),
               // ),
               Container(
-                padding: EdgeInsets.only(top: 5, left: 10, right: 5),
+                padding:
+                    EdgeInsets.only(top: 5, left: 10, right: 5, bottom: 10),
                 child: Center(
                   child: Text("${widget.employeeModel.name}"),
                 ),
               ),
-              widget.employeeModel.checkinStatus == "leave"
-                  ? Container(
-                      child: ElevatedButton(
-                          child: Text("Leave", style: TextStyle()),
-                          style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                              backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.red),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18),
-                                      side: BorderSide(color: Colors.red)))),
-                          onPressed: () {}),
-                    )
-                  : widget.employeeModel.checkinStatus == "present"
-                      ? Container(
-                          child: ElevatedButton(
-                              child: Text("Present", style: TextStyle()),
-                              style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.lightBlue),
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(18),
-                                          side: BorderSide(
-                                              color: Colors.lightBlue)))),
-                              onPressed: () {}),
-                        )
-                      : widget.employeeModel.checkinStatus == "false"
-                          ? Container(
-                              child: ElevatedButton(
-                                  child: Text("Checkin", style: TextStyle()),
-                                  style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.white),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.green),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18),
-                                              side: BorderSide(
-                                                  color: Colors.green)))),
-                                  onPressed: () {
-                                    checkinTime = checkin!.substring(11, 19);
-                                    print(checkinTime);
-                                    BlocProvider.of<CheckInOutBloc>(context)
-                                        .add(AddCheckinStarted(
-                                            checkinTime: checkinTime!,
-                                            employeeId:
-                                                widget.employeeModel.id));
-                                  }),
-                            )
-                          // : BlocProvider.of<CheckInOutBloc>(
-                          //                 context)
-                          //             .checkilist[index]
-                          //             .status ==
-                          //         "present"
-                          //     ? Container(
-                          //         child: Text(
-                          //           "Present",
-                          //           textScaleFactor: 1.3,
-                          //           style: TextStyle(
-                          //               color: Colors.green),
-                          //         ),
-                          //       )
-                          // : BlocProvider.of<CheckInOutBloc>(
-                          //                 context)
-                          //             .checkilist[index]
-                          //             .status ==
-                          //         "leave"
-                          //     ? Container(
-                          //         child: ElevatedButton(
-                          //             child: Text("Leave",
-                          //                 style:
-                          //                     TextStyle()),
-                          //             style: ButtonStyle(
-                          //                 foregroundColor:
-                          //                     MaterialStateProperty.all<Color>(
-                          //                         Colors
-                          //                             .white),
-                          //                 backgroundColor:
-                          //                     MaterialStateProperty.all<Color>(Colors
-                          //                         .red),
-                          //                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
-                          //                     borderRadius:
-                          //                         BorderRadius.circular(18),
-                          //                     side: BorderSide(color: Colors.red)))),
-                          //             onPressed: () => null),
-                          //       )
-                          : Container(
-                              child: ElevatedButton(
-                                  child: Text("Checkout", style: TextStyle()),
-                                  style: ButtonStyle(
-                                      foregroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.white),
-                                      backgroundColor:
-                                          MaterialStateProperty.all<Color>(
-                                              Colors.amberAccent[700]!),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(18),
-                                              side: BorderSide(
-                                                  color: Colors.amberAccent[700]!)))),
-                                  onPressed: () {
-                                    checkinTime = checkin!.substring(11, 19);
-                                    print(checkinTime);
-                                    BlocProvider.of<CheckInOutBloc>(context)
-                                        .add(AddCheckoutStarted(
-                                            id: widget.employeeModel.checkinId!,
-                                            checkoutTime: checkinTime!,
-                                            employeeId:
-                                                widget.employeeModel.id));
-                                  }),
-                            )
+              Container(
+                margin: EdgeInsets.only(left: 10, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    widget.employeeModel.checkinStatus == "leave"
+                        ? actionButton(
+                            title: "Leave",
+                            color: Colors.red,
+                          )
+                        : widget.employeeModel.checkinStatus == "present"
+                            ? actionButton(
+                                title: "Present",
+                                color: Colors.lightBlue,
+                              )
+                            : widget.employeeModel.checkinStatus == "false"
+                                ? actionButton(
+                                    title: "Checkin",
+                                    color: Colors.green,
+                                    onPressed: () {
+                                      checkinTime = checkin!.substring(11, 19);
+                                      print(checkinTime);
+                                      BlocProvider.of<CheckInOutBloc>(context)
+                                          .add(AddCheckinStarted(
+                                              checkinTime: checkinTime!,
+                                              employeeId:
+                                                  widget.employeeModel.id));
+                                    })
+                                : widget.employeeModel.checkinStatus == "absent"
+                                    ? actionButton(
+                                        title: "Absent",
+                                        color: Colors.red,
+                                      )
+                                    : actionButton(
+                                        title: "Checkout",
+                                        color: Colors.amberAccent[700]!,
+                                        onPressed: () {
+                                          checkinTime =
+                                              checkin!.substring(11, 19);
+                                          print(checkinTime);
+                                          BlocProvider.of<
+                                                  CheckInOutBloc>(context)
+                                              .add(AddCheckoutStarted(
+                                                  id: widget
+                                                      .employeeModel.checkinId!,
+                                                  checkoutTime: checkinTime!,
+                                                  employeeId:
+                                                      widget.employeeModel.id));
+                                        }),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    widget.employeeModel.checkinStatus == "leave"
+                        ? Container()
+                        : widget.employeeModel.checkinStatus == "true"
+                            ? Container()
+                            : widget.employeeModel.checkinStatus == "present"
+                                ? Container()
+                                : widget.employeeModel.checkinStatus == "absent"
+                                    ? Container()
+                                    : InkWell(
+                                        onTap: () {
+                                          BlocProvider.of<CheckInOutBloc>(
+                                                  context)
+                                              .add(MarkAbsentStarted(
+                                                  userId:
+                                                      widget.employeeModel.id));
+                                        },
+                                        child: Container(
+                                          width: 35,
+                                          height: 35,
+                                          alignment: Alignment.center,
+                                          // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            // shape: BoxShape.circle,
+                                            color: Colors.blue[300],
+                                          ),
+                                          // margin: EdgeInsets.only(top: 4, right: 10),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.cancel,
+                                              color: Colors.white,
+                                              size: 28,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                  ],
+                ),
+              ),
             ],
           ),
         ),

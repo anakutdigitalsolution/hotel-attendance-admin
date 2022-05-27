@@ -109,7 +109,7 @@ class _BodyState extends State<Body> {
           EasyLoading.show(status: "loading....");
         } else if (state is ErorrAddingEmployee) {
           EasyLoading.dismiss();
-          EasyLoading.showError(state.error.toString());
+          errorSnackBar(text: state.error.toString(), context: context);
           // errorSnackBar(text: state.error.toString(), context: context);
         } else if (state is AddedEmployee) {
           EasyLoading.dismiss();
@@ -281,10 +281,41 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                                 onPressed: () {
-                                  print(
-                                      "id ${employeeBloc.emploList[index].id}");
-                                  employeeBloc.add(DeleteEmployeeStarted(
-                                      id: employeeBloc.emploList[index].id));
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Alert'),
+                                          content: Text(
+                                              "Do want to delete this record?"),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('No',
+                                                  style: TextStyle(
+                                                      color: Colors.red)),
+                                            ),
+                                            FlatButton(
+                                              onPressed: () {
+                                                print(
+                                                    "id ${employeeBloc.emploList[index].id}");
+                                                employeeBloc.add(
+                                                    DeleteEmployeeStarted(
+                                                        id: employeeBloc
+                                                            .emploList[index]
+                                                            .id));
+                                              },
+                                              child: Text(
+                                                'Yes',
+                                                style: TextStyle(
+                                                    color: Colors.blue),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
                                 }),
                           ],
                         )),

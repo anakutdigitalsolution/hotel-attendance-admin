@@ -255,11 +255,102 @@ class _BodyState extends State<Body> {
                                           ],
                                         ),
                                         onPressed: () {
-                                          print(
-                                              "id ${holidayBloc.holidaylist[index].id}");
-                                          holidayBloc.add(DeleteHolidayStarted(
-                                              id: holidayBloc
-                                                  .holidaylist[index].id));
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text('Alert'),
+                                                  content: Text(
+                                                      "Do want to delete this record?"),
+                                                  actions: <Widget>[
+                                                    FlatButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Text('No',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.red)),
+                                                    ),
+                                                    FlatButton(
+                                                      onPressed: () {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: Text(
+                                                                    'Alert'),
+                                                                content: Text(
+                                                                    "Do want to delete this record?"),
+                                                                actions: <
+                                                                    Widget>[
+                                                                  FlatButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                    },
+                                                                    child: Text(
+                                                                        'No',
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.red)),
+                                                                  ),
+                                                   
+                                                                    FlatButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      showDialog(
+                                                                          context:
+                                                                              context,
+                                                                          builder:
+                                                                              (BuildContext context) {
+                                                                            return AlertDialog(
+                                                                              title: Text('Alert'),
+                                                                              content: Text("Do want to delete this record?"),
+                                                                              actions: <Widget>[
+                                                                                FlatButton(
+                                                                                  onPressed: () {
+                                                                                    Navigator.pop(context);
+                                                                                  },
+                                                                                  child: Text('No', style: TextStyle(color: Colors.red)),
+                                                                                ),
+                                                                                FlatButton(
+                                                                                  onPressed: () {
+                                                                                    print("id ${holidayBloc.holidaylist[index].id}");
+                                                                                    holidayBloc.add(DeleteHolidayStarted(id: holidayBloc.holidaylist[index].id));
+                                                                                  },
+                                                                                  child: Text(
+                                                                                    'Yes',
+                                                                                    style: TextStyle(color: Colors.blue),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            );
+                                                                          });
+                                                                    },
+                                                                    child: Text(
+                                                                      'Yes',
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.blue),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              );
+                                                            });
+                                                      },
+                                                      child: Text(
+                                                        'Yes',
+                                                        style: TextStyle(
+                                                            color: Colors.blue),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
                                         }),
                                   ],
                                 )

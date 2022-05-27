@@ -7,6 +7,7 @@ import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/checkin_out_state
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/screen/widget/attendance_tile.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:intl/intl.dart';
@@ -88,7 +89,7 @@ class _BodyState extends State<Body> {
                 }
                 if (state is ErrorAddingCheckInOut) {
                   EasyLoading.dismiss();
-                  EasyLoading.showToast(state.error.toString());
+                  errorSnackBar(text: state.error.toString(), context: context);
                 }
                 if (state is AddedCheckin) {
                   EasyLoading.dismiss();
@@ -115,7 +116,7 @@ class _BodyState extends State<Body> {
                 controller: _refreshController,
                 child: SingleChildScrollView(
                   child: Container(
-                      margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                      margin: EdgeInsets.only(left: 10, right: 10, top: 20),
                       child: StaggeredGrid.count(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,

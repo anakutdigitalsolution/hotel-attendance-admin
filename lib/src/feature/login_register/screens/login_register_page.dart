@@ -1,5 +1,6 @@
 import 'package:hotle_attendnce_admin/src/feature/login_register/bloc/login/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/login_register/bloc/register/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/login_register/screens/login_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/login_register/screens/widgets/login_form.dart';
 import 'package:hotle_attendnce_admin/src/feature/login_register/screens/widgets/login_holder.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,12 @@ class _LoginRegisterPageState extends State<LoginRegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoginBloc>(create: (BuildContext context) => LoginBloc()),
+        BlocProvider<RegisterBloc>(
+            create: (BuildContext context) => RegisterBloc()),
+    ], child: LoginPage());
     return MultiBlocProvider(
       providers: [
         BlocProvider<LoginBloc>(create: (BuildContext context) => LoginBloc()),

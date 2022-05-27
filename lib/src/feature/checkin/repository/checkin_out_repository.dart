@@ -84,4 +84,27 @@ class CheckInOutRepository {
       throw e;
     }
   }
+  Future<void> markAbsent(
+      {required String userId,
+      }) async {
+    try {
+      String url = mainUrl + "absents/add";
+      Map body = {
+        // "type": "company",
+        "user_id": userId,
+        // "timetable_id": timetableId
+      };
+      Response response = await apiProvider.post(url, body, null);
+      print(response.statusCode);
+      if (response.statusCode == 200 && response.data["code"] == 0) {
+        print(response.data);
+        return;
+      } else if (response.data["code"].toString() != "0") {
+        throw response.data["message"];
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -66,8 +67,8 @@ class _BodyState extends State<Body> {
           EasyLoading.show(status: "loading....");
         } else if (state is ErorrAddingSchedule) {
           EasyLoading.dismiss();
-          EasyLoading.showError(state.error.toString());
-          // errorSnackBar(text: state.error.toString(), context: context);
+          // EasyLoading.showError(state.error.toString());
+          errorSnackBar(text: state.error.toString(), context: context);
         } else if (state is AddedSchedule) {
           EasyLoading.dismiss();
           EasyLoading.showSuccess("Sucess");
@@ -229,8 +230,37 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                                 onPressed: () {
-                                  scheduleBloc.add(DeleteScheduleStarted(
+                                    showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Alert'),
+                                              content: Text(
+                                                  "Do want to delete this record?"),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('No',
+                                                      style: TextStyle(
+                                                          color: Colors.red)),
+                                                ),
+                                                FlatButton(
+                                                  onPressed: () {
+                                                   scheduleBloc.add(DeleteScheduleStarted(
                                       id: scheduleBloc.timeList[index].id));
+                                                  },
+                                                  child: Text(
+                                                    'Yes',
+                                                    style: TextStyle(
+                                                        color: Colors.blue),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                  
                                 }),
                           ],
                         )),

@@ -213,11 +213,41 @@ class _BodyState extends State<Body> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      print(
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Alert'),
+                                              content: Text(
+                                                  "Do want to delete this record?"),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('No',
+                                                      style: TextStyle(
+                                                          color: Colors.red)),
+                                                ),
+                                                FlatButton(
+                                                  onPressed: () {
+                                                   print(
                                           "id ${leaveTypeBloc.leavetype[index].id}");
                                       leaveTypeBloc.add(DeleteLeaveTypeStarted(
                                           id: leaveTypeBloc
                                               .leavetype[index].id));
+                                                  },
+                                                  child: Text(
+                                                    'Yes',
+                                                    style: TextStyle(
+                                                        color: Colors.blue),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                      
+                                      
                                     }),
                               ],
                             )
@@ -241,7 +271,7 @@ class _BodyState extends State<Body> {
             EasyLoading.show(status: "loading....");
           } else if (state is ErrorAddingLeaveType) {
             EasyLoading.dismiss();
-            EasyLoading.showError(state.error.toString());
+            errorSnackBar(text: state.error.toString(), context: context);
           } else if (state is AddedLeaveType) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Sucess");

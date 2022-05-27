@@ -4,21 +4,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 WorkingDayBloc workingDayBloc = WorkingDayBloc();
+
 class WorkingDay extends StatelessWidget {
   const WorkingDay({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: standardAppBar(context, "Working Day"),
-     body: Container(
-          margin: EdgeInsets.only(top: 10, bottom: 10),
-          child: Body()),
+      body: Container(
+          margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
       floatingActionButton: Container(
         child: FloatingActionButton(
             backgroundColor: Colors.lightBlue,
@@ -33,7 +33,7 @@ class WorkingDay extends StatelessWidget {
 }
 
 class Body extends StatefulWidget {
-  const Body({ Key? key }) : super(key: key);
+  const Body({Key? key}) : super(key: key);
 
   @override
   State<Body> createState() => _BodyState();
@@ -46,6 +46,7 @@ class _BodyState extends State<Body> {
 
     workingDayBloc.add(InitializeWorkingdayStarted());
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
@@ -144,7 +145,6 @@ class _BodyState extends State<Body> {
                                 )
                               ],
                             ),
-                            
                             SizedBox(
                               height: 5.0,
                             ),
@@ -181,12 +181,15 @@ class _BodyState extends State<Body> {
                                     style: TextStyle(color: Colors.black),
                                   ),
                                 ),
-                             workingDayBloc.departmentList[index].notes==null?Text(""):   Text(
-                                  "${workingDayBloc.departmentList[index].notes}",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                )
+                                workingDayBloc.departmentList[index].notes ==
+                                        null
+                                    ? Text("")
+                                    : Text(
+                                        "${workingDayBloc.departmentList[index].notes}",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      )
                               ],
                             ),
                             Row(
@@ -201,7 +204,10 @@ class _BodyState extends State<Body> {
                                       ],
                                     ),
                                     onPressed: () {
-                                     Navigator.pushNamed(context, editWorkingday,arguments: workingDayBloc.departmentList[index]);
+                                      Navigator.pushNamed(
+                                          context, editWorkingday,
+                                          arguments: workingDayBloc
+                                              .departmentList[index]);
                                     }),
                                 SizedBox(
                                   width: 5,
@@ -215,10 +221,42 @@ class _BodyState extends State<Body> {
                                       ],
                                     ),
                                     onPressed: () {
-                                      print(
-                                          "id ${workingDayBloc.departmentList[index].id}");
-                                      workingDayBloc.add(DeleteWorkingdayStarted(
-                                          id: workingDayBloc.departmentList[index].id));
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Alert'),
+                                              content: Text(
+                                                  "Do want to delete this record?"),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Text('No',
+                                                      style: TextStyle(
+                                                          color: Colors.red)),
+                                                ),
+                                                FlatButton(
+                                                  onPressed: () {
+                                                    print(
+                                                        "id ${workingDayBloc.departmentList[index].id}");
+                                                    workingDayBloc.add(
+                                                        DeleteWorkingdayStarted(
+                                                            id: workingDayBloc
+                                                                .departmentList[
+                                                                    index]
+                                                                .id));
+                                                  },
+                                                  child: Text(
+                                                    'Yes',
+                                                    style: TextStyle(
+                                                        color: Colors.blue),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          });
                                     }),
                               ],
                             )
@@ -242,7 +280,7 @@ class _BodyState extends State<Body> {
             EasyLoading.show(status: "loading....");
           } else if (state is ErrorAddingWorkingDay) {
             EasyLoading.dismiss();
-            EasyLoading.showError(state.error.toString());
+            errorSnackBar(text: state.error.toString(), context: context);
           } else if (state is AddedWorkingDay) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Sucess");
@@ -250,4 +288,3 @@ class _BodyState extends State<Body> {
         });
   }
 }
-
