@@ -1,4 +1,4 @@
-import 'dart:ffi';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -83,7 +83,7 @@ class ReportTile extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                              state.report.late,
+                              state.report.late!,
                               textScaleFactor: 2.3,
                               style: TextStyle(
                                   color: Colors.blue,
@@ -102,7 +102,7 @@ class ReportTile extends StatelessWidget {
                         Column(
                           children: [
                             Text(
-                              state.report.overtime,
+                              state.report.overtime!,
                               textScaleFactor: 1.8,
                               style: TextStyle(
                                   color: Colors.red,
@@ -129,7 +129,7 @@ class ReportTile extends StatelessWidget {
                           children: [
                             FittedBox(
                                 child: Text(
-                              state.report.checkin,
+                              state.report.checkin!,
                               textScaleFactor: 1.8,
                               style: TextStyle(
                                   color: Colors.green[800],
@@ -150,7 +150,7 @@ class ReportTile extends StatelessWidget {
                             FittedBox(
                                 child: Text(
                               // '10',
-                              state.report.checkout,
+                              state.report.checkout!,
                               textScaleFactor: 1.8,
                               style: TextStyle(
                                   color: Colors.orange[800],
@@ -207,8 +207,8 @@ class ReportTile extends StatelessWidget {
                           Column(
                             children: [
                               FittedBox(
-                                  child: Text(
-                                state.report.employee,
+                                  child:  state.report.absent==null?Text(""): Text(
+                                state.report.absent!,
                                 textScaleFactor: 3,
                                 style: TextStyle(
                                     color: Colors.green[800],
@@ -218,7 +218,7 @@ class ReportTile extends StatelessWidget {
                                 height: 5,
                               ),
                               Text(
-                                "Total Employee",
+                                "Absent",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.red[900]),
@@ -232,7 +232,7 @@ class ReportTile extends StatelessWidget {
                               FittedBox(
                                   child: Text(
                                 // '10',
-                                state.report.leave,
+                                state.report.leave!,
                                 textScaleFactor: 3,
                                 style: TextStyle(
                                     color: Colors.orange[800],
@@ -310,7 +310,7 @@ class ReportTile extends StatelessWidget {
                               FittedBox(
                                   child: Text(
                                 // '10',
-                                state.report.leave,
+                                state.report.leave!,
                                 textScaleFactor: 3,
                                 style: TextStyle(
                                     color: Colors.orange[800],

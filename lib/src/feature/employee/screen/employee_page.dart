@@ -1,14 +1,10 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/screen/add_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/edit_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_detail_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/reset_password.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/screen/widget/employee_tile.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -167,24 +163,38 @@ class _BodyState extends State<Body> {
                           padding: EdgeInsets.all(20),
                         ),
                         onPressed: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => EmployeeDetailPage(
-                          //             employeeModel:
-                          //                 employeeBloc.emploList[index])));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EmployeeDetailPage(
+                                      employeeModel:
+                                          employeeBloc.emploList[index])));
                         },
                         child: Row(
                           children: [
-                            Container(
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    color: Colors.grey[300]),
-                                child: Icon(
-                                  Icons.person,
-                                  color: Colors.white,
-                                )),
+                            employeeBloc.emploList[index].img == null
+                                ? Container(
+                                    height: 80,
+                                    width: 80,
+                                    child:
+                                        Image.asset("assets/icon/avartar.png"),
+                                  )
+                                : Container(
+                                    height: 100,
+                                    width: 100,
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        color: Colors.grey[300]),
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder: "assets/icon/Loading_2.gif",
+                                      imageCacheHeight: 100,
+                                      imageCacheWidth: 100,
+                                      image:
+                                          "https://banban-hr.herokuapp.com/${employeeBloc.emploList[index].img}",
+                                      fit: BoxFit.fill,
+                                    )),
                             SizedBox(width: 20),
                             Expanded(
                               child: Column(

@@ -21,20 +21,31 @@ Widget settingMenuTile(
           onPressed: onPressed as void Function()?,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                 
-                  color: iconColor,
-                  borderRadius: BorderRadius.circular(100)),
-              child: ImageIcon(
-                AssetImage(image!),
-                color: Colors.white,
-              )),
-             
-          Text(name!, style: TextStyle(), textScaleFactor: 1.2,maxLines: 2,)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: iconColor,
+                          borderRadius: BorderRadius.circular(100)),
+                      child: ImageIcon(
+                        AssetImage(image!),
+                        color: Colors.white,
+                      )),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: Text(
+                  name!,
+                  style: TextStyle(),
+                  textScaleFactor: 1.2,
+                  maxLines: 2,
+                ),
+              )
             ],
           ),
         ),

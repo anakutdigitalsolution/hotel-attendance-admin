@@ -7,6 +7,9 @@ import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
 import 'timetable_page.dart';
+import 'widget/time_instruction.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:intl/intl.dart';
 
 class AddTimetable extends StatefulWidget {
   const AddTimetable({Key? key}) : super(key: key);
@@ -23,6 +26,41 @@ class _AddTimetableState extends State<AddTimetable> {
   final TextEditingController _earlyMnCtrl = TextEditingController();
   //  final TextEditingController _reasonCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  DateTime? date;
+  DateTime dateNow = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
+  String? dateToday;
+  @override
+  void initState() {
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy/MM/dd').format(now);
+    // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
+    dateToday = formattedDate.toString();
+
+    super.initState();
+  }
+
+  _dialogTime({required TextEditingController controller}) async {
+    showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    ).then((value) {
+      print(value);
+      if (value == null) {
+        print("no selt");
+      } else {
+        setState(() {
+          selectedTime = value;
+          DateTime parsedTime =
+              DateFormat.jm().parse(selectedTime.format(context).toString());
+          final String time = DateFormat('HH:mm:ss').format(parsedTime);
+          print("out put time $time");
+
+          controller.text = time;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +85,7 @@ class _AddTimetableState extends State<AddTimetable> {
           },
           child: ListView(
             children: [
+              TimeInstruction(),
               Form(
                 key: _formKey,
                 child: Container(
@@ -79,8 +118,15 @@ class _AddTimetableState extends State<AddTimetable> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _ondutyCtrl,
-                        keyboardType: TextInputType.text,
+                        readOnly: true,
+                        onTap: () {
+                          _dialogTime(controller: _ondutyCtrl);
+                        },
                         decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.timer_sharp,
+                              color: Colors.blue,
+                            ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -102,8 +148,15 @@ class _AddTimetableState extends State<AddTimetable> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _ofDutyCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.text, readOnly: true,
+                        onTap: () {
+                          _dialogTime(controller: _ofDutyCtrl);
+                        },
                         decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.timer_sharp,
+                              color: Colors.blue,
+                            ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -125,7 +178,7 @@ class _AddTimetableState extends State<AddTimetable> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _lateMnCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
@@ -148,7 +201,7 @@ class _AddTimetableState extends State<AddTimetable> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _earlyMnCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
@@ -168,7 +221,7 @@ class _AddTimetableState extends State<AddTimetable> {
                         //   return null;
                         // },
                       ),
-                      SizedBox(height: MediaQuery.of(context).size.height / 4),
+                      SizedBox(height: MediaQuery.of(context).size.height / 6),
                       standardBtn(
                           title: "Submit",
                           onTap: () {

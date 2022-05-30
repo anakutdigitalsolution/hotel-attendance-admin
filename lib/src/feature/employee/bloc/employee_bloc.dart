@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
 // import 'package:hotle_attendnce_admin/src/feature/account/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
@@ -199,10 +200,25 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
         await Future.delayed(Duration(milliseconds: 500));
         final String accessToken = await _departmentRepository.resetPassword(
           id: event.id,
-          oldpassowrd: event.oldpass,
+          // oldpassowrd: event.oldpass,
           newpassowrd: event.newpass,
         );
         yield Changed(accessToken: accessToken);
+      } catch (e) {
+        yield ChangeFailed(error: e.toString());
+      }
+    }
+    if (event is AdminPasswordStarted) {
+      yield Changing();
+      try {
+        await Future.delayed(Duration(milliseconds: 500));
+        final UserModel _userModel =
+            await _departmentRepository.resetAdminPassword(
+          oldpassowrd: event.oldpass,
+          newpassowrd: event.newpass,
+        );
+        print(_userModel);
+        yield ChangedAdmin(userModel: _userModel);
       } catch (e) {
         yield ChangeFailed(error: e.toString());
       }

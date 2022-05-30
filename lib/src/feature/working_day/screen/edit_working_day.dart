@@ -8,9 +8,11 @@ import 'package:hotle_attendnce_admin/src/feature/working_day/screen/working_day
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
+import 'widget/instruction.dart';
+
 class EditWorkingDay extends StatefulWidget {
   final WorkingDayModel workingDayModel;
-  const EditWorkingDay({required this.workingDayModel }) ;
+  const EditWorkingDay({required this.workingDayModel});
 
   @override
   State<EditWorkingDay> createState() => _EditWorkingDayState();
@@ -29,10 +31,13 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
     _nameCtrl.text = widget.workingDayModel.name!;
     _offdayCtrl.text = widget.workingDayModel.offDay!;
     _workingdayCtrl.text = widget.workingDayModel.workingDay!;
-    widget.workingDayModel.notes ==  null?_noteCtrl.text="":_noteCtrl.text= widget.workingDayModel.notes!;
+    widget.workingDayModel.notes == null
+        ? _noteCtrl.text = ""
+        : _noteCtrl.text = widget.workingDayModel.notes!;
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +51,7 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
             }
             if (state is ErrorAddingWorkingDay) {
               EasyLoading.dismiss();
-             EasyLoading.showError(state.error.toString());
+              EasyLoading.showError(state.error.toString());
             }
             if (state is AddedWorkingDay) {
               EasyLoading.dismiss();
@@ -56,6 +61,7 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
           },
           child: ListView(
             children: [
+              Instruction(),
               Form(
                 key: _formKey,
                 child: Container(
@@ -88,7 +94,7 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _workingdayCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
@@ -100,7 +106,7 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
                               ),
                             ),
                             isDense: true,
-                            labelText: "Workind day"),
+                            labelText: "Working day"),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'working day is required';
@@ -111,7 +117,7 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _offdayCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
@@ -155,20 +161,19 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
                         // },
                       ),
                       // SizedBox(height: 15),
-                      
+
                       SizedBox(height: MediaQuery.of(context).size.height / 5),
                       standardBtn(
                           title: "Update",
                           onTap: () {
                             if (_formKey!.currentState!.validate()) {
-                             workingDayBloc.add(
-                                  UpdateWorkingdayStarted(
-                                    id: widget.workingDayModel.id,
-                                      name: _nameCtrl.text,
-                                      workDay: _workingdayCtrl.text,
-                                      offDay: _offdayCtrl.text,
-                                      notes: _noteCtrl.text,
-                                ));
+                              workingDayBloc.add(UpdateWorkingdayStarted(
+                                id: widget.workingDayModel.id,
+                                name: _nameCtrl.text,
+                                workDay: _workingdayCtrl.text,
+                                offDay: _offdayCtrl.text,
+                                notes: _noteCtrl.text,
+                              ));
                             }
                           })
                     ],
@@ -179,7 +184,6 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
           ),
         );
       }),
-      
     );
   }
 }

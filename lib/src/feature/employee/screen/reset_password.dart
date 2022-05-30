@@ -51,7 +51,7 @@ class _BodyState extends State<Body> {
         if (state is Changed) {
           EasyLoading.dismiss();
           EasyLoading.showSuccess("Success");
-          Navigator.pop(context);
+          // Navigator.pop(context);
         }
       },
       child: BlocListener(
@@ -156,29 +156,29 @@ class _BodyState extends State<Body> {
                     return null;
                   },
                 ),
-                SizedBox(height: 15),
-                TextFormField(
-                  controller: _oldCtrl,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15.0),
-                        ),
-                        borderSide: new BorderSide(
-                          width: 1,
-                        ),
-                      ),
-                      isDense: true,
-                      labelText: "Old password"),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'old password is required';
-                    }
-                    return null;
-                  },
-                ),
+                // SizedBox(height: 15),
+                // TextFormField(
+                //   controller: _oldCtrl,
+                //   keyboardType: TextInputType.text,
+                //   decoration: InputDecoration(
+                //       contentPadding: EdgeInsets.all(15),
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.all(
+                //           Radius.circular(15.0),
+                //         ),
+                //         borderSide: new BorderSide(
+                //           width: 1,
+                //         ),
+                //       ),
+                //       isDense: true,
+                //       labelText: "Old password"),
+                //   validator: (value) {
+                //     if (value!.isEmpty) {
+                //       return 'old password is required';
+                //     }
+                //     return null;
+                //   },
+                // ),
                 SizedBox(
                   height: 10,
                 ),
@@ -261,8 +261,12 @@ class _BodyState extends State<Body> {
 
                           employeeBloc.add(ChangePasswordButtonPressed(
                               id: employeeId.id,
-                              oldpass: _oldCtrl.text,
+                              // oldpass: _oldCtrl.text,
                               newpass: _newCtrl.text));
+                          _userCtrl.clear();
+                          // _oldCtrl.clear();
+                          _newCtrl.clear();
+                          _confirmCtrl.clear();
                         }
                       },
                       child: Text(

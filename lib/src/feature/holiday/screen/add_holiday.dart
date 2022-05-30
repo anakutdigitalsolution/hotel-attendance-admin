@@ -43,7 +43,7 @@ class _AddHolidayState extends State<AddHoliday> {
             minTime: DateTime(2018, 01, 01),
             maxTime: DateTime(2030, 01, 01),
             theme: DatePickerTheme(
-                headerColor: Colors.blueGrey,
+                headerColor: Colors.blue,
                 backgroundColor: Colors.white,
                 itemStyle: TextStyle(
                     color: Colors.black,
@@ -131,11 +131,16 @@ class _AddHolidayState extends State<AddHoliday> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _fromCtrl,
-                        keyboardType: TextInputType.text,
+                        readOnly: true,
+                        // keyboardType: TextInputType.text,
                         onTap: () {
                           _dialogDate(controller: _fromCtrl);
                         },
                         decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range_outlined,
+                              color: Colors.lightBlue,
+                            ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -157,11 +162,16 @@ class _AddHolidayState extends State<AddHoliday> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _toCtrl,
-                        keyboardType: TextInputType.text,
+                        readOnly: true,
+                        // keyboardType: TextInputType.text,
                         onTap: () {
                           _dialogDate(controller: _toCtrl);
                         },
                         decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range_outlined,
+                              color: Colors.lightBlue,
+                            ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(

@@ -9,6 +9,9 @@ import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
+import 'package:intl/intl.dart';
+
+import 'widget/time_instruction.dart';
 
 class EditTimetable extends StatefulWidget {
   final TimetableModel timetableModel;
@@ -26,6 +29,7 @@ class _EditTimetableState extends State<EditTimetable> {
   final TextEditingController _earlyMnCtrl = TextEditingController();
   //  final TextEditingController _reasonCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  TimeOfDay selectedTime = TimeOfDay.now();
   @override
   void initState() {
     _reasonCtrl.text = widget.timetableModel.timetableName;
@@ -38,6 +42,28 @@ class _EditTimetableState extends State<EditTimetable> {
         ? _earlyMnCtrl.text = "0"
         : _earlyMnCtrl.text = widget.timetableModel.earlyMn!;
     super.initState();
+  }
+
+  _dialogTime({required TextEditingController controller}) async {
+    showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    ).then((value) {
+      print(value);
+      if (value == null) {
+        print("no selt");
+      } else {
+        setState(() {
+          selectedTime = value;
+          DateTime parsedTime =
+              DateFormat.jm().parse(selectedTime.format(context).toString());
+          final String time = DateFormat('HH:mm:ss').format(parsedTime);
+          print("out put time $time");
+
+          controller.text = time;
+        });
+      }
+    });
   }
 
   @override
@@ -63,6 +89,7 @@ class _EditTimetableState extends State<EditTimetable> {
           },
           child: ListView(
             children: [
+              TimeInstruction(),
               Form(
                 key: _formKey,
                 child: Container(
@@ -95,8 +122,15 @@ class _EditTimetableState extends State<EditTimetable> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _ondutyCtrl,
-                        keyboardType: TextInputType.text,
+                        readOnly: true,
+                        onTap: () {
+                          _dialogTime(controller: _ondutyCtrl);
+                        },
                         decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.timer_sharp,
+                              color: Colors.blue,
+                            ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -119,7 +153,15 @@ class _EditTimetableState extends State<EditTimetable> {
                       TextFormField(
                         controller: _ofDutyCtrl,
                         keyboardType: TextInputType.text,
+                        readOnly: true,
+                        onTap: () {
+                          _dialogTime(controller: _ofDutyCtrl);
+                        },
                         decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.timer_sharp,
+                              color: Colors.blue,
+                            ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(

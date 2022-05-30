@@ -55,7 +55,7 @@ class _EditHolidayState extends State<EditHoliday> {
             minTime: DateTime(2018, 01, 01),
             maxTime: DateTime(2030, 01, 01),
             theme: DatePickerTheme(
-                headerColor: Colors.blueGrey,
+                headerColor: Colors.blue,
                 backgroundColor: Colors.white,
                 itemStyle: TextStyle(
                     color: Colors.black,
@@ -148,6 +148,10 @@ class _EditHolidayState extends State<EditHoliday> {
                           _dialogDate(controller: _fromCtrl);
                         },
                         decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range_outlined,
+                              color: Colors.lightBlue,
+                            ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -174,6 +178,10 @@ class _EditHolidayState extends State<EditHoliday> {
                           _dialogDate(controller: _toCtrl);
                         },
                         decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.date_range_outlined,
+                              color: Colors.lightBlue,
+                            ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(

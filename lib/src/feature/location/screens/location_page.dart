@@ -119,7 +119,7 @@ class _BodyState extends State<Body> {
                                 Text(
                                   "${locationBloc.departmentList[index].name}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.green,
                                   ),
                                 )
                               ],
@@ -141,7 +141,7 @@ class _BodyState extends State<Body> {
                                 Text(
                                   "${locationBloc.departmentList[index].lat}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.purple,
                                   ),
                                 )
                               ],

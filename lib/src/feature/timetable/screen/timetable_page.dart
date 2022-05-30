@@ -130,7 +130,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                 Text(
                                   "${timetableBloc.timetableList[index].timetableName}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.green,
                                   ),
                                 )
                               ],
@@ -152,7 +152,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                 Text(
                                   "${timetableBloc.timetableList[index].onDutyTtime}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.lightBlue,
                                   ),
                                 )
                               ],
@@ -226,7 +226,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                                     Navigator.pop(context);
                                                   },
                                                   child: Text('No',
-                                                        style: TextStyle(
+                                                      style: TextStyle(
                                                           color: Colors.red)),
                                                 ),
                                                 FlatButton(
@@ -272,7 +272,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
             EasyLoading.show(status: "loading....");
           } else if (state is ErrorAddingTimetable) {
             EasyLoading.dismiss();
-           errorSnackBar(text: state.error.toString(), context: context);
+            errorSnackBar(text: state.error.toString(), context: context);
           } else if (state is AddedTimetable) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Sucess");

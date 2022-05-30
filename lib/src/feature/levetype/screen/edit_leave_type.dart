@@ -9,6 +9,7 @@ import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
 import 'leave_type_page.dart';
+import 'widget/leave_type_instruction.dart';
 
 class EditLeaveType extends StatefulWidget {
   final LeaveTypeModel leaveTypeModel;
@@ -59,6 +60,7 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
           },
           child: ListView(
             children: [
+              LeaveTypeInstruction(),
               Form(
                 key: _formKey,
                 child: Container(

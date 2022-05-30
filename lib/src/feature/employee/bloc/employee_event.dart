@@ -109,8 +109,8 @@ class AddCheckoutStarted extends EmployeeEvent {
 
 class ChangePasswordButtonPressed extends EmployeeEvent {
   ChangePasswordButtonPressed(
-      {required this.id, required this.oldpass, required this.newpass});
-  final String oldpass;
+      {required this.id,  required this.newpass});
+  // final String oldpass;
   final String newpass;
   final String id;
   // final String username;

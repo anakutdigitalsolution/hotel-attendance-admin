@@ -15,6 +15,7 @@ const String location = '/location';
 const String report = '/report';
 const String holiday = '/holiday';
 const String notification = '/notification';
+const String resetpassword = '/resetpassword';
 
 const String addHoliday = '/addHoliday';
 const String addNotification = '/addNotification';

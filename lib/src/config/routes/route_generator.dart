@@ -7,7 +7,9 @@ import 'package:hotle_attendnce_admin/src/feature/department/screen/add_departme
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/edit_department.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/add_employee.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/admin_reset_password.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/screen/reset_password.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/model/employee_timetable_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/add_schedule.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee_timetable/screen/edit_schedule.dart';
@@ -136,6 +138,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => LocationPage());
       case addLocation:
         return MaterialPageRoute(builder: (_) => AddLocation());
+      case resetpassword:
+        return MaterialPageRoute(builder: (_) => AdminResetPassword());
       case editLocation:
         if (args is LocationModel) {
           return MaterialPageRoute(

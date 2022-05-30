@@ -7,6 +7,8 @@ import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
+import 'widget/instruction.dart';
+
 class AddWorkingDay extends StatefulWidget {
   const AddWorkingDay({Key? key}) : super(key: key);
 
@@ -45,6 +47,7 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
           },
           child: ListView(
             children: [
+              Instruction(),
               Form(
                 key: _formKey,
                 child: Container(
@@ -77,7 +80,7 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _workingdayCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
@@ -89,7 +92,7 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                               ),
                             ),
                             isDense: true,
-                            labelText: "Workind day"),
+                            labelText: "Working day"),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'working day is required';
@@ -100,7 +103,7 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _offdayCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(

@@ -155,7 +155,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                               Text(
                                 "${departmentBlc.departmentList[index].name}",
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.green,
                                 ),
                               )
                             ],
@@ -167,14 +167,14 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Text(
-                                  "Group :",
+                                  "Workday :",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
                               Text(
-                                "${departmentBlc.departmentList[index].name}",
+                                "${departmentBlc.departmentList[index].workingDayModel!.name}",
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.blue,
                                 ),
                               )
                             ],

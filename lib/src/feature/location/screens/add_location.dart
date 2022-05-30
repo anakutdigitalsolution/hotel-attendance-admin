@@ -80,7 +80,7 @@ class _AddLocationState extends State<AddLocation> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _latCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
@@ -103,7 +103,7 @@ class _AddLocationState extends State<AddLocation> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _lonCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(

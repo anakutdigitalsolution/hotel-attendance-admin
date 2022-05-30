@@ -79,7 +79,7 @@ Future<String> uploadImage({required File image}) async {
     // var type = "upload";
 
     Response response = await apiProvider.post(
-        "https://banban-hr.herokuapp.com/api/uploads/public", formData, null);
+        "https://banban-hr.herokuapp.com/api/uploads", formData, null);
     print(response.statusCode);
 
     if (response.statusCode == 200) {

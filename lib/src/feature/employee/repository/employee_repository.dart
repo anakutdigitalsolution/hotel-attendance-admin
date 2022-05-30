@@ -214,12 +214,12 @@ class EmployeeRepository {
 
   Future<String> resetPassword(
       {required String id,
-      required String oldpassowrd,
+      // required String oldpassowrd,
       required String newpassowrd}) async {
     try {
       String url = mainUrl + "employees/reset-password/$id";
       Map body = {
-        "old_password": oldpassowrd,
+        // "old_password": oldpassowrd,
         "new_password": newpassowrd,
 
         // "timetable_id": timetableId
@@ -242,10 +242,9 @@ class EmployeeRepository {
       throw e;
     }
   }
+
   Future<UserModel> resetAdminPassword(
-      {required String id,
-      required String oldpassowrd,
-      required String newpassowrd}) async {
+      {required String oldpassowrd, required String newpassowrd}) async {
     try {
       String url = mainUrl + "admins/reset-password";
       Map body = {
@@ -263,7 +262,7 @@ class EmployeeRepository {
       print(response.statusCode);
       if (response.statusCode == 200 && response.data["code"] == 0) {
         print(response.data);
-        return response.data["token"];
+        return UserModel.fromJson(response.data);
       } else if (response.data["code"].toString() != "0") {
         throw response.data["message"];
       }

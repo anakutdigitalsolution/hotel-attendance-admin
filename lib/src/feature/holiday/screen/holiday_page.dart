@@ -219,6 +219,7 @@ class _BodyState extends State<Body> {
                               ),
                               Text(
                                 "${holidayBloc.holidaylist[index].status}",
+                                style: TextStyle(color: Colors.redAccent),
                               ),
                             ],
                           ),
@@ -298,8 +299,7 @@ class _BodyState extends State<Body> {
                                                                             color:
                                                                                 Colors.red)),
                                                                   ),
-                                                   
-                                                                    FlatButton(
+                                                                  FlatButton(
                                                                     onPressed:
                                                                         () {
                                                                       showDialog(

@@ -8,6 +8,7 @@ import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
 import 'leave_type_page.dart';
+import 'widget/leave_type_instruction.dart';
 
 class AddLeaveType extends StatefulWidget {
   const AddLeaveType({Key? key}) : super(key: key);
@@ -44,6 +45,7 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
           },
           child: ListView(
             children: [
+              LeaveTypeInstruction(),
               Form(
                 key: _formKey,
                 child: Container(
@@ -76,7 +78,7 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _scopeCtrl,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(

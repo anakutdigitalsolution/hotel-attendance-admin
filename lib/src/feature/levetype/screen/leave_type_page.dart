@@ -135,7 +135,7 @@ class _BodyState extends State<Body> {
                                 Text(
                                   "${leaveTypeBloc.leavetype[index].name}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.green,
                                   ),
                                 )
                               ],
@@ -154,7 +154,7 @@ class _BodyState extends State<Body> {
                                 Text(
                                   "${leaveTypeBloc.leavetype[index].scope}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.red,
                                   ),
                                 )
                               ],
@@ -213,7 +213,7 @@ class _BodyState extends State<Body> {
                                       ],
                                     ),
                                     onPressed: () {
-                                        showDialog(
+                                      showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
@@ -231,11 +231,14 @@ class _BodyState extends State<Body> {
                                                 ),
                                                 FlatButton(
                                                   onPressed: () {
-                                                   print(
-                                          "id ${leaveTypeBloc.leavetype[index].id}");
-                                      leaveTypeBloc.add(DeleteLeaveTypeStarted(
-                                          id: leaveTypeBloc
-                                              .leavetype[index].id));
+                                                    print(
+                                                        "id ${leaveTypeBloc.leavetype[index].id}");
+                                                    leaveTypeBloc.add(
+                                                        DeleteLeaveTypeStarted(
+                                                            id: leaveTypeBloc
+                                                                .leavetype[
+                                                                    index]
+                                                                .id));
                                                   },
                                                   child: Text(
                                                     'Yes',
@@ -246,8 +249,6 @@ class _BodyState extends State<Body> {
                                               ],
                                             );
                                           });
-                                      
-                                      
                                     }),
                               ],
                             )

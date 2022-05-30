@@ -9,11 +9,11 @@ import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 
 class AdminResetPassword extends StatelessWidget {
-  const AdminResetPassword({ Key? key }) : super(key: key);
+  const AdminResetPassword({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       appBar: standardAppBar(context, ""),
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
@@ -127,7 +127,7 @@ class _BodyState extends State<Body> {
               SizedBox(
                 height: 20,
               ),
-              
+
               SizedBox(height: 15),
               TextFormField(
                 controller: _oldCtrl,
@@ -227,12 +227,8 @@ class _BodyState extends State<Body> {
                         borderRadius: BorderRadius.circular(15)),
                     onPressed: () {
                       if (_formKey!.currentState!.validate()) {
-                      
-
                         _employeeBloc.add(AdminPasswordStarted(
-                            
-                            oldpass: _oldCtrl.text,
-                            newpass: _newCtrl.text));
+                            oldpass: _oldCtrl.text, newpass: _newCtrl.text));
                       }
                     },
                     child: Text(

@@ -118,7 +118,7 @@ class _BodyState extends State<Body> {
                                 Text(
                                   "${workingDayBloc.departmentList[index].name}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.lightBlue,
                                   ),
                                 )
                               ],
@@ -140,7 +140,7 @@ class _BodyState extends State<Body> {
                                 Text(
                                   "${workingDayBloc.departmentList[index].workingDay}",
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.green,
                                   ),
                                 )
                               ],

@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> {
       {
         "name": "Travel/Leave",
         "iconColor": Colors.orange,
-        "image": "assets/icon/man.png",
+        "image": "assets/icon/logout.png",
         "onPressed": () {
           Navigator.pushNamed(context, leave);
         }

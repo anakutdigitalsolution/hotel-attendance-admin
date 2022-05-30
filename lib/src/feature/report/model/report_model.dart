@@ -1,9 +1,10 @@
 class ReportModel {
-  final String late;
-  final String overtime;
-  final String checkin;
-  final String checkout;
-  final String leave;
+  final String? late;
+  final String? overtime;
+  final String? checkin;
+  final String? checkout;
+  final String? leave;
+  final String? absent;
   final String employee;
   factory ReportModel.fromJson(Map<String, dynamic> json) {
     return ReportModel(
@@ -12,6 +13,7 @@ class ReportModel {
         checkin: json["checkin"].toString(),
         checkout: json["checkout"].toString(),
         leave: json["leave"].toString(),
+        absent: json["absent"].toString(),
         employee: json["total_employee"].toString());
   }
   ReportModel(
@@ -20,5 +22,6 @@ class ReportModel {
       required this.checkin,
       required this.checkout,
       required this.leave,
+      required this.absent,
       required this.employee});
 }

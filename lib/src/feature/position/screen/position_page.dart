@@ -141,6 +141,25 @@ class _PositionBodyState extends State<PositionBody> {
                               Text(
                                 "${positionBlc.positionList[index].positionName}",
                                 style: TextStyle(
+                                  color: Colors.red,
+                                ),
+                              )
+                            ],
+                          ),
+                          Row(
+                            // mainAxisAlignment:
+                            //     MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  "Type :",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              Text(
+                                "${positionBlc.positionList[index].type}",
+                                style: TextStyle(
                                   color: Colors.black,
                                 ),
                               )
