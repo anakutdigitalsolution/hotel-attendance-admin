@@ -66,6 +66,15 @@ class _EditEmployeeState extends State<EditEmployee> {
         ? _phoneNumberCtrl.text = ""
         : _phoneNumberCtrl.text = widget.employeeModel.phone!;
     _usernameCtrl.text = widget.employeeModel.username!;
+    widget.employeeModel.email == null
+        ? _emailCtrl.text = ""
+        : _emailCtrl.text = widget.employeeModel.email!;
+    widget.employeeModel.dob == null
+        ? _dobCtrl.text = ""
+        : _dobCtrl.text = widget.employeeModel.dob!;
+    widget.employeeModel.officeTel == null
+        ? _officeTelCtrl.text = ""
+        : _officeTelCtrl.text = widget.employeeModel.officeTel!;
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy/MM/dd').format(now);
     // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
@@ -76,10 +85,10 @@ class _EditEmployeeState extends State<EditEmployee> {
   _dialogDate({required TextEditingController controller}) async {
     DatePicker.showDatePicker(context,
             showTitleActions: true,
-            minTime: DateTime(2018, 01, 01),
-            maxTime: DateTime(2030, 01, 01),
+            minTime: DateTime(DateTime.now().year - 70),
+            maxTime: DateTime(DateTime.now().year + 60),
             theme: DatePickerTheme(
-                headerColor: Colors.blueGrey,
+                headerColor: Colors.blue,
                 backgroundColor: Colors.white,
                 itemStyle: TextStyle(
                     color: Colors.black,

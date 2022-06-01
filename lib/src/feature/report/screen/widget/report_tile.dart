@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -8,6 +6,7 @@ import 'package:hotle_attendnce_admin/src/feature/report/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:lottie/lottie.dart';
 
 class ReportTile extends StatelessWidget {
   @override
@@ -207,13 +206,15 @@ class ReportTile extends StatelessWidget {
                           Column(
                             children: [
                               FittedBox(
-                                  child:  state.report.absent==null?Text(""): Text(
-                                state.report.absent!,
-                                textScaleFactor: 3,
-                                style: TextStyle(
-                                    color: Colors.green[800],
-                                    fontWeight: FontWeight.bold),
-                              )),
+                                  child: state.report.absent == null
+                                      ? Text("")
+                                      : Text(
+                                          state.report.absent!,
+                                          textScaleFactor: 3,
+                                          style: TextStyle(
+                                              color: Colors.green[800],
+                                              fontWeight: FontWeight.bold),
+                                        )),
                               SizedBox(
                                 height: 5,
                               ),
@@ -340,7 +341,9 @@ class ReportTile extends StatelessWidget {
         }
         return Container(
           child: Center(
-            child: CircularProgressIndicator(),
+            // child: CircularProgressIndicator(),
+            child: Lottie.asset('assets/animation/loader.json',
+                width: 200, height: 200),
           ),
         );
       },

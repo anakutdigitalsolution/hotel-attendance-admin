@@ -89,9 +89,13 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
       try {
         if (event.lateMn == null || event.lateMn == "") {
           lateMn = "0";
+        } else {
+          lateMn = event.lateMn!;
         }
         if (event.earlyMn == null || event.earlyMn == "") {
           earlyMn = "0";
+        } else {
+          earlyMn = event.earlyMn!;
         }
         print(earlyMn);
         print(lateMn);
@@ -106,7 +110,7 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
         yield FetchingTimetable();
         print(timetableList.length);
         timetableList.clear();
-        page=1;
+        page = 1;
         List<TimetableModel> leaveList = await departmentRepository
             .getTimetable(rowPerpage: rowperpage, page: page);
         timetableList.addAll(leaveList);
@@ -122,9 +126,13 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
       try {
         if (event.lateMn == null || event.lateMn == "") {
           lateMn = "0";
+        } else {
+          lateMn = event.lateMn!;
         }
         if (event.earlyMn == null || event.earlyMn == "") {
           earlyMn = "0";
+        } else {
+          earlyMn = event.earlyMn!;
         }
         await departmentRepository.editTimetable(
             id: event.id,
@@ -137,7 +145,7 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
         yield FetchingTimetable();
         print(timetableList.length);
         timetableList.clear();
-         page=1;
+        page = 1;
         List<TimetableModel> leaveList = await departmentRepository
             .getTimetable(rowPerpage: rowperpage, page: page);
         timetableList.addAll(leaveList);
@@ -157,7 +165,7 @@ class TimetableBloc extends Bloc<TimetabletEvent, TimetableState> {
         yield FetchingTimetable();
         print(timetableList.length);
         timetableList.clear();
-        page=1;
+        page = 1;
         List<TimetableModel> leaveList = await departmentRepository
             .getTimetable(rowPerpage: rowperpage, page: page);
         timetableList.addAll(leaveList);

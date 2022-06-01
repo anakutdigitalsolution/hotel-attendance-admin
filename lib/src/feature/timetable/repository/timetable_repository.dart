@@ -76,7 +76,7 @@ class TimetableRepository {
       } else if (response.data["code"].toString() != "0") {
         throw response.data["message"];
       }
-      throw CustomException.generalException();
+      // throw CustomException.generalException();
     } catch (e) {
       throw e;
     }

@@ -8,6 +8,7 @@ import 'package:hotle_attendnce_admin/src/feature/levetype/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'add_leave_type.dart';
@@ -32,7 +33,7 @@ class _LeaveTypePageState extends State<LeaveTypePage> {
       floatingActionButton: Container(
         child: FloatingActionButton(
             backgroundColor: Colors.lightBlueAccent,
-            child: Icon(Icons.add),
+            child: Icon(Icons.add), 
             elevation: 0,
             onPressed: () {
               Navigator.pushNamed(context, addLeavetype);
@@ -64,7 +65,9 @@ class _BodyState extends State<Body> {
         builder: (context, state) {
           if (state is InitializingLeaveType) {
             return Center(
-              child: CircularProgressIndicator(),
+              // child: CircularProgressIndicator(),
+              child: Lottie.asset('assets/animation/loader.json',
+                  width: 200, height: 200),
             );
           } else if (state is ErrorFetchingLeaveType) {
             return Center(
@@ -231,6 +234,7 @@ class _BodyState extends State<Body> {
                                                 ),
                                                 FlatButton(
                                                   onPressed: () {
+                                                     Navigator.pop(context);
                                                     print(
                                                         "id ${leaveTypeBloc.leavetype[index].id}");
                                                     leaveTypeBloc.add(

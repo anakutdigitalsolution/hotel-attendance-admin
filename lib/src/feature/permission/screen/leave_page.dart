@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:intl/intl.dart';
@@ -66,7 +67,9 @@ class _WantedBodyState extends State<WantedBody> {
         builder: (context, state) {
           if (state is InitializingLeave) {
             return Center(
-              child: CircularProgressIndicator(),
+              // child: CircularProgressIndicator(),
+              child: Lottie.asset('assets/animation/loader.json',
+                  width: 200, height: 200),
             );
           } else if (state is ErrorFetchingLeave) {
             return Center(
@@ -150,10 +153,10 @@ class _WantedBodyState extends State<WantedBody> {
                             // addAutomaticKeepAlives: true,
                             children: [
                               ListView.builder(
-                                 physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                // padding: EdgeIns
-                                cacheExtent: 1000,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  // padding: EdgeIns
+                                  cacheExtent: 1000,
                                   itemCount: leaveBloc.leavemodel.length,
                                   itemBuilder: (context, index) {
                                     return Container(
@@ -394,6 +397,8 @@ class _WantedBodyState extends State<WantedBody> {
                                                                       FlatButton(
                                                                         onPressed:
                                                                             () {
+                                                                          Navigator.pop(
+                                                                              context);
                                                                           print(
                                                                               "id ${leaveBloc.leavemodel[index].id}");
                                                                           leaveBloc

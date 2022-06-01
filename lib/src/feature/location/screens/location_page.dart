@@ -7,6 +7,7 @@ import 'package:hotle_attendnce_admin/src/feature/location/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/bloc/location_bloc.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 LocationBloc locationBloc = LocationBloc();
@@ -55,7 +56,9 @@ class _BodyState extends State<Body> {
         builder: (context, state) {
           if (state is InitializingLocation) {
             return Center(
-              child: CircularProgressIndicator(),
+              // child: CircularProgressIndicator(),
+              child: Lottie.asset('assets/animation/loader.json',
+                  width: 200, height: 200),
             );
           } else if (state is ErrorFetchingLocation) {
             return Center(
@@ -238,6 +241,7 @@ class _BodyState extends State<Body> {
                                                 ),
                                                 FlatButton(
                                                   onPressed: () {
+                                                    Navigator.pop(context);
                                                     print(
                                                         "id ${locationBloc.departmentList[index].id}");
                                                     locationBloc.add(

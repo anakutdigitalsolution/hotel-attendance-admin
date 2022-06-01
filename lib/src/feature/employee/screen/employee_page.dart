@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 EmployeeBloc employeeBloc = EmployeeBloc();
@@ -115,7 +116,9 @@ class _BodyState extends State<Body> {
       builder: (context, state) {
         if (state is InitializingEmployee) {
           return Center(
-            child: CircularProgressIndicator(),
+            // child: CircularProgressIndicator(),
+            child: Lottie.asset('assets/animation/loader.json',
+                width: 200, height: 200),
           );
         } else if (state is ErrorFetchingEmployee) {
           return Center(
@@ -180,20 +183,23 @@ class _BodyState extends State<Body> {
                                         Image.asset("assets/icon/avartar.png"),
                                   )
                                 : Container(
-                                    height: 100,
-                                    width: 100,
-                                    padding: EdgeInsets.all(15),
+                                    height: 80,
+                                    width: 80,
+                                    // padding: EdgeInsets.all(15),
                                     decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(100),
                                         color: Colors.grey[300]),
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: "assets/icon/Loading_2.gif",
-                                      imageCacheHeight: 100,
-                                      imageCacheWidth: 100,
-                                      image:
-                                          "https://banban-hr.herokuapp.com/${employeeBloc.emploList[index].img}",
-                                      fit: BoxFit.fill,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: "assets/icon/avartar.png",
+                                        // imageCacheHeight: 80,
+                                        // imageCacheWidth: 80,
+                                        image:
+                                            "https://banban-hr.herokuapp.com/${employeeBloc.emploList[index].img}",
+                                        fit: BoxFit.fill,
+                                      ),
                                     )),
                             SizedBox(width: 20),
                             Expanded(
@@ -309,6 +315,7 @@ class _BodyState extends State<Body> {
                                             ),
                                             FlatButton(
                                               onPressed: () {
+                                                Navigator.pop(context);
                                                 print(
                                                     "id ${employeeBloc.emploList[index].id}");
                                                 employeeBloc.add(

@@ -148,7 +148,8 @@ class _AddTimetableState extends State<AddTimetable> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _ofDutyCtrl,
-                        keyboardType: TextInputType.text, readOnly: true,
+                        keyboardType: TextInputType.text,
+                        readOnly: true,
                         onTap: () {
                           _dialogTime(controller: _ofDutyCtrl);
                         },
@@ -226,6 +227,9 @@ class _AddTimetableState extends State<AddTimetable> {
                           title: "Submit",
                           onTap: () {
                             if (_formKey!.currentState!.validate()) {
+                              print(_lateMnCtrl.text);
+                              print(_earlyMnCtrl.text);
+
                               timetableBloc.add(AddTimetableStarted(
                                   name: _reasonCtrl.text,
                                   offDuty: _ofDutyCtrl.text,

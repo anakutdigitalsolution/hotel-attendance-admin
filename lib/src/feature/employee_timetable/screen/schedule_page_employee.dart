@@ -7,6 +7,7 @@ import 'package:hotle_attendnce_admin/src/feature/employee_timetable/bloc/index.
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/utils/share/helper.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 ScheduleBloc scheduleBloc = ScheduleBloc();
@@ -77,7 +78,9 @@ class _BodyState extends State<Body> {
       builder: (context, state) {
         if (state is InitializingSchedule) {
           return Center(
-            child: CircularProgressIndicator(),
+            // child: CircularProgressIndicator(),
+            child: Lottie.asset('assets/animation/loader.json',
+                width: 200, height: 200),
           );
         } else if (state is ErrorFetchingSchedule) {
           return Center(
@@ -155,10 +158,9 @@ class _BodyState extends State<Body> {
                                       Text(
                                         scheduleBloc.timeList[index]
                                             .employeeModel!.name,
+                                        textScaleFactor: 1.2,
                                         textAlign: TextAlign.right,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1,
+                                        style: TextStyle(color: Colors.green),
                                       ),
                                       // AspectRatio(aspectRatio: 1)
                                     ],
@@ -167,8 +169,7 @@ class _BodyState extends State<Body> {
                                   Text(
                                     scheduleBloc.timeList[index].timetableModel!
                                         .onDutyTtime,
-                                    style:
-                                        Theme.of(context).textTheme.subtitle2,
+                                    style: TextStyle(color: Colors.blue),
                                     textAlign: TextAlign.right,
                                   ),
                                   SizedBox(height: 10),
@@ -230,37 +231,40 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                                 onPressed: () {
-                                    showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text('Alert'),
-                                              content: Text(
-                                                  "Do want to delete this record?"),
-                                              actions: <Widget>[
-                                                FlatButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text('No',
-                                                      style: TextStyle(
-                                                          color: Colors.red)),
-                                                ),
-                                                FlatButton(
-                                                  onPressed: () {
-                                                   scheduleBloc.add(DeleteScheduleStarted(
-                                      id: scheduleBloc.timeList[index].id));
-                                                  },
-                                                  child: Text(
-                                                    'Yes',
-                                                    style: TextStyle(
-                                                        color: Colors.blue),
-                                                  ),
-                                                ),
-                                              ],
-                                            );
-                                          });
-                                  
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Alert'),
+                                          content: Text(
+                                              "Do want to delete this record?"),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: Text('No',
+                                                  style: TextStyle(
+                                                      color: Colors.red)),
+                                            ),
+                                            FlatButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                                scheduleBloc.add(
+                                                    DeleteScheduleStarted(
+                                                        id: scheduleBloc
+                                                            .timeList[index]
+                                                            .id));
+                                              },
+                                              child: Text(
+                                                'Yes',
+                                                style: TextStyle(
+                                                    color: Colors.blue),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
                                 }),
                           ],
                         )),

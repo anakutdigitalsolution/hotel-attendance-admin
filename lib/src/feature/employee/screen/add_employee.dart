@@ -59,10 +59,10 @@ class _AddEmployeeState extends State<AddEmployee> {
   _dialogDate({required TextEditingController controller}) async {
     DatePicker.showDatePicker(context,
             showTitleActions: true,
-            minTime: DateTime(2018, 01, 01),
-            maxTime: DateTime(2030, 01, 01),
+            minTime: DateTime(DateTime.now().year - 50),
+            maxTime: DateTime(DateTime.now().year + 60),
             theme: DatePickerTheme(
-                headerColor: Colors.blueGrey,
+                headerColor: Colors.blue,
                 backgroundColor: Colors.white,
                 itemStyle: TextStyle(
                     color: Colors.black,

@@ -55,16 +55,24 @@ class _AttendanceTileState extends State<AttendanceTile> {
                 width: 100,
                 height: 100,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(50),
-                  // child: Image.asset(
-                  //     "assets/icon/avartar.png"),
-                  child: widget.employeeModel.img == null
-                      ? Image.asset("assets/icon/avartar.png")
-                      : CachedNetworkImage(
-                          imageUrl:
-                              "https://banban-hr.herokuapp.com/${widget.employeeModel.img}",
-                        ),
-                ),
+                    borderRadius: BorderRadius.circular(100),
+                    // child: Image.asset(
+                    //     "assets/icon/avartar.png"),
+                    child: widget.employeeModel.img == null
+                        ? Image.asset("assets/icon/avartar.png")
+                        : FadeInImage.assetNetwork(
+                            placeholder: "assets/icon/avartar.png",
+                            // imageCacheHeight: 80,
+                            // imageCacheWidth: 80,
+                            image:
+                                "https://banban-hr.herokuapp.com/${widget.employeeModel.img}",
+                            fit: BoxFit.fill,
+                          )
+                    // CachedNetworkImage(
+                    //     imageUrl:
+                    //         "https://banban-hr.herokuapp.com/${widget.employeeModel.img}",
+                    //   ),
+                    ),
               ),
 
               // Container(

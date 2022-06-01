@@ -7,6 +7,7 @@ import 'package:hotle_attendnce_admin/src/feature/holiday/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/edit_holiday.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 HolidayBloc holidayBloc = HolidayBloc();
@@ -80,7 +81,9 @@ class _BodyState extends State<Body> {
       builder: (context, state) {
         if (state is InitializingHoliday) {
           return Center(
-            child: CircularProgressIndicator(),
+            // child: CircularProgressIndicator(),
+            child: Lottie.asset('assets/animation/loader.json',
+                width: 200, height: 200),
           );
         } else if (state is ErrorFetchingHoliday) {
           return Center(
@@ -275,72 +278,15 @@ class _BodyState extends State<Body> {
                                                     ),
                                                     FlatButton(
                                                       onPressed: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return AlertDialog(
-                                                                title: Text(
-                                                                    'Alert'),
-                                                                content: Text(
-                                                                    "Do want to delete this record?"),
-                                                                actions: <
-                                                                    Widget>[
-                                                                  FlatButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      Navigator.pop(
-                                                                          context);
-                                                                    },
-                                                                    child: Text(
-                                                                        'No',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.red)),
-                                                                  ),
-                                                                  FlatButton(
-                                                                    onPressed:
-                                                                        () {
-                                                                      showDialog(
-                                                                          context:
-                                                                              context,
-                                                                          builder:
-                                                                              (BuildContext context) {
-                                                                            return AlertDialog(
-                                                                              title: Text('Alert'),
-                                                                              content: Text("Do want to delete this record?"),
-                                                                              actions: <Widget>[
-                                                                                FlatButton(
-                                                                                  onPressed: () {
-                                                                                    Navigator.pop(context);
-                                                                                  },
-                                                                                  child: Text('No', style: TextStyle(color: Colors.red)),
-                                                                                ),
-                                                                                FlatButton(
-                                                                                  onPressed: () {
-                                                                                    print("id ${holidayBloc.holidaylist[index].id}");
-                                                                                    holidayBloc.add(DeleteHolidayStarted(id: holidayBloc.holidaylist[index].id));
-                                                                                  },
-                                                                                  child: Text(
-                                                                                    'Yes',
-                                                                                    style: TextStyle(color: Colors.blue),
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            );
-                                                                          });
-                                                                    },
-                                                                    child: Text(
-                                                                      'Yes',
-                                                                      style: TextStyle(
-                                                                          color:
-                                                                              Colors.blue),
-                                                                    ),
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            });
+                                                        Navigator.pop(context);
+                                                        print(
+                                                            "id ${holidayBloc.holidaylist[index].id}");
+                                                        holidayBloc.add(
+                                                            DeleteHolidayStarted(
+                                                                id: holidayBloc
+                                                                    .holidaylist[
+                                                                        index]
+                                                                    .id));
                                                       },
                                                       child: Text(
                                                         'Yes',

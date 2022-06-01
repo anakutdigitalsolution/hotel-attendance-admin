@@ -8,6 +8,7 @@ import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'add_position.dart';
@@ -78,7 +79,9 @@ class _PositionBodyState extends State<PositionBody> {
       builder: (context, state) {
         if (state is InitializingPosition) {
           return Center(
-            child: CircularProgressIndicator(),
+            // child: CircularProgressIndicator(),
+            child: Lottie.asset('assets/animation/loader.json',
+                width: 200, height: 200),
           );
         } else if (state is ErrorFetchingPosition) {
           return Center(
@@ -215,6 +218,7 @@ class _PositionBodyState extends State<PositionBody> {
                                               ),
                                               FlatButton(
                                                 onPressed: () {
+                                                  Navigator.pop(context);
                                                   print(
                                                       "id ${positionBlc.positionList[index].id}");
                                                   positionBlc.add(

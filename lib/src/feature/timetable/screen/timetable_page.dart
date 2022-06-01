@@ -8,6 +8,7 @@ import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'edit_timetable.dart';
@@ -66,7 +67,9 @@ class _DepartmentBodyState extends State<DepartmentBody> {
         builder: (context, state) {
           if (state is InitializingTimetable) {
             return Center(
-              child: CircularProgressIndicator(),
+              // child: CircularProgressIndicator(),
+              child: Lottie.asset('assets/animation/loader.json',
+                  width: 200, height: 200),
             );
           } else if (state is ErrorFetchingTimetable) {
             return Center(
@@ -179,6 +182,50 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                 )
                               ],
                             ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+                            Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Late minutes :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${timetableBloc.timetableList[index].lateMn}",
+                                  style: TextStyle(
+                                    color: Colors.lightBlue,
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+                            Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    "Early leave :",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ),
+                                Text(
+                                  "${timetableBloc.timetableList[index].earlyMn}",
+                                  style: TextStyle(
+                                    color: Colors.lightBlue,
+                                  ),
+                                )
+                              ],
+                            ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
@@ -231,6 +278,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                                 ),
                                                 FlatButton(
                                                   onPressed: () {
+                                                    Navigator.pop(context);
                                                     print(
                                                         "id ${timetableBloc.timetableList[index].id}");
                                                     timetableBloc.add(

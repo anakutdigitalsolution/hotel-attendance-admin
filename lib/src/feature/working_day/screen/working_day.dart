@@ -6,6 +6,7 @@ import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 WorkingDayBloc workingDayBloc = WorkingDayBloc();
@@ -54,7 +55,9 @@ class _BodyState extends State<Body> {
         builder: (context, state) {
           if (state is InitializingWorkingDay) {
             return Center(
-              child: CircularProgressIndicator(),
+              // child: CircularProgressIndicator(),
+              child: Lottie.asset('assets/animation/loader.json',
+                  width: 200, height: 200),
             );
           } else if (state is ErrorFetchingWorkingDay) {
             return Center(
@@ -239,6 +242,7 @@ class _BodyState extends State<Body> {
                                                 ),
                                                 FlatButton(
                                                   onPressed: () {
+                                                    Navigator.pop(context);
                                                     print(
                                                         "id ${workingDayBloc.departmentList[index].id}");
                                                     workingDayBloc.add(

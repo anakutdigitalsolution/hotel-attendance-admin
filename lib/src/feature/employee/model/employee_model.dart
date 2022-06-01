@@ -8,18 +8,14 @@ class EmployeeModel {
   final String gender;
   final String? img;
   final String? phone;
-
   final String? positionId;
-
   final String? address;
   final String? checkinStatus;
-
   final String? checkinId;
   final String? username;
   final String? nationalilty;
   final String? dob;
   final String? email;
-
   final String? officeTel;
   final String? no;
   final String? card;

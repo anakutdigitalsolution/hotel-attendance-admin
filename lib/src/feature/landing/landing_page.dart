@@ -6,6 +6,7 @@ import 'package:hotle_attendnce_admin/src/feature/login_register/screens/login_r
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -103,7 +104,9 @@ class _LandingPageState extends State<LandingPage> {
       }
       return Scaffold(
         body: Center(
-          child: CircularProgressIndicator(),
+          // child: CircularProgressIndicator(),
+          child: Lottie.asset('assets/animation/loader.json',
+              width: 200, height: 200),
         ),
       );
     });
