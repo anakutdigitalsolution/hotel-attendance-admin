@@ -1,23 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
-import 'package:hotle_attendnce_admin/src/feature/home/screen/home_menu.dart';
+
 import 'package:hotle_attendnce_admin/src/feature/language/sreen/language.dart';
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/widget/setting_item.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/menu_item.dart';
+
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 
-class SettingPage extends StatefulWidget {
+class OperationPage extends StatefulWidget {
+  const OperationPage({Key? key}) : super(key: key);
+
   @override
-  _SettingPageState createState() => _SettingPageState();
+  State<OperationPage> createState() => _OperationPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _OperationPageState extends State<OperationPage> {
   double rowSpaceSize = 5;
 
   @override
   Widget build(BuildContext context) {
     final List<Map> homeMenu = [
+      {
+        "name": "QR Code",
+        "iconColor": Colors.redAccent[200],
+        "image": "assets/icon/qr-logo.png",
+        "onPressed": () {
+          Navigator.pushNamed(context, qr);
+        }
+      },
       {
         "name": "Location",
         "iconColor": Colors.redAccent[200],
@@ -74,14 +84,14 @@ class _SettingPageState extends State<SettingPage> {
           Navigator.pushNamed(context, holiday);
         }
       },
-      {
-        "name": "Language",
-        "iconColor": Colors.orange,
-        "image": "assets/icon/language.png",
-        "onPressed": () {
-          languageModal(context);
-        }
-      },
+      // {
+      //   "name": "Language",
+      //   "iconColor": Colors.orange,
+      //   "image": "assets/icon/language.png",
+      //   "onPressed": () {
+      //     languageModal(context);
+      //   }
+      // },
       {
         "name": "Reset Password",
         "iconColor": Colors.lightGreen,
@@ -90,12 +100,20 @@ class _SettingPageState extends State<SettingPage> {
           Navigator.pushNamed(context, resetpassword);
         }
       },
+      {
+        "name": "Setting",
+        "iconColor": Colors.redAccent[200],
+        "image": "assets/icon/setting.png",
+        "onPressed": () {
+          Navigator.pushNamed(context, setting);
+        }
+      },
     ];
 
     // BlocProvider.of<AccountBloc>(context).add(FetchAccountStarted());
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.2),
-      appBar: standardAppBar(context, "Setting page"),
+      appBar: standardAppBar(context, "Operation page"),
       body: ListView(
         clipBehavior: Clip.none,
         children: [

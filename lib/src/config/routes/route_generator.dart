@@ -32,8 +32,10 @@ import 'package:hotle_attendnce_admin/src/feature/notification/screen/notificati
 import 'package:hotle_attendnce_admin/src/feature/permission/screen/leave_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/add_position.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/qrcode/screen/qr_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/report/screen/report_page.dart';
-import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/setting/screen/operation_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page_one.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/add_timetable.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/timetable_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
@@ -58,6 +60,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SettingPage());
       case department:
         return MaterialPageRoute(builder: (_) => DepartmentPage());
+      case operation:
+        return MaterialPageRoute(builder: (_) => OperationPage());
       case employee:
         return MaterialPageRoute(builder: (_) => EmployeePage());
       case position:
@@ -75,6 +79,8 @@ class RouteGenerator {
 
       case holiday:
         return MaterialPageRoute(builder: (_) => HolidayPage());
+      case qr:
+        return MaterialPageRoute(builder: (_) => QRPage());
       case addHoliday:
         return MaterialPageRoute(builder: (_) => AddHoliday());
 

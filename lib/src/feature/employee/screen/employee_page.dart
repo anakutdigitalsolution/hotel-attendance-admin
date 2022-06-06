@@ -242,29 +242,7 @@ class _BodyState extends State<Body> {
                                           textAlign: TextAlign.right,
                                         ),
 
-                                  // Text(
-                                  //         ": ${customer.balance}",
-                                  //         style: Theme.of(context)
-                                  //             .textTheme
-                                  //             .subtitle2!
-                                  //             .copyWith(color: Colors.orange[700]),
-                                  //         textAlign: TextAlign.right,
-                                  //       ),
-                                  // customer.point == null ||
-                                  //         customer.point == "null" ||
-                                  //         (customer.point == "0")
-                                  //     ? Center()
-                                  //     : Container(
-                                  //         margin: EdgeInsets.only(top: 10),
-                                  //         child: Text(
-                                  //           "${AppLocalizations.of(context)!.translate("point")!} : ${customer.point}",
-                                  //           style: Theme.of(context)
-                                  //               .textTheme
-                                  //               .subtitle2!
-                                  //               .copyWith(color: Colors.purple[700]),
-                                  //           textAlign: TextAlign.right,
-                                  //         ),
-                                  //       ),
+                                 
                                 ],
                               ),
                             ),

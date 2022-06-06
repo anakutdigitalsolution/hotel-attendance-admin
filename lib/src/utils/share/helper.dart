@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
@@ -70,5 +71,27 @@ class Helper {
       print("d2");
       return;
     }
+  }
+
+  _decodeImage({required String img}) async {
+    final ImagePicker imgpicker = ImagePicker();
+    String imagepath = "";
+    var pickedFile = await imgpicker.pickImage(source: ImageSource.gallery);
+    imagepath = pickedFile!.path;
+    print(imagepath);
+    //output /data/user/0/com.example.testapp/cache/image_picker7973898508152261600.jpg
+
+    File imagefile = File(imagepath); //convert Path to File
+    Uint8List imagebytes = await imagefile.readAsBytes(); //convert to bytes
+    String base64string =
+        base64.encode(imagebytes); //convert bytes to base64 string
+    print(base64string);
+    /* Output:
+              /9j/4Q0nRXhpZgAATU0AKgAAAAgAFAIgAAQAAAABAAAAAAEAAAQAAAABAAAJ3
+              wIhAAQAAAABAAAAAAEBAAQAAAABAAAJ5gIiAAQAAAABAAAAAAIjAAQAAAABAAA
+              AAAIkAAQAAAABAAAAAAIlAAIAAAAgAAAA/gEoAA ... long string output
+              */
+
+    Uint8List decodedbytes = base64.decode(base64string);
   }
 }
