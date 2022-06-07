@@ -151,7 +151,7 @@ class _HomePageState extends State<HomePage> {
       {
         "name": "Operation",
         "iconColor": Colors.green,
-        "image": "assets/icon/settings.png",
+        "image": "assets/icon/gear.png",
         "onPressed": () {
           // Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingPage()));
           Navigator.pushNamed(context, operation);

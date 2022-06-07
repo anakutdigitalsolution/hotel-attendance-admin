@@ -30,7 +30,7 @@ class _OperationPageState extends State<OperationPage> {
       },
       {
         "name": "Location",
-        "iconColor": Colors.redAccent[200],
+        "iconColor": Colors.purple[300],
         "image": "assets/icon/maps-and-flags.png",
         "onPressed": () {
           Navigator.pushNamed(context, location);
