@@ -1,5 +1,5 @@
 import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/auth/repository/auth_repository.dart';
+
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/storage.dart';
@@ -11,7 +11,7 @@ class AuthenticationBloc
   Storage _storage = Storage();
 
   AuthenticationBloc() : super(Authenticating());
- 
+
   @override
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
@@ -28,14 +28,22 @@ class AuthenticationBloc
         ApiProvider.accessToken = _user!.token;
         yield Authenticated(user: _user!);
       }
-      // if (_token == null) {
-      //   yield NotAuthenticated();
-      // } else {
-      //   ApiProvider.accessToken = _token;
-
-      //   yield Authenticated(token: _token);
-      // }
     }
+    // if (event is CheckingAuthenticationStarted) {
+    //   yield Initializing();
+    //   // String _token = await _authenticationRepository.getToken();
+    //   UserModel? _user;
+    //   await Future.delayed(Duration(milliseconds: 1500), () async {
+    //     _user = await _storage.getCurrentUser();
+    //   });
+    //   if (_user == null) {
+    //     yield NotAuthenticated();
+    //   } else {
+    //     ApiProvider.accessToken = _user!.token;
+    //     yield Authenticated(user: _user!);
+    //   }
+
+    // }
     if (event is AuthenticationStarted) {
       await _storage.saveCurrentUser(user: event.user);
       ApiProvider.accessToken = event.user.token;
@@ -50,4 +58,3 @@ class AuthenticationBloc
     }
   }
 }
-

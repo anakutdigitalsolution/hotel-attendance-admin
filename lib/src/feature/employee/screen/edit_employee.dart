@@ -12,6 +12,7 @@ import 'package:hotle_attendnce_admin/src/feature/department/screen/department_p
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
@@ -50,6 +51,7 @@ class _EditEmployeeState extends State<EditEmployee> {
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _dobCtrl = TextEditingController();
   File? _image;
+  final TextEditingController _roleCtrl = TextEditingController();
   DateTime? date;
   DateTime dateNow = DateTime.now();
   String? dateToday;
@@ -158,368 +160,399 @@ class _EditEmployeeState extends State<EditEmployee> {
                 }
               },
               child: BlocListener(
-                bloc: positionBlc,
-                listener: (context, state) {
-                  if (state is FetchingPosition) {
-                    loadingDialogs(context);
-                  }
-                  if (state is ErrorAddingPosition) {
-                    Navigator.pop(context);
-                    errorSnackBar(
-                        text: state.error.toString(), context: context);
-                  }
-                  if (state is FetchedPosition) {
-                    Navigator.pop(context);
-                    customModal(
-                        context,
-                        positionBlc.positionList
-                            .map((e) => e.positionName)
-                            .toList(), (value) {
-                      _positionIdCtrl.text = value;
-                      // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
-                      //     .roomtype
-                      //     .firstWhere((roomtype) => roomtype.type == value);
-                      // _roomNumberCtrl.clear();
-                      // _stayingCtrl.clear();
-                    });
-                  }
-                },
-                child: ListView(
-                  children: [
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _nameCtrl,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Employee name"),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Employee name';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _genderCtrl,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  suffixIcon: Icon(Icons.arrow_drop_down),
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Select gender"),
-                              onTap: () {
-                                _showDialog(context);
-                              },
-                              readOnly: true,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Please select gender';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _emailCtrl,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Email"),
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _dobCtrl,
-                              keyboardType: TextInputType.text,
-                              onTap: () {
-                                _dialogDate(controller: _dobCtrl);
-                              },
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Date of Birth"),
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _usernameCtrl,
-                              readOnly: true,
-                              // keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Username"),
-                              // validator: (value) {
-                              //   if (value!.isEmpty) {
-                              //     return 'Username is required';
-                              //   }
-                              //   return null;
-                              // },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _officeTelCtrl,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Office Tel"),
-                            ),
-                            SizedBox(height: 15),
-                            // TextFormField(
-                            //   controller: _usernameCtrl,
-                            //   keyboardType: TextInputType.text,
-                            //   decoration: InputDecoration(
-                            //       contentPadding: EdgeInsets.all(15),
-                            //       border: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.all(
-                            //           Radius.circular(5.0),
-                            //         ),
-                            //         borderSide: new BorderSide(
-                            //           width: 1,
-                            //         ),
-                            //       ),
-                            //       isDense: true,
-                            //       labelText: "Username"),
-                            //   validator: (value) {
-                            //     if (value!.isEmpty) {
-                            //       return 'Username is required';
-                            //     }
-                            //     return null;
-                            //   },
-                            // ),
-                            // SizedBox(height: 15),
-                            // TextFormField(
-                            //   controller: _passwordCtrl,
-                            //   keyboardType: TextInputType.text,
-                            //   decoration: InputDecoration(
-                            //       contentPadding: EdgeInsets.all(15),
-                            //       border: OutlineInputBorder(
-                            //         borderRadius: BorderRadius.all(
-                            //           Radius.circular(5.0),
-                            //         ),
-                            //         borderSide: new BorderSide(
-                            //           width: 1,
-                            //         ),
-                            //       ),
-                            //       isDense: true,
-                            //       labelText: "password"),
-                            //   validator: (value) {
-                            //     if (value!.isEmpty) {
-                            //       return 'password is required';
-                            //     }
-                            //     return null;
-                            //   },
-                            // ),
-                            // SizedBox(height: 15),
-                            TextFormField(
-                              controller: _phoneNumberCtrl,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Phone number"),
-                              // validator: (value) {
-                              //   if (value!.isEmpty) {
-                              //     return 'phone is required';
-                              //   }
-                              //   return null;
-                              // },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _departmentIdCtrl,
-                              onTap: () {
-                                departmentBlc.add(FetchAllDepartmentStarted());
-                              },
-                              readOnly: true,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  suffixIcon: Icon(Icons.arrow_drop_down),
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "select department name"),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Department is required';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _positionIdCtrl,
-                              onTap: () {
-                                positionBlc.add(FetchAllPositionStarted());
-                              },
-                              readOnly: true,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  suffixIcon: Icon(Icons.arrow_drop_down),
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "select position name"),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'password is required';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _addressCtrl,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Address"),
-                              // validator: (value) {
-                              //   if (value!.isEmpty) {
-                              //     return 'address is required';
-                              //   }
-                              //   return null;
-                              // },
-                            ),
-                            SizedBox(height: 15),
-                            GestureDetector(
-                                onTap: () {
-                                  _showPicker(context);
-                                },
-                                child: Container(
-                                    width: (MediaQuery.of(context).size.width /
-                                            10) *
-                                        8,
-                                    child: (_image == null)
-                                        ? widget.employeeModel.img == null
-                                            ? Container(
-                                                width: (MediaQuery.of(context)
-                                                            .size
-                                                            .width /
-                                                        10) *
-                                                    4,
-                                                height: (MediaQuery.of(context)
-                                                            .size
-                                                            .width /
-                                                        10) *
-                                                    4,
-                                                alignment: Alignment.center,
-                                                padding: EdgeInsets.all(0),
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5)),
-                                                child: FittedBox(
-                                                  fit: BoxFit.fill,
-                                                  child: Icon(
-                                                    Icons.add_a_photo_outlined,
-                                                    color: Colors.grey[600],
-                                                    size:
+                  bloc: positionBlc,
+                  listener: (context, state) {
+                    if (state is FetchingPosition) {
+                      loadingDialogs(context);
+                    }
+                    if (state is ErrorAddingPosition) {
+                      Navigator.pop(context);
+                      errorSnackBar(
+                          text: state.error.toString(), context: context);
+                    }
+                    if (state is FetchedPosition) {
+                      Navigator.pop(context);
+                      customModal(
+                          context,
+                          positionBlc.positionList
+                              .map((e) => e.positionName)
+                              .toList(), (value) {
+                        _positionIdCtrl.text = value;
+                        // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
+                        //     .roomtype
+                        //     .firstWhere((roomtype) => roomtype.type == value);
+                        // _roomNumberCtrl.clear();
+                        // _stayingCtrl.clear();
+                      });
+                    }
+                  },
+                  child: BlocListener(
+                    bloc: employeeBloc,
+                    listener: (context, state) {
+                      if (state is FetchingRole) {
+                        loadingDialogs(context);
+                      }
+                      if (state is ErrorFetchingRole) {
+                        Navigator.pop(context);
+                        errorSnackBar(
+                            text: state.error.toString(), context: context);
+                      }
+                      if (state is FetchedRole) {
+                        Navigator.pop(context);
+                        customModal(context,
+                            employeeBloc.roleList.map((e) => e.name).toList(),
+                            (value) {
+                          _roleCtrl.text = value;
+                        });
+                      }
+                    },
+                    child: ListView(
+                      children: [
+                        Form(
+                          key: _formKey,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: Column(
+                              children: [
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _nameCtrl,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Employee name"),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Employee name';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _genderCtrl,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.arrow_drop_down),
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Select gender"),
+                                  onTap: () {
+                                    _showDialog(context);
+                                  },
+                                  readOnly: true,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please select gender';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _emailCtrl,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Email"),
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _dobCtrl,
+                                  keyboardType: TextInputType.text,
+                                  onTap: () {
+                                    _dialogDate(controller: _dobCtrl);
+                                  },
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Date of Birth"),
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _usernameCtrl,
+                                  readOnly: true,
+                                  // keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Username"),
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'Username is required';
+                                  //   }
+                                  //   return null;
+                                  // },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _officeTelCtrl,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Office Tel"),
+                                ),
+                                SizedBox(height: 15),
+                                // TextFormField(
+                                //   controller: _usernameCtrl,
+                                //   keyboardType: TextInputType.text,
+                                //   decoration: InputDecoration(
+                                //       contentPadding: EdgeInsets.all(15),
+                                //       border: OutlineInputBorder(
+                                //         borderRadius: BorderRadius.all(
+                                //           Radius.circular(5.0),
+                                //         ),
+                                //         borderSide: new BorderSide(
+                                //           width: 1,
+                                //         ),
+                                //       ),
+                                //       isDense: true,
+                                //       labelText: "Username"),
+                                //   validator: (value) {
+                                //     if (value!.isEmpty) {
+                                //       return 'Username is required';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
+                                // SizedBox(height: 15),
+                                // TextFormField(
+                                //   controller: _passwordCtrl,
+                                //   keyboardType: TextInputType.text,
+                                //   decoration: InputDecoration(
+                                //       contentPadding: EdgeInsets.all(15),
+                                //       border: OutlineInputBorder(
+                                //         borderRadius: BorderRadius.all(
+                                //           Radius.circular(5.0),
+                                //         ),
+                                //         borderSide: new BorderSide(
+                                //           width: 1,
+                                //         ),
+                                //       ),
+                                //       isDense: true,
+                                //       labelText: "password"),
+                                //   validator: (value) {
+                                //     if (value!.isEmpty) {
+                                //       return 'password is required';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
+                                // SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _phoneNumberCtrl,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Phone number"),
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'phone is required';
+                                  //   }
+                                  //   return null;
+                                  // },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _departmentIdCtrl,
+                                  onTap: () {
+                                    departmentBlc
+                                        .add(FetchAllDepartmentStarted());
+                                  },
+                                  readOnly: true,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.arrow_drop_down),
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "select department name"),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Department is required';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _roleCtrl,
+                                  onTap: () {
+                                    employeeBloc.add(FetchRoleStarted());
+                                  },
+                                  readOnly: true,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.arrow_drop_down),
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "select role"),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'role is required';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _positionIdCtrl,
+                                  onTap: () {
+                                    positionBlc.add(FetchAllPositionStarted());
+                                  },
+                                  readOnly: true,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.arrow_drop_down),
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "select position name"),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'password is required';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _addressCtrl,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(15.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Address"),
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'address is required';
+                                  //   }
+                                  //   return null;
+                                  // },
+                                ),
+                                SizedBox(height: 15),
+                                GestureDetector(
+                                    onTap: () {
+                                      _showPicker(context);
+                                    },
+                                    child: Container(
+                                        width:
+                                            (MediaQuery.of(context).size.width /
+                                                    10) *
+                                                8,
+                                        child: (_image == null)
+                                            ? widget.employeeModel.img == null
+                                                ? Container(
+                                                    width:
                                                         (MediaQuery.of(context)
                                                                     .size
                                                                     .width /
                                                                 10) *
-                                                            3,
-                                                  ),
-                                                ),
-                                              )
-                                            : CachedNetworkImage(
-                                                fit: BoxFit.fitWidth,
-                                                // memCacheHeight: 250,
-                                                // memCacheWidth: 250,
-                                                imageUrl:
-                                                    "https://banban-hr.herokuapp.com/${widget.employeeModel.img!}",
-                                                errorWidget: (context, a, b) {
-                                                  return FittedBox(
+                                                            4,
+                                                    height:
+                                                        (MediaQuery.of(context)
+                                                                    .size
+                                                                    .width /
+                                                                10) *
+                                                            4,
+                                                    alignment: Alignment.center,
+                                                    padding: EdgeInsets.all(0),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5)),
+                                                    child: FittedBox(
                                                       fit: BoxFit.fill,
                                                       child: Icon(
                                                         Icons
@@ -531,82 +564,121 @@ class _EditEmployeeState extends State<EditEmployee> {
                                                                     .width /
                                                                 10) *
                                                             3,
-                                                      ));
-                                                },
-                                              )
-                                        : Container(
-                                            // height: MediaQuery.of(context).size.width / 3,
-                                            width: (MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    10) *
-                                                7,
-                                            child: Image.file(_image!)))),
-                            SizedBox(height: 30),
-                            standardBtn(
-                                title: "Update",
-                                onTap: () {
-                                  String depart = "";
-                                  String position = "";
-                                  String url = "";
-                                  if (_formKey!.currentState!.validate()) {
-                                    if (_departmentIdCtrl.text !=
-                                        widget.employeeModel.departmentModel!
-                                            .name) {
-                                      DepartmentModel departId = departmentBlc
-                                          .departmentList
-                                          .firstWhere((element) =>
-                                              element.name ==
-                                              _departmentIdCtrl.text);
-                                      depart = departId.id;
-                                    } else {
-                                      depart = widget
-                                          .employeeModel.departmentModel!.id;
-                                    }
-                                    if (_positionIdCtrl.text !=
-                                        widget.employeeModel.positionModel!
-                                            .positionName) {
-                                      PositionModel posiId = positionBlc
-                                          .positionList
-                                          .firstWhere((element) =>
-                                              element.positionName ==
-                                              _positionIdCtrl.text);
-                                      position = posiId.id;
-                                    } else {
-                                      position = widget
-                                          .employeeModel.positionModel!.id;
-                                    }
-                                    if (widget.employeeModel.img == null) {
-                                      url = "";
-                                    } else {
-                                      url = widget.employeeModel.img!;
-                                    }
+                                                      ),
+                                                    ),
+                                                  )
+                                                : CachedNetworkImage(
+                                                    fit: BoxFit.fitWidth,
+                                                    // memCacheHeight: 250,
+                                                    // memCacheWidth: 250,
+                                                    imageUrl:
+                                                        "https://banban-hr.herokuapp.com/${widget.employeeModel.img!}",
+                                                    errorWidget:
+                                                        (context, a, b) {
+                                                      return FittedBox(
+                                                          fit: BoxFit.fill,
+                                                          child: Icon(
+                                                            Icons
+                                                                .add_a_photo_outlined,
+                                                            color: Colors
+                                                                .grey[600],
+                                                            size: (MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width /
+                                                                    10) *
+                                                                3,
+                                                          ));
+                                                    },
+                                                  )
+                                            : Container(
+                                                // height: MediaQuery.of(context).size.width / 3,
+                                                width: (MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        10) *
+                                                    7,
+                                                child: Image.file(_image!)))),
+                                SizedBox(height: 30),
+                                standardBtn(
+                                    title: "Update",
+                                    onTap: () {
+                                      String depart = "";
+                                      String position = "";
+                                      String role = "";
+                                      String url = "";
+                                      if (_formKey!.currentState!.validate()) {
+                                        if (_departmentIdCtrl.text !=
+                                            widget.employeeModel
+                                                .departmentModel!.name) {
+                                          DepartmentModel departId =
+                                              departmentBlc.departmentList
+                                                  .firstWhere((element) =>
+                                                      element.name ==
+                                                      _departmentIdCtrl.text);
+                                          depart = departId.id;
+                                        } else {
+                                          depart = widget.employeeModel
+                                              .departmentModel!.id;
+                                        }
+                                        if (_positionIdCtrl.text !=
+                                            widget.employeeModel.positionModel!
+                                                .positionName) {
+                                          PositionModel posiId = positionBlc
+                                              .positionList
+                                              .firstWhere((element) =>
+                                                  element.positionName ==
+                                                  _positionIdCtrl.text);
+                                          position = posiId.id;
+                                        } else {
+                                          position = widget
+                                              .employeeModel.positionModel!.id;
+                                        }
+                                        if (_roleCtrl.text !=
+                                            widget.employeeModel.roleModel!
+                                                .name) {
+                                          RoleModel roleModel = employeeBloc
+                                              .roleList
+                                              .firstWhere((e) =>
+                                                  e.name == _roleCtrl.text);
+                                          role = roleModel.id;
+                                        } else {
+                                          role = widget
+                                              .employeeModel.roleModel!.id;
+                                        }
 
-                                    employeeBloc.add(UpdateEmployeeStarted(
-                                        id: widget.employeeModel.id,
-                                        name: _nameCtrl.text,
-                                        gender: _genderCtrl.text,
-                                        dob: _dobCtrl.text,
-                                        email: _emailCtrl.text,
-                                        officeTel: _officeTelCtrl.text,
-                                        // username: _usernameCtrl.text,
-                                        img: _image,
-                                        imgUrl: url,
-                                        // password: _passwordCtrl.text,
-                                        positionId: position,
-                                        departmentId: depart,
-                                        // storeId: "1",
-                                        phoneNumber: _phoneNumberCtrl.text,
-                                        address: _addressCtrl.text));
-                                  }
-                                })
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+                                        if (widget.employeeModel.img == null) {
+                                          url = "";
+                                        } else {
+                                          url = widget.employeeModel.img!;
+                                        }
+
+                                        employeeBloc.add(UpdateEmployeeStarted(
+                                            id: widget.employeeModel.id,
+                                            name: _nameCtrl.text,
+                                            gender: _genderCtrl.text,
+                                            dob: _dobCtrl.text,
+                                            email: _emailCtrl.text,
+                                            officeTel: _officeTelCtrl.text,
+                                            roleId: role,
+                                            // username: _usernameCtrl.text,
+                                            img: _image,
+                                            imgUrl: url,
+                                            // password: _passwordCtrl.text,
+                                            positionId: position,
+                                            departmentId: depart,
+                                            // storeId: "1",
+                                            phoneNumber: _phoneNumberCtrl.text,
+                                            address: _addressCtrl.text));
+                                      }
+                                    })
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
             ));
       }),
     );

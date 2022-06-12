@@ -5,6 +5,7 @@ import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/repository/employee_repository.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 
@@ -12,11 +13,25 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   EmployeeBloc() : super(FetchingEmployee());
   EmployeeRepository _departmentRepository = EmployeeRepository();
   List<EmployeeModel> emploList = [];
+  List<RoleModel> roleList = [];
   int rowperpage = 12;
   String? image;
   int page = 1;
   @override
   Stream<EmployeeState> mapEventToState(EmployeeEvent event) async* {
+    if (event is FetchRoleStarted) {
+      yield FetchingRole();
+      try {
+        if (roleList.length != 0) {
+          roleList.clear();
+        }
+        roleList = await _departmentRepository.getRole();
+        yield FetchedRole();
+      } catch (e) {
+        log(e.toString());
+        yield ErrorFetchingRole(error: e.toString());
+      }
+    }
     if (event is FetchEmloyeeStarted) {
       yield FetchingEmployee();
       try {
@@ -101,6 +116,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
           print(image);
         }
         await _departmentRepository.addEmployee(
+            roleId: event.roleId,
             name: event.name,
             gender: event.gender,
             dob: event.dob,
@@ -140,6 +156,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
           image = await uploadImage(image: event.img!);
         }
         await _departmentRepository.editEmployee(
+            roleId: event.roleId,
             id: event.id,
             name: event.name,
             gender: event.gender,

@@ -1,4 +1,5 @@
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/role_model.dart';
 
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
 
@@ -24,6 +25,7 @@ class EmployeeModel {
 
   final PositionModel? positionModel;
   final DepartmentModel? departmentModel;
+  final RoleModel? roleModel;
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) {
     return EmployeeModel(
@@ -44,6 +46,7 @@ class EmployeeModel {
       positionId: json["position_id"].toString(),
       checkinStatus: json["checkin_status"],
       checkinId: json["checkin_id"].toString(),
+      roleModel: json["role"] == null ? null : RoleModel.fromJson(json["role"]),
       positionModel: json["position"] == null
           ? null
           : PositionModel.fromJson(json["position"]),
@@ -71,5 +74,6 @@ class EmployeeModel {
       required this.positionModel,
       required this.departmentModel,
       required this.checkinStatus,
+      required this.roleModel,
       required this.checkinId});
 }

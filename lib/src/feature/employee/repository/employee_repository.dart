@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
@@ -19,6 +20,26 @@ class EmployeeRepository {
         List<EmployeeModel> leave = [];
         response.data["data"].forEach((data) {
           leave.add(EmployeeModel.fromJson(data));
+        });
+        return leave;
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<RoleModel>> getRole() async {
+    try {
+      String url = mainUrl + "roles";
+
+      Response response = await apiProvider.get(url, null, null);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.data);
+        List<RoleModel> leave = [];
+        response.data["data"].forEach((data) {
+          leave.add(RoleModel.fromJson(data));
         });
         return leave;
       }
@@ -59,7 +80,7 @@ class EmployeeRepository {
     required String password,
     required String positionId,
     required String departmentId,
-    // required String storeId,
+    required String roleId,
     required String phoneNumber,
     required String address,
   }) async {
@@ -76,7 +97,7 @@ class EmployeeRepository {
         "profile_url": img,
         "position_id": positionId,
         "department_id": departmentId,
-        // "store_id": storeId,
+        "role_id": roleId,
         "phone": phoneNumber,
         "address": address,
       };
@@ -106,6 +127,7 @@ class EmployeeRepository {
     required String departmentId,
     required String phoneNumber,
     required String address,
+    required String roleId,
   }) async {
     try {
       String url = mainUrl + "employees/edit/$id";
@@ -120,6 +142,7 @@ class EmployeeRepository {
         "department_id": departmentId,
         "employee_phone": phoneNumber,
         "address": address,
+        "role_id": roleId,
       };
       Response response = await apiProvider.put(url, body);
 

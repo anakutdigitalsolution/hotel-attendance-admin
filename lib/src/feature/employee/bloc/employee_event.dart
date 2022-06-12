@@ -10,6 +10,10 @@ class EmployeeEvent extends Equatable {
 
 class FetchEmloyeeStarted extends EmployeeEvent {}
 
+class FetchRoleStarted extends EmployeeEvent{
+
+}
+
 class InitializeEmployeeStarted extends EmployeeEvent {}
 
 class RefreshEmployeeStarted extends EmployeeEvent {}
@@ -28,7 +32,7 @@ class AddEmployeeStarted extends EmployeeEvent {
   final String password;
   final String positionId;
   final String departmentId;
-  // final String storeId;
+  final String roleId;
   final String phoneNumber;
   final String address;
   AddEmployeeStarted(
@@ -42,7 +46,7 @@ class AddEmployeeStarted extends EmployeeEvent {
       required this.password,
       required this.positionId,
       required this.departmentId,
-      // required this.storeId,
+      required this.roleId,
       required this.phoneNumber,
       required this.address});
 }
@@ -57,7 +61,7 @@ class UpdateEmployeeStarted extends EmployeeEvent {
   final File? img;
   final String positionId;
   final String departmentId;
-  // final String storeId;
+  final String roleId;
   final String phoneNumber;
   final String address;
   final String imgUrl;
@@ -73,7 +77,7 @@ class UpdateEmployeeStarted extends EmployeeEvent {
       required this.phoneNumber,
       required this.positionId,
       required this.departmentId,
-      // required this.storeId,
+      required this.roleId,
       required this.address});
 }
 
