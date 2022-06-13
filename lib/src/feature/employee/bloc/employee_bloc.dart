@@ -150,6 +150,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
     if (event is UpdateEmployeeStarted) {
       yield AddingEmployee();
       try {
+        // if don't file image
         if (event.img == null) {
           image = event.imgUrl;
         } else {
