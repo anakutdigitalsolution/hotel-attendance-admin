@@ -44,7 +44,7 @@ class _AddScheduleState extends State<AddSchedule> {
             }
             if (state is ErorrAddingSchedule) {
               EasyLoading.dismiss();
-              EasyLoading.showError(state.error.toString());
+              errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedSchedule) {
               EasyLoading.dismiss();
