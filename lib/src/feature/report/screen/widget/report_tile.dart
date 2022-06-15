@@ -31,7 +31,7 @@ class ReportTile extends StatelessWidget {
               Container(
                 decoration: new BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Colors.grey[200],
+                  color: Colors.green[200],
                 ),
                 padding: EdgeInsets.all(15),
                 child: Column(
@@ -179,11 +179,11 @@ class ReportTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     gradient: new LinearGradient(
                       colors: [
-                        HexColor('#afaaff'),
+                        Colors.redAccent[200]!,
                         // Colors.purple[300],
-                        HexColor('#afaaff'),
-                        HexColor('#afaaff'),
-                        HexColor('#f7ccff'),
+                        Colors.redAccent[200]!,
+                        Colors.redAccent[200]!,
+                        Colors.redAccent[200]!,
                         // Colors.pink[50],
                         // Colors.pink[100],
                         // Colors.pink[200],

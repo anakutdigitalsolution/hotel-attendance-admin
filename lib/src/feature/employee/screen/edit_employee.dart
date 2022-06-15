@@ -55,6 +55,7 @@ class _EditEmployeeState extends State<EditEmployee> {
   DateTime? date;
   DateTime dateNow = DateTime.now();
   String? dateToday;
+   List<String> gender = ["Female", "Male","Other"];
   @override
   void initState() {
     _nameCtrl.text = widget.employeeModel.name;

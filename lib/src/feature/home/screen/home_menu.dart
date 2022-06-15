@@ -26,9 +26,11 @@ Widget homeMenuTile(
               Container(
                   width: 60,
                   height: 60,
-                  child: Image.asset(
-                    image!,
-                    fit: BoxFit.contain,
+                  child: ImageIcon(
+                    AssetImage(
+                      image!,
+                    ),
+                    color: Colors.blue,
                   )),
               // SizedBox(
               //   height: 10,
