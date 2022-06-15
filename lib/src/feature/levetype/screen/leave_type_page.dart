@@ -32,8 +32,8 @@ class _LeaveTypePageState extends State<LeaveTypePage> {
           margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
       floatingActionButton: Container(
         child: FloatingActionButton(
-            backgroundColor: Colors.lightBlueAccent,
-            child: Icon(Icons.add), 
+            backgroundColor: Colors.blue,
+            child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
               Navigator.pushNamed(context, addLeavetype);
@@ -188,7 +188,7 @@ class _BodyState extends State<Body> {
                               children: [
                                 CupertinoButton(
                                     padding: EdgeInsets.all(1.0),
-                                    color: Colors.green,
+                                    color: Colors.blue,
                                     child: Row(
                                       children: [
                                         Icon(Icons.edit),
@@ -234,7 +234,7 @@ class _BodyState extends State<Body> {
                                                 ),
                                                 FlatButton(
                                                   onPressed: () {
-                                                     Navigator.pop(context);
+                                                    Navigator.pop(context);
                                                     print(
                                                         "id ${leaveTypeBloc.leavetype[index].id}");
                                                     leaveTypeBloc.add(

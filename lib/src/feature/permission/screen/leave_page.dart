@@ -26,7 +26,7 @@ class _LeavePageState extends State<LeavePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Leave Page"),
+      appBar: standardAppBar(context, "Permission Page"),
       body: Container(
         margin: EdgeInsets.only(top: 10, bottom: 10),
         child: WantedBody(),
@@ -344,7 +344,7 @@ class _WantedBodyState extends State<WantedBody> {
                                                           padding:
                                                               EdgeInsets.all(
                                                                   1.0),
-                                                          color: Colors.green,
+                                                          color: Colors.blue,
                                                           child: Row(
                                                             children: [
                                                               Icon(Icons.edit),

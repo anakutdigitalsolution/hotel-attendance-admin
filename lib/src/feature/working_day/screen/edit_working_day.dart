@@ -5,6 +5,7 @@ import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/working_day_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/screen/working_day.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
@@ -51,7 +52,7 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
             }
             if (state is ErrorAddingWorkingDay) {
               EasyLoading.dismiss();
-              EasyLoading.showError(state.error.toString());
+              errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedWorkingDay) {
               EasyLoading.dismiss();
@@ -76,7 +77,7 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -99,7 +100,7 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -122,7 +123,7 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -140,12 +141,13 @@ class _EditWorkingDayState extends State<EditWorkingDay> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _noteCtrl,
+                        maxLines: null,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,

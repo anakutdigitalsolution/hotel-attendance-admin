@@ -54,7 +54,7 @@ class _EditScheduleState extends State<EditSchedule> {
             }
             if (state is ErorrAddingSchedule) {
               EasyLoading.dismiss();
-              EasyLoading.showError(state.error.toString());
+              errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedSchedule) {
               EasyLoading.dismiss();
@@ -66,14 +66,14 @@ class _EditScheduleState extends State<EditSchedule> {
               bloc: employeeBloc,
               listener: (context, state) {
                 if (state is FetchingEmployee) {
-                  loadingDialogs(context);
+                  EasyLoading.show(status: 'loading...');
                 }
                 if (state is ErrorFetchingEmployee) {
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   errorSnackBar(text: state.error.toString(), context: context);
                 }
                 if (state is FetchedEmployee) {
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   customModal(context,
                       employeeBloc.emploList.map((e) => e.name).toList(),
                       (value) {
@@ -90,15 +90,15 @@ class _EditScheduleState extends State<EditSchedule> {
                 bloc: timetableBloc,
                 listener: (context, state) {
                   if (state is FetchingTimetable) {
-                    loadingDialogs(context);
+                    EasyLoading.show(status: 'loading...');
                   }
                   if (state is ErrorFetchingTimetable) {
-                    Navigator.pop(context);
+                    EasyLoading.dismiss();
                     errorSnackBar(
                         text: state.error.toString(), context: context);
                   }
                   if (state is FetchedTimetable) {
-                    Navigator.pop(context);
+                    EasyLoading.dismiss();
                     customModal(
                         context,
                         timetableBloc.timetableList
@@ -143,7 +143,7 @@ class _EditScheduleState extends State<EditSchedule> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "Select Employee"),
+                                  labelText: "Choose Employee"),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'Employee is required';
@@ -171,7 +171,7 @@ class _EditScheduleState extends State<EditSchedule> {
                                     ),
                                   ),
                                   isDense: true,
-                                  labelText: "Select Timetable"),
+                                  labelText: "Choose Timetable"),
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return 'Timetable is required';
@@ -216,11 +216,10 @@ class _EditScheduleState extends State<EditSchedule> {
                                       print("time not change");
                                     }
 
-                                    scheduleBloc.add(
-                                        UpdateScheduleStarted(
-                                            id: widget.employeeTimetablModel.id,
-                                            employeeId: employee,
-                                            timetableId: time));
+                                    scheduleBloc.add(UpdateScheduleStarted(
+                                        id: widget.employeeTimetablModel.id,
+                                        employeeId: employee,
+                                        timetableId: time));
                                   }
                                 })
                           ],

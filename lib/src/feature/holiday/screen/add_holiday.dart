@@ -113,7 +113,7 @@ class _AddHolidayState extends State<AddHoliday> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -139,12 +139,12 @@ class _AddHolidayState extends State<AddHoliday> {
                         decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.date_range_outlined,
-                              color: Colors.lightBlue,
+                              color: Colors.blue,
                             ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -170,12 +170,12 @@ class _AddHolidayState extends State<AddHoliday> {
                         decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.date_range_outlined,
-                              color: Colors.lightBlue,
+                              color: Colors.blue,
                             ),
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -193,6 +193,7 @@ class _AddHolidayState extends State<AddHoliday> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _noteCtrl,
+                        maxLines: null,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),

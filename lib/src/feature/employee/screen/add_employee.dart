@@ -135,15 +135,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                   bloc: positionBlc,
                   listener: (context, state) {
                     if (state is FetchingPosition) {
-                      loadingDialogs(context);
+                      EasyLoading.show(status: "loading...");
                     }
                     if (state is ErrorFetchingPosition) {
-                      Navigator.pop(context);
+                      EasyLoading.dismiss();
                       errorSnackBar(
                           text: state.error.toString(), context: context);
                     }
                     if (state is FetchedPosition) {
-                      Navigator.pop(context);
+                      EasyLoading.dismiss();
                       customModal(
                           context,
                           positionBlc.positionList
@@ -162,15 +162,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                     bloc: employeeBloc,
                     listener: (context, state) {
                       if (state is FetchingRole) {
-                        loadingDialogs(context);
+                        EasyLoading.show(status: "loading...");
                       }
                       if (state is ErrorFetchingRole) {
-                        Navigator.pop(context);
+                        EasyLoading.dismiss();
                         errorSnackBar(
                             text: state.error.toString(), context: context);
                       }
                       if (state is FetchedRole) {
-                        Navigator.pop(context);
+                        EasyLoading.dismiss();
                         customModal(context,
                             employeeBloc.roleList.map((e) => e.name).toList(),
                             (value) {

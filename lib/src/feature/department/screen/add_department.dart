@@ -49,9 +49,8 @@ class _AddDepartmentState extends State<AddDepartment> {
               }
               if (state is ErrorAddingDepartment) {
                 EasyLoading.dismiss();
-                EasyLoading.showError(state.error.toString());
-                // Navigator.pop(context);
-                // errorSnackBar(text: state.error.toString(), context: context);
+
+                errorSnackBar(text: state.error.toString(), context: context);
               }
               if (state is AddedDepartment) {
                 EasyLoading.dismiss();
@@ -63,14 +62,14 @@ class _AddDepartmentState extends State<AddDepartment> {
               bloc: _workingDayBloc,
               listener: (context, state) {
                 if (state is FetchingWorkingDay) {
-                  loadingDialogs(context);
+                  EasyLoading.show(status: "loading....");
                 }
                 if (state is ErrorFetchingWorkingDay) {
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   errorSnackBar(text: state.toString(), context: context);
                 }
                 if (state is FetchedWorkingDay) {
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   customModal(
                       context,
                       _workingDayBloc.departmentList
@@ -85,14 +84,14 @@ class _AddDepartmentState extends State<AddDepartment> {
                 bloc: _locationBloc,
                 listener: (context, state) {
                   if (state is FetchingLocation) {
-                    loadingDialogs(context);
+                    EasyLoading.show(status: "loading....");
                   }
                   if (state is ErrorFetchingLocation) {
-                    Navigator.pop(context);
+                    EasyLoading.dismiss();
                     errorSnackBar(text: state.toString(), context: context);
                   }
                   if (state is FetchedLocation) {
-                    Navigator.pop(context);
+                    EasyLoading.dismiss();
                     customModal(
                         context,
                         _locationBloc.departmentList
@@ -119,7 +118,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
+                                      Radius.circular(5.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -148,7 +147,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
+                                      Radius.circular(5.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -176,7 +175,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
+                                      Radius.circular(5.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,
@@ -186,7 +185,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   labelText: "Choose location  "),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'loation is required.';
+                                  return 'location is required.';
                                 }
                                 return null;
                               },
@@ -195,11 +194,12 @@ class _AddDepartmentState extends State<AddDepartment> {
                             TextFormField(
                               controller: _noteCtrl,
                               keyboardType: TextInputType.text,
+                              maxLines: null,
                               decoration: InputDecoration(
                                   contentPadding: EdgeInsets.all(15),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0),
+                                      Radius.circular(5.0),
                                     ),
                                     borderSide: new BorderSide(
                                       width: 1,

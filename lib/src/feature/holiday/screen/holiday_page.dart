@@ -25,7 +25,7 @@ class HolidayPage extends StatelessWidget {
       ),
       floatingActionButton: Container(
         child: FloatingActionButton(
-            backgroundColor: Colors.lightBlueAccent,
+            backgroundColor: Colors.blue,
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
@@ -232,7 +232,7 @@ class _BodyState extends State<Body> {
                                   children: [
                                     CupertinoButton(
                                         padding: EdgeInsets.all(1.0),
-                                        color: Colors.green,
+                                        color: Colors.blue,
                                         child: Row(
                                           children: [
                                             Icon(Icons.edit),

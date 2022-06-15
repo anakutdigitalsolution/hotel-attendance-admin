@@ -24,7 +24,7 @@ class _NotificationPageState extends State<NotificationPage> {
       appBar: standardAppBar(context, "Notification"),
       floatingActionButton: Container(
         child: FloatingActionButton(
-            backgroundColor: Colors.lightBlueAccent,
+            backgroundColor: Colors.blue,
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {

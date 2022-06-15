@@ -79,7 +79,7 @@ class _EditTimetableState extends State<EditTimetable> {
             }
             if (state is ErrorAddingTimetable) {
               EasyLoading.dismiss();
-              EasyLoading.showError(state.error.toString());
+              errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedTimetable) {
               EasyLoading.dismiss();
@@ -104,7 +104,7 @@ class _EditTimetableState extends State<EditTimetable> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -134,7 +134,7 @@ class _EditTimetableState extends State<EditTimetable> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -165,7 +165,7 @@ class _EditTimetableState extends State<EditTimetable> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -188,7 +188,7 @@ class _EditTimetableState extends State<EditTimetable> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -211,7 +211,7 @@ class _EditTimetableState extends State<EditTimetable> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,

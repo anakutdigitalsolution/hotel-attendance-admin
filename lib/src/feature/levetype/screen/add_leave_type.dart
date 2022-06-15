@@ -60,7 +60,7 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -83,17 +83,17 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
                               ),
                             ),
                             isDense: true,
-                            labelText: "Scope "),
+                            labelText: "Duration "),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Scope is required';
+                            return 'Duration is required';
                           }
                           return null;
                         },
@@ -101,12 +101,13 @@ class _AddLeaveTypeState extends State<AddLeaveType> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _noteCtrl,
+                        maxLines: null,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,

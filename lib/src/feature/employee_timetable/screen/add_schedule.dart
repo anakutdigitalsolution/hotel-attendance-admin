@@ -56,17 +56,17 @@ class _AddScheduleState extends State<AddSchedule> {
               bloc: employeeBloc,
               listener: (context, stae) {
                 if (stae is FetchingEmployee) {
-                  loadingDialogs(context);
+                  EasyLoading.show(status: "loading....");
                   print("fetching data");
                 }
                 if (stae is ErrorFetchingEmployee) {
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   print("errir");
                   errorSnackBar(text: stae.error.toString(), context: context);
                 }
                 if (stae is FetchedEmployee) {
                   print("hi");
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   customModal(context,
                       employeeBloc.emploList.map((e) => e.name).toList(),
                       (value) {
@@ -83,15 +83,15 @@ class _AddScheduleState extends State<AddSchedule> {
                 bloc: timetableBloc,
                 listener: (context, state) {
                   if (state is FetchingTimetable) {
-                    loadingDialogs(context);
+                    EasyLoading.show(status: "loading....");
                   }
                   if (state is ErrorFetchingTimetable) {
-                    Navigator.pop(context);
+                    EasyLoading.dismiss();
                     errorSnackBar(
                         text: state.error.toString(), context: context);
                   }
                   if (state is FetchedTimetable) {
-                    Navigator.pop(context);
+                    EasyLoading.dismiss();
                     customModal(
                         context,
                         timetableBloc.timetableList
@@ -188,10 +188,9 @@ class _AddScheduleState extends State<AddSchedule> {
                                         .firstWhere((e) =>
                                             "${e.timetableName} from ${e.onDutyTtime} to ${e.offDutyTime}" ==
                                             _timeCtrl.text);
-                                    scheduleBloc.add(
-                                        AddScheduleStarted(
-                                            employeeId: employeeId.id,
-                                            timetableId: timetableId.id));
+                                    scheduleBloc.add(AddScheduleStarted(
+                                        employeeId: employeeId.id,
+                                        timetableId: timetableId.id));
                                   }
                                 })
                           ],

@@ -75,7 +75,7 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -98,7 +98,7 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -117,11 +117,12 @@ class _EditLeaveTypeState extends State<EditLeaveType> {
                       TextFormField(
                         controller: _noteCtrl,
                         keyboardType: TextInputType.text,
+                        maxLines: null,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
