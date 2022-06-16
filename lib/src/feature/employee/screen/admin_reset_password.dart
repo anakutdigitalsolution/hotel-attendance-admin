@@ -136,7 +136,7 @@ class _BodyState extends State<Body> {
                     contentPadding: EdgeInsets.all(15),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
-                        Radius.circular(15.0),
+                        Radius.circular(5.0),
                       ),
                       borderSide: new BorderSide(
                         width: 1,
@@ -162,7 +162,7 @@ class _BodyState extends State<Body> {
                   contentPadding: EdgeInsets.all(15),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(15.0),
+                      Radius.circular(5.0),
                     ),
                     borderSide: new BorderSide(
                       width: 1,
@@ -191,7 +191,7 @@ class _BodyState extends State<Body> {
                     contentPadding: EdgeInsets.all(15),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
-                        Radius.circular(15.0),
+                        Radius.circular(5.0),
                       ),
                       borderSide: new BorderSide(
                         width: 1,

@@ -32,7 +32,7 @@ class _AddNotificationState extends State<AddNotification> {
               EasyLoading.show(status: "loading....");
             }
             if (state is ErrorAddingNotification) {
-              Navigator.pop(context);
+              EasyLoading.dismiss();
               errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedNotification) {
@@ -57,7 +57,7 @@ class _AddNotificationState extends State<AddNotification> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -80,7 +80,7 @@ class _AddNotificationState extends State<AddNotification> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -96,14 +96,14 @@ class _AddNotificationState extends State<AddNotification> {
                         },
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height / 5),
-                      standardBtn(title: "Submit",onTap: (){
-                         if (_formKey!.currentState!.validate()) {
-                                notificationBloc.add(AddNotificationStarted(
-                                    title: _titleCtrl.text,
-                                    des: _desCtrl.text));
-                              }
-                      })
-                      
+                      standardBtn(
+                          title: "Submit",
+                          onTap: () {
+                            if (_formKey!.currentState!.validate()) {
+                              notificationBloc.add(AddNotificationStarted(
+                                  title: _titleCtrl.text, des: _desCtrl.text));
+                            }
+                          })
                     ],
                   ),
                 ),

@@ -55,6 +55,7 @@ class _EditEmployeeState extends State<EditEmployee> {
   DateTime? date;
   DateTime dateNow = DateTime.now();
   String? dateToday;
+  List<String> gender = ["Female", "Male", "Other"];
   @override
   void initState() {
     _nameCtrl.text = widget.employeeModel.name;
@@ -139,14 +140,14 @@ class _EditEmployeeState extends State<EditEmployee> {
               bloc: departmentBlc,
               listener: (context, state) {
                 if (state is FetchingDepartment) {
-                  loadingDialogs(context);
+                  EasyLoading.show(status: "loading...");
                 }
                 if (state is ErrorFetchingDepartment) {
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   errorSnackBar(text: state.error.toString(), context: context);
                 }
                 if (state is FetchedDepartment) {
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   customModal(context,
                       departmentBlc.departmentList.map((e) => e.name!).toList(),
                       (value) {
@@ -163,15 +164,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                   bloc: positionBlc,
                   listener: (context, state) {
                     if (state is FetchingPosition) {
-                      loadingDialogs(context);
+                      EasyLoading.show(status: "loading...");
                     }
                     if (state is ErrorAddingPosition) {
-                      Navigator.pop(context);
+                      EasyLoading.dismiss();
                       errorSnackBar(
                           text: state.error.toString(), context: context);
                     }
                     if (state is FetchedPosition) {
-                      Navigator.pop(context);
+                      EasyLoading.dismiss();
                       customModal(
                           context,
                           positionBlc.positionList
@@ -190,15 +191,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                     bloc: employeeBloc,
                     listener: (context, state) {
                       if (state is FetchingRole) {
-                        loadingDialogs(context);
+                        EasyLoading.show(status: "loading...");
                       }
                       if (state is ErrorFetchingRole) {
-                        Navigator.pop(context);
+                        EasyLoading.dismiss();
                         errorSnackBar(
                             text: state.error.toString(), context: context);
                       }
                       if (state is FetchedRole) {
-                        Navigator.pop(context);
+                        EasyLoading.dismiss();
                         customModal(context,
                             employeeBloc.roleList.map((e) => e.name).toList(),
                             (value) {
@@ -223,17 +224,17 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
                                         ),
                                       ),
                                       isDense: true,
-                                      labelText: "Employee name"),
+                                      labelText: "Enter full name"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Employee name';
+                                      return 'Full name is required';
                                     }
                                     return null;
                                   },
@@ -247,16 +248,18 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
                                         ),
                                       ),
                                       isDense: true,
-                                      labelText: "Select gender"),
+                                      labelText: "Choose gender"),
                                   onTap: () {
-                                    _showDialog(context);
+                                    customModal(context, gender, (value) {
+                                      _genderCtrl.text = value;
+                                    });
                                   },
                                   readOnly: true,
                                   validator: (value) {
@@ -274,14 +277,14 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
                                         ),
                                       ),
                                       isDense: true,
-                                      labelText: "Email"),
+                                      labelText: "Enter email address"),
                                 ),
                                 SizedBox(height: 15),
                                 TextFormField(
@@ -294,7 +297,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -312,7 +315,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -335,7 +338,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -398,7 +401,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -427,7 +430,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -455,14 +458,14 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
                                         ),
                                       ),
                                       isDense: true,
-                                      labelText: "select role"),
+                                      labelText: "Select role"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'role is required';
@@ -483,17 +486,17 @@ class _EditEmployeeState extends State<EditEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
                                         ),
                                       ),
                                       isDense: true,
-                                      labelText: "select position name"),
+                                      labelText: "select position"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'password is required';
+                                      return 'position is required';
                                     }
                                     return null;
                                   },
@@ -502,18 +505,19 @@ class _EditEmployeeState extends State<EditEmployee> {
                                 TextFormField(
                                   controller: _addressCtrl,
                                   keyboardType: TextInputType.text,
+                                  maxLines: null,
                                   decoration: InputDecoration(
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
                                         ),
                                       ),
                                       isDense: true,
-                                      labelText: "Address"),
+                                      labelText: "Enter address"),
                                   // validator: (value) {
                                   //   if (value!.isEmpty) {
                                   //     return 'address is required';

@@ -189,14 +189,12 @@ class OvertimeBloc extends Bloc<OvertimeEvent, OvertimeState> {
         yield ErrorFetchingOvertime(error: e.toString());
       }
     }
-    // update status overtime accpet or not for user 
-    if(event is UpdateOvertimeStatusStarted){
+    // update status overtime accpet or not for user
+    if (event is UpdateOvertimeStatusStarted) {
       yield AddingOvertime();
       try {
         await _overtimerRepository.editStatusOvertime(
-          id: event.id,
-           status: event.status,
-           type: event.paytype);
+            id: event.id, status: event.status, type: event.paytype);
         yield AddedOvertime();
         yield FetchingOvertime();
         overtimeList.clear();
@@ -236,11 +234,12 @@ class OvertimeBloc extends Bloc<OvertimeEvent, OvertimeState> {
         // this week is default
         dateRange = "This week";
         setEndDateAndStartDate();
-        List<OvertimeModel> leaveList = await _overtimerRepository.getAllOvertime(
-            page: page,
-            rowperpage: rowperpage,
-            startDate: startDate!,
-            endDate: endDate!);
+        List<OvertimeModel> leaveList =
+            await _overtimerRepository.getAllOvertime(
+                page: page,
+                rowperpage: rowperpage,
+                startDate: startDate!,
+                endDate: endDate!);
         chieflList.addAll(leaveList);
         print(leaveList.length);
         page++;
@@ -250,11 +249,11 @@ class OvertimeBloc extends Bloc<OvertimeEvent, OvertimeState> {
         yield ErrorAddingOvertime(error: e.toString());
       }
     }
-    if(event is UpdateOvertimeStarted){
+    if (event is UpdateOvertimeStarted) {
       yield AddingOvertime();
       try {
         await _overtimerRepository.editOvertime(
-          id: event.id,
+            id: event.id,
             userId: event.userId,
             reason: event.reason,
             duration: event.duration,
@@ -268,11 +267,12 @@ class OvertimeBloc extends Bloc<OvertimeEvent, OvertimeState> {
         // this week is default
         dateRange = "This week";
         setEndDateAndStartDate();
-        List<OvertimeModel> leaveList = await _overtimerRepository.getAllOvertime(
-            page: page,
-            rowperpage: rowperpage,
-            startDate: startDate!,
-            endDate: endDate!);
+        List<OvertimeModel> leaveList =
+            await _overtimerRepository.getAllOvertime(
+                page: page,
+                rowperpage: rowperpage,
+                startDate: startDate!,
+                endDate: endDate!);
         chieflList.addAll(leaveList);
         print(leaveList.length);
         page++;
@@ -282,12 +282,12 @@ class OvertimeBloc extends Bloc<OvertimeEvent, OvertimeState> {
         yield ErrorAddingOvertime(error: e.toString());
       }
     }
-    if(event is DeleteOvertimeStarted){
+    if (event is DeleteOvertimeStarted) {
       yield AddingOvertime();
       try {
         await _overtimerRepository.deleteOvertime(
           id: event.id,
-            );
+        );
         yield AddedOvertime();
         yield FetchingOvertime();
         chieflList.clear();
@@ -295,11 +295,12 @@ class OvertimeBloc extends Bloc<OvertimeEvent, OvertimeState> {
         // this week is default
         dateRange = "This week";
         setEndDateAndStartDate();
-        List<OvertimeModel> leaveList = await _overtimerRepository.getAllOvertime(
-            page: page,
-            rowperpage: rowperpage,
-            startDate: startDate!,
-            endDate: endDate!);
+        List<OvertimeModel> leaveList =
+            await _overtimerRepository.getAllOvertime(
+                page: page,
+                rowperpage: rowperpage,
+                startDate: startDate!,
+                endDate: endDate!);
         chieflList.addAll(leaveList);
         print(leaveList.length);
         page++;

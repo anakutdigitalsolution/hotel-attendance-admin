@@ -134,7 +134,7 @@ class _OperationPageState extends State<OperationPage> {
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 4 / 2.5,
+                    childAspectRatio: 4 / 2,
                     crossAxisCount: MediaQuery.of(context).orientation ==
                             Orientation.portrait
                         ? 2

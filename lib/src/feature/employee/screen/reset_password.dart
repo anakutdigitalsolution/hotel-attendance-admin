@@ -51,6 +51,10 @@ class _BodyState extends State<Body> {
         if (state is Changed) {
           EasyLoading.dismiss();
           EasyLoading.showSuccess("Success");
+          _userCtrl.clear();
+          // _oldCtrl.clear();
+          _newCtrl.clear();
+          _confirmCtrl.clear();
           // Navigator.pop(context);
         }
       },
@@ -58,17 +62,17 @@ class _BodyState extends State<Body> {
         bloc: employeeBloc,
         listener: (context, state) {
           if (state is FetchingEmployee) {
-            loadingDialogs(context);
+            EasyLoading.show(status: 'loading...');
             print("fetching data");
           }
           if (state is ErrorFetchingEmployee) {
-            Navigator.pop(context);
+            EasyLoading.dismiss();
             print("errir");
             errorSnackBar(text: state.error.toString(), context: context);
           }
           if (state is FetchedEmployee) {
             print("hi");
-            Navigator.pop(context);
+            EasyLoading.dismiss();
             customModal(
                 context, employeeBloc.emploList.map((e) => e.name).toList(),
                 (value) {
@@ -141,7 +145,7 @@ class _BodyState extends State<Body> {
                       contentPadding: EdgeInsets.all(15),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
-                          Radius.circular(15.0),
+                          Radius.circular(5.0),
                         ),
                         borderSide: new BorderSide(
                           width: 1,
@@ -190,7 +194,7 @@ class _BodyState extends State<Body> {
                     contentPadding: EdgeInsets.all(15),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(
-                        Radius.circular(15.0),
+                        Radius.circular(5.0),
                       ),
                       borderSide: new BorderSide(
                         width: 1,
@@ -219,7 +223,7 @@ class _BodyState extends State<Body> {
                       contentPadding: EdgeInsets.all(15),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(
-                          Radius.circular(15.0),
+                          Radius.circular(5.0),
                         ),
                         borderSide: new BorderSide(
                           width: 1,
@@ -263,10 +267,6 @@ class _BodyState extends State<Body> {
                               id: employeeId.id,
                               // oldpass: _oldCtrl.text,
                               newpass: _newCtrl.text));
-                          _userCtrl.clear();
-                          // _oldCtrl.clear();
-                          _newCtrl.clear();
-                          _confirmCtrl.clear();
                         }
                       },
                       child: Text(

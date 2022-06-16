@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/bloc/location_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/screens/location_page.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
@@ -37,7 +38,7 @@ class _AddLocationState extends State<AddLocation> {
             }
             if (state is ErrorAddingLocation) {
               EasyLoading.dismiss();
-              EasyLoading.showError(state.error.toString());
+              errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedLocation) {
               EasyLoading.dismiss();
@@ -62,7 +63,7 @@ class _AddLocationState extends State<AddLocation> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -85,17 +86,17 @@ class _AddLocationState extends State<AddLocation> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
                               ),
                             ),
                             isDense: true,
-                            labelText: "Latitute "),
+                            labelText: "Latitude "),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Latitute  is required';
+                            return 'Latitude  is required';
                           }
                           return null;
                         },
@@ -108,17 +109,17 @@ class _AddLocationState extends State<AddLocation> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
                               ),
                             ),
                             isDense: true,
-                            labelText: "Longtitute is required"),
+                            labelText: "Longtitude is required"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Longtitute is required';
+                            return 'Longtitude is required';
                           }
                           return null;
                         },
@@ -126,12 +127,13 @@ class _AddLocationState extends State<AddLocation> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _desCtrl,
+                        maxLines: null,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -150,11 +152,12 @@ class _AddLocationState extends State<AddLocation> {
                       TextFormField(
                         controller: _noteCtrl,
                         keyboardType: TextInputType.text,
+                        maxLines: null,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,

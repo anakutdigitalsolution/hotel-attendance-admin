@@ -23,7 +23,7 @@ class LocationPage extends StatelessWidget {
           margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
       floatingActionButton: Container(
         child: FloatingActionButton(
-            backgroundColor: Colors.lightBlue,
+            backgroundColor: Colors.blue,
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
@@ -200,7 +200,7 @@ class _BodyState extends State<Body> {
                               children: [
                                 CupertinoButton(
                                     padding: EdgeInsets.all(1.0),
-                                    color: Colors.green,
+                                    color: Colors.blue,
                                     child: Row(
                                       children: [
                                         Icon(Icons.edit),

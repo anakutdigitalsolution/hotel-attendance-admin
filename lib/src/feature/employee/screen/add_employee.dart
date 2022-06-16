@@ -49,6 +49,7 @@ class _AddEmployeeState extends State<AddEmployee> {
   DateTime? date;
   DateTime dateNow = DateTime.now();
   String? dateToday;
+  List<String> gender = ["Female", "Male", "Other"];
   @override
   void initState() {
     DateTime now = DateTime.now();
@@ -97,7 +98,7 @@ class _AddEmployeeState extends State<AddEmployee> {
               }
               if (state is ErorrAddingEmployee) {
                 EasyLoading.dismiss();
-                EasyLoading.showError(state.error.toString());
+                errorSnackBar(text: state.error.toString(), context: context);
               }
               if (state is AddedEmployee) {
                 EasyLoading.dismiss();
@@ -110,14 +111,14 @@ class _AddEmployeeState extends State<AddEmployee> {
               bloc: departmentBlc,
               listener: (context, state) {
                 if (state is FetchingDepartment) {
-                  loadingDialogs(context);
+                  EasyLoading.show(status: "loading...");
                 }
                 if (state is ErrorFetchingDepartment) {
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   errorSnackBar(text: state.error.toString(), context: context);
                 }
                 if (state is FetchedDepartment) {
-                  Navigator.pop(context);
+                  EasyLoading.dismiss();
                   customModal(context,
                       departmentBlc.departmentList.map((e) => e.name!).toList(),
                       (value) {
@@ -134,15 +135,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                   bloc: positionBlc,
                   listener: (context, state) {
                     if (state is FetchingPosition) {
-                      loadingDialogs(context);
+                      EasyLoading.show(status: "loading...");
                     }
                     if (state is ErrorFetchingPosition) {
-                      Navigator.pop(context);
+                      EasyLoading.dismiss();
                       errorSnackBar(
                           text: state.error.toString(), context: context);
                     }
                     if (state is FetchedPosition) {
-                      Navigator.pop(context);
+                      EasyLoading.dismiss();
                       customModal(
                           context,
                           positionBlc.positionList
@@ -161,15 +162,15 @@ class _AddEmployeeState extends State<AddEmployee> {
                     bloc: employeeBloc,
                     listener: (context, state) {
                       if (state is FetchingRole) {
-                        loadingDialogs(context);
+                        EasyLoading.show(status: "loading...");
                       }
                       if (state is ErrorFetchingRole) {
-                        Navigator.pop(context);
+                        EasyLoading.dismiss();
                         errorSnackBar(
                             text: state.error.toString(), context: context);
                       }
                       if (state is FetchedRole) {
-                        Navigator.pop(context);
+                        EasyLoading.dismiss();
                         customModal(context,
                             employeeBloc.roleList.map((e) => e.name).toList(),
                             (value) {
@@ -187,27 +188,34 @@ class _AddEmployeeState extends State<AddEmployee> {
                             child: Column(
                               children: [
                                 SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _nameCtrl,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                Container(
+                                  child: TextFormField(
+                                    controller: _nameCtrl,
+                                    keyboardType: TextInputType.text,
+                                    decoration: InputDecoration(
+                                        // border: InputBorder.none,
+                                        // focusedBorder: InputBorder.none,
+                                        // enabledBorder: InputBorder.none,
+                                        // errorBorder: InputBorder.none,
+                                        // disabledBorder: InputBorder.none,
+                                        // contentPadding: EdgeInsets.all(15),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(5.0),
+                                          ),
+                                          borderSide: new BorderSide(
+                                            width: 1,
+                                          ),
                                         ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
-                                      ),
-                                      isDense: true,
-                                      labelText: "Employee name"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Employee name';
-                                    }
-                                    return null;
-                                  },
+                                        isDense: true,
+                                        labelText: "Enter full name"),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Full name is required';
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ),
                                 SizedBox(height: 15),
                                 TextFormField(
@@ -218,16 +226,18 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
                                         ),
                                       ),
                                       isDense: true,
-                                      labelText: "Gender"),
+                                      labelText: "Choose gender"),
                                   onTap: () {
-                                    _showDialog(context);
+                                    customModal(context, gender, (value) {
+                                      _genderCtrl.text = value;
+                                    });
                                   },
                                   readOnly: true,
                                   validator: (value) {
@@ -248,7 +258,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -272,7 +282,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                         ),
                                       ),
                                       isDense: true,
-                                      labelText: "Email"),
+                                      labelText: "Enter email address"),
                                 ),
                                 SizedBox(height: 15),
                                 TextFormField(
@@ -282,7 +292,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -305,7 +315,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -328,7 +338,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -345,7 +355,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -374,7 +384,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -402,7 +412,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -430,7 +440,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -449,18 +459,19 @@ class _AddEmployeeState extends State<AddEmployee> {
                                 TextFormField(
                                   controller: _addressCtrl,
                                   keyboardType: TextInputType.text,
+                                  maxLines: null,
                                   decoration: InputDecoration(
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(15.0),
+                                          Radius.circular(5.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
                                         ),
                                       ),
                                       isDense: true,
-                                      labelText: "Address"),
+                                      labelText: "Enter address"),
                                   // validator: (value) {
                                   //   if (value!.isEmpty) {
                                   //     return 'address is required';

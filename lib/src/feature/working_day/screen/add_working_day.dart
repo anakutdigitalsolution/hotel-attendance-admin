@@ -37,7 +37,7 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
             }
             if (state is ErrorAddingWorkingDay) {
               EasyLoading.dismiss();
-              EasyLoading.showError(state.error.toString());
+              errorSnackBar(text: state.error.toString(), context: context);
             }
             if (state is AddedWorkingDay) {
               EasyLoading.dismiss();
@@ -62,7 +62,7 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -85,7 +85,7 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -108,7 +108,7 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,
@@ -127,11 +127,12 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                       TextFormField(
                         controller: _noteCtrl,
                         keyboardType: TextInputType.text,
+                        maxLines: null,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
+                                Radius.circular(5.0),
                               ),
                               borderSide: new BorderSide(
                                 width: 1,

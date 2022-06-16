@@ -2,6 +2,7 @@ import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/account/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/auth/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/home/screen/menu.dart';
+import 'package:hotle_attendnce_admin/src/feature/home/screen/widget/home_item.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/notification_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,48 +111,65 @@ class _HomePageState extends State<HomePage> {
     final List<Map> homeMenu = [
       {
         "name": "Attendance",
-        "iconColor": Colors.green,
-        "image": "assets/icon/clock.png",
+        "iconColor": Colors.blue,
+        "image": "assets/blackIcon/checking-attendance.png",
         "onPressed": () {
           Navigator.pushNamed(context, attendance);
         }
       },
       {
         "name": "Employee",
-        "iconColor": Colors.orange,
-        "image": "assets/icon/man.png",
+        "iconColor": Colors.blue,
+        "image": "assets/blackIcon/group.png",
         "onPressed": () {
           Navigator.pushNamed(context, employee);
         }
       },
       {
         "name": "Schedule",
-        "iconColor": Colors.orange,
-        "image": "assets/icon/attendance.png",
+        "iconColor": Colors.blue,
+        "image": "assets/blackIcon/clock1.png",
         "onPressed": () {
           Navigator.pushNamed(context, schedules);
         }
       },
       {
-        "name": "Travel/Leave",
-        "iconColor": Colors.orange,
-        "image": "assets/icon/logout.png",
+        "name": "Permission",
+        "iconColor": Colors.blue,
+        "image": "assets/blackIcon/file.png",
+        "onPressed": () {
+          Navigator.pushNamed(context, leave);
+        }
+      },
+
+      {
+        "name": "Overtime",
+        "iconColor": Colors.blue,
+        "image": "assets/blackIcon/overtime.png",
         "onPressed": () {
           Navigator.pushNamed(context, leave);
         }
       },
       {
+        "name": "Payslip",
+        "iconColor": Colors.blue,
+        "image": "assets/blackIcon/money.png",
+        "onPressed": () {
+          Navigator.pushNamed(context, report);
+        }
+      },
+      {
         "name": "Report",
-        "iconColor": Colors.green,
-        "image": "assets/icon/report.png",
+        "iconColor": Colors.blue,
+        "image": "assets/blackIcon/analytics.png",
         "onPressed": () {
           Navigator.pushNamed(context, report);
         }
       },
       {
         "name": "Operation",
-        "iconColor": Colors.green,
-        "image": "assets/icon/gear.png",
+        "iconColor": Colors.blue,
+        "image": "assets/icon/setting.png",
         "onPressed": () {
           // Navigator.push(context, MaterialPageRoute(builder: (context)=>SettingPage()));
           Navigator.pushNamed(context, operation);
@@ -204,18 +222,23 @@ class _HomePageState extends State<HomePage> {
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        childAspectRatio: 4 / 3,
+                        childAspectRatio: 4 / 2.5,
                         crossAxisCount: MediaQuery.of(context).orientation ==
                                 Orientation.portrait
                             ? 2
                             : 3,
                         crossAxisSpacing: 15,
                         mainAxisSpacing: 15),
-                    itemBuilder: (_, index) => homeMenuTile(
+                    itemBuilder: (_, index) => homeItem(
                         iconColor: homeMenu[index]["iconColor"],
                         name: homeMenu[index]["name"],
                         image: homeMenu[index]["image"],
                         onPressed: homeMenu[index]["onPressed"]),
+                    // itemBuilder: (_, index) => homeMenuTile(
+                    //     iconColor: homeMenu[index]["iconColor"],
+                    //     name: homeMenu[index]["name"],
+                    //     image: homeMenu[index]["image"],
+                    //     onPressed: homeMenu[index]["onPressed"]),
                     itemCount: homeMenu.length,
                   ),
                 );

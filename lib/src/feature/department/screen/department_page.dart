@@ -31,7 +31,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
           child: DepartmentBody()),
       floatingActionButton: Container(
         child: FloatingActionButton(
-            backgroundColor: Colors.lightBlueAccent,
+            backgroundColor: Colors.blue,
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
@@ -174,12 +174,16 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
-                              Text(
-                                "${departmentBlc.departmentList[index].workingDayModel!.name}",
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                ),
-                              )
+                              departmentBlc.departmentList[index]
+                                          .workingDayModel ==
+                                      null
+                                  ? Text("")
+                                  : Text(
+                                      "${departmentBlc.departmentList[index].workingDayModel!.name}",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                      ),
+                                    )
                             ],
                           ),
                           Row(
@@ -206,7 +210,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                             children: [
                               CupertinoButton(
                                   padding: EdgeInsets.all(1.0),
-                                  color: Colors.green,
+                                  color: Colors.blue,
                                   child: Row(
                                     children: [
                                       Icon(Icons.edit),
