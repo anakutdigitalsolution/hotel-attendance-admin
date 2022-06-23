@@ -116,7 +116,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
           print(image);
         }
         await _departmentRepository.addEmployee(
-            roleId: event.roleId,
+            // roleId: event.roleId,
             name: event.name,
             gender: event.gender,
             dob: event.dob,
@@ -157,7 +157,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
           image = await uploadImage(image: event.img!);
         }
         await _departmentRepository.editEmployee(
-            roleId: event.roleId,
+            // roleId: event.roleId,
             id: event.id,
             name: event.name,
             gender: event.gender,

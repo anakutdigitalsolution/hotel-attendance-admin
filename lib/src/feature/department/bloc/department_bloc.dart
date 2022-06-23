@@ -151,6 +151,7 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
       yield AddingDepartment();
       try {
         await _departmentRepository.addDepartment(
+            managerId: event.managerId,
             name: event.name,
             notes: event.notes,
             workId: event.workId,
@@ -175,6 +176,7 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
       yield AddingDepartment();
       try {
         await _departmentRepository.editDepartment(
+            managerId: event.managerId,
             id: event.id,
             name: event.name,
             notes: event.notes,

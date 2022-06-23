@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/model/group_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/bloc/index.dart';
@@ -33,6 +35,8 @@ class _EditDepartmentState extends State<EditDepartment> {
   final TextEditingController _locationCtrl = TextEditingController();
   final TextEditingController _noteCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  EmployeeBloc _employeeBloc = EmployeeBloc();
+  final TextEditingController _managerCtrl = TextEditingController();
   @override
   void initState() {
     _reasonCtrl.text = widget.departmentModel.name!;
@@ -41,6 +45,9 @@ class _EditDepartmentState extends State<EditDepartment> {
         : _noteCtrl.text = widget.departmentModel.notes!;
     _locationCtrl.text = widget.departmentModel.locationModel!.name!;
     _groupIdCtrl.text = widget.departmentModel.workingDayModel!.name!;
+    widget.departmentModel.managerName == null
+        ? _managerCtrl.text = ""
+        : _managerCtrl.text = widget.departmentModel.managerName!;
     super.initState();
   }
 
@@ -96,188 +103,256 @@ class _EditDepartmentState extends State<EditDepartment> {
                 }
               },
               child: BlocListener(
-                bloc: _locationBloc,
-                listener: (context, state) {
-                  if (state is FetchingLocation) {
-                    EasyLoading.show(status: "loading...");
-                  }
-                  if (state is ErrorFetchingLocation) {
-                    EasyLoading.dismiss();
-                    errorSnackBar(text: state.toString(), context: context);
-                  }
-                  if (state is FetchedLocation) {
-                    EasyLoading.dismiss();
-                    customModal(
-                        context,
-                        _locationBloc.departmentList
-                            .map((e) => e.name!)
-                            .toList(), (value) {
-                      _locationCtrl.text = value;
-                    });
-                  }
-                },
-                child: ListView(
-                  children: [
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _reasonCtrl,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Department name"),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Department name';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _groupIdCtrl,
-                              onTap: () {
-                                _workingDayBloc
-                                    .add(FetchAllWorkingdayStarted());
-                              },
-                              readOnly: true,
-                              // keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  suffixIcon: Icon(Icons.arrow_drop_down),
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Choose work days  "),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'workday is required.';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _locationCtrl,
-                              onTap: () {
-                                _locationBloc.add(FetchAllLocationStarted());
-                              },
-                              readOnly: true,
-                              // keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                  suffixIcon: Icon(Icons.arrow_drop_down),
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Choose location  "),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'loation is required.';
-                                }
-                                return null;
-                              },
-                            ),
-                            SizedBox(height: 15),
-                            TextFormField(
-                              controller: _noteCtrl,
-                              keyboardType: TextInputType.text,
-                              maxLines: null,
-                              decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(15),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5.0),
-                                    ),
-                                    borderSide: new BorderSide(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  isDense: true,
-                                  labelText: "Notes"),
-                              // validator: (value) {
-                              //   if (value!.isEmpty) {
-                              //     return 'Department name';
-                              //   }
-                              //   return null;
-                              // },
-                            ),
-                            // SizedBox(height: 15),
-                            SizedBox(
-                                height: MediaQuery.of(context).size.height / 4),
-                            standardBtn(
-                                title: "Submit",
-                                onTap: () {
-                                  if (_formKey!.currentState!.validate()) {
-                                    String locationId = "";
-                                    String workId = "";
-                                    if (_groupIdCtrl.text !=
-                                        "${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}") {
-                                      WorkingDayModel workingDayModel =
-                                          _workingDayBloc.departmentList
-                                              .firstWhere((e) =>
-                                                  "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
-                                                  _groupIdCtrl.text);
-                                      workId = workingDayModel.id;
-                                    } else {
-                                      workId = widget.departmentModel.workId!;
+                  bloc: _locationBloc,
+                  listener: (context, state) {
+                    if (state is FetchingLocation) {
+                      EasyLoading.show(status: "loading...");
+                    }
+                    if (state is ErrorFetchingLocation) {
+                      EasyLoading.dismiss();
+                      errorSnackBar(text: state.toString(), context: context);
+                    }
+                    if (state is FetchedLocation) {
+                      EasyLoading.dismiss();
+                      customModal(
+                          context,
+                          _locationBloc.departmentList
+                              .map((e) => e.name!)
+                              .toList(), (value) {
+                        _locationCtrl.text = value;
+                      });
+                    }
+                  },
+                  child: BlocListener(
+                    bloc: _employeeBloc,
+                    listener: (context, state) {
+                      if (state is FetchingEmployee) {
+                        EasyLoading.show(status: "loading....");
+                      }
+                      if (state is ErrorFetchingEmployee) {
+                        EasyLoading.dismiss();
+                        errorSnackBar(text: state.toString(), context: context);
+                      }
+                      if (state is FetchedEmployee) {
+                        EasyLoading.dismiss();
+                        customModal(context,
+                            _employeeBloc.emploList.map((e) => e.name).toList(),
+                            (value) {
+                          _managerCtrl.text = value;
+                        });
+                      }
+                    },
+                    child: ListView(
+                      children: [
+                        Form(
+                          key: _formKey,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 15),
+                            child: Column(
+                              children: [
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _reasonCtrl,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Department name"),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Department name';
                                     }
-                                    if (_locationCtrl.text !=
-                                        widget.departmentModel.locationModel!
-                                            .name) {
-                                      LocationModel locationModel =
-                                          _locationBloc.departmentList
-                                              .firstWhere((element) =>
-                                                  element.name ==
-                                                  _locationCtrl.text);
-                                      locationId = locationModel.id;
-                                    } else {
-                                      locationId =
-                                          widget.departmentModel.locationId!;
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _groupIdCtrl,
+                                  onTap: () {
+                                    _workingDayBloc
+                                        .add(FetchAllWorkingdayStarted());
+                                  },
+                                  readOnly: true,
+                                  // keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.arrow_drop_down),
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Choose work days  "),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'workday is required.';
                                     }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _locationCtrl,
+                                  onTap: () {
+                                    _locationBloc
+                                        .add(FetchAllLocationStarted());
+                                  },
+                                  readOnly: true,
+                                  // keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.arrow_drop_down),
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Choose location  "),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'loation is required.';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _managerCtrl,
+                                  onTap: () {
+                                    _employeeBloc
+                                        .add(FetchAllEmployeeStarted());
+                                  },
+                                  readOnly: true,
+                                  // keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.arrow_drop_down),
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Choose employee"),
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'location is required.';
+                                  //   }
+                                  //   return null;
+                                  // },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _noteCtrl,
+                                  keyboardType: TextInputType.text,
+                                  maxLines: null,
+                                  decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.all(15),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0),
+                                        ),
+                                        borderSide: new BorderSide(
+                                          width: 1,
+                                        ),
+                                      ),
+                                      isDense: true,
+                                      labelText: "Notes"),
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'Department name';
+                                  //   }
+                                  //   return null;
+                                  // },
+                                ),
+                                // SizedBox(height: 15),
+                                SizedBox(
+                                    height:
+                                        MediaQuery.of(context).size.height / 4),
+                                standardBtn(
+                                    title: "Submit",
+                                    onTap: () {
+                                      if (_formKey!.currentState!.validate()) {
+                                        String locationId = "";
+                                        String workId = "";
+                                        String? managerId = "";
+                                        if (_groupIdCtrl.text !=
+                                            "${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}") {
+                                          WorkingDayModel workingDayModel =
+                                              _workingDayBloc.departmentList
+                                                  .firstWhere((e) =>
+                                                      "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
+                                                      _groupIdCtrl.text);
+                                          workId = workingDayModel.id;
+                                        } else {
+                                          workId =
+                                              widget.departmentModel.workId!;
+                                        }
+                                        if (_locationCtrl.text !=
+                                            widget.departmentModel
+                                                .locationModel!.name) {
+                                          LocationModel locationModel =
+                                              _locationBloc.departmentList
+                                                  .firstWhere((element) =>
+                                                      element.name ==
+                                                      _locationCtrl.text);
+                                          locationId = locationModel.id;
+                                        } else {
+                                          locationId = widget
+                                              .departmentModel.locationId!;
+                                        }
+                                        if (_managerCtrl.text !=
+                                            widget
+                                                .departmentModel.managerName) {
+                                          EmployeeModel userModel =
+                                              _employeeBloc.emploList
+                                                  .firstWhere((element) =>
+                                                      element.departmentModel!
+                                                          .managerName ==
+                                                      _managerCtrl.text);
+                                          managerId = userModel.id;
+                                        } else {
+                                          managerId =
+                                              widget.departmentModel.managerId!;
+                                        }
 
-                                    departmentBlc.add(UpdateDepartmentStarted(
-                                        id: widget.departmentModel.id,
-                                        name: _reasonCtrl.text,
-                                        locationId: locationId,
-                                        workId: workId,
-                                        notes: _noteCtrl.text));
-                                  }
-                                })
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+                                        departmentBlc.add(
+                                            UpdateDepartmentStarted(
+                                                managerId: managerId,
+                                                id: widget.departmentModel.id,
+                                                name: _reasonCtrl.text,
+                                                locationId: locationId,
+                                                workId: workId,
+                                                notes: _noteCtrl.text));
+                                      }
+                                    })
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  )),
             ));
       }),
     );

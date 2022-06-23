@@ -10,9 +10,7 @@ class EmployeeEvent extends Equatable {
 
 class FetchEmloyeeStarted extends EmployeeEvent {}
 
-class FetchRoleStarted extends EmployeeEvent{
-
-}
+class FetchRoleStarted extends EmployeeEvent {}
 
 class InitializeEmployeeStarted extends EmployeeEvent {}
 
@@ -32,7 +30,7 @@ class AddEmployeeStarted extends EmployeeEvent {
   final String password;
   final String positionId;
   final String departmentId;
-  final String roleId;
+  // final String roleId;
   final String phoneNumber;
   final String address;
   AddEmployeeStarted(
@@ -46,7 +44,7 @@ class AddEmployeeStarted extends EmployeeEvent {
       required this.password,
       required this.positionId,
       required this.departmentId,
-      required this.roleId,
+      // required this.roleId,
       required this.phoneNumber,
       required this.address});
 }
@@ -61,7 +59,7 @@ class UpdateEmployeeStarted extends EmployeeEvent {
   final File? img;
   final String positionId;
   final String departmentId;
-  final String roleId;
+  // final String roleId;
   final String phoneNumber;
   final String address;
   final String imgUrl;
@@ -77,7 +75,7 @@ class UpdateEmployeeStarted extends EmployeeEvent {
       required this.phoneNumber,
       required this.positionId,
       required this.departmentId,
-      required this.roleId,
+      // required this.roleId,
       required this.address});
 }
 
@@ -112,18 +110,15 @@ class AddCheckoutStarted extends EmployeeEvent {
 }
 
 class ChangePasswordButtonPressed extends EmployeeEvent {
-  ChangePasswordButtonPressed(
-      {required this.id,  required this.newpass});
+  ChangePasswordButtonPressed({required this.id, required this.newpass});
   // final String oldpass;
   final String newpass;
   final String id;
   // final String username;
 }
 
-class AdminPasswordStarted extends EmployeeEvent{
-  AdminPasswordStarted(
-      { required this.oldpass, required this.newpass});
+class AdminPasswordStarted extends EmployeeEvent {
+  AdminPasswordStarted({required this.oldpass, required this.newpass});
   final String oldpass;
   final String newpass;
-  
 }
