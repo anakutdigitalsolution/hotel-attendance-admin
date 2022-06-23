@@ -76,6 +76,7 @@ class DepartmentRepository {
     required String notes,
     required String workId,
     required String locationId,
+    required String managerId,
   }) async {
     try {
       String url = mainUrl + "departments/add";
@@ -83,6 +84,7 @@ class DepartmentRepository {
         "department_name": name,
         "workday_id": workId,
         "location_id": locationId,
+        "manager_id": managerId,
         "notes": notes
       };
       Response response = await apiProvider.post(url, body, null);
@@ -106,6 +108,7 @@ class DepartmentRepository {
     required String notes,
     required String workId,
     required String locationId,
+    required String managerId,
   }) async {
     try {
       String url = mainUrl + "departments/edit/$id";
@@ -113,7 +116,8 @@ class DepartmentRepository {
         "department_name": name,
         "workday_id": workId,
         "location_id": locationId,
-        "notes": notes
+        "notes": notes,
+        "manager_id": managerId,
       };
       Response response = await apiProvider.put(url, body);
 

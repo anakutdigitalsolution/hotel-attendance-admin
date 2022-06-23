@@ -445,34 +445,34 @@ class _EditEmployeeState extends State<EditEmployee> {
                                     return null;
                                   },
                                 ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _roleCtrl,
-                                  onTap: () {
-                                    employeeBloc.add(FetchRoleStarted());
-                                  },
-                                  readOnly: true,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
-                                      ),
-                                      isDense: true,
-                                      labelText: "Select role"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'role is required';
-                                    }
-                                    return null;
-                                  },
-                                ),
+                                // SizedBox(height: 15),
+                                // TextFormField(
+                                //   controller: _roleCtrl,
+                                //   onTap: () {
+                                //     employeeBloc.add(FetchRoleStarted());
+                                //   },
+                                //   readOnly: true,
+                                //   keyboardType: TextInputType.text,
+                                //   decoration: InputDecoration(
+                                //       suffixIcon: Icon(Icons.arrow_drop_down),
+                                //       contentPadding: EdgeInsets.all(15),
+                                //       border: OutlineInputBorder(
+                                //         borderRadius: BorderRadius.all(
+                                //           Radius.circular(5.0),
+                                //         ),
+                                //         borderSide: new BorderSide(
+                                //           width: 1,
+                                //         ),
+                                //       ),
+                                //       isDense: true,
+                                //       labelText: "Select role"),
+                                //   validator: (value) {
+                                //     if (value!.isEmpty) {
+                                //       return 'role is required';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
                                 SizedBox(height: 15),
                                 TextFormField(
                                   controller: _positionIdCtrl,
@@ -664,7 +664,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                             dob: _dobCtrl.text,
                                             email: _emailCtrl.text,
                                             officeTel: _officeTelCtrl.text,
-                                            roleId: role,
+                                            // roleId: role,
                                             // username: _usernameCtrl.text,
                                             img: _image,
                                             imgUrl: url,

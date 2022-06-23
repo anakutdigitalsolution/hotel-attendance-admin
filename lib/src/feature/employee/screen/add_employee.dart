@@ -427,34 +427,34 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     return null;
                                   },
                                 ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _roleCtrl,
-                                  onTap: () {
-                                    employeeBloc.add(FetchRoleStarted());
-                                  },
-                                  readOnly: true,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
-                                      ),
-                                      isDense: true,
-                                      labelText: "select role "),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'role is required';
-                                    }
-                                    return null;
-                                  },
-                                ),
+                                // SizedBox(height: 15),
+                                // TextFormField(
+                                //   controller: _roleCtrl,
+                                //   onTap: () {
+                                //     employeeBloc.add(FetchRoleStarted());
+                                //   },
+                                //   readOnly: true,
+                                //   keyboardType: TextInputType.text,
+                                //   decoration: InputDecoration(
+                                //       suffixIcon: Icon(Icons.arrow_drop_down),
+                                //       contentPadding: EdgeInsets.all(15),
+                                //       border: OutlineInputBorder(
+                                //         borderRadius: BorderRadius.all(
+                                //           Radius.circular(5.0),
+                                //         ),
+                                //         borderSide: new BorderSide(
+                                //           width: 1,
+                                //         ),
+                                //       ),
+                                //       isDense: true,
+                                //       labelText: "select role "),
+                                //   validator: (value) {
+                                //     if (value!.isEmpty) {
+                                //       return 'role is required';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
                                 SizedBox(height: 15),
                                 TextFormField(
                                   controller: _addressCtrl,
@@ -545,7 +545,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                         if (_image == null) {}
                                         print(_image);
                                         employeeBloc.add(AddEmployeeStarted(
-                                            roleId: roleModel.id,
+                                            // roleId: roleModel.id,
                                             name: _nameCtrl.text,
                                             gender: _genderCtrl.text,
                                             dob: _dobCtrl.text,

@@ -80,7 +80,7 @@ class EmployeeRepository {
     required String password,
     required String positionId,
     required String departmentId,
-    required String roleId,
+    // required String roleId,
     required String phoneNumber,
     required String address,
   }) async {
@@ -97,7 +97,7 @@ class EmployeeRepository {
         "profile_url": img,
         "position_id": positionId,
         "department_id": departmentId,
-        "role_id": roleId,
+        // "role_id": roleId,
         "phone": phoneNumber,
         "address": address,
       };
@@ -127,7 +127,7 @@ class EmployeeRepository {
     required String departmentId,
     required String phoneNumber,
     required String address,
-    required String roleId,
+    // required String roleId,
   }) async {
     try {
       String url = mainUrl + "employees/edit/$id";
@@ -142,7 +142,7 @@ class EmployeeRepository {
         "department_id": departmentId,
         "employee_phone": phoneNumber,
         "address": address,
-        "role_id": roleId,
+        // "role_id": roleId,
       };
       Response response = await apiProvider.put(url, body);
 
