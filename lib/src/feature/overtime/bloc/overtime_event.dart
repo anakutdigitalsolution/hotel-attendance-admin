@@ -1,44 +1,45 @@
 
 import 'package:equatable/equatable.dart';
 
-class OvertimeEvent extends Equatable {
-  OvertimeEvent([List props = const []]) : super();
+class OverTimeEvent extends Equatable {
+  OverTimeEvent([List props = const []]) : super();
   @override
   List<Object?> get props => [];
 }
 
-class InitailzeOvertimeStarted extends OvertimeEvent{
+class InitailzeMyOvertimeStarted extends OverTimeEvent{
    final String? dateRange;
-  InitailzeOvertimeStarted({required this.dateRange});
+  InitailzeMyOvertimeStarted({required this.dateRange});
 }
-class InitializeAllOvertimeStarted extends OvertimeEvent {
+class InitializeAllOvertimeStarted extends OverTimeEvent {
   final String? dateRange;
   InitializeAllOvertimeStarted({required this.dateRange});
 }
 
 
-class FetchOvertimeStarted extends OvertimeEvent{
+class FetchMyOvertimeStarted extends OverTimeEvent{
    final String? dateRange;
-  FetchOvertimeStarted({required this.dateRange});
+  FetchMyOvertimeStarted({required this.dateRange});
 }
-class FetchAllOvertimeStarted extends OvertimeEvent{
+class FetchAllOvertimeStarted extends OverTimeEvent{
    final String? dateRange;
   FetchAllOvertimeStarted({required this.dateRange});
 }
-class RefreshOvertimeStarted extends OvertimeEvent{
+class RefreshMyOvertimeStarted extends OverTimeEvent{
    final String? dateRange;
-  RefreshOvertimeStarted({required this.dateRange});
+  RefreshMyOvertimeStarted({required this.dateRange});
 }
-class RefreshAllOvertimeStarted extends OvertimeEvent{
+class RefreshAllOvertimeStarted extends OverTimeEvent{
   final String? dateRange;
   RefreshAllOvertimeStarted({required this.dateRange});
 }
-class AddOvertimeStarted extends OvertimeEvent{
+class AddOvertimeStarted extends OverTimeEvent{
   final String userId;
   final String fromDate;
   final String toDate;
   final String notes;
   final String reason;
+  final String type;
   final String duration ;
   AddOvertimeStarted(
     {
@@ -47,17 +48,19 @@ class AddOvertimeStarted extends OvertimeEvent{
       required this.toDate,
       required this.notes,
       required this.reason,
+      required this.type,
       required this.duration,
     }
   );
 }
-class UpdateOvertimeStarted extends OvertimeEvent{
+class UpdateOvertimeStarted extends OverTimeEvent{
   final String id;
   final String userId;
   final String fromDate;
   final String toDate;
   final String notes;
   final String reason;
+  final String type;
    final String duration ;
   UpdateOvertimeStarted(
     {
@@ -67,12 +70,13 @@ class UpdateOvertimeStarted extends OvertimeEvent{
       required this.notes,
       required this.reason,
       required this.id,
+      required this.type,
       required this.duration,
     }
   );
 }
 
-class UpdateOvertimeStatusStarted extends OvertimeEvent{
+class UpdateOvertimeStatusStarted extends OverTimeEvent{
   final String id;
   final String status;
   final String paytype;
@@ -82,7 +86,7 @@ class UpdateOvertimeStatusStarted extends OvertimeEvent{
     required this.paytype
   });
 }
-class DeleteOvertimeStarted extends OvertimeEvent{
+class DeleteOvertimeStarted extends OverTimeEvent{
   final String id;
   DeleteOvertimeStarted({
     required this.id,

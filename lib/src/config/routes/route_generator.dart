@@ -29,6 +29,10 @@ import 'package:hotle_attendnce_admin/src/feature/location/screens/edit_location
 import 'package:hotle_attendnce_admin/src/feature/location/screens/location_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/add_notification.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/notification_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/overtime/model/overtime_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/overtime/screen/add_overtime.dart';
+import 'package:hotle_attendnce_admin/src/feature/overtime/screen/edit_overtime.dart';
+import 'package:hotle_attendnce_admin/src/feature/overtime/screen/overtime_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/screen/leave_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/add_position.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
@@ -146,11 +150,23 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AddLocation());
       case resetpassword:
         return MaterialPageRoute(builder: (_) => AdminResetPassword());
+       case overtime:
+        return MaterialPageRoute(builder: (_) => Overtimepage());
+      case addOvertime:
+       return MaterialPageRoute(builder: (_) => AddOvertime());
       case editLocation:
         if (args is LocationModel) {
           return MaterialPageRoute(
               builder: (_) => EditLocation(
                     locationModel: args,
+                  ));
+        }
+        return _errorRoute();
+      case editOvertime:
+        if (args is OvertimeModel) {
+          return MaterialPageRoute(
+              builder: (_) => EditOvertime(
+                    overtimeModel: args,
                   ));
         }
         return _errorRoute();

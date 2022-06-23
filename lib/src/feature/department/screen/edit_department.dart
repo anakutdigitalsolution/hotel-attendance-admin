@@ -44,7 +44,7 @@ class _EditDepartmentState extends State<EditDepartment> {
         ? _noteCtrl.text = ""
         : _noteCtrl.text = widget.departmentModel.notes!;
     _locationCtrl.text = widget.departmentModel.locationModel!.name!;
-    _groupIdCtrl.text = widget.departmentModel.workingDayModel!.name!;
+    _groupIdCtrl.text = "${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}";
     widget.departmentModel.managerName == null
         ? _managerCtrl.text = ""
         : _managerCtrl.text = widget.departmentModel.managerName!;
@@ -296,6 +296,8 @@ class _EditDepartmentState extends State<EditDepartment> {
                                         String locationId = "";
                                         String workId = "";
                                         String? managerId = "";
+                                        print("controller ${_groupIdCtrl.text}");
+                                        print("model : ${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}");
                                         if (_groupIdCtrl.text !=
                                             "${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}") {
                                           WorkingDayModel workingDayModel =
@@ -321,7 +323,10 @@ class _EditDepartmentState extends State<EditDepartment> {
                                           locationId = widget
                                               .departmentModel.locationId!;
                                         }
-                                        if (_managerCtrl.text !=
+                                        if(_managerCtrl.text ==""){
+                                          managerId="";
+                                        }else{
+                                           if (_managerCtrl.text !=
                                             widget
                                                 .departmentModel.managerName) {
                                           EmployeeModel userModel =
@@ -336,6 +341,8 @@ class _EditDepartmentState extends State<EditDepartment> {
                                               widget.departmentModel.managerId!;
                                         }
 
+                                        }
+                                       
                                         departmentBlc.add(
                                             UpdateDepartmentStarted(
                                                 managerId: managerId,

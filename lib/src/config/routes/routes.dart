@@ -18,6 +18,7 @@ const String notification = '/notification';
 const String operation = '/operation';
 const String resetpassword = '/resetpassword';
 const String qr = '/qr';
+const String overtime = '/overtime';
 
 const String addHoliday = '/addHoliday';
 const String addNotification = '/addNotification';
@@ -29,6 +30,9 @@ const String addEmployee = '/addEmployee';
 const String addschedule = '/addschedule';
 const String addWorkingday = '/addWorkingday';
 const String addLocation = '/addLocation';
+const String addOvertime = '/addOvertime';
+const String editOvertime = '/editOvertime';
+
 
 const String editschedule = '/editschedule';
 const String editWorkingday = '/editWorkingday';

@@ -163,6 +163,25 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                               )
                             ],
                           ),
+                        departmentBlc.departmentList[index].managerName==null?Row(children: [],):  Row(
+                            // mainAxisAlignment:
+                            //     MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  "Manager :",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              Text(
+                                "${departmentBlc.departmentList[index].managerName}",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                ),
+                              )
+                            ],
+                          ),
                           Row(
                             // mainAxisAlignment:
                             //     MainAxisAlignment.spaceBetween,
@@ -181,7 +200,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                   : Text(
                                       "${departmentBlc.departmentList[index].workingDayModel!.name}",
                                       style: TextStyle(
-                                        color: Colors.blue,
+                                        color: Colors.green,
                                       ),
                                     )
                             ],

@@ -75,6 +75,14 @@ class _AddDepartmentState extends State<AddDepartment> {
                 }
                 if (state is FetchedWorkingDay) {
                   EasyLoading.dismiss();
+                  //  customModal(
+                  //     context,
+                  //     _workingDayBloc.departmentList
+                  //         .map((e) =>
+                  //             "workday ${e.workingDay}")
+                  //         .toList(), (value) {
+                  //   _groupIdCtrl.text = value;
+                  // });
                   customModal(
                       context,
                       _workingDayBloc.departmentList
@@ -142,7 +150,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
+                                          Radius.circular(10.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -171,7 +179,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
+                                          Radius.circular(10.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -200,7 +208,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
+                                          Radius.circular(10.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -229,7 +237,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
+                                          Radius.circular(10.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -253,7 +261,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                       contentPadding: EdgeInsets.all(15),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
+                                          Radius.circular(10.0),
                                         ),
                                         borderSide: new BorderSide(
                                           width: 1,
@@ -277,24 +285,30 @@ class _AddDepartmentState extends State<AddDepartment> {
                                     onTap: () {
                                       if (_formKey!.currentState!.validate()) {
                                         String managerId = "";
+                                        if(_managerCtrl.text ==""){
+                                            _managerCtrl.text ="";
+                                        }else{
+                                           EmployeeModel userModel = _employeeBloc
+                                            .emploList
+                                            .firstWhere((element) =>
+                                                element.name ==
+                                                _managerCtrl.text);
+                                          managerId = userModel.id;
+                                        }
                                         LocationModel locationModel =
                                             _locationBloc.departmentList
                                                 .firstWhere((element) =>
                                                     element.name ==
                                                     _locationCtrl.text);
 
-                                        EmployeeModel userModel = _employeeBloc
-                                            .emploList
-                                            .firstWhere((element) =>
-                                                element.name ==
-                                                _managerCtrl.text);
+                                       
                                         WorkingDayModel workingDayModel =
                                             _workingDayBloc.departmentList
                                                 .firstWhere((e) =>
                                                     "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
                                                     _groupIdCtrl.text);
                                         departmentBlc.add(AddDepartmentStarted(
-                                            managerId: userModel.id,
+                                            managerId: managerId,
                                             name: _reasonCtrl.text,
                                             locationId: locationModel.id,
                                             workId: workingDayModel.id,

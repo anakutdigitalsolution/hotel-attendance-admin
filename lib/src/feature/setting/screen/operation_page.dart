@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 
 import 'package:hotle_attendnce_admin/src/feature/language/sreen/language.dart';
+import 'package:hotle_attendnce_admin/src/feature/setting/screen/widget/dialogExport.dart';
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/widget/setting_item.dart';
 
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
@@ -106,6 +107,14 @@ class _OperationPageState extends State<OperationPage> {
         "image": "assets/icon/setting.png",
         "onPressed": () {
           Navigator.pushNamed(context, setting);
+        }
+      },
+      {
+        "name": "Export",
+        "iconColor": Colors.redAccent[200],
+        "image": "assets/icon/export.png",
+        "onPressed": () {
+          dialogExport(context);
         }
       },
     ];
