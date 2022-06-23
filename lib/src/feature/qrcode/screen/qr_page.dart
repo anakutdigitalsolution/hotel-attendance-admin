@@ -42,8 +42,16 @@ class _QRPageState extends State<QRPage> {
     print(_bytes);
     return _bytes;
   }
-  _decodeBytesImage()async{
-    
+
+  _decodeBytesImage(String base64) async {
+    Uint8List decodedbytes = Base64Decoder().convert(base64);
+    // final String dirPath = "${extDir.path}/media";
+    // await Directory(dirPath).create(recursive: true);
+    // final String filePath = "$dirPath/${_timestamp()}.jpeg";
+    File decodedimgfile = await File("image.jpg").writeAsBytes(decodedbytes);
+    String decodedpath = decodedimgfile.path;
+    print(decodedpath);
+    return decodedpath;
   }
 
   @override
@@ -59,23 +67,23 @@ class _QRPageState extends State<QRPage> {
               );
             }
             if (state is FetchedQR) {
-             
               return Container(
                 child: Column(
                   children: [
                     Image.memory(_decodImage(state.img)),
-                    // Container(
-                    //   width: 100,
-                    //   height: 40,
-                    //   child: RaisedButton(
-                    //       color: Colors.green,
-                    //       child: Text("Download"),
-                    //       onPressed: () async{
-                    //         await Share.shareFiles(_decodImage(state.img));
-                    //       //  File decodedimgfile = await File("image.jpg").writeAsBytes(_decodImage(state.img));
-                    //       //  print(decodedimgfile);
-                    //       }),
-                    // ),
+                    Container(
+                      width: 100,
+                      height: 40,
+                      child: RaisedButton(
+                          color: Colors.green,
+                          child: Text("Download"),
+                          onPressed: () async {
+                            _decodeBytesImage(state.img);
+                            // await Share.shareFiles(_decodImage(state.img));
+                            //  File decodedimgfile = await File("image.jpg").writeAsBytes(_decodImage(state.img));
+                            //  print(decodedimgfile);
+                          }),
+                    ),
                   ],
                 ),
               );

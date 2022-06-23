@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       {
-        "name": "Operation",
+        "name": "Configuration",
         "iconColor": Colors.blue,
         "image": "assets/icon/setting.png",
         "onPressed": () {
