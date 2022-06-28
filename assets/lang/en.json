@@ -73,6 +73,21 @@
     "employee" : "Employee",
     "type_ot" : "Type",
     "pay_type" : "Pay type",
-    "team_profile" : "Team Profile"
+    "team_profile" : "Team Profile",
+    "schdeule" : "Schedule",
+    "operation" : "Operation",
+    "wel_home" : "Welcome",
+    "qr" : "QR Code",
+    "location" : "Location",
+    "workday" : "Work Day",
+    "holiday" : "Holiday",
+    "reset_password" : "Change Password",
+    "setting" : "Setting",
+    "export" : "Export"
+    
+
+
+
+   
 
 }

@@ -70,6 +70,10 @@ class _QRPageState extends State<QRPage> {
               return Container(
                 child: Column(
                   children: [
+                    SizedBox(height: 30,),
+                    Container(
+                      padding: EdgeInsets.only(left: 10,right: 10),
+                      child: Text("This is QR code for checkin and checkout",textScaleFactor: 1.2,),),
                     Image.memory(_decodImage(state.img)),
                     Container(
                       width: 100,

@@ -4,6 +4,8 @@ import 'package:hotle_attendnce_admin/src/feature/auth/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/notification_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../../appLocalizations.dart';
+
 class MyAppBar extends StatefulWidget {
   final String username;
   const MyAppBar({required this.username});
@@ -37,7 +39,7 @@ class _MyAppBarState extends State<MyAppBar> {
               Container(
                   padding: EdgeInsets.only(left: 20),
                   child: Text(
-                    "Welcome ${widget.username}",
+                    "${AppLocalizations.of(context)!.translate("wel_home")!} ${widget.username}",
                     textScaleFactor: 1.7,
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),

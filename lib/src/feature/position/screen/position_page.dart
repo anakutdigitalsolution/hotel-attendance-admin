@@ -32,7 +32,7 @@ class _PositionPageState extends State<PositionPage> {
           margin: EdgeInsets.only(top: 10, bottom: 10), child: PositionBody()),
       floatingActionButton: Container(
         child: FloatingActionButton(
-            backgroundColor: Colors.lightBlueAccent,
+            backgroundColor: Colors.blue,
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {

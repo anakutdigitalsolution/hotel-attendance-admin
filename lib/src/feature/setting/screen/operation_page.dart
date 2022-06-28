@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hotle_attendnce_admin/src/appLocalizations.dart';
 
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 
@@ -22,7 +23,7 @@ class _OperationPageState extends State<OperationPage> {
   Widget build(BuildContext context) {
     final List<Map> homeMenu = [
       {
-        "name": "QR Code",
+        "name": "${AppLocalizations.of(context)!.translate("qr")!}",
         "iconColor": Colors.redAccent[200],
         "image": "assets/icon/qr-logo.png",
         "onPressed": () {
@@ -30,7 +31,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name": "Location",
+        "name": "${AppLocalizations.of(context)!.translate("location")!}",
         "iconColor": Colors.purple[300],
         "image": "assets/icon/maps-and-flags.png",
         "onPressed": () {
@@ -38,7 +39,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name": "Department",
+        "name": "${AppLocalizations.of(context)!.translate("department")!}",
         "iconColor": Colors.lightGreen,
         "image": "assets/icon/diagram.png",
         "onPressed": () {
@@ -46,7 +47,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name": "Position",
+        "name": "${AppLocalizations.of(context)!.translate("position")!}",
         "iconColor": Colors.orange,
         "image": "assets/icon/businesswoman.png",
         "onPressed": () {
@@ -54,7 +55,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name": "Timetable",
+        "name": "${AppLocalizations.of(context)!.translate("schdeule")!}",
         "iconColor": Colors.lightBlue[300],
         "image": "assets/icon/timetable.png",
         "onPressed": () {
@@ -62,7 +63,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name": "Work day",
+        "name": "${AppLocalizations.of(context)!.translate("workday")!}",
         "iconColor": Colors.green,
         "image": "assets/icon/calendar.png",
         "onPressed": () {
@@ -70,7 +71,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name": "Leave type",
+        "name": "${AppLocalizations.of(context)!.translate("timetable")!}",
         "iconColor": Colors.purple[300],
         "image": "assets/icon/calendar.png",
         "onPressed": () {
@@ -78,7 +79,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name": "Holiday",
+        "name": "${AppLocalizations.of(context)!.translate("holiday")!}",
         "iconColor": Colors.lightBlue[300],
         "image": "assets/icon/calendar (1).png",
         "onPressed": () {
@@ -94,7 +95,7 @@ class _OperationPageState extends State<OperationPage> {
       //   }
       // },
       {
-        "name": "Reset Password",
+        "name": "${AppLocalizations.of(context)!.translate("reset_password")!}",
         "iconColor": Colors.lightGreen,
         "image": "assets/icon/change_password.png",
         "onPressed": () {
@@ -102,7 +103,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name": "Setting",
+        "name":"${AppLocalizations.of(context)!.translate("setting")!}",
         "iconColor": Colors.redAccent[200],
         "image": "assets/icon/setting.png",
         "onPressed": () {
@@ -110,7 +111,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name": "Export",
+        "name": "${AppLocalizations.of(context)!.translate("export")!}",
         "iconColor": Colors.redAccent[200],
         "image": "assets/icon/export.png",
         "onPressed": () {
@@ -143,7 +144,7 @@ class _OperationPageState extends State<OperationPage> {
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 4 / 2,
+                    childAspectRatio: 4 / 2.5,
                     crossAxisCount: MediaQuery.of(context).orientation ==
                             Orientation.portrait
                         ? 2

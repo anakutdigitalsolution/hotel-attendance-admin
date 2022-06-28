@@ -10,6 +10,7 @@ import 'package:hotle_attendnce_admin/src/feature/setting/screen/operation_page.
 // import 'package:geolocator/geolocator.dart';
 // import 'package:location/location.dart';
 
+import '../../../appLocalizations.dart';
 import 'home_menu.dart';
 import 'my_app_bar.dart';
 
@@ -110,7 +111,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final List<Map> homeMenu = [
       {
-        "name": "Attendance",
+        "name": "${AppLocalizations.of(context)!.translate("attendance")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/checking-attendance.png",
         "onPressed": () {
@@ -118,7 +119,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       {
-        "name": "Employee",
+        "name":"${AppLocalizations.of(context)!.translate("employee")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/group.png",
         "onPressed": () {
@@ -126,7 +127,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       {
-        "name": "Schedule",
+        "name": "${AppLocalizations.of(context)!.translate("schdeule")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/clock1.png",
         "onPressed": () {
@@ -134,7 +135,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       {
-        "name": "Permission",
+        "name": "${AppLocalizations.of(context)!.translate("leave")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/file.png",
         "onPressed": () {
@@ -143,7 +144,7 @@ class _HomePageState extends State<HomePage> {
       },
 
       {
-        "name": "Overtime",
+        "name": "${AppLocalizations.of(context)!.translate("ot")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/overtime.png",
         "onPressed": () {
@@ -151,7 +152,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       {
-        "name": "Payslip",
+        "name": "${AppLocalizations.of(context)!.translate("payslip")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/money.png",
         "onPressed": () {
@@ -159,7 +160,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       {
-        "name": "Report",
+        "name": "${AppLocalizations.of(context)!.translate("report")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/analytics.png",
         "onPressed": () {
@@ -167,7 +168,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       {
-        "name": "Configuration",
+        "name": "${AppLocalizations.of(context)!.translate("operation")!}",
         "iconColor": Colors.blue,
         "image": "assets/icon/setting.png",
         "onPressed": () {
