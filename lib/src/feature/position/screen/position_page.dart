@@ -27,6 +27,7 @@ class _PositionPageState extends State<PositionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.2),
       appBar: standardAppBar(context, "Position Page"),
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10), child: PositionBody()),
@@ -110,20 +111,19 @@ class _PositionBodyState extends State<PositionBody> {
                 itemCount: positionBlc.positionList.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin:
-                        EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
+                    margin: EdgeInsets.only(bottom: 10.0),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                      borderRadius: BorderRadius.circular(6.0),
+                      // border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                      // borderRadius: BorderRadius.circular(6.0),
                       color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 0,
-                          blurRadius: 3,
-                          offset: Offset(0, 0), // changes position of shadow
-                        ),
-                      ],
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.grey.withOpacity(0.5),
+                      //     spreadRadius: 0,
+                      //     blurRadius: 3,
+                      //     offset: Offset(0, 0), // changes position of shadow
+                      //   ),
+                      // ],
                     ),
                     child: Container(
                       padding: EdgeInsets.all(8.0),

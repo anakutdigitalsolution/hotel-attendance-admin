@@ -638,18 +638,18 @@ class _EditEmployeeState extends State<EditEmployee> {
                                           position = widget
                                               .employeeModel.positionModel!.id;
                                         }
-                                        if (_roleCtrl.text !=
-                                            widget.employeeModel.roleModel!
-                                                .name) {
-                                          RoleModel roleModel = employeeBloc
-                                              .roleList
-                                              .firstWhere((e) =>
-                                                  e.name == _roleCtrl.text);
-                                          role = roleModel.id;
-                                        } else {
-                                          role = widget
-                                              .employeeModel.roleModel!.id;
-                                        }
+                                        // if (_roleCtrl.text !=
+                                        //     widget.employeeModel.roleModel!
+                                        //         .name) {
+                                        //   RoleModel roleModel = employeeBloc
+                                        //       .roleList
+                                        //       .firstWhere((e) =>
+                                        //           e.name == _roleCtrl.text);
+                                        //   role = roleModel.id;
+                                        // } else {
+                                        //   role = widget
+                                        //       .employeeModel.roleModel!.id;
+                                        // }
 
                                         if (widget.employeeModel.img == null) {
                                           url = "";

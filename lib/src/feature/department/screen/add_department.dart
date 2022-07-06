@@ -285,14 +285,14 @@ class _AddDepartmentState extends State<AddDepartment> {
                                     onTap: () {
                                       if (_formKey!.currentState!.validate()) {
                                         String managerId = "";
-                                        if(_managerCtrl.text ==""){
-                                            _managerCtrl.text ="";
-                                        }else{
-                                           EmployeeModel userModel = _employeeBloc
-                                            .emploList
-                                            .firstWhere((element) =>
-                                                element.name ==
-                                                _managerCtrl.text);
+                                        if (_managerCtrl.text == "") {
+                                          _managerCtrl.text = "";
+                                        } else {
+                                          EmployeeModel userModel =
+                                              _employeeBloc.emploList
+                                                  .firstWhere((element) =>
+                                                      element.name ==
+                                                      _managerCtrl.text);
                                           managerId = userModel.id;
                                         }
                                         LocationModel locationModel =
@@ -301,7 +301,6 @@ class _AddDepartmentState extends State<AddDepartment> {
                                                     element.name ==
                                                     _locationCtrl.text);
 
-                                       
                                         WorkingDayModel workingDayModel =
                                             _workingDayBloc.departmentList
                                                 .firstWhere((e) =>

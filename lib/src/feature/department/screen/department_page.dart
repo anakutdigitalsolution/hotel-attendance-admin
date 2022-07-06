@@ -25,6 +25,7 @@ class _DepartmentPageState extends State<DepartmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.2),
       appBar: standardAppBar(context, "Department Page"),
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10),
@@ -124,20 +125,21 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                 itemCount: departmentBlc.departmentList.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin:
-                        EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
+                    margin: EdgeInsets.only(
+                      bottom: 10.0,
+                    ),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                      borderRadius: BorderRadius.circular(6.0),
+                      // border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                      // borderRadius: BorderRadius.circular(6.0),
                       color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 0,
-                          blurRadius: 3,
-                          offset: Offset(0, 0), // changes position of shadow
-                        ),
-                      ],
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.grey.withOpacity(0.5),
+                      //     spreadRadius: 0,
+                      //     blurRadius: 3,
+                      //     offset: Offset(0, 0), // changes position of shadow
+                      //   ),
+                      // ],
                     ),
                     child: Container(
                       padding: EdgeInsets.all(8.0),
@@ -163,7 +165,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                               )
                             ],
                           ),
-                        departmentBlc.departmentList[index].managerName==null?Row(children: [],):  Row(
+                          Row(
                             // mainAxisAlignment:
                             //     MainAxisAlignment.spaceBetween,
                             children: [
@@ -174,12 +176,15 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
-                              Text(
-                                "${departmentBlc.departmentList[index].managerName}",
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                ),
-                              )
+                              departmentBlc.departmentList[index].managerName ==
+                                      null
+                                  ? Text("None")
+                                  : Text(
+                                      "${departmentBlc.departmentList[index].managerName}",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                      ),
+                                    )
                             ],
                           ),
                           Row(

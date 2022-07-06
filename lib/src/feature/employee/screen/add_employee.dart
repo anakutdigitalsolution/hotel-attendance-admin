@@ -538,10 +538,10 @@ class _AddEmployeeState extends State<AddEmployee> {
                                             .firstWhere((element) =>
                                                 element.positionName ==
                                                 _positionIdCtrl.text);
-                                        RoleModel roleModel = employeeBloc
-                                            .roleList
-                                            .firstWhere((e) =>
-                                                e.name == _roleCtrl.text);
+                                        // RoleModel roleModel = employeeBloc
+                                        //     .roleList
+                                        //     .firstWhere((e) =>
+                                        //         e.name == _roleCtrl.text);
                                         if (_image == null) {}
                                         print(_image);
                                         employeeBloc.add(AddEmployeeStarted(
