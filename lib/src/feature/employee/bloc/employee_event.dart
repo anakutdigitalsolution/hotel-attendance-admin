@@ -30,9 +30,13 @@ class AddEmployeeStarted extends EmployeeEvent {
   final String password;
   final String positionId;
   final String departmentId;
-  // final String roleId;
+
   final String phoneNumber;
   final String address;
+  final String meritalStatus;
+
+  final String coupleJob;
+  final String child;
   AddEmployeeStarted(
       {required this.name,
       required this.gender,
@@ -44,9 +48,11 @@ class AddEmployeeStarted extends EmployeeEvent {
       required this.password,
       required this.positionId,
       required this.departmentId,
-      // required this.roleId,
       required this.phoneNumber,
-      required this.address});
+      required this.address,
+      required this.meritalStatus,
+      required this.coupleJob,
+      required this.child});
 }
 
 class UpdateEmployeeStarted extends EmployeeEvent {
@@ -63,6 +69,10 @@ class UpdateEmployeeStarted extends EmployeeEvent {
   final String phoneNumber;
   final String address;
   final String imgUrl;
+  final String meritalStatus;
+
+  final String coupleJob;
+  final String child;
   UpdateEmployeeStarted(
       {required this.id,
       required this.name,
@@ -75,7 +85,9 @@ class UpdateEmployeeStarted extends EmployeeEvent {
       required this.phoneNumber,
       required this.positionId,
       required this.departmentId,
-      // required this.roleId,
+      required this.meritalStatus,
+      required this.coupleJob,
+      required this.child,
       required this.address});
 }
 

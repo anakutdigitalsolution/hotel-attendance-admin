@@ -50,12 +50,17 @@ class _EditEmployeeState extends State<EditEmployee> {
   final TextEditingController _officeTelCtrl = TextEditingController();
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _dobCtrl = TextEditingController();
+  final TextEditingController _statusCtl = TextEditingController();
+  final TextEditingController _coupleCtrl = TextEditingController();
+  final TextEditingController _numchildCtrl = TextEditingController();
   File? _image;
   final TextEditingController _roleCtrl = TextEditingController();
   DateTime? date;
   DateTime dateNow = DateTime.now();
   String? dateToday;
   List<String> gender = ["Female", "Male", "Other"];
+  List<String> status = ["married", "single"];
+  List<String> job = ["housewife", "not housewife"];
   @override
   void initState() {
     _nameCtrl.text = widget.employeeModel.name;
@@ -78,6 +83,15 @@ class _EditEmployeeState extends State<EditEmployee> {
     widget.employeeModel.officeTel == null
         ? _officeTelCtrl.text = ""
         : _officeTelCtrl.text = widget.employeeModel.officeTel!;
+    widget.employeeModel.meritalStatus == null
+        ? _statusCtl.text = ""
+        : _statusCtl.text = widget.employeeModel.meritalStatus!;
+    widget.employeeModel.coupleJob == null
+        ? _coupleCtrl.text = ""
+        : _coupleCtrl.text = widget.employeeModel.coupleJob!;
+    widget.employeeModel.child == null
+        ? _numchildCtrl.text = ""
+        : _numchildCtrl.text = widget.employeeModel.child!;
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy/MM/dd').format(now);
     // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
@@ -121,7 +135,6 @@ class _EditEmployeeState extends State<EditEmployee> {
             listener: (context, state) {
               if (state is AddingEmployee) {
                 EasyLoading.show(status: "loading...");
-                // loadingDialogs(context);
               }
               if (state is ErorrAddingEmployee) {
                 EasyLoading.dismiss();
@@ -130,7 +143,7 @@ class _EditEmployeeState extends State<EditEmployee> {
               if (state is AddedEmployee) {
                 EasyLoading.dismiss();
                 EasyLoading.showSuccess("Sucess");
-                // EasyLoading.dismiss();
+
                 Navigator.pop(context);
 
                 print("success");
@@ -221,16 +234,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   controller: _nameCtrl,
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
                                       labelText: "Enter full name"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -245,16 +257,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
                                       labelText: "Choose gender"),
                                   onTap: () {
                                     customModal(context, gender, (value) {
@@ -274,16 +285,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   controller: _emailCtrl,
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
                                       labelText: "Enter email address"),
                                 ),
                                 SizedBox(height: 15),
@@ -294,16 +304,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                                     _dialogDate(controller: _dobCtrl);
                                   },
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
                                       labelText: "Date of Birth"),
                                 ),
                                 SizedBox(height: 15),
@@ -312,16 +321,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   readOnly: true,
                                   // keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
                                       labelText: "Username"),
                                   // validator: (value) {
                                   //   if (value!.isEmpty) {
@@ -335,16 +343,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   controller: _officeTelCtrl,
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
                                       labelText: "Office Tel"),
                                 ),
                                 SizedBox(height: 15),
@@ -361,7 +368,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                 //           width: 1,
                                 //         ),
                                 //       ),
-                                //       isDense: true,
+                                //
                                 //       labelText: "Username"),
                                 //   validator: (value) {
                                 //     if (value!.isEmpty) {
@@ -384,7 +391,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                 //           width: 1,
                                 //         ),
                                 //       ),
-                                //       isDense: true,
+                                //
                                 //       labelText: "password"),
                                 //   validator: (value) {
                                 //     if (value!.isEmpty) {
@@ -398,16 +405,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   controller: _phoneNumberCtrl,
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
                                       labelText: "Phone number"),
                                   // validator: (value) {
                                   //   if (value!.isEmpty) {
@@ -427,16 +433,15 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
                                       labelText: "select department name"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -464,7 +469,7 @@ class _EditEmployeeState extends State<EditEmployee> {
                                 //           width: 1,
                                 //         ),
                                 //       ),
-                                //       isDense: true,
+                                //
                                 //       labelText: "Select role"),
                                 //   validator: (value) {
                                 //     if (value!.isEmpty) {
@@ -483,17 +488,16 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
-                                      labelText: "select position"),
+                                      labelText: "Choose position"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'position is required';
@@ -507,23 +511,79 @@ class _EditEmployeeState extends State<EditEmployee> {
                                   keyboardType: TextInputType.text,
                                   maxLines: null,
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
                                       labelText: "Enter address"),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'address is required';
-                                  //   }
-                                  //   return null;
-                                  // },
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _statusCtl,
+                                  onTap: () {
+                                    customModal(context, status, (value) {
+                                      _statusCtl.text = value;
+                                    });
+                                  },
+                                  readOnly: true,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.arrow_drop_down),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
+                                      ),
+                                      labelText: "Choose merital status"),
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _coupleCtrl,
+                                  onTap: () {
+                                    customModal(context, job, (value) {
+                                      _coupleCtrl.text = value;
+                                    });
+                                  },
+                                  readOnly: true,
+                                  keyboardType: TextInputType.text,
+                                  decoration: InputDecoration(
+                                      suffixIcon: Icon(Icons.arrow_drop_down),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
+                                      ),
+                                      labelText: "Choose couple job"),
+                                ),
+                                SizedBox(height: 15),
+                                TextFormField(
+                                  controller: _numchildCtrl,
+                                  readOnly: true,
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      enabledBorder: InputBorder.none,
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
+                                      ),
+                                      labelText: "Enter number of children"),
                                 ),
                                 SizedBox(height: 15),
                                 GestureDetector(
@@ -664,14 +724,13 @@ class _EditEmployeeState extends State<EditEmployee> {
                                             dob: _dobCtrl.text,
                                             email: _emailCtrl.text,
                                             officeTel: _officeTelCtrl.text,
-                                            // roleId: role,
-                                            // username: _usernameCtrl.text,
                                             img: _image,
                                             imgUrl: url,
-                                            // password: _passwordCtrl.text,
                                             positionId: position,
                                             departmentId: depart,
-                                            // storeId: "1",
+                                            meritalStatus: _statusCtl.text,
+                                            coupleJob: _coupleCtrl.text,
+                                            child: _numchildCtrl.text,
                                             phoneNumber: _phoneNumberCtrl.text,
                                             address: _addressCtrl.text));
                                       }

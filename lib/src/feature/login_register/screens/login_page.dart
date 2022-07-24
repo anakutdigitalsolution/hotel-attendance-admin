@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -31,11 +30,11 @@ class _LoginPageState extends State<LoginPage> {
             errorSnackBar(text: state.error.toString(), context: context);
           }
           if (state is Logged) {
-             EasyLoading.dismiss();
-          print(state.userModel.token);
-          BlocProvider.of<AuthenticationBloc>(context)
-              .add(AuthenticationStarted(user: state.userModel));
-          EasyLoading.showSuccess('Success');
+            EasyLoading.dismiss();
+            print(state.userModel.token);
+            BlocProvider.of<AuthenticationBloc>(context)
+                .add(AuthenticationStarted(user: state.userModel));
+            EasyLoading.showSuccess('Success');
             // Navigator.pop(context);
           }
         },

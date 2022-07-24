@@ -41,6 +41,7 @@ class AddOvertimeStarted extends OverTimeEvent{
   final String reason;
   final String type;
   final String duration ;
+   final String otMethod ;
   AddOvertimeStarted(
     {
       required this.userId,
@@ -50,6 +51,7 @@ class AddOvertimeStarted extends OverTimeEvent{
       required this.reason,
       required this.type,
       required this.duration,
+      required this.otMethod
     }
   );
 }
@@ -62,6 +64,7 @@ class UpdateOvertimeStarted extends OverTimeEvent{
   final String reason;
   final String type;
    final String duration ;
+   final String otMethod ;
   UpdateOvertimeStarted(
     {
       required this.userId,
@@ -72,6 +75,7 @@ class UpdateOvertimeStarted extends OverTimeEvent{
       required this.id,
       required this.type,
       required this.duration,
+      required this.otMethod
     }
   );
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -31,6 +30,7 @@ class _EditOvertimeState extends State<EditOvertime> {
   final TextEditingController? _subtypeCtrl = TextEditingController();
   final TextEditingController _typeCtrl = TextEditingController();
   final TextEditingController _noteCtrl = TextEditingController();
+  final TextEditingController _otMethodCtrl = TextEditingController();
 
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   EmployeeBloc _employeeBloc = EmployeeBloc();
@@ -58,6 +58,9 @@ class _EditOvertimeState extends State<EditOvertime> {
     widget.overtimeModel.notes == null
         ? _noteCtrl.text = ""
         : _noteCtrl.text = widget.overtimeModel.notes!;
+    widget.overtimeModel.otMethod == null
+        ? _otMethodCtrl.text = ""
+        : _otMethodCtrl.text = widget.overtimeModel.otMethod!;
     super.initState();
   }
 
@@ -97,6 +100,7 @@ class _EditOvertimeState extends State<EditOvertime> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.2),
       appBar: standardAppBar(
           context, "${AppLocalizations.of(context)!.translate("edit_ot")!}"),
       body: Builder(builder: (context) {
@@ -159,16 +163,16 @@ class _EditOvertimeState extends State<EditOvertime> {
                             // keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                                 suffixIcon: Icon(Icons.arrow_drop_down),
-                                contentPadding: EdgeInsets.all(15),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: new BorderSide(
-                                    width: 1,
-                                  ),
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: new BorderSide(
+                                        color: Colors.grey.shade400)),
+                                enabledBorder: InputBorder.none,
+                                // isDense: true,
+                                contentPadding: const EdgeInsets.only(
+                                  left: 14.0,
                                 ),
-                                isDense: true,
                                 labelText:
                                     "${AppLocalizations.of(context)!.translate("type")!}"),
                             validator: (value) {
@@ -182,24 +186,23 @@ class _EditOvertimeState extends State<EditOvertime> {
                           TextFormField(
                             controller: _usrCtrl,
                             onTap: () {
-                              _employeeBloc
-                                  .add(FetchAllEmployeeStarted());
+                              _employeeBloc.add(FetchAllEmployeeStarted());
                             },
 
                             readOnly: true,
                             // keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                                 suffixIcon: Icon(Icons.arrow_drop_down),
-                                contentPadding: EdgeInsets.all(15),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: new BorderSide(
-                                    width: 1,
-                                  ),
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: new BorderSide(
+                                        color: Colors.grey.shade400)),
+                                enabledBorder: InputBorder.none,
+                                // isDense: true,
+                                contentPadding: const EdgeInsets.only(
+                                  left: 14.0,
                                 ),
-                                isDense: true,
                                 labelText:
                                     "${AppLocalizations.of(context)!.translate("choose_username")!}"),
                             validator: (value) {
@@ -210,22 +213,21 @@ class _EditOvertimeState extends State<EditOvertime> {
                             },
                           ),
                           SizedBox(height: 15),
-                          SizedBox(height: 15),
                           TextFormField(
                             controller: _reasonCtrl,
                             keyboardType: TextInputType.text,
                             maxLines: null,
                             decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(15),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: new BorderSide(
-                                    width: 1,
-                                  ),
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: new BorderSide(
+                                        color: Colors.grey.shade400)),
+                                enabledBorder: InputBorder.none,
+                                // isDense: true,
+                                contentPadding: const EdgeInsets.only(
+                                  left: 14.0,
                                 ),
-                                isDense: true,
                                 labelText:
                                     "${AppLocalizations.of(context)!.translate("reason")!}"),
                             validator: (value) {
@@ -243,16 +245,16 @@ class _EditOvertimeState extends State<EditOvertime> {
                             // minLines: 5,
                             // maxLines: 20,
                             decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(15),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: new BorderSide(
-                                    width: 1,
-                                  ),
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: new BorderSide(
+                                        color: Colors.grey.shade400)),
+                                enabledBorder: InputBorder.none,
+                                // isDense: true,
+                                contentPadding: const EdgeInsets.only(
+                                  left: 14.0,
                                 ),
-                                isDense: true,
                                 labelText:
                                     "${AppLocalizations.of(context)!.translate("duration")!}"),
                             validator: (value) {
@@ -275,16 +277,16 @@ class _EditOvertimeState extends State<EditOvertime> {
                                   Icons.date_range_outlined,
                                   color: Colors.lightBlue,
                                 ),
-                                contentPadding: EdgeInsets.all(15),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: new BorderSide(
-                                    width: 1,
-                                  ),
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: new BorderSide(
+                                        color: Colors.grey.shade400)),
+                                enabledBorder: InputBorder.none,
+                                // isDense: true,
+                                contentPadding: const EdgeInsets.only(
+                                  left: 14.0,
                                 ),
-                                isDense: true,
                                 labelText:
                                     "${AppLocalizations.of(context)!.translate("from_date")!}"),
                             validator: (value) {
@@ -307,16 +309,16 @@ class _EditOvertimeState extends State<EditOvertime> {
                                   Icons.date_range_outlined,
                                   color: Colors.lightBlue,
                                 ),
-                                contentPadding: EdgeInsets.all(15),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: new BorderSide(
-                                    width: 1,
-                                  ),
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: new BorderSide(
+                                        color: Colors.grey.shade400)),
+                                enabledBorder: InputBorder.none,
+                                // isDense: true,
+                                contentPadding: const EdgeInsets.only(
+                                  left: 14.0,
                                 ),
-                                isDense: true,
                                 labelText:
                                     "${AppLocalizations.of(context)!.translate("to_date")!}"),
                             validator: (value) {
@@ -328,20 +330,41 @@ class _EditOvertimeState extends State<EditOvertime> {
                           ),
                           SizedBox(height: 15),
                           TextFormField(
+                            controller: _otMethodCtrl,
+                            keyboardType: TextInputType.number,
+                            // keyboardType: TextInputType.multiline,
+                            // minLines: 5,
+                            // maxLines: 20,
+                            decoration: InputDecoration(
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: new BorderSide(
+                                        color: Colors.grey.shade400)),
+                                enabledBorder: InputBorder.none,
+                                // isDense: true,
+                                contentPadding: const EdgeInsets.only(
+                                  left: 14.0,
+                                ),
+                                labelText:
+                                    "${AppLocalizations.of(context)!.translate("otMethod")!}"),
+                          ),
+                          SizedBox(height: 15),
+                          TextFormField(
                             controller: _noteCtrl,
                             keyboardType: TextInputType.text,
                             maxLines: null,
                             decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(15),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(15.0),
-                                  ),
-                                  borderSide: new BorderSide(
-                                    width: 1,
-                                  ),
+                                fillColor: Colors.grey.shade100,
+                                filled: true,
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: new BorderSide(
+                                        color: Colors.grey.shade400)),
+                                enabledBorder: InputBorder.none,
+                                // isDense: true,
+                                contentPadding: const EdgeInsets.only(
+                                  left: 14.0,
                                 ),
-                                isDense: true,
                                 labelText:
                                     "${AppLocalizations.of(context)!.translate("notes")!}"),
                           ),
@@ -364,7 +387,8 @@ class _EditOvertimeState extends State<EditOvertime> {
                                     String user = "";
                                     // addessdetail = 11.565271/94.6778 so we need to spilt into lat and long
                                     if (_usrCtrl.text !=
-                                        widget.overtimeModel.employeeModel!.name) {
+                                        widget.overtimeModel.employeeModel!
+                                            .name) {
                                       EmployeeModel userModel = _employeeBloc
                                           .emploList
                                           .firstWhere((element) =>
@@ -376,6 +400,7 @@ class _EditOvertimeState extends State<EditOvertime> {
                                     }
 
                                     overtimeBloc.add(UpdateOvertimeStarted(
+                                        otMethod: _otMethodCtrl.text,
                                         id: widget.overtimeModel.id,
                                         type: _typeCtrl.text,
                                         userId: user,
@@ -404,43 +429,4 @@ class _EditOvertimeState extends State<EditOvertime> {
       }),
     );
   }
-
-  // void _showPicker(context) {
-  //   showModalBottomSheet(
-  //       context: context,
-  //       builder: (BuildContext bc) {
-  //         return SafeArea(
-  //           child: Container(
-  //             child: new Wrap(
-  //               children: <Widget>[
-  //                 new ListTile(
-  //                     leading: new Icon(Icons.photo_library),
-  //                     title: new Text('Photo Library'),
-  //                     onTap: () {
-  //                       // _imgFromGallery();
-  //                       Helper.imgFromGallery((image) {
-  //                         setState(() {
-  //                           _image = image;
-  //                         });
-  //                       });
-  //                       Navigator.of(context).pop();
-  //                     }),
-  //                 new ListTile(
-  //                   leading: new Icon(Icons.photo_camera),
-  //                   title: new Text('Camera'),
-  //                   onTap: () {
-  //                     Helper.imgFromCamera((image) {
-  //                       setState(() {
-  //                         _image = image;
-  //                       });
-  //                     });
-  //                     Navigator.of(context).pop();
-  //                   },
-  //                 ),
-  //               ],
-  //             ),
-  //           ),
-  //         );
-  //       });
-  // }
 }

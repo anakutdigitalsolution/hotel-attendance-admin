@@ -1,8 +1,10 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
+
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ class _LeavePageState extends State<LeavePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.2),
       appBar: standardAppBar(context, "Permission Page"),
       body: Container(
         margin: EdgeInsets.only(top: 10, bottom: 10),
@@ -156,289 +159,7 @@ class _WantedBodyState extends State<WantedBody> {
                         child: SingleChildScrollView(
                           child: Column(
                             // addAutomaticKeepAlives: true,
-                            children: [
-                              ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  // padding: EdgeIns
-                                  cacheExtent: 1000,
-                                  itemCount: leaveBloc.leavemodel.length,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                      margin: EdgeInsets.only(
-                                          bottom: 10.0, left: 8.0, right: 8.0),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                                Colors.grey.withOpacity(0.2)),
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 0,
-                                            blurRadius: 3,
-                                            offset: Offset(0,
-                                                0), // changes position of shadow
-                                          ),
-                                        ],
-                                      ),
-                                      child: Container(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Row(
-                                              // mainAxisAlignment:
-                                              //     MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 10),
-                                                  child: Text(
-                                                    "Date :",
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${leaveBloc.leavemodel[index].date}",
-                                                  style: TextStyle(
-                                                      color: Colors.green,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            Row(
-                                              // mainAxisAlignment:
-                                              //     MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 10),
-                                                  child: Text(
-                                                    "Employee name :",
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${leaveBloc.leavemodel[index].employeeModel!.name}",
-                                                  style: TextStyle(
-                                                      color: Colors.green,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                )
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 8),
-                                                  child: Text(
-                                                    "Reason :",
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      "${leaveBloc.leavemodel[index].reason} ",
-                                                      style: TextStyle(
-                                                          color: Colors.red,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    // Text("- "),
-                                                    // Text(
-                                                    //   " ${BlocProvider.of<WantedBloc>(context).wantedList[index].maxPrice}",
-                                                    //   style: TextStyle(
-                                                    //       color: Colors.red,
-                                                    //       fontWeight: FontWeight.bold),
-                                                    // ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 8),
-                                                  child: Text(
-                                                    "Duration :",
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${leaveBloc.leavemodel[index].number}",
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 8),
-                                                  child: Text(
-                                                    "From date :",
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${leaveBloc.leavemodel[index].fromDate}",
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              height: 5.0,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 8),
-                                                  child: Text(
-                                                    "Status :",
-                                                    style: TextStyle(
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "${leaveBloc.leavemodel[index].status}",
-                                                ),
-                                              ],
-                                            ),
-                                            leaveBloc.leavemodel[index]
-                                                        .status ==
-                                                    "pending"
-                                                ? Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      CupertinoButton(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  1.0),
-                                                          color: Colors.blue,
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(Icons.edit),
-                                                            ],
-                                                          ),
-                                                          onPressed: () {
-                                                            _displayTextInputDialog(
-                                                                context,
-                                                                leaveBloc
-                                                                    .leavemodel[
-                                                                        index]
-                                                                    .id);
-                                                            // Navigator.push(
-                                                            //     context,
-                                                            //     MaterialPageRoute(
-                                                            //         builder:
-                                                            //             (con) =>
-                                                            //                 EditLeaveStatus(
-                                                            //                   leaveModel: leaveBloc.leavemodel[index],
-                                                            //                 )));
-                                                          }),
-                                                      SizedBox(
-                                                        width: 5,
-                                                      ),
-                                                      CupertinoButton(
-                                                          padding:
-                                                              EdgeInsets.all(
-                                                                  1.0),
-                                                          color: Colors.red,
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                  Icons.delete),
-                                                            ],
-                                                          ),
-                                                          onPressed: () {
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return AlertDialog(
-                                                                    title: Text(
-                                                                        'Alert'),
-                                                                    content: Text(
-                                                                        "Do want to delete this record?"),
-                                                                    actions: <
-                                                                        Widget>[
-                                                                      FlatButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                        },
-                                                                        child: Text(
-                                                                            'No',
-                                                                            style:
-                                                                                TextStyle(color: Colors.red)),
-                                                                      ),
-                                                                      FlatButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          Navigator.pop(
-                                                                              context);
-                                                                          print(
-                                                                              "id ${leaveBloc.leavemodel[index].id}");
-                                                                          leaveBloc
-                                                                              .add(DeleteLeaveStarted(id: leaveBloc.leavemodel[index].id));
-                                                                        },
-                                                                        child:
-                                                                            Text(
-                                                                          'Yes',
-                                                                          style:
-                                                                              TextStyle(color: Colors.blue),
-                                                                        ),
-                                                                      ),
-                                                                    ],
-                                                                  );
-                                                                });
-                                                          }),
-                                                    ],
-                                                  )
-                                                : leaveBloc.leavemodel[index]
-                                                            .status ==
-                                                        "rejected"
-                                                    ? Container()
-                                                    : Container(),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  })
-                            ],
+                            children: [_buildListItem(leaveBloc.leavemodel)],
                           ),
                         ),
                       )),
@@ -473,6 +194,279 @@ class _WantedBodyState extends State<WantedBody> {
             EasyLoading.showSuccess("Sucess");
           }
         });
+  }
+
+  _buildListItem(List<LeaveModel> leavemodel) {
+    return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        // padding: EdgeIns
+        cacheExtent: 1000,
+        itemCount: leavemodel.length,
+        itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.withOpacity(0.2)),
+              borderRadius: BorderRadius.circular(6.0),
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 0,
+                  blurRadius: 3,
+                  offset: Offset(0, 0), // changes position of shadow
+                ),
+              ],
+            ),
+            child: Container(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    // mainAxisAlignment:
+                    //     MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Text(
+                          "Date :",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      Text(
+                        "${leavemodel[index].date}",
+                        style: TextStyle(
+                            color: Colors.green, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Row(
+                    // mainAxisAlignment:
+                    //     MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Text(
+                          "Employee name :",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      Text(
+                        "${leavemodel[index].employeeModel!.name}",
+                        style: TextStyle(
+                            color: Colors.green, fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Text(
+                          "Reason :",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            "${leavemodel[index].reason} ",
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.bold),
+                          ),
+                          // Text("- "),
+                          // Text(
+                          //   " ${BlocProvider.of<WantedBloc>(context).wantedList[index].maxPrice}",
+                          //   style: TextStyle(
+                          //       color: Colors.red,
+                          //       fontWeight: FontWeight.bold),
+                          // ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  // build expandable
+                  _buildExpenable(leavemodel[index])
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  _buildExpenable(LeaveModel leavemodel) {
+    return ExpandableNotifier(
+        child: Column(
+      children: <Widget>[_expandableItemList(leavemodel)],
+    ));
+  }
+
+  _expandableItemList(LeaveModel leavemodel) {
+    return ScrollOnExpand(
+        scrollOnExpand: true,
+        scrollOnCollapse: false,
+        child: ExpandablePanel(
+          theme: const ExpandableThemeData(
+            headerAlignment: ExpandablePanelHeaderAlignment.center,
+            tapBodyToCollapse: true,
+          ),
+          header: Builder(
+            builder: (c) {
+              var controller = ExpandableController.of(c, required: true)!;
+              return Text(
+                controller.expanded ? "Click to Hide" : "Click to view",
+                style: Theme.of(context).textTheme.bodyText1,
+              );
+            },
+          ),
+          collapsed: Center(),
+          expanded: Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      "Duration :",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Text(
+                    "${leavemodel.number}",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      "From date :",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Text(
+                    "${leavemodel.fromDate}",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      "Status :",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Text(
+                    "${leavemodel.status}",
+                  ),
+                ],
+              ),
+              leavemodel.status == "pending"
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CupertinoButton(
+                            padding: EdgeInsets.all(1.0),
+                            color: Colors.blue,
+                            child: Row(
+                              children: [
+                                Icon(Icons.edit),
+                              ],
+                            ),
+                            onPressed: () {
+                              _displayTextInputDialog(context, leavemodel.id);
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder:
+                              //             (con) =>
+                              //                 EditLeaveStatus(
+                              //                   leaveModel: leaveBloc.leavemodel[index],
+                              //                 )));
+                            }),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        CupertinoButton(
+                            padding: EdgeInsets.all(1.0),
+                            color: Colors.red,
+                            child: Row(
+                              children: [
+                                Icon(Icons.delete),
+                              ],
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Alert'),
+                                      content: Text(
+                                          "Do want to delete this record?"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('No',
+                                              style:
+                                                  TextStyle(color: Colors.red)),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                            print("id ${leavemodel.id}");
+                                            leaveBloc.add(DeleteLeaveStarted(
+                                                id: leavemodel.id));
+                                          },
+                                          child: Text(
+                                            'Yes',
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            }),
+                      ],
+                    )
+                  : leavemodel.status == "rejected"
+                      ? Container()
+                      : Container(),
+            ],
+          ),
+          builder: (_, collapsed, expanded) {
+            return Padding(
+              padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              child: Expandable(
+                collapsed: collapsed,
+                expanded: expanded,
+                theme: const ExpandableThemeData(crossFadePoint: 0),
+              ),
+            );
+          },
+        ));
   }
 
   Future<void> _displayTextInputDialog(BuildContext context, String id) async {

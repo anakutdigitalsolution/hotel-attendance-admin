@@ -3,7 +3,6 @@ import 'package:hotle_attendnce_admin/src/feature/overtime/model/overtime_model.
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
-
 class OverTimeRepository {
   String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider _apiProvider = ApiProvider();
@@ -44,7 +43,7 @@ class OverTimeRepository {
   //     Map body = {
   //       "status": status,
   //       "pay_type": paytype,
-       
+
   //     };
   //     // print(userId);
   //     Response response = await _apiProvider.put(url, body);
@@ -87,24 +86,25 @@ class OverTimeRepository {
   //   }
   // }
   Future<void> addOvertime(
-      {
-      required String userId,
+      {required String userId,
       required String reason,
       required String duration,
       required String fromDate,
       required String notes,
       required String type,
+      required String otMethod,
       required String toDate}) async {
     try {
-     String url = mainUrl + "overtimes/add";
+      String url = mainUrl + "overtimes/add";
       Map body = {
         "reason": reason,
         "from_date": fromDate,
-        "to_date": toDate,
+        "to_date": toDate,  
         "user_id": userId,
         "number": duration,
         "note": notes,
-        "type": type
+        "type": type,
+        "ot_method": otMethod,
       };
       Response response = await _apiProvider.post(url, body, null);
 
@@ -120,18 +120,19 @@ class OverTimeRepository {
       throw e;
     }
   }
+
   Future<void> editOvertime(
-      {
-        required String id,
+      {required String id,
       required String userId,
       required String reason,
       required String duration,
       required String fromDate,
       required String notes,
       required String type,
+      required String otMethod,
       required String toDate}) async {
     try {
-     String url = mainUrl + "overtimes/edit/$id";
+      String url = mainUrl + "overtimes/edit/$id";
       Map body = {
         "reason": reason,
         "from_date": fromDate,
@@ -139,7 +140,8 @@ class OverTimeRepository {
         "user_id": userId,
         "number": duration,
         "note": notes,
-        "type": type
+        "type": type,
+        "ot_method": otMethod,
       };
       print(userId);
       Response response = await _apiProvider.put(url, body);
@@ -156,13 +158,13 @@ class OverTimeRepository {
       throw e;
     }
   }
-  Future<void> deleteOvertime(
-      {
-      required String id,
-     }) async {
+
+  Future<void> deleteOvertime({
+    required String id,
+  }) async {
     try {
-     String url = mainUrl + "overtimes/edit/$id";
-     
+      String url = mainUrl + "overtimes/edit/$id";
+
       Response response = await _apiProvider.delete(url, null);
 
       print(response.statusCode);
@@ -177,7 +179,7 @@ class OverTimeRepository {
       throw e;
     }
   }
-  
+
   // user edit status accept or not , and
   // if accept , return cash or holiday instead
   // Future<void> editStatusOvertime({
@@ -202,9 +204,6 @@ class OverTimeRepository {
   //   }
   // }
 
-
-
-  
   // Future<void> editOvertime(
   //     {required String id,
   //     required String userId,

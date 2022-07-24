@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,12 +6,13 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:hotle_attendnce_admin/src/appLocalizations.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/overtime/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/overtime/model/overtime_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:flutter_picker/flutter_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:expandable/expandable.dart';
 
 OverTimeBloc overtimeBloc = OverTimeBloc();
 
@@ -22,18 +22,16 @@ class Overtimepage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:standardAppBar(context, "Overtime page"),
-       floatingActionButton: Container(
-              child: FloatingActionButton(
-                  backgroundColor: Colors.blue,
-                  child: Icon(Icons.add),
-                  elevation: 0,
-                  onPressed: () {
-                    Navigator.pushNamed(context, addOvertime);
-                  }),
-            ),
-      // appBar: standardAppBar(
-      //     context, "${AppLocalizations.of(context)!.translate("leave_page")!}"),
+      appBar: standardAppBar(context, "Overtime page"),
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+            backgroundColor: Colors.blue,
+            child: Icon(Icons.add),
+            elevation: 0,
+            onPressed: () {
+              Navigator.pushNamed(context, addOvertime);
+            }),
+      ),
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10), child: Body()),
     );
@@ -49,7 +47,7 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   final RefreshController _refreshController = RefreshController();
-    List<String> _mylist = ['Approve', 'Reject'];
+  List<String> _mylist = ['Approve', 'Reject'];
   TextEditingController _textFieldController = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
 
@@ -60,18 +58,15 @@ class _BodyState extends State<Body> {
     super.initState();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer(
         bloc: overtimeBloc,
         builder: (context, state) {
           print(state);
-          //  return Center(child: CircularProgressIndicator());
+
           if (state is InitailizingOvertime) {
             return Center(
-              // child: CircularProgressIndicator(),
               child: Lottie.asset('assets/animation/loader.json',
                   width: 200, height: 200),
             );
@@ -81,7 +76,6 @@ class _BodyState extends State<Body> {
               child: Text(state.error.toString()),
             );
           } else {
-            // print(_reportBloc.dateRange!);
             return Column(
               children: [
                 // user condition to avoid null and cause error while data is fetching
@@ -129,11 +123,13 @@ class _BodyState extends State<Body> {
                           },
                         ),
                       ),
+
                 Container(
                   width: double.infinity,
                   height: 10,
                   color: Colors.transparent,
                 ),
+
                 overtimeBloc.myovertime.length == 0
                     ? Container(
                         child: Text("No data"),
@@ -159,325 +155,7 @@ class _BodyState extends State<Body> {
                           child: Column(
                             // addAutomaticKeepAlives: true,
                             children: [
-                              ListView.builder(
-                                cacheExtent: 1000,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                // padding: EdgeInsets.only(left: 10, top: 10, right: 0),
-
-                                itemCount:  overtimeBloc.myovertime.length,
-                                itemBuilder: (context, index) {
-                                  return Container(
-                                    margin: EdgeInsets.only(
-                                        bottom: 10.0, left: 8.0, right: 8.0),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey.withOpacity(0.2)),
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      color: Colors.white,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 0,
-                                          blurRadius: 3,
-                                          offset: Offset(0,
-                                              0), // changes position of shadow
-                                        ),
-                                      ],
-                                    ),
-                                    child: Container(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Row(
-                                            // mainAxisAlignment:
-                                            //     MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10),
-                                                child: Text(
-                                                  "${AppLocalizations.of(context)!.translate("date")!} : ",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Text(
-                                                "${ overtimeBloc.myovertime[index].date}",
-                                                style: TextStyle(
-                                                    color: Colors.green,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Row(
-                                            // mainAxisAlignment:
-                                            //     MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10),
-                                                child: Text(
-                                                  "${AppLocalizations.of(context)!.translate("employee")!} : ",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Text(
-                                                "${ overtimeBloc.myovertime[index].employeeModel!.name}",
-                                                style: TextStyle(
-                                                    color: Colors.green,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              )
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8),
-                                                child: Text(
-                                                  "${AppLocalizations.of(context)!.translate("reason")!} : ",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "${ overtimeBloc.myovertime[index].reason} ",
-                                                    style: TextStyle(
-                                                        color: Colors.red,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  // Text("- "),
-                                                  // Text(
-                                                  //   " ${BlocProvider.of<WantedBloc>(context).wantedList[index].maxPrice}",
-                                                  //   style: TextStyle(
-                                                  //       color: Colors.red,
-                                                  //       fontWeight: FontWeight.bold),
-                                                  // ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8),
-                                                child: Text(
-                                                  "${AppLocalizations.of(context)!.translate("duration")!} : ",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Text(
-                                                "${ overtimeBloc.myovertime[index].duration}",
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8),
-                                                child: Text(
-                                                  "${AppLocalizations.of(context)!.translate("type_ot")!} : ",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Text(
-                                                "${ overtimeBloc.myovertime[index].type}",
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8),
-                                                child: Text(
-                                                  "${AppLocalizations.of(context)!.translate("from_date")!} : ",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Text(
-                                                "${ overtimeBloc.myovertime[index].fromDate}",
-                                              ),
-                                            ],
-                                          ),
-                                          
-                                           SizedBox(
-                                            height: 5.0,
-                                          ),
-                                       overtimeBloc.myovertime[index].paytype==null?Container():   Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8),
-                                                child: Text(
-                                                  "${AppLocalizations.of(context)!.translate("pay_type")!} : ",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Text(
-                                                "${overtimeBloc.myovertime[index].paytype}",
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8),
-                                                child: Text(
-                                                  "${AppLocalizations.of(context)!.translate("to_date")!} : ",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Text(
-                                                "${ overtimeBloc.myovertime[index].toDate}",
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: 5.0,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 8),
-                                                child: Text(
-                                                  "${AppLocalizations.of(context)!.translate("status")!} : ",
-                                                  style: TextStyle(
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Text(
-                                                "${ overtimeBloc.myovertime[index].status}",
-                                                style: TextStyle(
-                                                    color: Colors.red),
-                                              ),
-                                            ],
-                                          ),
-                                          overtimeBloc.myovertime[index]
-                                                      .status ==
-                                                  "pending"
-                                              ? Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    CupertinoButton(
-                                                        padding:
-                                                            EdgeInsets.all(1.0),
-                                                        color: Colors.blue,
-                                                        child: Row(
-                                                          children: [
-                                                            Icon(Icons.edit),
-                                                          ],
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.pushNamed(context, editOvertime,arguments: overtimeBloc.myovertime[index]);
-                                                        }),
-                                                    SizedBox(
-                                                      width: 5,
-                                                    ),
-                                                    CupertinoButton(
-                                                        padding:
-                                                            EdgeInsets.all(1.0),
-                                                        color: Colors.red,
-                                                        child: Row(
-                                                          children: [
-                                                            Icon(Icons.delete),
-                                                          ],
-                                                        ),
-                                                        onPressed: () {
-                                                          showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return AlertDialog(
-                                                                  title: Text(
-                                                                      'Alert'),
-                                                                  content: Text(
-                                                                      "Do want to delete this record?"),
-                                                                  actions: <
-                                                                      Widget>[
-                                                                    FlatButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      },
-                                                                      child: Text(
-                                                                          'No',
-                                                                          style:
-                                                                              TextStyle(color: Colors.red)),
-                                                                    ),
-                                                                    FlatButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        print(
-                                                                            "id ${ overtimeBloc.myovertime[index].id}");
-                                                                        overtimeBloc
-                                                                            .add(DeleteOvertimeStarted(id:  overtimeBloc.myovertime[index].id));
-                                                                        Navigator.pop(
-                                                                            context);
-                                                                      },
-                                                                      child:
-                                                                          Text(
-                                                                        'Yes',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.blue),
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                );
-                                                              });
-                                                        }),
-                                                  ],
-                                                )
-                                              :  overtimeBloc.myovertime[index]
-                                                          .status ==
-                                                      "rejected"
-                                                  ? Container()
-                                                  : Container(),
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
+                              _buildListItem(overtimeBloc.myovertime),
                             ],
                           ),
                         ),
@@ -509,6 +187,327 @@ class _BodyState extends State<Body> {
             EasyLoading.showSuccess("Sucess");
           }
         });
+  }
+
+  _buildListItem(List<OvertimeModel> overtime) {
+    return ListView.builder(
+      cacheExtent: 1000,
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      // padding: EdgeInsets.only(left: 10, top: 10, right: 0),
+
+      itemCount: overtime.length,
+      itemBuilder: (context, index) {
+        return Container(
+          margin: EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.withOpacity(0.2)),
+            borderRadius: BorderRadius.circular(6.0),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 0,
+                blurRadius: 3,
+                offset: Offset(0, 0), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Container(
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  // mainAxisAlignment:
+                  //     MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Text(
+                        "${AppLocalizations.of(context)!.translate("date")!} : ",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    Text(
+                      "${overtime[index].date}",
+                      style: TextStyle(
+                          color: Colors.green, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Row(
+                  // mainAxisAlignment:
+                  //     MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Text(
+                        "${AppLocalizations.of(context)!.translate("employee")!} : ",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    Text(
+                      "${overtime[index].employeeModel!.name}",
+                      style: TextStyle(
+                          color: Colors.green, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: Text(
+                        "${AppLocalizations.of(context)!.translate("reason")!} : ",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "${overtime[index].reason} ",
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                        // Text("- "),
+                        // Text(
+                        //   " ${BlocProvider.of<WantedBloc>(context).wantedList[index].maxPrice}",
+                        //   style: TextStyle(
+                        //       color: Colors.red,
+                        //       fontWeight: FontWeight.bold),
+                        // ),
+                      ],
+                    ),
+                  ],
+                ),
+                // expenable
+                SizedBox(
+                  height: 5.0,
+                ),
+                _buildExpenable(overtime[index])
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  _buildExpenable(OvertimeModel overtime) {
+    return ExpandableNotifier(
+        child: Column(
+      children: <Widget>[_expandableItemList(overtime)],
+    ));
+  }
+
+  _expandableItemList(OvertimeModel overtime) {
+    return ScrollOnExpand(
+        scrollOnExpand: true,
+        scrollOnCollapse: false,
+        child: ExpandablePanel(
+          theme: const ExpandableThemeData(
+            headerAlignment: ExpandablePanelHeaderAlignment.center,
+            tapBodyToCollapse: true,
+          ),
+          header: Builder(
+            builder: (c) {
+              var controller = ExpandableController.of(c, required: true)!;
+              return Text(
+                controller.expanded ? "Click to Hide" : "Click to view",
+                style: Theme.of(context).textTheme.bodyText1,
+              );
+            },
+          ),
+          collapsed: Center(),
+          expanded: Column(
+            children: [
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      "${AppLocalizations.of(context)!.translate("duration")!} : ",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Text(
+                    "${overtime.duration}",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      "${AppLocalizations.of(context)!.translate("type_ot")!} : ",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Text(
+                    "${overtime.type}",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      "${AppLocalizations.of(context)!.translate("from_date")!} : ",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Text(
+                    "${overtime.fromDate}",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              overtime.paytype == null
+                  ? Container()
+                  : Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Text(
+                            "${AppLocalizations.of(context)!.translate("pay_type")!} : ",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        Text(
+                          "${overtime.paytype}",
+                        ),
+                      ],
+                    ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      "${AppLocalizations.of(context)!.translate("to_date")!} : ",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Text(
+                    "${overtime.toDate}",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      "${AppLocalizations.of(context)!.translate("status")!} : ",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Text(
+                    "${overtime.status}",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ],
+              ),
+              overtime.payStatus == "pending"
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        CupertinoButton(
+                            padding: EdgeInsets.all(1.0),
+                            color: Colors.blue,
+                            child: Row(
+                              children: [
+                                Icon(Icons.edit),
+                              ],
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, editOvertime,
+                                  arguments: overtime);
+                            }),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        CupertinoButton(
+                            padding: EdgeInsets.all(1.0),
+                            color: Colors.red,
+                            child: Row(
+                              children: [
+                                Icon(Icons.delete),
+                              ],
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text('Alert'),
+                                      content: Text(
+                                          "Do want to delete this record?"),
+                                      actions: <Widget>[
+                                        FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text('No',
+                                              style:
+                                                  TextStyle(color: Colors.red)),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () {
+                                            print("id ${overtime.id}");
+                                            overtimeBloc.add(
+                                                DeleteOvertimeStarted(
+                                                    id: overtime.id));
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            'Yes',
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            }),
+                      ],
+                    )
+                  : Container(),
+            ],
+          ),
+          builder: (_, collapsed, expanded) {
+            return Padding(
+              padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+              child: Expandable(
+                collapsed: collapsed,
+                expanded: expanded,
+                theme: const ExpandableThemeData(crossFadePoint: 0),
+              ),
+            );
+          },
+        ));
   }
 
   showPickerDateRange(BuildContext context) {

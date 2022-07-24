@@ -75,7 +75,7 @@ class _OperationPageState extends State<OperationPage> {
         "iconColor": Colors.purple[300],
         "image": "assets/icon/calendar.png",
         "onPressed": () {
-          Navigator.pushNamed(context, leavetype);
+          Navigator.pushNamed(context, timetable);
         }
       },
       {
@@ -103,7 +103,7 @@ class _OperationPageState extends State<OperationPage> {
         }
       },
       {
-        "name":"${AppLocalizations.of(context)!.translate("setting")!}",
+        "name": "${AppLocalizations.of(context)!.translate("setting")!}",
         "iconColor": Colors.redAccent[200],
         "image": "assets/icon/setting.png",
         "onPressed": () {

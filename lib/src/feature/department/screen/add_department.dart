@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hotle_attendnce_admin/src/feature/department/bloc/department_bloc.dart';
+
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
@@ -14,10 +14,11 @@ import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/working_day_s
 import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
+
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
+import '../../../appLocalizations.dart';
 import 'department_page.dart';
 
 class AddDepartment extends StatefulWidget {
@@ -31,7 +32,7 @@ class AddDepartment extends StatefulWidget {
 
 class _AddDepartmentState extends State<AddDepartment> {
   LocationBloc _locationBloc = LocationBloc();
-  // GroupBloc _groupBloc = GroupBloc();
+
   WorkingDayBloc _workingDayBloc = WorkingDayBloc();
   EmployeeBloc _employeeBloc = EmployeeBloc();
   final TextEditingController _reasonCtrl = TextEditingController();
@@ -44,7 +45,8 @@ class _AddDepartmentState extends State<AddDepartment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Add Department"),
+      appBar: standardAppBar(context,
+          "${AppLocalizations.of(context)!.translate("add_department")!}"),
       body: Builder(builder: (context) {
         return BlocListener(
             bloc: departmentBlc,
@@ -75,14 +77,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                 }
                 if (state is FetchedWorkingDay) {
                   EasyLoading.dismiss();
-                  //  customModal(
-                  //     context,
-                  //     _workingDayBloc.departmentList
-                  //         .map((e) =>
-                  //             "workday ${e.workingDay}")
-                  //         .toList(), (value) {
-                  //   _groupIdCtrl.text = value;
-                  // });
+
                   customModal(
                       context,
                       _workingDayBloc.departmentList
@@ -147,20 +142,19 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   controller: _reasonCtrl,
                                   keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
-                                      labelText: "Department name"),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      labelText:
+                                          "${AppLocalizations.of(context)!.translate("name")!}"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return 'Department name';
+                                      return 'Name is required';
                                     }
                                     return null;
                                   },
@@ -176,17 +170,16 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   // keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
-                                      labelText: "Choose work days  "),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      labelText:
+                                          "${AppLocalizations.of(context)!.translate("choose_workday")!}"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'workday is required.';
@@ -205,17 +198,16 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   // keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
-                                      labelText: "Choose location  "),
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      labelText:
+                                          "${AppLocalizations.of(context)!.translate("choose_location")!}"),
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'location is required.';
@@ -234,23 +226,16 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   // keyboardType: TextInputType.text,
                                   decoration: InputDecoration(
                                       suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
-                                      labelText: "Choose manager"),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'location is required.';
-                                  //   }
-                                  //   return null;
-                                  // },
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      labelText:
+                                          "${AppLocalizations.of(context)!.translate("choose_manager")!}"),
                                 ),
                                 SizedBox(height: 15),
                                 TextFormField(
@@ -258,30 +243,24 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   keyboardType: TextInputType.text,
                                   maxLines: null,
                                   decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.all(15),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0),
-                                        ),
-                                        borderSide: new BorderSide(
-                                          width: 1,
-                                        ),
+                                      contentPadding: const EdgeInsets.only(
+                                        left: 14.0,
                                       ),
-                                      isDense: true,
-                                      labelText: "Notes"),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'Department name';
-                                  //   }
-                                  //   return null;
-                                  // },
+                                      fillColor: Colors.grey.shade100,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderSide: new BorderSide(
+                                              color: Colors.grey.shade400)),
+                                      labelText:
+                                          "${AppLocalizations.of(context)!.translate("notes")!}"),
                                 ),
                                 // SizedBox(height: 15),
                                 SizedBox(
                                     height:
                                         MediaQuery.of(context).size.height / 4),
                                 standardBtn(
-                                    title: "Submit",
+                                    title:
+                                        "${AppLocalizations.of(context)!.translate("submit")!}",
                                     onTap: () {
                                       if (_formKey!.currentState!.validate()) {
                                         String managerId = "";

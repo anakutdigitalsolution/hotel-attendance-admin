@@ -1,16 +1,16 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
-
+import 'package:hotle_attendnce_admin/src/shared/widget/delete_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
-import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'edit_department.dart';
+import '../../../appLocalizations.dart';
+
 
 DepartmentBlc departmentBlc = DepartmentBlc();
 
@@ -26,7 +26,8 @@ class _DepartmentPageState extends State<DepartmentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.2),
-      appBar: standardAppBar(context, "Department Page"),
+      appBar: standardAppBar(
+          context, "${AppLocalizations.of(context)!.translate("department")!}"),
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10),
           child: DepartmentBody()),
@@ -61,8 +62,6 @@ class _DepartmentBodyState extends State<DepartmentBody> {
 
   @override
   Widget build(BuildContext context) {
-    //  BlocProvider.of<WantedBloc>(context).add(FetchWantedStarted());
-
     return BlocConsumer(
       bloc: departmentBlc,
       listener: (context, state) {
@@ -109,13 +108,6 @@ class _DepartmentBodyState extends State<DepartmentBody> {
             onLoading: () {
               departmentBlc.add(FetchDepartmentStarted());
               _refreshController.loadComplete();
-              // if (departmentBlc.state
-              //     is EndOfDepartmentList) {
-              // } else {
-              //   // BlocProvider.of<ProductListingBloc>(context)
-              //   //     .add(FetchProductListStarted(arg: widget.category.id));
-              // }
-              // BlocProvider.of<LeaveBloc>(context).add(FetchLeaveStarted());
             },
             enablePullDown: true,
             enablePullUp: true,
@@ -129,8 +121,6 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                       bottom: 10.0,
                     ),
                     decoration: BoxDecoration(
-                      // border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                      // borderRadius: BorderRadius.circular(6.0),
                       color: Colors.white,
                       // boxShadow: [
                       //   BoxShadow(
@@ -153,7 +143,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Text(
-                                  "Name :",
+                                  "${AppLocalizations.of(context)!.translate("name")!} :",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -172,13 +162,13 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Text(
-                                  "Manager :",
+                                  "${AppLocalizations.of(context)!.translate("manager")!} :",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
                               departmentBlc.departmentList[index].managerName ==
                                       null
-                                  ? Text("None")
+                                  ? Text("")
                                   : Text(
                                       "${departmentBlc.departmentList[index].managerName}",
                                       style: TextStyle(
@@ -194,7 +184,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Text(
-                                  "Workday :",
+                                  "${AppLocalizations.of(context)!.translate("workday")!} :",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -217,7 +207,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 10),
                                 child: Text(
-                                  "Location :",
+                                  "${AppLocalizations.of(context)!.translate("location")!} :",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -244,13 +234,6 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                     Navigator.pushNamed(context, editDepartment,
                                         arguments: departmentBlc
                                             .departmentList[index]);
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (con) => EditDepartment(
-                                    //               departmentModel: departmentBlc
-                                    //                   .departmentList[index],
-                                    //             )));
                                   }),
                               SizedBox(
                                 width: 5,
@@ -264,42 +247,17 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                     ],
                                   ),
                                   onPressed: () {
-                                    showDialog(
+                                    deleteDialog(
                                         context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            title: Text('Alert'),
-                                            content: Text(
-                                                "Do want to delete this record?"),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Text('No',
-                                                    style: TextStyle(
-                                                        color: Colors.red)),
-                                              ),
-                                              FlatButton(
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                  print(
-                                                      "id ${departmentBlc.departmentList[index].id}");
-                                                  departmentBlc.add(
-                                                      DeleteDepartmentStarted(
-                                                          id: departmentBlc
-                                                              .departmentList[
-                                                                  index]
-                                                              .id));
-                                                },
-                                                child: Text(
-                                                  'Yes',
-                                                  style: TextStyle(
-                                                      color: Colors.blue),
-                                                ),
-                                              ),
-                                            ],
-                                          );
+                                        onPress: () {
+                                          Navigator.pop(context);
+                                          print(
+                                              "id ${departmentBlc.departmentList[index].id}");
+                                          departmentBlc.add(
+                                              DeleteDepartmentStarted(
+                                                  id: departmentBlc
+                                                      .departmentList[index]
+                                                      .id));
                                         });
                                   }),
                             ],

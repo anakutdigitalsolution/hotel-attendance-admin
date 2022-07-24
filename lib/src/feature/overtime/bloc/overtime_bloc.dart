@@ -203,18 +203,19 @@ class OverTimeBloc extends Bloc<OverTimeEvent, OverTimeState> {
       yield AddingOvertime();
       try {
         await _overTimeRepository.addOvertime(
-             userId: event.userId,
+            userId: event.userId,
             reason: event.reason,
             duration: event.duration,
             fromDate: event.fromDate,
             notes: event.notes,
             type: event.type,
+            otMethod: event.otMethod,
             toDate: event.toDate);
         yield AddedOvertime();
         yield FetchingOvertime();
         myovertime.clear();
-        page =1;
-         dateRange = "This month";
+        page = 1;
+        dateRange = "This month";
         setEndDateAndStartDate();
         List<OvertimeModel> overtime = await _overTimeRepository.getOvertime(
             page: page,
@@ -233,19 +234,20 @@ class OverTimeBloc extends Bloc<OverTimeEvent, OverTimeState> {
       yield AddingOvertime();
       try {
         await _overTimeRepository.editOvertime(
-          id: event.id,
-             userId: event.userId,
+            id: event.id,
+            userId: event.userId,
             reason: event.reason,
             duration: event.duration,
             fromDate: event.fromDate,
             notes: event.notes,
             type: event.type,
+            otMethod: event.otMethod,
             toDate: event.toDate);
         yield AddedOvertime();
         yield FetchingOvertime();
         myovertime.clear();
-        page =1;
-         dateRange = "This month";
+        page = 1;
+        dateRange = "This month";
         setEndDateAndStartDate();
         List<OvertimeModel> overtime = await _overTimeRepository.getOvertime(
             page: page,
@@ -265,12 +267,12 @@ class OverTimeBloc extends Bloc<OverTimeEvent, OverTimeState> {
       try {
         await _overTimeRepository.deleteOvertime(
           id: event.id,
-           );
+        );
         yield AddedOvertime();
         yield FetchingOvertime();
         myovertime.clear();
-        page =1;
-         dateRange = "This month";
+        page = 1;
+        dateRange = "This month";
         setEndDateAndStartDate();
         List<OvertimeModel> overtime = await _overTimeRepository.getOvertime(
             page: page,

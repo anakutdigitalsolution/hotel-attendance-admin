@@ -13,6 +13,11 @@ class OvertimeModel {
   final String? paytype;
   final String? type;
   final String? notes;
+  final String? otRate;
+  final String? otHour;
+  final String? otMethod;
+  final String? totalOt;
+   final String? payStatus;
   final EmployeeModel? employeeModel;
   factory OvertimeModel.fromJson(Map<String, dynamic> json) {
     return OvertimeModel(
@@ -25,13 +30,17 @@ class OvertimeModel {
         userId: json["user_id"].toString(),
         type: json["type"],
         paytype: json["pay_type"],
+        payStatus: json["pay_status"],
         reason: json["reason"],
+        otRate: json["ot_rate"].toString(),
+        otHour: json["ot_hour"].toString(),
+        otMethod: json["ot_method"].toString(),
+        totalOt: json["total_ot"].toString(),
         employeeModel: EmployeeModel.fromJson(json["user"]),
         date: json["date"]);
   }
   OvertimeModel(
       {required this.id,
-      // required this.name,
       required this.duration,
       required this.fromDate,
       required this.toDate,
@@ -42,5 +51,10 @@ class OvertimeModel {
       required this.paytype,
       required this.reason,
       required this.employeeModel,
-      required this.date});
+      required this.date,
+      required this.otRate,
+      required this.otHour,
+      required this.otMethod,
+      required this.payStatus,
+      required this.totalOt});
 }

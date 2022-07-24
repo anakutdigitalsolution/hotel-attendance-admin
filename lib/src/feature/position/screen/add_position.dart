@@ -8,6 +8,7 @@ import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
+import '../../../appLocalizations.dart';
 import 'position_page.dart';
 
 class AddPosition extends StatefulWidget {
@@ -24,13 +25,15 @@ class _AddPositionState extends State<AddPosition> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Add Position"),
+      backgroundColor: Colors.grey.withOpacity(0.2),
+      appBar: standardAppBar(context,
+          "${AppLocalizations.of(context)!.translate("add_position")!}"),
       body: Builder(builder: (context) {
         return BlocListener(
           bloc: positionBlc,
           listener: (context, state) {
             if (state is AddingPosition) {
-             EasyLoading.show(status: "loading....");
+              EasyLoading.show(status: "loading....");
             }
             if (state is ErrorAddingPosition) {
               Navigator.pop(context);
@@ -57,20 +60,20 @@ class _AddPositionState extends State<AddPosition> {
                         controller: _reasonCtrl,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Position name"),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("name")!}"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Type name';
+                            return 'name is required';
                           }
                           return null;
                         },
@@ -80,32 +83,35 @@ class _AddPositionState extends State<AddPosition> {
                         controller: _typeCtrl,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Type "),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("type")!} "),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'type';
+                            return 'type is required';
                           }
                           return null;
                         },
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height / 4),
-                      standardBtn(title: "Submit",onTap: (){
-                         if (_formKey!.currentState!.validate()) {
-                                positionBlc.add(AddPositionStarted(
-                                    name: _reasonCtrl.text,
-                                    type: _typeCtrl.text));
-                              }
-                      })
+                      standardBtn(
+                          title:
+                              "${AppLocalizations.of(context)!.translate("submit")!}",
+                          onTap: () {
+                            if (_formKey!.currentState!.validate()) {
+                              positionBlc.add(AddPositionStarted(
+                                  name: _reasonCtrl.text,
+                                  type: _typeCtrl.text));
+                            }
+                          })
                       // Container(
                       //   margin:
                       //       EdgeInsets.only(left: 30, right: 30, bottom: 10),
@@ -118,7 +124,7 @@ class _AddPositionState extends State<AddPosition> {
                       //       ),
                       //       color: Colors.blue,
                       //       onPressed: () {
-                             
+
                       //       },
                       //       padding: EdgeInsets.symmetric(vertical: 10),
                       //       child: Text(

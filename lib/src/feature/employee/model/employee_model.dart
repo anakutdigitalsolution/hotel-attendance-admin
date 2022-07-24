@@ -22,6 +22,9 @@ class EmployeeModel {
   final String? card;
 
   final String? type;
+  final String? meritalStatus;
+  final String? coupleJob;
+  final String? child;
 
   final PositionModel? positionModel;
   final DepartmentModel? departmentModel;
@@ -41,6 +44,9 @@ class EmployeeModel {
       card: json["card_number"],
       officeTel: json["office_tel"],
       no: json["no"],
+      meritalStatus: json["merital_status"],
+      coupleJob: json["couple_job"],
+      child: json["number_of_child"].toString(),
       email: json["email"],
       type: json["em_type"].toString(),
       positionId: json["position_id"].toString(),
@@ -73,6 +79,9 @@ class EmployeeModel {
       required this.type,
       required this.positionModel,
       required this.departmentModel,
+      required this.meritalStatus,
+      required this.coupleJob,
+      required this.child,
       required this.checkinStatus,
       required this.roleModel,
       required this.checkinId});

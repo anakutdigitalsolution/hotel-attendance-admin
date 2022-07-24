@@ -83,6 +83,9 @@ class EmployeeRepository {
     // required String roleId,
     required String phoneNumber,
     required String address,
+    required String meritalStatus,
+    required String coupleJob,
+    required String child,
   }) async {
     try {
       String url = mainUrl + "employees/add";
@@ -100,6 +103,10 @@ class EmployeeRepository {
         // "role_id": roleId,
         "phone": phoneNumber,
         "address": address,
+        "merital_status": meritalStatus,
+        // "role_id": roleId,
+        "number_of_child": child,
+        "couple_job": coupleJob,
       };
       Response response = await apiProvider.post(url, body, null);
       print(response.statusCode);
@@ -127,6 +134,9 @@ class EmployeeRepository {
     required String departmentId,
     required String phoneNumber,
     required String address,
+    required String meritalStatus,
+    required String coupleJob,
+    required String child,
     // required String roleId,
   }) async {
     try {
@@ -142,6 +152,10 @@ class EmployeeRepository {
         "department_id": departmentId,
         "employee_phone": phoneNumber,
         "address": address,
+        "merital_status": meritalStatus,
+        // "role_id": roleId,
+        "number_of_child": child,
+        "couple_job": coupleJob,
         // "role_id": roleId,
       };
       Response response = await apiProvider.put(url, body);

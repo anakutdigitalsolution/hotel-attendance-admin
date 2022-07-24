@@ -127,7 +127,9 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
             password: event.password,
             positionId: event.positionId,
             departmentId: event.departmentId,
-            // storeId: event.storeId,
+            meritalStatus: event.meritalStatus,
+             coupleJob: event.coupleJob,
+            child: event.child,
             phoneNumber: event.phoneNumber,
             address: event.address);
         yield AddedEmployee();
@@ -165,11 +167,12 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
             email: event.email,
             officeTel: event.officeTel,
             img: image!,
-            // username: event.username,
-            // password: event.password,
+           
             positionId: event.positionId,
             departmentId: event.departmentId,
-            // storeId: event.storeId,
+            meritalStatus: event.meritalStatus,
+             coupleJob: event.coupleJob,
+            child: event.child,
             phoneNumber: event.phoneNumber,
             address: event.address);
         yield AddedEmployee();
