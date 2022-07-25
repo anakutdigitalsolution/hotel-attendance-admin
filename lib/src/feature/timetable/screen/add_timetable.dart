@@ -6,6 +6,7 @@ import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
+import '../../../appLocalizations.dart';
 import 'timetable_page.dart';
 import 'widget/time_instruction.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -65,7 +66,8 @@ class _AddTimetableState extends State<AddTimetable> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Add Timetable"),
+      appBar: standardAppBar(context,
+          "${AppLocalizations.of(context)!.translate("add_timetable")!}"),
       body: Builder(builder: (context) {
         return BlocListener(
           bloc: timetableBloc,
@@ -97,20 +99,20 @@ class _AddTimetableState extends State<AddTimetable> {
                         controller: _reasonCtrl,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Timetable name"),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("name")!}"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Timetalbe name';
+                            return 'Timetable is required';
                           }
                           return null;
                         },
@@ -127,20 +129,20 @@ class _AddTimetableState extends State<AddTimetable> {
                               Icons.timer_sharp,
                               color: Colors.blue,
                             ),
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "On duty"),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("time_in")!}"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'On duty';
+                            return 'Time in is required';
                           }
                           return null;
                         },
@@ -158,20 +160,20 @@ class _AddTimetableState extends State<AddTimetable> {
                               Icons.timer_sharp,
                               color: Colors.blue,
                             ),
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Off duty"),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("time_out")!}"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Off duty';
+                            return 'Time out required';
                           }
                           return null;
                         },
@@ -181,50 +183,39 @@ class _AddTimetableState extends State<AddTimetable> {
                         controller: _lateMnCtrl,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Late minutes"),
-                        // validator: (value) {
-                        //   if (value!.isEmpty) {
-                        //     return 'Off duty';
-                        //   }
-                        //   return null;
-                        // },
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("late_minute")!}"),
                       ),
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _earlyMnCtrl,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Early minutes"),
-                        // validator: (value) {
-                        //   if (value!.isEmpty) {
-                        //     return 'Off duty';
-                        //   }
-                        //   return null;
-                        // },
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("early_leave")!}"),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height / 6),
                       standardBtn(
-                          title: "Submit",
+                          title:
+                              "${AppLocalizations.of(context)!.translate("submit")!}",
                           onTap: () {
                             if (_formKey!.currentState!.validate()) {
                               print(_lateMnCtrl.text);

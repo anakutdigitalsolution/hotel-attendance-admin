@@ -112,28 +112,7 @@ class _AddPositionState extends State<AddPosition> {
                                   type: _typeCtrl.text));
                             }
                           })
-                      // Container(
-                      //   margin:
-                      //       EdgeInsets.only(left: 30, right: 30, bottom: 10),
-                      //   height: 50,
-                      //   width: double.infinity,
-                      //   child: FlatButton(
-                      //       shape: RoundedRectangleBorder(
-                      //         borderRadius: BorderRadius.circular(20),
-                      //         // side: BorderSide(color: Colors.red)
-                      //       ),
-                      //       color: Colors.blue,
-                      //       onPressed: () {
-
-                      //       },
-                      //       padding: EdgeInsets.symmetric(vertical: 10),
-                      //       child: Text(
-                      //         "Submit",
-                      //         // AppLocalizations.of(context)!.translate("submit")!,
-                      //         textScaleFactor: 1.2,
-                      //         style: TextStyle(color: Colors.white),
-                      //       )),
-                      // ),
+                     
                     ],
                   ),
                 ),

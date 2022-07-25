@@ -69,7 +69,8 @@ class _BodyState extends State<Body> {
           } else {
             if (locationBloc.departmentList.length == 0) {
               return Center(
-                child: Text("No Data"),
+                child: Text(
+                    "${AppLocalizations.of(context)!.translate("no_data")!}"),
               );
             }
             print("length ${locationBloc.departmentList.length}");

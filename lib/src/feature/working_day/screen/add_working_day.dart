@@ -7,6 +7,7 @@ import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
+import '../../../appLocalizations.dart';
 import 'widget/instruction.dart';
 
 class AddWorkingDay extends StatefulWidget {
@@ -27,7 +28,9 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Add Working day"),
+      backgroundColor: Colors.grey.withOpacity(0.2),
+      appBar: standardAppBar(
+          context, "${AppLocalizations.of(context)!.translate("workday")!}"),
       body: Builder(builder: (context) {
         return BlocListener(
           bloc: workingDayBloc,
@@ -59,20 +62,20 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                         controller: _nameCtrl,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Working day name"),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("name")!}"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Working day name is required';
+                            return 'Workday name is required';
                           }
                           return null;
                         },
@@ -82,20 +85,20 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                         controller: _workingdayCtrl,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Working day"),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("workday")!}"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'working day is required';
+                            return 'Working day is required';
                           }
                           return null;
                         },
@@ -105,20 +108,20 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                         controller: _offdayCtrl,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Off day is required"),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("off_day")!}"),
                         validator: (value) {
                           if (value!.isEmpty) {
-                            return 'Off day is required';
+                            return 'Day off is required';
                           }
                           return null;
                         },
@@ -129,29 +132,22 @@ class _AddWorkingDayState extends State<AddWorkingDay> {
                         keyboardType: TextInputType.text,
                         maxLines: null,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Notes"),
-                        // validator: (value) {
-                        //   if (value!.isEmpty) {
-                        //     return 'Off duty';
-                        //   }
-                        //   return null;
-                        // },
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("notes")!}"),
                       ),
-                      // SizedBox(height: 15),
-
                       SizedBox(height: MediaQuery.of(context).size.height / 5),
                       standardBtn(
-                          title: "Submit",
+                          title:
+                              "${AppLocalizations.of(context)!.translate("submit")!}",
                           onTap: () {
                             if (_formKey!.currentState!.validate()) {
                               workingDayBloc.add(AddWorkingdayStarted(

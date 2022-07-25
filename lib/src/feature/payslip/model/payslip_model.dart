@@ -1,0 +1,73 @@
+import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/contract/model/contract_model.dart';
+
+class PayslipModel {
+  final String id;
+  final String? userId;
+  final String? contractId;
+  final String? fromDate;
+  final String? toDate;
+  final String? baseSalary;
+  final String? allowance;
+  final String? bonus;
+  final String? totalOt;
+  final String? senioritySalary;
+  final String? advanceMoney;
+  final String? taxAllowance;
+  final String? taxSalary;
+  final String? currey;
+  final String? exChangeRate;
+  final String? deduction;
+  final String? grossSalary;
+  final String? netSalary;
+  final UserModel? userModel;
+  final ContractModel? contractModel;
+
+  factory PayslipModel.fromJson(Map<String, dynamic> json) {
+    return PayslipModel(
+        id: json["id"].toString(),
+        userId: json["user_id"].toString(),
+        contractId: json["contract_id"].toString(),
+        fromDate: json["from_date"],
+        toDate: json["to_date"],
+        baseSalary: json["base_salary"].toString(),
+        allowance: json["allowance"].toString(),
+        bonus: json["bonus"].toString(),
+        totalOt: json["total_ot"].toString(),
+        senioritySalary: json["senority_salary"].toString(),
+        advanceMoney: json["advance_salary"].toString(),
+        taxAllowance: json["tax_allowance"].toString(),
+        taxSalary: json["tax_salary"].toString(),
+        currey: json["currency"].toString(),
+        exChangeRate: json["exchange_rate"].toString(),
+        deduction: json["deduction"].toString(),
+        grossSalary: json["net_salary"].toString(),
+        netSalary: json["gross_salary"].toString(),
+        userModel:
+            json["user"] == null ? null : UserModel.fromJson(json["user"]),
+        contractModel: json["contract"] == null
+            ? null
+            : ContractModel.fromJson(json["contract"]));
+  }
+  PayslipModel(
+      {required this.id,
+      required this.userId,
+      required this.contractId,
+      required this.fromDate,
+      required this.toDate,
+      required this.baseSalary,
+      required this.allowance,
+      required this.bonus,
+      required this.totalOt,
+      required this.senioritySalary,
+      required this.advanceMoney,
+      required this.taxAllowance,
+      required this.taxSalary,
+      required this.currey,
+      required this.exChangeRate,
+      required this.deduction,
+      required this.grossSalary,
+      required this.netSalary,
+      required this.userModel,
+      required this.contractModel});
+}

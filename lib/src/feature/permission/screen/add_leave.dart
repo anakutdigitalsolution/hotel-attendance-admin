@@ -19,6 +19,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../../appLocalizations.dart';
+
 class AddLeave extends StatefulWidget {
   const AddLeave({Key? key}) : super(key: key);
 
@@ -83,7 +85,7 @@ class _AddLeaveState extends State<AddLeave> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Asking leave"),
+      appBar: standardAppBar(context, "${AppLocalizations.of(context)!.translate("position")!}"),
       body: Builder(builder: (context) {
         return BlocListener<LeaveBloc, LeaveState>(
             listener: (context, state) {

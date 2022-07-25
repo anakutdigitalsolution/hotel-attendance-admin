@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/model/leave_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/delete_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
@@ -15,6 +16,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../../appLocalizations.dart';
 import 'edit_leave_status.dart';
 
 LeaveBloc leaveBloc = LeaveBloc();
@@ -29,21 +31,12 @@ class _LeavePageState extends State<LeavePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.withOpacity(0.2),
-      appBar: standardAppBar(context, "Permission Page"),
+      appBar: standardAppBar(
+          context, "${AppLocalizations.of(context)!.translate("permission")!}"),
       body: Container(
         margin: EdgeInsets.only(top: 10, bottom: 10),
         child: WantedBody(),
       ),
-      // floatingActionButton: Container(
-      //   child: FloatingActionButton(
-      //       backgroundColor: Colors.lightBlueAccent,
-      //       child: Icon(Icons.add),
-      //       elevation: 0,
-      //       onPressed: () {
-      //         Navigator.push(
-      //             context, MaterialPageRoute(builder: (context) => AddLeave()));
-      //       }),
-      // ),
     );
   }
 }
@@ -75,7 +68,6 @@ class _WantedBodyState extends State<WantedBody> {
         builder: (context, state) {
           if (state is InitializingLeave) {
             return Center(
-              // child: CircularProgressIndicator(),
               child: Lottie.asset('assets/animation/loader.json',
                   width: 200, height: 200),
             );
@@ -165,12 +157,6 @@ class _WantedBodyState extends State<WantedBody> {
                       )),
               ],
             );
-            // if (leaveBloc.leavemodel.length == 0) {
-            //   return Center(
-            //     child: Text("No Data"),
-            //   );
-            // }
-
           }
         },
         listener: (context, state) {
@@ -231,7 +217,7 @@ class _WantedBodyState extends State<WantedBody> {
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Text(
-                          "Date :",
+                          "${AppLocalizations.of(context)!.translate("date")!} :",
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
@@ -252,7 +238,7 @@ class _WantedBodyState extends State<WantedBody> {
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Text(
-                          "Employee name :",
+                          "${AppLocalizations.of(context)!.translate("employee")!} :",
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
@@ -271,7 +257,7 @@ class _WantedBodyState extends State<WantedBody> {
                       Padding(
                         padding: const EdgeInsets.only(right: 8),
                         child: Text(
-                          "Reason :",
+                          "${AppLocalizations.of(context)!.translate("reason")!} :",
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
@@ -325,7 +311,9 @@ class _WantedBodyState extends State<WantedBody> {
             builder: (c) {
               var controller = ExpandableController.of(c, required: true)!;
               return Text(
-                controller.expanded ? "Click to Hide" : "Click to view",
+                controller.expanded
+                    ? "${AppLocalizations.of(context)!.translate("view")!}"
+                    : "${AppLocalizations.of(context)!.translate("hide")!}",
                 style: Theme.of(context).textTheme.bodyText1,
               );
             },
@@ -338,7 +326,7 @@ class _WantedBodyState extends State<WantedBody> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Text(
-                      "Duration :",
+                      "${AppLocalizations.of(context)!.translate("duration")!} :",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -355,7 +343,7 @@ class _WantedBodyState extends State<WantedBody> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Text(
-                      "From date :",
+                      "${AppLocalizations.of(context)!.translate("from_date")!} :",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -372,7 +360,24 @@ class _WantedBodyState extends State<WantedBody> {
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: Text(
-                      "Status :",
+                      "${AppLocalizations.of(context)!.translate("to_date")!} :",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                  Text(
+                    "${leavemodel.toDate}",
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 5.0,
+              ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Text(
+                      "${AppLocalizations.of(context)!.translate("status")!} :",
                       style: TextStyle(color: Colors.black),
                     ),
                   ),
@@ -395,14 +400,6 @@ class _WantedBodyState extends State<WantedBody> {
                             ),
                             onPressed: () {
                               _displayTextInputDialog(context, leavemodel.id);
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder:
-                              //             (con) =>
-                              //                 EditLeaveStatus(
-                              //                   leaveModel: leaveBloc.leavemodel[index],
-                              //                 )));
                             }),
                         SizedBox(
                           width: 5,
@@ -416,37 +413,13 @@ class _WantedBodyState extends State<WantedBody> {
                               ],
                             ),
                             onPressed: () {
-                              showDialog(
+                              deleteDialog(
                                   context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text('Alert'),
-                                      content: Text(
-                                          "Do want to delete this record?"),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('No',
-                                              style:
-                                                  TextStyle(color: Colors.red)),
-                                        ),
-                                        FlatButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                            print("id ${leavemodel.id}");
-                                            leaveBloc.add(DeleteLeaveStarted(
-                                                id: leavemodel.id));
-                                          },
-                                          child: Text(
-                                            'Yes',
-                                            style:
-                                                TextStyle(color: Colors.blue),
-                                          ),
-                                        ),
-                                      ],
-                                    );
+                                  onPress: () {
+                                    Navigator.pop(context);
+                                    print("id ${leavemodel.id}");
+                                    leaveBloc.add(
+                                        DeleteLeaveStarted(id: leavemodel.id));
                                   });
                             }),
                       ],

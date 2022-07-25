@@ -8,7 +8,10 @@ import 'package:hotle_attendnce_admin/src/feature/holiday/screen/holiday_page.da
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 import 'package:intl/intl.dart';
+
+import '../../../appLocalizations.dart';
 
 class AddHoliday extends StatefulWidget {
   const AddHoliday({Key? key}) : super(key: key);
@@ -73,7 +76,8 @@ class _AddHolidayState extends State<AddHoliday> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Add Holiday"),
+      appBar: standardAppBar(context,
+          "${AppLocalizations.of(context)!.translate("add_holiday")!}"),
       body: Builder(builder: (context) {
         return BlocListener(
           bloc: holidayBloc,
@@ -106,21 +110,18 @@ class _AddHolidayState extends State<AddHoliday> {
                       TextFormField(
                         controller: _nameCtrl,
                         keyboardType: TextInputType.text,
-                        // keyboardType: TextInputType.multiline,
-                        // minLines: 5,
-                        // maxLines: 20,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Name "),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("name")!} "),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'name is required.';
@@ -141,17 +142,17 @@ class _AddHolidayState extends State<AddHoliday> {
                               Icons.date_range_outlined,
                               color: Colors.blue,
                             ),
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "From Date"),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("from_date")!}"),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'From date is required';
@@ -172,17 +173,17 @@ class _AddHolidayState extends State<AddHoliday> {
                               Icons.date_range_outlined,
                               color: Colors.blue,
                             ),
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "To Date"),
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("to_date")!}"),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'To Date is required';
@@ -196,54 +197,32 @@ class _AddHolidayState extends State<AddHoliday> {
                         maxLines: null,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(15.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
-                            labelText: "Notes"),
-                        // validator: (value) {
-                        //   if (value!.isEmpty) {
-                        //     return 'Reason';
-                        //   }
-                        //   return null;
-                        // },
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
+                            labelText:
+                                "${AppLocalizations.of(context)!.translate("notes")!}"),
                       ),
                       SizedBox(height: MediaQuery.of(context).size.height / 5),
-                      Container(
-                        margin:
-                            EdgeInsets.only(left: 30, right: 30, bottom: 10),
-                        height: 50,
-                        width: double.infinity,
-                        child: FlatButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              // side: BorderSide(color: Colors.red)
-                            ),
-                            color: Colors.blue,
-                            onPressed: () {
-                              if (_formKey!.currentState!.validate()) {
-                                print(_toCtrl.text);
-                                holidayBloc.add(AddHolidayStarted(
-                                    name: _nameCtrl.text,
-                                    note: _noteCtrl.text,
-                                    fromDate: _fromCtrl.text,
-                                    toDate: _toCtrl.text));
-                              }
-                            },
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            child: Text(
-                              "Submit",
-                              // AppLocalizations.of(context)!.translate("submit")!,
-                              textScaleFactor: 1.2,
-                              style: TextStyle(color: Colors.white),
-                            )),
-                      )
+                      standardBtn(
+                          title:
+                              "${AppLocalizations.of(context)!.translate("submit")!}",
+                          onTap: () {
+                            if (_formKey!.currentState!.validate()) {
+                              print(_toCtrl.text);
+                              holidayBloc.add(AddHolidayStarted(
+                                  name: _nameCtrl.text,
+                                  note: _noteCtrl.text,
+                                  fromDate: _fromCtrl.text,
+                                  toDate: _toCtrl.text));
+                            }
+                          })
                     ],
                   ),
                 ),

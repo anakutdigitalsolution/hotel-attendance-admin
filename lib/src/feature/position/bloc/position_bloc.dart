@@ -17,6 +17,8 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
     if (event is InitializePositionStarted) {
       yield InitializingPosition();
       try {
+        page = 1;
+        positionList.clear();
         // Future.delayed(Duration(milliseconds: 200));
         List<PositionModel> _departmentList = await positionRepository
             .getPosition(rowPerpage: rowperpage, page: page);
@@ -94,7 +96,7 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
         yield FetchingPosition();
         print(positionList.length);
         positionList.clear();
-        page =1;
+        page = 1;
         List<PositionModel> _departmentList = await positionRepository
             .getPosition(rowPerpage: rowperpage, page: page);
         positionList.addAll(_departmentList);
@@ -115,7 +117,7 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
         yield FetchingPosition();
         print(positionList.length);
         positionList.clear();
-        page =1;
+        page = 1;
         List<PositionModel> _departmentList = await positionRepository
             .getPosition(rowPerpage: rowperpage, page: page);
         positionList.addAll(_departmentList);
@@ -135,7 +137,7 @@ class PositionBlc extends Bloc<PositionEvent, PositionState> {
         yield FetchingPosition();
         print(positionList.length);
         positionList.clear();
-        page =1;
+        page = 1;
         List<PositionModel> _departmentList = await positionRepository
             .getPosition(rowPerpage: rowperpage, page: page);
         positionList.addAll(_departmentList);

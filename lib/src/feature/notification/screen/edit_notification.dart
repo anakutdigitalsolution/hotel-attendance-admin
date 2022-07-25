@@ -2,31 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/notification/bloc/notification_event.dart';
-import 'package:hotle_attendnce_admin/src/feature/notification/bloc/notification_state.dart';
-import 'package:hotle_attendnce_admin/src/feature/notification/screen/notification_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/notification/model/notification_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
 
 import '../../../appLocalizations.dart';
+import 'notification_page.dart';
 
-class AddNotification extends StatefulWidget {
-  const AddNotification({Key? key}) : super(key: key);
+class EditNotification extends StatefulWidget {
+  final NotificationModel notificationModel;
+  const EditNotification({required this.notificationModel});
 
   @override
-  State<AddNotification> createState() => _AddNotificationState();
+  State<EditNotification> createState() => _EditNotificationState();
 }
 
-class _AddNotificationState extends State<AddNotification> {
+class _EditNotificationState extends State<EditNotification> {
   final TextEditingController _titleCtrl = TextEditingController();
   final TextEditingController _desCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   @override
+  void initState() {
+    _titleCtrl.text = widget.notificationModel.title;
+    _desCtrl.text = widget.notificationModel.comment;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: standardAppBar(context,
-          "${AppLocalizations.of(context)!.translate("add_notification")!}"),
+          "${AppLocalizations.of(context)!.translate("edit_notification")!}"),
       body: Builder(builder: (context) {
         return BlocListener(
           bloc: notificationBloc,
@@ -103,11 +110,13 @@ class _AddNotificationState extends State<AddNotification> {
                       SizedBox(height: MediaQuery.of(context).size.height / 5),
                       standardBtn(
                           title:
-                              "${AppLocalizations.of(context)!.translate("submit")!}",
+                              "${AppLocalizations.of(context)!.translate("update")!}",
                           onTap: () {
                             if (_formKey!.currentState!.validate()) {
-                              notificationBloc.add(AddNotificationStarted(
-                                  title: _titleCtrl.text, des: _desCtrl.text));
+                              notificationBloc.add(UpdateNotificationStarted(
+                                  id: widget.notificationModel.id,
+                                  title: _titleCtrl.text,
+                                  des: _desCtrl.text));
                             }
                           })
                     ],

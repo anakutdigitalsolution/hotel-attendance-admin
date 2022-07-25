@@ -1,12 +1,14 @@
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/bloc/index.dart';
-import 'package:hotle_attendnce_admin/src/feature/notification/model/notification_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+import '../../../appLocalizations.dart';
 
 NotificationBloc notificationBloc = NotificationBloc();
 
@@ -21,7 +23,8 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: standardAppBar(context, "Notification"),
+      appBar: standardAppBar(context,
+          "${AppLocalizations.of(context)!.translate("notification")!}"),
       floatingActionButton: Container(
         child: FloatingActionButton(
             backgroundColor: Colors.blue,
@@ -58,7 +61,6 @@ class _BodyState extends State<Body> {
         builder: (context, state) {
           if (state is FetchingNotification) {
             return Center(
-              // child: CircularProgressIndicator(),
               child: Lottie.asset('assets/animation/loader.json',
                   width: 200, height: 200),
             );
@@ -72,7 +74,7 @@ class _BodyState extends State<Body> {
                   child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("No notification",
+                  Text("${AppLocalizations.of(context)!.translate("no_data")!}",
                       style: TextStyle(color: Colors.grey[400]))
                 ],
               ));
@@ -95,10 +97,28 @@ class _BodyState extends State<Body> {
               child: ListView.builder(
                   itemCount: notificationBloc.notificationModel.length,
                   itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        // Navigator.push(context, MaterialPageRoute(builder: (con)=>));
-                      },
+                    return Slidable(
+                      endActionPane: ActionPane(
+                        motion: ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            // An action can be bigger than the others.
+                            flex: 2,
+                            onPressed: doNothing,
+                            backgroundColor: Color(0xFF7BC043),
+                            foregroundColor: Colors.white,
+                            icon: Icons.archive,
+                            label: 'Archive',
+                          ),
+                          SlidableAction(
+                            onPressed: doNothing,
+                            backgroundColor: Color(0xFF0392CF),
+                            foregroundColor: Colors.white,
+                            icon: Icons.save,
+                            label: 'Save',
+                          ),
+                        ],
+                      ),
                       child: Card(
                         child: Container(
                           // margin: EdgeInsets.only(bottom: 8, left: 8, right: 8),
@@ -129,7 +149,8 @@ class _BodyState extends State<Body> {
                                       color: Colors.orange[900],
                                     ),
                                     Text(
-                                      " " + '02/28/2022',
+                                      " " +
+                                          "${AppLocalizations.of(context)!.translate("date")!}",
                                       style: TextStyle(color: Colors.black),
                                     ),
                                   ],
@@ -148,6 +169,25 @@ class _BodyState extends State<Body> {
                                       " " +
                                           notificationBloc
                                               .notificationModel[index].title,
+                                      style:
+                                          TextStyle(color: Colors.orange[900]),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Row(
+                                  children: [
+                                    // Icon(
+                                    //   Icons.date_range,
+                                    //   size: 18.0,
+                                    //   color: Colors.orange[900],
+                                    // ),
+                                    Text(
+                                      " " +
+                                          notificationBloc
+                                              .notificationModel[index].comment,
                                       style:
                                           TextStyle(color: Colors.orange[900]),
                                     ),
@@ -184,4 +224,6 @@ class _BodyState extends State<Body> {
           }
         });
   }
+
+  void doNothing(BuildContext context) {}
 }

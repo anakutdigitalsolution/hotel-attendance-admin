@@ -54,8 +54,11 @@ class LeaveModel {
         toDate: json["to_date"],
         number: json["number"],
         reason: json["reason"],
-        employeeModel: EmployeeModel.fromJson(json["user"]),
-        leaveTypeModel: LeaveTypeModel.fromJson(json["leavetype"]));
+        employeeModel:
+            json["user"] == null ? null : EmployeeModel.fromJson(json["user"]),
+        leaveTypeModel: json["leavetype"] == null
+            ? null
+            : LeaveTypeModel.fromJson(json["leavetype"]));
   }
   LeaveModel(
       {required this.id,

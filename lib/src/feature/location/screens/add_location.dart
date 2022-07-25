@@ -29,6 +29,7 @@ class _AddLocationState extends State<AddLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.2),
       appBar: standardAppBar(context,
           "${AppLocalizations.of(context)!.translate("add_location")!}"),
       body: Builder(builder: (context) {
