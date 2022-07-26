@@ -8,6 +8,7 @@ import 'package:hotle_attendnce_admin/src/feature/auth/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/language/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/payslip/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/bloc/leave_bloc.dart';
 import 'src/appLocalizations.dart';
 import 'src/feature/landing/landing_page.dart';
@@ -46,6 +47,8 @@ class MyApp extends StatelessWidget {
 
         BlocProvider<CheckInOutBloc>(
             create: (BuildContext context) => CheckInOutBloc()),
+        BlocProvider<PayslipBloc>(
+            create: (BuildContext context) => PayslipBloc()),
         // BlocProvider<LeaveBloc>(create: (BuildContext context) => LeaveBloc()),
       ],
       child: BlocBuilder<LanguageBloc, LanguageState>(

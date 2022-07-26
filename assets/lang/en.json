@@ -82,6 +82,8 @@
     "type" : "Choose type",
     "ot" : "Overtime",
     "payslip" : "Payslip",
+    "add_payslip" : "Payslip",
+    "edit_payslip" : "Payslip",
     "notes" : "Notes",
     "chooseLang" : "Language",
     "my_ot" : "My Overtime",
@@ -119,7 +121,11 @@
     "manager" : "Chief department",
     "choose_manager" : "Choose Chief department",
     "hide" : "Click here to hide",
-    "view" : "Click here to view"
+    "view" : "Click here to view",
+    "contract":"Contract",
+    "structure":"Structure",
+    "structure_type":"Structure type",
+    "configuration":"Configuration"
     
 
 

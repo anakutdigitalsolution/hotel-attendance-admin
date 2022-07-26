@@ -33,6 +33,7 @@ import 'package:hotle_attendnce_admin/src/feature/overtime/model/overtime_model.
 import 'package:hotle_attendnce_admin/src/feature/overtime/screen/add_overtime.dart';
 import 'package:hotle_attendnce_admin/src/feature/overtime/screen/edit_overtime.dart';
 import 'package:hotle_attendnce_admin/src/feature/overtime/screen/overtime_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/payslip/screen/payslip_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/screen/leave_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/add_position.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
@@ -72,7 +73,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PositionPage());
       case timetable:
         return MaterialPageRoute(builder: (_) => TimetablePage());
-      // case schedule:
+      case payslip:
+        return MaterialPageRoute(builder: (_) => PaySlippage());
+      // case add:
       //   return MaterialPageRoute(builder: (_) => SchedulePage());
       case schedules:
         return MaterialPageRoute(builder: (_) => ScheduleEmployeePage());

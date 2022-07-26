@@ -1,5 +1,6 @@
 import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/contract/model/contract_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
 
 class PayslipModel {
   final String id;
@@ -20,7 +21,7 @@ class PayslipModel {
   final String? deduction;
   final String? grossSalary;
   final String? netSalary;
-  final UserModel? userModel;
+  final EmployeeModel? userModel;
   final ContractModel? contractModel;
 
   factory PayslipModel.fromJson(Map<String, dynamic> json) {
@@ -44,7 +45,7 @@ class PayslipModel {
         grossSalary: json["net_salary"].toString(),
         netSalary: json["gross_salary"].toString(),
         userModel:
-            json["user"] == null ? null : UserModel.fromJson(json["user"]),
+            json["user"] == null ? null : EmployeeModel.fromJson(json["user"]),
         contractModel: json["contract"] == null
             ? null
             : ContractModel.fromJson(json["contract"]));

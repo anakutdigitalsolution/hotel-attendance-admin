@@ -1,4 +1,5 @@
 import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/structure/model/structure_model.dart';
 
 class ContractModel {
@@ -10,7 +11,7 @@ class ContractModel {
   final String? workingSchedule;
   final String? status;
   final String? refCode;
-  final UserModel? userModel;
+  final EmployeeModel? userModel;
   final StructureModel? structureModel;
   factory ContractModel.fromJson(Map<String, dynamic> json) {
     return ContractModel(
@@ -23,7 +24,7 @@ class ContractModel {
         status: json["status"],
         refCode: json["ref_code"].toString(),
         userModel:
-            json["user"] == null ? null : UserModel.fromJson(json["user"]),
+            json["user"] == null ? null : EmployeeModel.fromJson(json["user"]),
         structureModel: json["structure"] == null
             ? null
             : StructureModel.fromJson(json["structure"]));

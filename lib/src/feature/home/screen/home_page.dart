@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> {
         }
       },
       {
-        "name":"${AppLocalizations.of(context)!.translate("employee")!}",
+        "name": "${AppLocalizations.of(context)!.translate("employee")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/group.png",
         "onPressed": () {
@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> {
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/money.png",
         "onPressed": () {
-          Navigator.pushNamed(context, report);
+          Navigator.pushNamed(context, payslip);
         }
       },
       {

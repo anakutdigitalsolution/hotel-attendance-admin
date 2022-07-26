@@ -4,6 +4,7 @@ import 'package:hotle_attendnce_admin/src/feature/employee/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/edit_employee.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/employee_detail_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/screen/reset_password.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/delete_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -273,41 +274,15 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                                 onPressed: () {
-                                  showDialog(
+                                  deleteDialog(
                                       context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Alert'),
-                                          content: Text(
-                                              "Do want to delete this record?"),
-                                          actions: <Widget>[
-                                            FlatButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('No',
-                                                  style: TextStyle(
-                                                      color: Colors.red)),
-                                            ),
-                                            FlatButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                                print(
-                                                    "id ${employeeBloc.emploList[index].id}");
-                                                employeeBloc.add(
-                                                    DeleteEmployeeStarted(
-                                                        id: employeeBloc
-                                                            .emploList[index]
-                                                            .id));
-                                              },
-                                              child: Text(
-                                                'Yes',
-                                                style: TextStyle(
-                                                    color: Colors.blue),
-                                              ),
-                                            ),
-                                          ],
-                                        );
+                                      onPress: () {
+                                        Navigator.pop(context);
+                                        print(
+                                            "id ${employeeBloc.emploList[index].id}");
+                                        employeeBloc.add(DeleteEmployeeStarted(
+                                            id: employeeBloc
+                                                .emploList[index].id));
                                       });
                                 }),
                           ],
