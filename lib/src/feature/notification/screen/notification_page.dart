@@ -23,6 +23,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.2),
       appBar: standardAppBar(context,
           "${AppLocalizations.of(context)!.translate("notification")!}"),
       floatingActionButton: Container(
@@ -98,103 +99,100 @@ class _BodyState extends State<Body> {
                   itemCount: notificationBloc.notificationModel.length,
                   itemBuilder: (context, index) {
                     return Slidable(
+                     
                       endActionPane: ActionPane(
                         motion: ScrollMotion(),
                         children: [
                           SlidableAction(
                             // An action can be bigger than the others.
-                            flex: 2,
+                            // flex: 2,
                             onPressed: doNothing,
-                            backgroundColor: Color(0xFF7BC043),
+                            backgroundColor: Colors.green,
                             foregroundColor: Colors.white,
-                            icon: Icons.archive,
-                            label: 'Archive',
+                            icon: Icons.edit_outlined,
+                            label: 'Edit',
                           ),
                           SlidableAction(
                             onPressed: doNothing,
-                            backgroundColor: Color(0xFF0392CF),
+                            backgroundColor: Colors.red,
                             foregroundColor: Colors.white,
-                            icon: Icons.save,
-                            label: 'Save',
+                            icon: Icons.delete_outlined,
+                            label: 'Delete',
                           ),
                         ],
                       ),
-                      child: Card(
+                      child: Container(
+                        // margin: EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                        // padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          // borderRadius: BorderRadius.circular(6),
+                          color: Colors.white,
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.grey.withOpacity(0.5),
+                          //     spreadRadius: 1,
+                          //     blurRadius: 1,
+                          //     offset:
+                          //         Offset(0, 0), // changes position of shadow
+                          //   ),
+                          // ],
+                        ),
                         child: Container(
-                          // margin: EdgeInsets.only(bottom: 8, left: 8, right: 8),
-                          padding: EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(6),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 1,
-                                blurRadius: 1,
-                                offset:
-                                    Offset(0, 0), // changes position of shadow
+                          padding: EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.date_range,
+                                    size: 18.0,
+                                    color: Colors.orange[900],
+                                  ),
+                                  Text(
+                                    " " +
+                                        "${AppLocalizations.of(context)!.translate("date")!}",
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
+                                children: [
+                                  // Icon(
+                                  //   Icons.date_range,
+                                  //   size: 18.0,
+                                  //   color: Colors.orange[900],
+                                  // ),
+                                  Text(
+                                    " " +
+                                        notificationBloc
+                                            .notificationModel[index].title,
+                                    style: TextStyle(color: Colors.orange[900]),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
+                                children: [
+                                  // Icon(
+                                  //   Icons.date_range,
+                                  //   size: 18.0,
+                                  //   color: Colors.orange[900],
+                                  // ),
+                                  Text(
+                                    " " +
+                                        notificationBloc
+                                            .notificationModel[index].comment,
+                                    style: TextStyle(color: Colors.orange[900]),
+                                  ),
+                                ],
                               ),
                             ],
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.all(8.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.date_range,
-                                      size: 18.0,
-                                      color: Colors.orange[900],
-                                    ),
-                                    Text(
-                                      " " +
-                                          "${AppLocalizations.of(context)!.translate("date")!}",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Row(
-                                  children: [
-                                    // Icon(
-                                    //   Icons.date_range,
-                                    //   size: 18.0,
-                                    //   color: Colors.orange[900],
-                                    // ),
-                                    Text(
-                                      " " +
-                                          notificationBloc
-                                              .notificationModel[index].title,
-                                      style:
-                                          TextStyle(color: Colors.orange[900]),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Row(
-                                  children: [
-                                    // Icon(
-                                    //   Icons.date_range,
-                                    //   size: 18.0,
-                                    //   color: Colors.orange[900],
-                                    // ),
-                                    Text(
-                                      " " +
-                                          notificationBloc
-                                              .notificationModel[index].comment,
-                                      style:
-                                          TextStyle(color: Colors.orange[900]),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
                           ),
                         ),
                       ),

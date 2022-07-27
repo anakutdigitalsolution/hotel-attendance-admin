@@ -121,8 +121,19 @@
     "hide" : "ចុចដើម្បីមើល",
     "view" : "ចុចដើម្បីលាក់",
     "contract":"កុងត្រា",
+    "ref_code":"លេខយោង",
+    "start_date":"ថ្ងៃចាប់ផ្តើម",
+    "end_date":"ថ្ងៃបញ្ជប់",
+    "working_schedule":"ម៉ោងធ្វើការ",
     "structure":"រចនាសម្ព័ន្ធ",
+    "base_salary":"ប្រាក់ខែគោល",
+    "allowance":"ប្រាក់",
+    "currency":"រូប័យវត្ថុ",
+    "add_structure":"បង្កើតរចនាសម្ព័ន្ធ",
+    "edit_structure":"កែប្រែរចនាសម្ព័ន្ធ",
     "structure_type":"ប្រភេទរចនាសម្ព័ន្ធ",
+    "add_structure_type":"បង្កើតប្រភេទរចនាសម្ព័ន្ធ",
+    "edit_structure_type":"កែប្រែប្រភេទរចនាសម្ព័ន្ធ",
     "configuration":"ការកំណត់​រចនាសម្ព័ន្ធ"
 }
     

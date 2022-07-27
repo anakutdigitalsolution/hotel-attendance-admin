@@ -20,6 +20,8 @@ const String resetpassword = '/resetpassword';
 const String qr = '/qr';
 const String overtime = '/overtime';
 const String payslip = '/payslip';
+const String structure = '/structure';
+const String structuretype = '/structure';
 
 const String addHoliday = '/addHoliday';
 const String addNotification = '/addNotification';
@@ -33,8 +35,9 @@ const String addWorkingday = '/addWorkingday';
 const String addLocation = '/addLocation';
 const String addOvertime = '/addOvertime';
 const String addPayslip = '/addPayslip';
-
-
+const String addStructure = '/addStructure';
+const String addStructuretype = '/addStructuretype';
+const String addContract = '/addContract';
 
 const String editOvertime = '/editOvertime';
 const String editschedule = '/editschedule';
@@ -43,3 +46,4 @@ const String editDepartment = '/editDepartment';
 const String addGroup = '/addGroup';
 const String editGroup = '/editGroup';
 const String editLocation = '/editLocation';
+const String editStructure = '/editStructure';

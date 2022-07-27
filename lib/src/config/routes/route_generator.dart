@@ -41,6 +41,9 @@ import 'package:hotle_attendnce_admin/src/feature/qrcode/screen/qr_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/report/screen/report_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/operation_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page_one.dart';
+import 'package:hotle_attendnce_admin/src/feature/structure/screen/structure_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/structuretype/screen/add_structuretype.dart';
+import 'package:hotle_attendnce_admin/src/feature/structuretype/screen/structuretype_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/add_timetable.dart';
 import 'package:hotle_attendnce_admin/src/feature/timetable/screen/timetable_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
@@ -153,10 +156,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AddLocation());
       case resetpassword:
         return MaterialPageRoute(builder: (_) => AdminResetPassword());
-       case overtime:
+      case overtime:
         return MaterialPageRoute(builder: (_) => Overtimepage());
       case addOvertime:
-       return MaterialPageRoute(builder: (_) => AddOvertime());
+        return MaterialPageRoute(builder: (_) => AddOvertime());
       case editLocation:
         if (args is LocationModel) {
           return MaterialPageRoute(
@@ -173,6 +176,10 @@ class RouteGenerator {
                   ));
         }
         return _errorRoute();
+      case structure:
+        return MaterialPageRoute(builder: (_) => Structurepage());
+      case structuretype:
+        return MaterialPageRoute(builder: (_) => StructuretypePage());
       default:
         return _errorRoute();
     }

@@ -123,8 +123,19 @@
     "hide" : "Click here to hide",
     "view" : "Click here to view",
     "contract":"Contract",
+    "ref_code":"Ref Code",
+    "start_date":"Start Date",
+    "end_date":"Start Date",
+    "working_schedule":"Working Schedule",
     "structure":"Structure",
+    "base_salary":"Base Salary",
+    "allowance":"Allowance",
+    "currency":"Currency",
+    "add_structure":"Add Structure",
+    "edit_structure":"Edit Structure",
     "structure_type":"Structure type",
+    "add_structure_type":"Add Structure type",
+    "edit_structure_type":"Edit Structure type",
     "configuration":"Configuration"
     
 
