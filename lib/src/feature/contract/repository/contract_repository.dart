@@ -49,23 +49,20 @@ class ContractRepository {
   }
 
   Future<void> addContract(
-      {
-        required String userId,
-      required String contractId,
+      {required String userId,
+      required String structureId,
       required String startedDate,
       required String endDate,
       required String workingSchedule,
-      required String status,
       required String refCode}) async {
     try {
       String url = mainUrl + "contracts/add";
       Map body = {
         "user_id": userId,
-        "structure_id": contractId,
+        "structure_id": structureId,
         "start_date": startedDate,
         "end_date": endDate,
         "working_schedule": workingSchedule,
-        "status": status,
         "ref_code": refCode,
       };
       Response response = await _apiProvider.post(url, body, null);
@@ -86,21 +83,19 @@ class ContractRepository {
   Future<void> editContract(
       {required String id,
       required String userId,
-      required String contractId,
+      required String structureId,
       required String startedDate,
       required String endDate,
       required String workingSchedule,
-      required String status,
       required String refCode}) async {
     try {
       String url = mainUrl + "contracts/edit/$id";
       Map body = {
         "user_id": userId,
-        "structure_id": contractId,
+        "structure_id": structureId,
         "start_date": startedDate,
         "end_date": endDate,
         "working_schedule": workingSchedule,
-        "status": status,
         "ref_code": refCode,
       };
       Response response = await _apiProvider.put(url, body);

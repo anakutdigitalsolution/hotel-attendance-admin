@@ -26,6 +26,7 @@ class _AddStructureState extends State<AddStructure> {
   final TextEditingController _currencyCtrl = TextEditingController();
   final TextEditingController _typeIdCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  List<String> currency = ["riel", "usd"];
   // final TextEditingController _managerCtrl = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -161,7 +162,7 @@ class _AddStructureState extends State<AddStructure> {
                             controller: _allowanceCtrl,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                              suffixIcon: Icon(Icons.arrow_drop_down),
+                              // suffixIcon: Icon(Icons.arrow_drop_down),
                               contentPadding: const EdgeInsets.only(
                                 left: 14.0,
                               ),
@@ -184,8 +185,16 @@ class _AddStructureState extends State<AddStructure> {
                           TextFormField(
                             controller: _currencyCtrl,
                             keyboardType: TextInputType.text,
-                            maxLines: null,
+                            readOnly: true,
+                            // maxLines: null,
+
+                            onTap: () {
+                              customModal(context, currency, (value) {
+                                _currencyCtrl.text = value;
+                              });
+                            },
                             decoration: InputDecoration(
+                                suffixIcon: Icon(Icons.arrow_drop_down),
                                 contentPadding: const EdgeInsets.only(
                                   left: 14.0,
                                 ),
@@ -227,10 +236,11 @@ class _AddStructureState extends State<AddStructure> {
       }),
     );
   }
+
   @override
   void dispose() {
     _structuretypeBloc.close();
-    
+
     super.dispose();
   }
 }

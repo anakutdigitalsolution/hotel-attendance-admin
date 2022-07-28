@@ -29,6 +29,7 @@ class _EditStructureState extends State<EditStructure> {
   final TextEditingController _currencyCtrl = TextEditingController();
   final TextEditingController _typeIdCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  List<String> currency = ["riel", "usd"];
   @override
   void initState() {
     _nameCtrl.text = widget.structureModel.name!;
@@ -154,7 +155,7 @@ class _EditStructureState extends State<EditStructure> {
                             // readOnly: true,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
-                                suffixIcon: Icon(Icons.arrow_drop_down),
+                                // suffixIcon: Icon(Icons.arrow_drop_down),
                                 contentPadding: const EdgeInsets.only(
                                   left: 14.0,
                                 ),
@@ -200,8 +201,15 @@ class _EditStructureState extends State<EditStructure> {
                           TextFormField(
                             controller: _currencyCtrl,
                             keyboardType: TextInputType.text,
-                            maxLines: null,
+                            // maxLines: null,
+                            readOnly: true,
+                            onTap: () {
+                              customModal(context, currency, (value) {
+                                _currencyCtrl.text = value;
+                              });
+                            },
                             decoration: InputDecoration(
+                                suffixIcon: Icon(Icons.arrow_drop_down),
                                 contentPadding: const EdgeInsets.only(
                                   left: 14.0,
                                 ),
@@ -235,7 +243,8 @@ class _EditStructureState extends State<EditStructure> {
                                     typeId = widget.structureModel.id;
                                   }
 
-                                  structureBloc.add(AddStructureStarted(
+                                  structureBloc.add(UpdateStructureStarted(
+                                      id: widget.structureModel.id,
                                       name: _nameCtrl.text,
                                       baseSalary: _baseSalary.text,
                                       allowance: _allowanceCtrl.text,

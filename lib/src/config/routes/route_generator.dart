@@ -2,6 +2,10 @@ import 'package:hotle_attendnce_admin/src/feature/account/screen/account_page_on
 import 'package:hotle_attendnce_admin/src/feature/checkin/screen/attendance_employee_page.dart';
 
 import 'package:flutter/material.dart';
+import 'package:hotle_attendnce_admin/src/feature/contract/model/contract_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/contract/screen/add_contract.dart';
+import 'package:hotle_attendnce_admin/src/feature/contract/screen/contract_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/contract/screen/edit_contract.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/add_department.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
@@ -41,6 +45,9 @@ import 'package:hotle_attendnce_admin/src/feature/qrcode/screen/qr_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/report/screen/report_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/operation_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/setting/screen/setting_page_one.dart';
+import 'package:hotle_attendnce_admin/src/feature/structure/model/structure_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/structure/screen/add_structure.dart';
+import 'package:hotle_attendnce_admin/src/feature/structure/screen/edit_structure.dart';
 import 'package:hotle_attendnce_admin/src/feature/structure/screen/structure_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/structuretype/screen/add_structuretype.dart';
 import 'package:hotle_attendnce_admin/src/feature/structuretype/screen/structuretype_page.dart';
@@ -178,6 +185,26 @@ class RouteGenerator {
         return _errorRoute();
       case structure:
         return MaterialPageRoute(builder: (_) => Structurepage());
+      case contract:
+        return MaterialPageRoute(builder: (_) => Contractpage());
+      case addContract:
+        return MaterialPageRoute(builder: (_) => AddContract());
+      case editContract:
+        if (args is ContractModel) {
+          return MaterialPageRoute(
+              builder: (_) => EditContract(
+                    contractModel: args,
+                  ));
+        }
+        return _errorRoute();
+      case addStructure:
+        return MaterialPageRoute(builder: (_) => AddStructure());
+      case editStructure:
+        if (args is StructureModel) {
+          return MaterialPageRoute(
+              builder: (_) => EditStructure(structureModel: args));
+        }
+        return _errorRoute();
       case structuretype:
         return MaterialPageRoute(builder: (_) => StructuretypePage());
       default:

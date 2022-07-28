@@ -14,39 +14,37 @@ class FetchAllContractStarted extends ContractEvent {}
 
 class AddContractStarted extends ContractEvent {
   final String userId;
-  final String contractId;
+  final String structureId;
   final String startedDate;
   final String endDate;
   final String workingSchedule;
-  final String status;
+
   final String refCode;
   AddContractStarted(
       {required this.userId,
-      required this.contractId,
+      required this.structureId,
       required this.startedDate,
       required this.endDate,
       required this.workingSchedule,
-      required this.status,
       required this.refCode});
 }
 
 class UpdateContractStarted extends ContractEvent {
   final String id;
   final String userId;
-  final String contractId;
+  final String structureId;
   final String startedDate;
   final String endDate;
   final String workingSchedule;
-  final String status;
+
   final String refCode;
   UpdateContractStarted(
       {required this.id,
       required this.userId,
-      required this.contractId,
+      required this.structureId,
       required this.startedDate,
       required this.endDate,
       required this.workingSchedule,
-      required this.status,
       required this.refCode});
 }
 

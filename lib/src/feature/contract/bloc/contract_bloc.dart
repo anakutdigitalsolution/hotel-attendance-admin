@@ -70,11 +70,10 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
       try {
         await _structuretypeRepository.addContract(
             userId: event.userId,
-            contractId: event.contractId,
+            structureId: event.structureId,
             startedDate: event.startedDate,
             endDate: event.endDate,
             workingSchedule: event.workingSchedule,
-            status: event.status,
             refCode: event.refCode);
         yield AddedContract();
         yield FetchingContract();
@@ -97,11 +96,11 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         await _structuretypeRepository.editContract(
             id: event.id,
             userId: event.userId,
-            contractId: event.contractId,
+            structureId: event.structureId,
             startedDate: event.startedDate,
             endDate: event.endDate,
             workingSchedule: event.workingSchedule,
-            status: event.status,
+            
             refCode: event.refCode);
         yield AddedContract();
         yield FetchingContract();

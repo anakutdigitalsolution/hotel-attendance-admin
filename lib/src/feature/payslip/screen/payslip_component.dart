@@ -38,7 +38,7 @@ class _PayslipComponentState extends State<PayslipComponent> {
                   name:
                       "${AppLocalizations.of(context)!.translate("contract")!}",
                   onPressed: () {
-                    // Navigator.of(context).pushNamed(product);
+                    Navigator.of(context).pushNamed(contract);
                   },
                 ),
               ),

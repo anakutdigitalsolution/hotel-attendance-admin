@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/structure/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/structure/model/structure_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/structure/screen/edit_structure.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/delete_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
@@ -31,7 +33,7 @@ class Structurepage extends StatelessWidget {
             child: Icon(Icons.add),
             elevation: 0,
             onPressed: () {
-              // Navigator.pushNamed(context, addStructuretype);
+              Navigator.pushNamed(context, addStructure);
             }),
       ),
     );
@@ -115,17 +117,9 @@ class _BodyState extends State<Body> {
                           SlidableAction(
                             // An action can be bigger than the others.
                             // flex: 2,
-                            onPressed: ((context) {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) =>
-                              //             AddorEditStructuretype(
-                              //               isAdd: "false",
-                              //               structuretypeModel:
-                              //                   structuretypeBloc
-                              //                       .typeList[index],
-                              //             )));
+                            onPressed: ((ct) {
+                              Navigator.pushNamed(context, editStructure,
+                                  arguments: structureBloc.structure[index]);
                             }),
                             backgroundColor: Colors.green,
                             foregroundColor: Colors.white,
@@ -133,7 +127,7 @@ class _BodyState extends State<Body> {
                             label: 'Edit',
                           ),
                           SlidableAction(
-                            onPressed: ((context) {
+                            onPressed: ((ct) {
                               //
                               deleteDialog(
                                   context: context,
@@ -187,6 +181,24 @@ class _BodyState extends State<Body> {
             //   "${structureModel.name}",
             //   style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
             // )
+            // Row(
+            //   // mainAxisAlignment:
+            //   //     MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.only(right: 10),
+            //       child: Text(
+            //         "${AppLocalizations.of(context)!.translate("name")!} :",
+            //         style: TextStyle(color: Colors.grey),
+            //       ),
+            //     ),
+            //     Text(
+            //       "${structureModel.name}",
+            //       style:
+            //           TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            //     )
+            //   ],
+            // ),
             Row(
               // mainAxisAlignment:
               //     MainAxisAlignment.spaceBetween,
@@ -195,15 +207,64 @@ class _BodyState extends State<Body> {
                   padding: const EdgeInsets.only(right: 10),
                   child: Text(
                     "${AppLocalizations.of(context)!.translate("name")!} :",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.grey),
                   ),
                 ),
                 Text(
                   "${structureModel.name}",
                   style: TextStyle(
-                    color: Colors.red,
-                  ),
+                      color: Colors.green, fontWeight: FontWeight.bold),
                 )
+              ],
+            ),
+            Row(
+              // mainAxisAlignment:
+              //     MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Text(
+                    "${AppLocalizations.of(context)!.translate("base_salary")!} :",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                structureModel.currency == "riel"
+                    ? Text(
+                        "${structureModel.baseSalary} \Riel",
+                        style: TextStyle(
+                            color: Colors.purple, fontWeight: FontWeight.bold),
+                      )
+                    : Text(
+                        "\S${structureModel.baseSalary}",
+                        style: TextStyle(
+                            color: Colors.purple, fontWeight: FontWeight.bold),
+                      )
+              ],
+            ),
+            Row(
+              // mainAxisAlignment:
+              //     MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Text(
+                    "${AppLocalizations.of(context)!.translate("allowance")!} :",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                structureModel.currency == "riel"
+                    ? Text(
+                        "${structureModel.allowance} \Riel",
+                        style: TextStyle(
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.bold),
+                      )
+                    : Text(
+                        "\$${structureModel.allowance}",
+                        style: TextStyle(
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.bold),
+                      )
               ],
             ),
           ],

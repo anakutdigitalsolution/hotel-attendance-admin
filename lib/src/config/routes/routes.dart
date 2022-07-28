@@ -20,6 +20,7 @@ const String resetpassword = '/resetpassword';
 const String qr = '/qr';
 const String overtime = '/overtime';
 const String payslip = '/payslip';
+const String contract = '/contract';
 const String structure = '/structure';
 const String structuretype = '/structure';
 
@@ -38,6 +39,7 @@ const String addPayslip = '/addPayslip';
 const String addStructure = '/addStructure';
 const String addStructuretype = '/addStructuretype';
 const String addContract = '/addContract';
+const String editContract = '/addContract';
 
 const String editOvertime = '/editOvertime';
 const String editschedule = '/editschedule';
