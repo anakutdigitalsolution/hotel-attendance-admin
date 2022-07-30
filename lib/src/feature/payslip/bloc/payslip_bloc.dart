@@ -69,7 +69,7 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
       try {
         await _payslipRepository.addPayslip(
             userId: event.userId,
-            contractId: event.contractId,
+            // contractId: event.contractId,
             fromDate: event.fromDate,
             toDate: event.toDate,
             allowance: event.allowance,
@@ -98,7 +98,7 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
         await _payslipRepository.editPayslip(
             id: event.id,
             userId: event.userId,
-            contractId: event.contractId,
+            // contractId: event.contractId,
             fromDate: event.fromDate,
             toDate: event.toDate,
             allowance: event.allowance,

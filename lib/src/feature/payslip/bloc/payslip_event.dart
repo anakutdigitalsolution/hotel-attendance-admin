@@ -14,7 +14,7 @@ class RefreshPayslipStarted extends PayslipEvent {}
 
 class AddPayslipStarted extends PayslipEvent {
   final String userId;
-  final String contractId;
+  // final String contractId;
   final String fromDate;
   final String toDate;
   final String allowance;
@@ -26,7 +26,7 @@ class AddPayslipStarted extends PayslipEvent {
   final String deduction;
   AddPayslipStarted(
       {required this.userId,
-      required this.contractId,
+      // required this.contractId,
       required this.fromDate,
       required this.toDate,
       required this.allowance,
@@ -41,7 +41,7 @@ class AddPayslipStarted extends PayslipEvent {
 class UpdatePayslipStarted extends PayslipEvent {
   final String id;
   final String userId;
-  final String contractId;
+  // final String contractId;
   final String fromDate;
   final String toDate;
   final String allowance;
@@ -54,7 +54,7 @@ class UpdatePayslipStarted extends PayslipEvent {
   UpdatePayslipStarted(
       {required this.id,
       required this.userId,
-      required this.contractId,
+      // required this.contractId,
       required this.fromDate,
       required this.toDate,
       required this.allowance,

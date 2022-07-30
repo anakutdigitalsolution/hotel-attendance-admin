@@ -41,6 +41,13 @@ class _EditContractState extends State<EditContract> {
   String id = "";
   @override
   void initState() {
+    _refCtrl.text = widget.contractModel.refCode!;
+    _userIdCtrl.text = widget.contractModel.userModel!.name;
+    _strucuteCtrl.text = widget.contractModel.structureModel!.name!;
+    _startCtrl.text = widget.contractModel.startDate!;
+    _endCtrl.text = widget.contractModel.endDate!;
+    _workCtrl.text = widget.contractModel.workingSchedule!;
+
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy/MM/dd').format(now);
     // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
@@ -83,9 +90,10 @@ class _EditContractState extends State<EditContract> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.contractModel.id);
     return Scaffold(
       appBar: standardAppBar(context,
-          "${AppLocalizations.of(context)!.translate("add_structure")!}"),
+          "${AppLocalizations.of(context)!.translate("edit_contract")!}"),
       body: Builder(builder: (context) {
         return BlocListener(
             bloc: contractBloc,

@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/contract/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/contract/model/contract_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/contract/screen/edit_contract.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/delete_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
@@ -177,7 +178,7 @@ class _BodyState extends State<Body> {
                           //   height: 5.0,
                           // ),
                           // build expandable
-                          _buildExpenable(contractBloc.contract[index])
+                          _buildExpenable(context, contractBloc.contract[index])
                         ],
                       ),
                     ),
@@ -189,14 +190,14 @@ class _BodyState extends State<Body> {
     );
   }
 
-  _buildExpenable(ContractModel contractModel) {
+  _buildExpenable(BuildContext context, ContractModel contractModel) {
     return ExpandableNotifier(
         child: Column(
-      children: <Widget>[_expandableItemList(contractModel)],
+      children: <Widget>[_expandableItemList(context, contractModel)],
     ));
   }
 
-  _expandableItemList(ContractModel contractModel) {
+  _expandableItemList(BuildContext context, ContractModel contractModel) {
     return ScrollOnExpand(
         scrollOnExpand: true,
         scrollOnCollapse: false,
@@ -298,8 +299,13 @@ class _BodyState extends State<Body> {
                         ],
                       ),
                       onPressed: () {
-                        Navigator.pushNamed(context, editContract,
-                            arguments: contractModel);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => EditContract(
+                                    contractModel: contractModel)));
+                        // Navigator.pushNamed(context, editContract,
+                        //     arguments: contractModel);
                       }),
                   SizedBox(
                     width: 5,

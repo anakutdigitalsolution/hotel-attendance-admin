@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
+import 'package:hotle_attendnce_admin/src/feature/payslip/screen/add_payslip.dart';
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/payslip_component.dart';
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/payslip_list_monthly.dart';
 
@@ -35,7 +37,23 @@ class PaySlippage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar(context), body: _buildBody(context));
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: _buildBody(context),
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+            backgroundColor: Colors.blue,
+            child: Icon(Icons.add),
+            elevation: 0,
+            onPressed: () {
+              // Navigator.pushNamed(context, addPayslip);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AddPayslip(monthly: "monthly")));
+            }),
+      ),
+    );
   }
 
   _buildAppBar(BuildContext context) {

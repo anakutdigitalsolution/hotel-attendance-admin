@@ -16,7 +16,7 @@ class ContractRepository {
       print(url);
       if (response.statusCode == 200) {
         print(response.data);
-        List<ContractModel> leave = [];
+        List<ContractModel> leave = [];  
         response.data["data"].forEach((data) {
           leave.add(ContractModel.fromJson(data));
         });

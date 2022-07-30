@@ -30,7 +30,7 @@ class PayslipRepository {
 
   Future<void> addPayslip({
     required String userId,
-    required String contractId,
+    // required String contractId,
     required String fromDate,
     required String toDate,
     required String allowance,
@@ -45,7 +45,7 @@ class PayslipRepository {
       String url = mainUrl + "payslips/add";
       Map body = {
         "user_id": userId,
-        "contract_id": contractId,
+        // "contract_id": contractId,
         "from_date": fromDate,
         "to_date": toDate,
         "allowance": allowance,
@@ -74,7 +74,7 @@ class PayslipRepository {
   Future<void> editPayslip({
     required String id,
     required String userId,
-    required String contractId,
+    // required String contractId,
     required String fromDate,
     required String toDate,
     required String allowance,
@@ -89,7 +89,7 @@ class PayslipRepository {
       String url = mainUrl + "payslips/edit/$id";
       Map body = {
         "user_id": userId,
-        "contract_id": contractId,
+        // "contract_id": contractId,
         "from_date": fromDate,
         "to_date": toDate,
         "allowance": allowance,
