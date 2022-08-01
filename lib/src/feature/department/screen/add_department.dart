@@ -285,6 +285,7 @@ class _AddDepartmentState extends State<AddDepartment> {
                                                 .firstWhere((e) =>
                                                     "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
                                                     _groupIdCtrl.text);
+                                        print("manger id $managerId");
                                         departmentBlc.add(AddDepartmentStarted(
                                             managerId: managerId,
                                             name: _reasonCtrl.text,

@@ -84,9 +84,10 @@ class DepartmentRepository {
         "department_name": name,
         "workday_id": workId,
         "location_id": locationId,
-        "manager_id": managerId,
+        "manager": managerId,
         "notes": notes
       };
+      print(managerId);
       Response response = await apiProvider.post(url, body, null);
 
       print(response.statusCode);
@@ -117,7 +118,7 @@ class DepartmentRepository {
         "workday_id": workId,
         "location_id": locationId,
         "notes": notes,
-        "manager_id": managerId,
+        "manager": managerId,
       };
       Response response = await apiProvider.put(url, body);
 

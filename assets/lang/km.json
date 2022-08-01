@@ -91,6 +91,11 @@
     "employee" : "បុគ្គលិក",
     "type_ot" : "ប្រភេទ",
     "pay_type" : "យកជា",
+    "otMethod" : "មេគុណ",
+    "otRate" : "តម្លៃក្នុងមួយម៉ោង",
+    "otHour" : "ចំនួនថែមម៉ោង",
+    "total_ot" : "សរុបថែមម៉ោង",
+   
     "team_profile" : "Team Profile",
     "schdeule" : "ម៉ោងធ្វើការ",
     "operation" : "ប្រតិ្តបត្តិការ",
@@ -114,7 +119,7 @@
     "reset_password" : "ប្តូរលេខសំងាត់",
     "setting" : "ការកំណត់",
     "export" : "ទាញយករបាយការណ៏",
-    "otMethod" : "មេគុណ",
+   
     "no_data" : "មិនមានទិន្នន័យ",
     "manager" : "ប្រធានផ្នែក",
     "choose_manager" : "ជ្រើសរើសប្រធានផ្នែក",

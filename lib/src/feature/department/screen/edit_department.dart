@@ -312,19 +312,31 @@ class _EditDepartmentState extends State<EditDepartment> {
                                         if (_managerCtrl.text == "") {
                                           managerId = "";
                                         } else {
-                                          if (_managerCtrl.text !=
-                                              widget.departmentModel
-                                                  .managerName) {
+                                          if (widget.departmentModel
+                                                  .managerName ==
+                                              null) {
                                             EmployeeModel userModel =
                                                 _employeeBloc.emploList
                                                     .firstWhere((element) =>
-                                                        element.departmentModel!
-                                                            .managerName ==
+                                                        element.name ==
                                                         _managerCtrl.text);
                                             managerId = userModel.id;
                                           } else {
-                                            managerId = widget
-                                                .departmentModel.managerId!;
+                                            if (_managerCtrl.text !=
+                                                widget.departmentModel
+                                                    .managerName) {
+                                              EmployeeModel userModel =
+                                                  _employeeBloc.emploList
+                                                      .firstWhere((element) =>
+                                                          element
+                                                              .departmentModel!
+                                                              .managerName ==
+                                                          _managerCtrl.text);
+                                              managerId = userModel.id;
+                                            } else {
+                                              managerId = widget
+                                                  .departmentModel.managerId!;
+                                            }
                                           }
                                         }
 

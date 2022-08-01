@@ -7,6 +7,7 @@ import 'package:hotle_attendnce_admin/src/appLocalizations.dart';
 import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
 import 'package:hotle_attendnce_admin/src/feature/overtime/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/overtime/model/overtime_model.dart';
+import 'package:hotle_attendnce_admin/src/shared/widget/delete_dialog.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:lottie/lottie.dart';
@@ -458,38 +459,13 @@ class _BodyState extends State<Body> {
                               ],
                             ),
                             onPressed: () {
-                              showDialog(
+                              deleteDialog(
                                   context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Text('Alert'),
-                                      content: Text(
-                                          "Do want to delete this record?"),
-                                      actions: <Widget>[
-                                        FlatButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('No',
-                                              style:
-                                                  TextStyle(color: Colors.red)),
-                                        ),
-                                        FlatButton(
-                                          onPressed: () {
-                                            print("id ${overtime.id}");
-                                            overtimeBloc.add(
-                                                DeleteOvertimeStarted(
-                                                    id: overtime.id));
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text(
-                                            'Yes',
-                                            style:
-                                                TextStyle(color: Colors.blue),
-                                          ),
-                                        ),
-                                      ],
-                                    );
+                                  onPress: () {
+                                    print("id ${overtime.id}");
+                                    overtimeBloc.add(
+                                        DeleteOvertimeStarted(id: overtime.id));
+                                    Navigator.pop(context);
                                   });
                             }),
                       ],

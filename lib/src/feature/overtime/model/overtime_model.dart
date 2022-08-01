@@ -18,6 +18,7 @@ class OvertimeModel {
   final String? otMethod;
   final String? totalOt;
    final String? payStatus;
+   
   final EmployeeModel? employeeModel;
   factory OvertimeModel.fromJson(Map<String, dynamic> json) {
     return OvertimeModel(

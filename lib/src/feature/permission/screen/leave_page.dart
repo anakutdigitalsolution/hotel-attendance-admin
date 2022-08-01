@@ -416,10 +416,10 @@ class _WantedBodyState extends State<WantedBody> {
                               deleteDialog(
                                   context: context,
                                   onPress: () {
-                                    Navigator.pop(context);
                                     print("id ${leavemodel.id}");
                                     leaveBloc.add(
                                         DeleteLeaveStarted(id: leavemodel.id));
+                                    Navigator.pop(context);
                                   });
                             }),
                       ],
