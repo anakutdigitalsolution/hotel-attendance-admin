@@ -15,6 +15,7 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.withOpacity(0.2),
       appBar: standardAppBar(context, "Employee Detail"),
       body: Stack(
         children: [
