@@ -7,10 +7,13 @@ class PayslipRepository {
   String mainUrl = "https://banban-hr.herokuapp.com/api/";
   ApiProvider _apiProvider = ApiProvider();
   Future<List<PayslipModel>> getPayslip(
-      {required int rowperpage, required int page}) async {
+      {required int rowperpage,
+      required int page,
+      required String startDate,
+      required String endDate}) async {
     try {
       String url =
-          "https://banban-hr.herokuapp.com/api/payslips?page_size=$rowperpage&page=$page";
+          "https://banban-hr.herokuapp.com/api/payslips?from_date=$startDate&to_date=$endDate&page_size=$rowperpage&page=$page";
       Response response = await _apiProvider.get(url, null, null);
       print(response.statusCode);
       print(url);

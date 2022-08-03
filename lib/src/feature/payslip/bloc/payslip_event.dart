@@ -6,11 +6,22 @@ class PayslipEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitailizePayslipStarted extends PayslipEvent {}
+class InitailizePayslipStarted extends PayslipEvent {
+   final String? dateRange;
+  InitailizePayslipStarted({required this.dateRange});
+}
 
-class FetchPayslipStarted extends PayslipEvent {}
 
-class RefreshPayslipStarted extends PayslipEvent {}
+class FetchPayslipStarted extends PayslipEvent { 
+  final String? dateRange;
+  FetchPayslipStarted({required this.dateRange});
+}
+
+class RefreshPayslipStarted extends PayslipEvent {
+   final String? dateRange;
+  RefreshPayslipStarted({required this.dateRange});
+}
+
 
 class AddPayslipStarted extends PayslipEvent {
   final String userId;

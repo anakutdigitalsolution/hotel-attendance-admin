@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:hotle_attendnce_admin/src/config/routes/routes.dart';
+import 'package:hotle_attendnce_admin/src/feature/payslip/model/monthly_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/add_payslip.dart';
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/payslip_component.dart';
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/payslip_list_monthly.dart';
 
 class PaySlippage extends StatelessWidget {
   // const PaySlippage({Key? key}) : super(key: key);
-  List<String> paylist = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
+  List<MonthlyModel> paylist = [
+    MonthlyModel(monthly: "January", value: "2022-01-01/2022-01-31"),
+    MonthlyModel(monthly: "February", value: "2022-02-01/2022-02-28"),
+    MonthlyModel(monthly: "March", value: "2022-03-01/2022-03-31"),
+    MonthlyModel(monthly: "April", value: "2022-04-01/2022-04-30"),
+    MonthlyModel(monthly: "May", value: "2022-05-01/2022-05-31"),
+    MonthlyModel(monthly: "June", value: "2022-06-01/2022-06-30"),
+    MonthlyModel(monthly: "July", value: "2022-07-01/2022-07-31"),
+    MonthlyModel(monthly: "August", value: "2022-08-01/2022-08-31"),
+    MonthlyModel(monthly: "September", value: "2022-09-01/2022-09-30"),
+    MonthlyModel(monthly: "October", value: "2022-10-01/2022-10-31"),
+    MonthlyModel(monthly: "November", value: "2022-11-01/2022-11-30"),
+    MonthlyModel(monthly: "December", value: "2022-12-01/2022-12-31")
   ];
   List<String> numMonth = [
     "01",
@@ -139,7 +139,7 @@ class PaySlippage extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (conxtex) => PayslipListMonthly(
-                                    month: paylist[index],
+                                    month: paylist[index].value,
                                   )));
                     },
                     child: Container(
@@ -181,7 +181,7 @@ class PaySlippage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "${paylist[index]}",
+                                    "${paylist[index].monthly}",
                                     textScaleFactor: 1.2,
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
@@ -192,7 +192,7 @@ class PaySlippage extends StatelessWidget {
                                   Padding(
                                     padding: EdgeInsets.only(top: 3),
                                     child: Text(
-                                      "01/04/2022 - 01/05/2022",
+                                      "${paylist[index].value}",
                                       style: TextStyle(color: Colors.grey[500]),
                                     ),
                                   ),
