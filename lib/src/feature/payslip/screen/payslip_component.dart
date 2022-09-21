@@ -52,16 +52,16 @@ class _PayslipComponentState extends State<PayslipComponent> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
-              delayedWidget(
-                child: ComponentWidget(
-                  name:
-                      "${AppLocalizations.of(context)!.translate("structure_type")!}",
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(structuretype);
-                  },
-                ),
-              ),
+              // SizedBox(height: 20),
+              // delayedWidget(
+              //   child: ComponentWidget(
+              //     name:
+              //         "${AppLocalizations.of(context)!.translate("structure_type")!}",
+              //     onPressed: () {
+              //       Navigator.of(context).pushNamed(structuretype);
+              //     },
+              //   ),
+              // ),
             ],
           )
         ],

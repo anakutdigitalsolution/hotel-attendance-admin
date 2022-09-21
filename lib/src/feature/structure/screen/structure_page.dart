@@ -51,7 +51,7 @@ class _BodyState extends State<Body> {
   final RefreshController _refreshController = RefreshController();
   @override
   void initState() {
-    structureBloc.add(InitailizeStructureStarted());
+    structureBloc.add(InitailizeStructureStarted(isRefresh: false));
     super.initState();
   }
 
@@ -97,7 +97,7 @@ class _BodyState extends State<Body> {
           print("length ${structureBloc.structure.length}");
           return SmartRefresher(
             onRefresh: () {
-              structureBloc.add(InitailizeStructureStarted());
+              structureBloc.add(InitailizeStructureStarted(isRefresh: true));
             },
             onLoading: () {
               structureBloc.add(FetchStructureStarted());
@@ -228,17 +228,11 @@ class _BodyState extends State<Body> {
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
-                structureModel.currency == "riel"
-                    ? Text(
-                        "${structureModel.baseSalary} \Riel",
-                        style: TextStyle(
-                            color: Colors.purple, fontWeight: FontWeight.bold),
-                      )
-                    : Text(
-                        "\S${structureModel.baseSalary}",
-                        style: TextStyle(
-                            color: Colors.purple, fontWeight: FontWeight.bold),
-                      )
+                Text(
+                  "\S${structureModel.baseSalary}",
+                  style: TextStyle(
+                      color: Colors.purple, fontWeight: FontWeight.bold),
+                )
               ],
             ),
             Row(
@@ -252,19 +246,11 @@ class _BodyState extends State<Body> {
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
-                structureModel.currency == "riel"
-                    ? Text(
-                        "${structureModel.allowance} \Riel",
-                        style: TextStyle(
-                            color: Colors.redAccent,
-                            fontWeight: FontWeight.bold),
-                      )
-                    : Text(
-                        "\$${structureModel.allowance}",
-                        style: TextStyle(
-                            color: Colors.redAccent,
-                            fontWeight: FontWeight.bold),
-                      )
+                Text(
+                  "\$${structureModel.allowance}",
+                  style: TextStyle(
+                      color: Colors.redAccent, fontWeight: FontWeight.bold),
+                )
               ],
             ),
           ],

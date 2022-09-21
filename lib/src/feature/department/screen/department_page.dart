@@ -11,7 +11,6 @@ import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../appLocalizations.dart';
 
-
 DepartmentBlc departmentBlc = DepartmentBlc();
 
 class DepartmentPage extends StatefulWidget {
@@ -57,7 +56,7 @@ class _DepartmentBodyState extends State<DepartmentBody> {
   void initState() {
     super.initState();
 
-    departmentBlc.add(InitializeDepartmentStarted());
+    departmentBlc.add(InitializeDepartmentStarted(isRefresh: false));
   }
 
   @override
@@ -103,11 +102,10 @@ class _DepartmentBodyState extends State<DepartmentBody> {
 
           return SmartRefresher(
             onRefresh: () {
-              departmentBlc.add(RefreshDepartmentStarted());
+              departmentBlc.add(InitializeDepartmentStarted(isRefresh: true));
             },
             onLoading: () {
               departmentBlc.add(FetchDepartmentStarted());
-              _refreshController.loadComplete();
             },
             enablePullDown: true,
             enablePullUp: true,
@@ -177,29 +175,29 @@ class _DepartmentBodyState extends State<DepartmentBody> {
                                     )
                             ],
                           ),
-                          Row(
-                            // mainAxisAlignment:
-                            //     MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: Text(
-                                  "${AppLocalizations.of(context)!.translate("workday")!} :",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                              departmentBlc.departmentList[index]
-                                          .workingDayModel ==
-                                      null
-                                  ? Text("")
-                                  : Text(
-                                      "${departmentBlc.departmentList[index].workingDayModel!.name}",
-                                      style: TextStyle(
-                                        color: Colors.green,
-                                      ),
-                                    )
-                            ],
-                          ),
+                          // Row(
+                          //   // mainAxisAlignment:
+                          //   //     MainAxisAlignment.spaceBetween,
+                          //   children: [
+                          //     Padding(
+                          //       padding: const EdgeInsets.only(right: 10),
+                          //       child: Text(
+                          //         "${AppLocalizations.of(context)!.translate("workday")!} :",
+                          //         style: TextStyle(color: Colors.black),
+                          //       ),
+                          //     ),
+                          //     departmentBlc.departmentList[index]
+                          //                 .workingDayModel ==
+                          //             null
+                          //         ? Text("")
+                          //         : Text(
+                          //             "${departmentBlc.departmentList[index].workingDayModel!.name}",
+                          //             style: TextStyle(
+                          //               color: Colors.green,
+                          //             ),
+                          //           )
+                          //   ],
+                          // ),
                           Row(
                             // mainAxisAlignment:
                             //     MainAxisAlignment.spaceBetween,

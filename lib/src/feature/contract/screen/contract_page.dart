@@ -56,7 +56,7 @@ class _BodyState extends State<Body> {
   void initState() {
     super.initState();
 
-    contractBloc.add(InitailizeContractStarted());
+    contractBloc.add(InitailizeContractStarted(isRefresh: false));
   }
 
   @override
@@ -102,7 +102,7 @@ class _BodyState extends State<Body> {
 
           return SmartRefresher(
             onRefresh: () {
-              contractBloc.add(InitailizeContractStarted());
+              contractBloc.add(InitailizeContractStarted(isRefresh: true));
             },
             onLoading: () {
               contractBloc.add(FetchContractSarted());

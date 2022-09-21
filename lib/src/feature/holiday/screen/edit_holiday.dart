@@ -51,37 +51,24 @@ class _EditHolidayState extends State<EditHoliday> {
     super.initState();
   }
 
-  _dialogDate({required TextEditingController controller}) async {
-    DatePicker.showDatePicker(context,
-            showTitleActions: true,
-            minTime: DateTime(2018, 01, 01),
-            maxTime: DateTime(2030, 01, 01),
-            theme: DatePickerTheme(
-                headerColor: Colors.blue,
-                backgroundColor: Colors.white,
-                itemStyle: TextStyle(
-                    color: Colors.black,
-                    // fontWeight: FontWeight.bold,
-                    fontSize: 18),
-                doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
-            onChanged: (date) {},
-            onConfirm: (date) {},
-            currentTime: DateTime.now(),
-            locale: LocaleType.en)
-        .then((value) {
-      setState(() {
-        date = value;
-        String formateDate = DateFormat('yyyy/MM/dd').format(date!);
-        controller.text = formateDate.toString();
-      });
+  _datePicker({required TextEditingController controller}) {
+    return showDatePicker(
+      context: context,
+      initialDate: dateNow,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 60),
+    ).then((value) {
+      if (value == null) {
+        print("null");
+      } else {
+        setState(() {
+          date = value;
+          String formateDate = DateFormat('yyyy/MM/dd').format(date!);
+          controller.text = formateDate.toString();
+        });
+      }
+      // after click on date ,
     });
-    // if (date != null && date != dateNow) {
-    //   setState(() {
-    //     date = dateNow;
-
-    //     dateInCtrl.text = date.toString();
-    //   });
-    // }
   }
 
   @override
@@ -121,6 +108,7 @@ class _EditHolidayState extends State<EditHoliday> {
                       TextFormField(
                         controller: _nameCtrl,
                         keyboardType: TextInputType.text,
+                        maxLines: null,
                         decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(
                               left: 14.0,
@@ -146,7 +134,7 @@ class _EditHolidayState extends State<EditHoliday> {
                         readOnly: true,
                         // keyboardType: TextInputType.text,
                         onTap: () {
-                          _dialogDate(controller: _fromCtrl);
+                          _datePicker(controller: _fromCtrl);
                         },
                         decoration: InputDecoration(
                             prefixIcon: Icon(
@@ -177,7 +165,7 @@ class _EditHolidayState extends State<EditHoliday> {
                         readOnly: true,
                         // keyboardType: TextInputType.text,
                         onTap: () {
-                          _dialogDate(controller: _toCtrl);
+                          _datePicker(controller: _toCtrl);
                         },
                         decoration: InputDecoration(
                             prefixIcon: Icon(

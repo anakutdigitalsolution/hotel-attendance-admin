@@ -56,26 +56,12 @@ class _EditContractState extends State<EditContract> {
   }
 
   _dialogDate({required TextEditingController controller}) async {
-    DatePicker.showDatePicker(context,
-            showTitleActions: true,
-            minTime: DateTime(DateTime.now().year - 5),
-            maxTime: DateTime(DateTime.now().year + 60),
-            // minTime: DateTime(2018, 01, 01),
-            // maxTime: DateTime(2030, 01, 01),
-            theme: DatePickerTheme(
-                // headerColor: Colors.blueGrey,
-                headerColor: Colors.blue,
-                backgroundColor: Colors.white,
-                itemStyle: TextStyle(
-                    color: Colors.black,
-                    // fontWeight: FontWeight.bold,
-                    fontSize: 18),
-                doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
-            onChanged: (date) {},
-            onConfirm: (date) {},
-            currentTime: DateTime.now(),
-            locale: LocaleType.en)
-        .then((value) {
+    return showDatePicker(
+      context: context,
+      initialDate: dateNow,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 60),
+    ).then((value) {
       if (value == null) {
         print("null");
       } else {
@@ -85,6 +71,7 @@ class _EditContractState extends State<EditContract> {
           controller.text = formateDate.toString();
         });
       }
+      // after click on date ,
     });
   }
 

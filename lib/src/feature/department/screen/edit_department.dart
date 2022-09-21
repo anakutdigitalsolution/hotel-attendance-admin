@@ -42,8 +42,8 @@ class _EditDepartmentState extends State<EditDepartment> {
         ? _noteCtrl.text = ""
         : _noteCtrl.text = widget.departmentModel.notes!;
     _locationCtrl.text = widget.departmentModel.locationModel!.name!;
-    _groupIdCtrl.text =
-        "${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}";
+    // _groupIdCtrl.text =
+    //     "${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}";
     widget.departmentModel.managerName == null
         ? _managerCtrl.text = ""
         : _managerCtrl.text = widget.departmentModel.managerName!;
@@ -173,34 +173,34 @@ class _EditDepartmentState extends State<EditDepartment> {
                                     return null;
                                   },
                                 ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _groupIdCtrl,
-                                  onTap: () {
-                                    _workingDayBloc
-                                        .add(FetchAllWorkingdayStarted());
-                                  },
-                                  readOnly: true,
-                                  // keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      labelText:
-                                          "${AppLocalizations.of(context)!.translate("choose_workday")!}"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'workday is required.';
-                                    }
-                                    return null;
-                                  },
-                                ),
+                                // SizedBox(height: 15),
+                                // TextFormField(
+                                //   controller: _groupIdCtrl,
+                                //   onTap: () {
+                                //     _workingDayBloc
+                                //         .add(FetchAllWorkingdayStarted());
+                                //   },
+                                //   readOnly: true,
+                                //   // keyboardType: TextInputType.text,
+                                //   decoration: InputDecoration(
+                                //       suffixIcon: Icon(Icons.arrow_drop_down),
+                                //       contentPadding: const EdgeInsets.only(
+                                //         left: 14.0,
+                                //       ),
+                                //       fillColor: Colors.grey.shade100,
+                                //       filled: true,
+                                //       focusedBorder: OutlineInputBorder(
+                                //           borderSide: new BorderSide(
+                                //               color: Colors.grey.shade400)),
+                                //       labelText:
+                                //           "${AppLocalizations.of(context)!.translate("choose_workday")!}"),
+                                //   validator: (value) {
+                                //     if (value!.isEmpty) {
+                                //       return 'workday is required.';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
                                 SizedBox(height: 15),
                                 TextFormField(
                                   controller: _locationCtrl,
@@ -282,20 +282,20 @@ class _EditDepartmentState extends State<EditDepartment> {
                                         String? managerId = "";
                                         print(
                                             "controller ${_groupIdCtrl.text}");
-                                        print(
-                                            "model : ${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}");
-                                        if (_groupIdCtrl.text !=
-                                            "${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}") {
-                                          WorkingDayModel workingDayModel =
-                                              _workingDayBloc.departmentList
-                                                  .firstWhere((e) =>
-                                                      "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
-                                                      _groupIdCtrl.text);
-                                          workId = workingDayModel.id;
-                                        } else {
-                                          workId =
-                                              widget.departmentModel.workId!;
-                                        }
+                                        // print(
+                                        //     "model : ${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}");
+                                        // if (_groupIdCtrl.text !=
+                                        //     "${widget.departmentModel.workingDayModel!.name!} Workday ${widget.departmentModel.workingDayModel!.workingDay} Offday ${widget.departmentModel.workingDayModel!.offDay}") {
+                                        //   WorkingDayModel workingDayModel =
+                                        //       _workingDayBloc.departmentList
+                                        //           .firstWhere((e) =>
+                                        //               "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
+                                        //               _groupIdCtrl.text);
+                                        //   workId = workingDayModel.id;
+                                        // } else {
+                                        //   workId =
+                                        //       widget.departmentModel.workId!;
+                                        // }
                                         if (_locationCtrl.text !=
                                             widget.departmentModel
                                                 .locationModel!.name) {

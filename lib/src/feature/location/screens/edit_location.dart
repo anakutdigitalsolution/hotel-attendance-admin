@@ -98,7 +98,7 @@ class _EditLocationState extends State<EditLocation> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _latCtrl,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(
                               left: 14.0,
@@ -121,7 +121,7 @@ class _EditLocationState extends State<EditLocation> {
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _lonCtrl,
-                        keyboardType: TextInputType.number,
+                        keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                             contentPadding: const EdgeInsets.only(
                               left: 14.0,
@@ -147,16 +147,15 @@ class _EditLocationState extends State<EditLocation> {
                         maxLines: null,
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
-                            contentPadding: EdgeInsets.all(15),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                              borderSide: new BorderSide(
-                                width: 1,
-                              ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 14.0,
                             ),
-                            isDense: true,
+                            fillColor: Colors.grey.shade100,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Colors.grey.shade400)),
+                            enabledBorder: InputBorder.none,
                             labelText:
                                 "${AppLocalizations.of(context)!.translate("address_detail")!}"),
                       ),

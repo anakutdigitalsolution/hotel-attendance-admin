@@ -74,7 +74,7 @@ class DepartmentRepository {
   Future<void> addDepartment({
     required String name,
     required String notes,
-    required String workId,
+    // required String workId,
     required String locationId,
     required String managerId,
   }) async {
@@ -82,7 +82,7 @@ class DepartmentRepository {
       String url = mainUrl + "departments/add";
       Map body = {
         "department_name": name,
-        "workday_id": workId,
+        // "workday_id": workId,
         "location_id": locationId,
         "manager": managerId,
         "notes": notes
@@ -107,7 +107,7 @@ class DepartmentRepository {
     required String id,
     required String name,
     required String notes,
-    required String workId,
+    // required String workId,
     required String locationId,
     required String managerId,
   }) async {
@@ -115,7 +115,7 @@ class DepartmentRepository {
       String url = mainUrl + "departments/edit/$id";
       Map body = {
         "department_name": name,
-        "workday_id": workId,
+        // "workday_id": workId,
         "location_id": locationId,
         "notes": notes,
         "manager": managerId,

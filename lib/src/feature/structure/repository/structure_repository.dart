@@ -34,7 +34,7 @@ class StructureRepository {
       String url = "https://banban-hr.herokuapp.com/api/structures/all";
       Response response = await _apiProvider.get(url, null, null);
       print(response.statusCode);
-      print(url);
+      print(url);  
       if (response.statusCode == 200) {
         print(response.data);
         List<StructureModel> leave = [];
@@ -49,20 +49,21 @@ class StructureRepository {
     }
   }
 
-  Future<void> addStructure(
-      {required String name,
-      required String baseSalary,
-      required String allowance,
-      required String currency,
-      required String structuretypeId}) async {
+  Future<void> addStructure({
+    required String name,
+    required String baseSalary,
+    required String allowance,
+    // required String currency,
+    // required String structuretypeId
+  }) async {
     try {
       String url = mainUrl + "structures/add";
       Map body = {
         "name": name,
         "base_salary": baseSalary,
         "allowance": allowance,
-        "currency": currency,
-        "structure_type_id": structuretypeId,
+        // "currency": currency,
+        // "structure_type_id": structuretypeId,
       };
       Response response = await _apiProvider.post(url, body, null);
 
@@ -79,21 +80,22 @@ class StructureRepository {
     }
   }
 
-  Future<void> editStructure(
-      {required String id,
-      required String name,
-      required String baseSalary,
-      required String allowance,
-      required String currency,
-      required String structuretypeId}) async {
+  Future<void> editStructure({
+    required String id,
+    required String name,
+    required String baseSalary,
+    required String allowance,
+    // required String currency,
+    // required String structuretypeId
+  }) async {
     try {
       String url = mainUrl + "structures/edit/$id";
       Map body = {
         "name": name,
         "base_salary": baseSalary,
         "allowance": allowance,
-        "currency": currency,
-        "structure_type_id": structuretypeId,
+        // "currency": currency,
+        // "structure_type_id": structuretypeId,
       };
       Response response = await _apiProvider.put(url, body);
 

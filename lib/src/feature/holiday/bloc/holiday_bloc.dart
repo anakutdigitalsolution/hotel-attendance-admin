@@ -17,16 +17,12 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
     if (event is FetchHolidayStarted) {
       yield FetchingHoliday();
       try {
-        print(page);
-        // holidaylist.clear();
         List<HolidayModel> _templist = await leaveRepository.getHoliday(
             page: page, rowperpage: rowperpage);
         holidaylist.addAll(_templist);
-        // leavemodel.addAll(leaveList);
-        print(holidaylist.length);
+
         page++;
-        print("page $page");
-        print(_templist.length);
+
         if (_templist.length < rowperpage) {
           yield EndOfHolidayList();
         } else {
@@ -40,23 +36,17 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
     if (event is InitializeHolidayStarted) {
       yield InitializingHoliday();
       try {
-        // page = 1;
-        // holidaylist.clear();
+        page = 1;
+        holidaylist.clear();
         List<HolidayModel> _templist = await leaveRepository.getHoliday(
             page: page, rowperpage: rowperpage);
         holidaylist.addAll(_templist);
-        // leavemodel.addAll(leaveList);
-        print(holidaylist.length);
-        page++;
-        print("page $page");
-        print(holidaylist.length);
-        yield InitializedHoliday();
 
-        // if (holidaylist.length < rowperpage) {
-        //   yield EndOfHolidayList();
-        // } else {
-        //   yield InitializedHoliday();
-        // }
+        page++;
+        if (event.isRefresh == true) {
+          yield FetchedHoliday();
+        }
+        yield InitializedHoliday();
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingHoliday(error: e.toString());
@@ -93,8 +83,8 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
         yield AddedHoliday();
         yield FetchingHoliday();
         holidaylist.clear();
-        page=1;
-         List<HolidayModel> _templist = await leaveRepository.getHoliday(
+        page = 1;
+        List<HolidayModel> _templist = await leaveRepository.getHoliday(
             page: page, rowperpage: rowperpage);
         holidaylist.addAll(_templist);
 
@@ -118,8 +108,8 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
         yield AddedHoliday();
         yield FetchingHoliday();
         holidaylist.clear();
-        page=1;
-         List<HolidayModel> _templist = await leaveRepository.getHoliday(
+        page = 1;
+        List<HolidayModel> _templist = await leaveRepository.getHoliday(
             page: page, rowperpage: rowperpage);
         holidaylist.addAll(_templist);
 
@@ -137,10 +127,10 @@ class HolidayBloc extends Bloc<HolidayEvent, HolidayState> {
         await leaveRepository.deleteHoliday(id: event.id);
         yield AddedHoliday();
         holidaylist.clear();
-         yield FetchingHoliday();
+        yield FetchingHoliday();
         holidaylist.clear();
-        page=1;
-         List<HolidayModel> _templist = await leaveRepository.getHoliday(
+        page = 1;
+        List<HolidayModel> _templist = await leaveRepository.getHoliday(
             page: page, rowperpage: rowperpage);
         holidaylist.addAll(_templist);
 

@@ -6,7 +6,10 @@ class ContractEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitailizeContractStarted extends ContractEvent {}
+class InitailizeContractStarted extends ContractEvent {
+  final bool isRefresh;
+  InitailizeContractStarted({required this.isRefresh});
+}
 
 class FetchContractSarted extends ContractEvent {}
 

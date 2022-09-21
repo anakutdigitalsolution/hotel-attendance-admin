@@ -53,9 +53,8 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    holidayBloc.holidaylist.clear();
-    holidayBloc.page = 1;
-    holidayBloc.add(InitializeHolidayStarted());
+
+    holidayBloc.add(InitializeHolidayStarted(isRefresh: false));
   }
 
   @override
@@ -105,7 +104,8 @@ class _BodyState extends State<Body> {
             cacheExtent: 1,
             controller: _refreshController,
             onRefresh: () {
-              holidayBloc.add(RefreshHolidayStarted());
+              // holidayBloc.add(RefreshHolidayStarted());
+              holidayBloc.add(InitializeHolidayStarted(isRefresh: true));
             },
             onLoading: () {
               if (holidayBloc.state is EndOfHolidayList) {
@@ -145,24 +145,38 @@ class _BodyState extends State<Body> {
       child: Container(
         padding: EdgeInsets.all(8.0),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          // mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment:
               //     MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: Text(
-                    "${AppLocalizations.of(context)!.translate("date")!} :",
+                    "${AppLocalizations.of(context)!.translate("name")!} :",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(color: Colors.black),
                   ),
                 ),
-                Text(
-                  "${holidayModel.name}",
-                  style: TextStyle(
-                      color: Colors.green, fontWeight: FontWeight.bold),
-                )
+                Flexible(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${holidayModel.name}",
+                          style: TextStyle(
+                              color: Colors.green, fontWeight: FontWeight.bold),
+                        )
+                      ]),
+                ),
               ],
             ),
             SizedBox(

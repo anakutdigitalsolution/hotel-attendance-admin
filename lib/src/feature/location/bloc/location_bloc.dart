@@ -17,14 +17,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     if (event is InitializeLocationStarted) {
       yield InitializingLocation();
       try {
+        page = 1;
+        departmentList.clear();
         // Future.delayed(Duration(milliseconds: 200));
         List<LocationModel> _departmentList = await _departmentRepository
             .getLocationList(rowPerpage: rowperpage, page: page);
         departmentList.addAll(_departmentList);
 
         page++;
-        print(page);
-        print(departmentList.length);
         yield InitializedLocation();
       } catch (e) {
         log(e.toString());
@@ -69,9 +69,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       try {
         // Future.delayed(Duration(milliseconds: 200));
         page = 1;
-        if (departmentList.length != 0) {
-          departmentList.clear();
-        }
+        departmentList.clear();
         List<LocationModel> _departmentList = await _departmentRepository
             .getLocationList(rowPerpage: rowperpage, page: page);
         departmentList.addAll(_departmentList);

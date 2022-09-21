@@ -23,7 +23,11 @@ class StructureBloc extends Bloc<StructureEvent, StructureState> {
         structure.addAll(_departmentList);
         page++;
         print(page);
-        yield InitalizedStructure();
+        if (event.isRefresh == true) {
+          yield FetchedStructure();
+        } else {
+          yield InitalizedStructure();
+        }
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingStructure(error: e.toString());
@@ -67,11 +71,12 @@ class StructureBloc extends Bloc<StructureEvent, StructureState> {
       yield AddingStructure();
       try {
         await _structuretypeRepository.addStructure(
-            name: event.name,
-            baseSalary: event.baseSalary,
-            allowance: event.allowance,
-            currency: event.currency,
-            structuretypeId: event.structuretypeId);
+          name: event.name,
+          baseSalary: event.baseSalary,
+          allowance: event.allowance,
+          // currency: event.currency,
+          // structuretypeId: event.structuretypeId
+        );
         yield AddedStructure();
         yield FetchingStructure();
         page = 1;
@@ -90,12 +95,13 @@ class StructureBloc extends Bloc<StructureEvent, StructureState> {
       yield AddingStructure();
       try {
         await _structuretypeRepository.editStructure(
-            id: event.id,
-            name: event.name,
-            baseSalary: event.baseSalary,
-            allowance: event.allowance,
-            currency: event.currency,
-            structuretypeId: event.structuretypeId);
+          id: event.id,
+          name: event.name,
+          baseSalary: event.baseSalary,
+          allowance: event.allowance,
+          // currency: event.currency,
+          // structuretypeId: event.structuretypeId
+        );
         yield AddedStructure();
         yield FetchingStructure();
         page = 1;

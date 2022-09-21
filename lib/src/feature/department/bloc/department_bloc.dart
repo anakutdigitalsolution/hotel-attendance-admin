@@ -19,15 +19,19 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
     if (event is InitializeDepartmentStarted) {
       yield InitializingDepartment();
       try {
+        page = 1;
+        departmentList.clear();
         // Future.delayed(Duration(milliseconds: 200));
         List<DepartmentModel> _departmentList = await _departmentRepository
             .getdepartment(rowPerpage: rowperpage, page: page);
         departmentList.addAll(_departmentList);
 
         page++;
-        print(page);
-        print(departmentList.length);
-        yield InitializedDepartment();
+        if (event.isRefresh == true) {
+          yield FetchedDepartment();
+        } else {
+          yield InitializedDepartment();
+        }
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingDepartment(error: e.toString());
@@ -154,7 +158,7 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
             managerId: event.managerId,
             name: event.name,
             notes: event.notes,
-            workId: event.workId,
+            // workId: event.workId,
             locationId: event.locationId);
 
         yield AddedDepartment();
@@ -180,7 +184,7 @@ class DepartmentBlc extends Bloc<DepartmentEvent, DepartmentState> {
             id: event.id,
             name: event.name,
             notes: event.notes,
-            workId: event.workId,
+            // workId: event.workId,
             locationId: event.locationId);
 
         yield AddedDepartment();

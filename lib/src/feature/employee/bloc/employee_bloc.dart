@@ -5,7 +5,7 @@ import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/model/role_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/role/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/repository/employee_repository.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 
@@ -116,7 +116,11 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
           print(image);
         }
         await _departmentRepository.addEmployee(
-            // roleId: event.roleId,
+            roleId: event.roleId,
+            nationality: event.nationality,
+            cardNumber: event.cardNumber,
+            timetalbeId: event.timetalbeId,
+            workdayId: event.workdayId,
             name: event.name,
             gender: event.gender,
             dob: event.dob,
@@ -128,7 +132,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
             positionId: event.positionId,
             departmentId: event.departmentId,
             meritalStatus: event.meritalStatus,
-             coupleJob: event.coupleJob,
+            coupleJob: event.coupleJob,
             child: event.child,
             phoneNumber: event.phoneNumber,
             address: event.address);
@@ -159,6 +163,11 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
           image = await uploadImage(image: event.img!);
         }
         await _departmentRepository.editEmployee(
+            roleId: event.roleId,
+            nationality: event.nationality,
+            cardNumber: event.cardNumber,
+            timetalbeId: event.timetalbeId,
+            workdayId: event.workdayId,
             // roleId: event.roleId,
             id: event.id,
             name: event.name,
@@ -167,11 +176,10 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
             email: event.email,
             officeTel: event.officeTel,
             img: image!,
-           
             positionId: event.positionId,
             departmentId: event.departmentId,
             meritalStatus: event.meritalStatus,
-             coupleJob: event.coupleJob,
+            coupleJob: event.coupleJob,
             child: event.child,
             phoneNumber: event.phoneNumber,
             address: event.address);

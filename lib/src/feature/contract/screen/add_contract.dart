@@ -49,27 +49,13 @@ class _AddContractState extends State<AddContract> {
     super.initState();
   }
 
-  _dialogDate({required TextEditingController controller}) async {
-    DatePicker.showDatePicker(context,
-            showTitleActions: true,
-            minTime: DateTime(DateTime.now().year - 5),
-            maxTime: DateTime(DateTime.now().year + 60),
-            // minTime: DateTime(2018, 01, 01),
-            // maxTime: DateTime(2030, 01, 01),
-            theme: DatePickerTheme(
-                // headerColor: Colors.blueGrey,
-                headerColor: Colors.blue,
-                backgroundColor: Colors.white,
-                itemStyle: TextStyle(
-                    color: Colors.black,
-                    // fontWeight: FontWeight.bold,
-                    fontSize: 18),
-                doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
-            onChanged: (date) {},
-            onConfirm: (date) {},
-            currentTime: DateTime.now(),
-            locale: LocaleType.en)
-        .then((value) {
+  _datePicker({required TextEditingController controller}) {
+    return showDatePicker(
+      context: context,
+      initialDate: dateNow,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 60),
+    ).then((value) {
       if (value == null) {
         print("null");
       } else {
@@ -79,6 +65,7 @@ class _AddContractState extends State<AddContract> {
           controller.text = formateDate.toString();
         });
       }
+      // after click on date ,
     });
   }
 
@@ -242,7 +229,7 @@ class _AddContractState extends State<AddContract> {
                                 controller: _startCtrl,
                                 readOnly: true,
                                 onTap: () {
-                                  _dialogDate(controller: _startCtrl);
+                                  _datePicker(controller: _startCtrl);
                                 },
                                 decoration: InputDecoration(
                                     prefixIcon: Icon(
@@ -271,7 +258,7 @@ class _AddContractState extends State<AddContract> {
                                 controller: _endCtrl,
                                 readOnly: true,
                                 onTap: () {
-                                  _dialogDate(controller: _endCtrl);
+                                  _datePicker(controller: _endCtrl);
                                 },
                                 decoration: InputDecoration(
                                     prefixIcon: Icon(

@@ -12,7 +12,7 @@ import 'package:hotle_attendnce_admin/src/feature/department/screen/department_p
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/model/role_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/role/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
@@ -717,22 +717,22 @@ class _EditEmployeeState extends State<EditEmployee> {
                                           url = widget.employeeModel.img!;
                                         }
 
-                                        employeeBloc.add(UpdateEmployeeStarted(
-                                            id: widget.employeeModel.id,
-                                            name: _nameCtrl.text,
-                                            gender: _genderCtrl.text,
-                                            dob: _dobCtrl.text,
-                                            email: _emailCtrl.text,
-                                            officeTel: _officeTelCtrl.text,
-                                            img: _image,
-                                            imgUrl: url,
-                                            positionId: position,
-                                            departmentId: depart,
-                                            meritalStatus: _statusCtl.text,
-                                            coupleJob: _coupleCtrl.text,
-                                            child: _numchildCtrl.text,
-                                            phoneNumber: _phoneNumberCtrl.text,
-                                            address: _addressCtrl.text));
+                                        // employeeBloc.add(UpdateEmployeeStarted(
+                                        //     id: widget.employeeModel.id,
+                                        //     name: _nameCtrl.text,
+                                        //     gender: _genderCtrl.text,
+                                        //     dob: _dobCtrl.text,
+                                        //     email: _emailCtrl.text,
+                                        //     officeTel: _officeTelCtrl.text,
+                                        //     img: _image,
+                                        //     imgUrl: url,
+                                        //     positionId: position,
+                                        //     departmentId: depart,
+                                        //     meritalStatus: _statusCtl.text,
+                                        //     coupleJob: _coupleCtrl.text,
+                                        //     child: _numchildCtrl.text,
+                                        //     phoneNumber: _phoneNumberCtrl.text,
+                                        //     address: _addressCtrl.text));
                                       }
                                     })
                               ],

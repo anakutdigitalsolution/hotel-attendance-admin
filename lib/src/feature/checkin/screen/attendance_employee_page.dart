@@ -14,7 +14,6 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-
 class AttendanceEmployeePage extends StatelessWidget {
   const AttendanceEmployeePage({Key? key}) : super(key: key);
 
@@ -63,10 +62,10 @@ class _BodyState extends State<Body> {
         builder: (context, state) {
           if (state is InitializingEmployee) {
             return Center(
-                  // child: CircularProgressIndicator(),
-                  child: Lottie.asset('assets/animation/loader.json',
-                      width: 200, height: 200),
-                );
+              // child: CircularProgressIndicator(),
+              child: Lottie.asset('assets/animation/loader.json',
+                  width: 200, height: 200),
+            );
           }
           if (state is ErrorFetchingEmployee) {
             Helper.handleState(state: state.error, context: context);

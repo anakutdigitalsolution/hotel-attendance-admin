@@ -115,12 +115,10 @@ class _LatLongState extends State<LatLong> {
                       "Latitude : ",
                       textScaleFactor: 1.3,
                     ),
-                    Text(
-                      "$lat",
-                      textScaleFactor: 1.3,
-                      style: TextStyle(
-                          color: Colors.green, fontWeight: FontWeight.bold),
-                    )
+                    SelectableText("$lat",
+                        textScaleFactor: 1.3,
+                        style: TextStyle(
+                            color: Colors.green, fontWeight: FontWeight.bold)),
                   ],
                 ),
           SizedBox(
@@ -131,12 +129,10 @@ class _LatLongState extends State<LatLong> {
               : Row(
                   children: [
                     Text("Longtitude : "),
-                    Text(
-                      "$lot",
-                      textScaleFactor: 1.3,
-                      style: TextStyle(
-                          color: Colors.green, fontWeight: FontWeight.bold),
-                    )
+                    SelectableText("$lot",
+                        textScaleFactor: 1.3,
+                        style: TextStyle(
+                            color: Colors.green, fontWeight: FontWeight.bold)),
                   ],
                 ),
         ],

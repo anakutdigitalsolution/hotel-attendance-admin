@@ -37,6 +37,11 @@ class AddEmployeeStarted extends EmployeeEvent {
 
   final String coupleJob;
   final String child;
+  final String cardNumber;
+  final String nationality;
+  final String roleId;
+  final String timetalbeId;
+  final String workdayId;
   AddEmployeeStarted(
       {required this.name,
       required this.gender,
@@ -52,6 +57,11 @@ class AddEmployeeStarted extends EmployeeEvent {
       required this.address,
       required this.meritalStatus,
       required this.coupleJob,
+      required this.nationality,
+      required this.cardNumber,
+      required this.roleId,
+      required this.timetalbeId,
+      required this.workdayId,
       required this.child});
 }
 
@@ -73,6 +83,12 @@ class UpdateEmployeeStarted extends EmployeeEvent {
 
   final String coupleJob;
   final String child;
+  final String cardNumber;
+  final String nationality;
+  final String roleId;
+  final String timetalbeId;
+  final String workdayId;
+
   UpdateEmployeeStarted(
       {required this.id,
       required this.name,
@@ -88,6 +104,11 @@ class UpdateEmployeeStarted extends EmployeeEvent {
       required this.meritalStatus,
       required this.coupleJob,
       required this.child,
+      required this.nationality,
+      required this.cardNumber,
+      required this.roleId,
+      required this.timetalbeId,
+      required this.workdayId,
       required this.address});
 }
 

@@ -6,7 +6,10 @@ class StructureEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitailizeStructureStarted extends StructureEvent {}
+class InitailizeStructureStarted extends StructureEvent {
+  final bool isRefresh;
+  InitailizeStructureStarted({required this.isRefresh});
+}
 
 class FetchStructureStarted extends StructureEvent {}
 
@@ -16,14 +19,15 @@ class AddStructureStarted extends StructureEvent {
   final String name;
   final String baseSalary;
   final String allowance;
-  final String currency;
-  final String structuretypeId;
-  AddStructureStarted(
-      {required this.name,
-      required this.baseSalary,
-      required this.allowance,
-      required this.currency,
-      required this.structuretypeId});
+  // final String currency;
+  // final String structuretypeId;
+  AddStructureStarted({
+    required this.name,
+    required this.baseSalary,
+    required this.allowance,
+    // required this.currency,
+    // required this.structuretypeId
+  });
 }
 
 class UpdateStructureStarted extends StructureEvent {
@@ -31,15 +35,16 @@ class UpdateStructureStarted extends StructureEvent {
   final String name;
   final String baseSalary;
   final String allowance;
-  final String currency;
-  final String structuretypeId;
-  UpdateStructureStarted(
-      {required this.id,
-      required this.name,
-      required this.baseSalary,
-      required this.allowance,
-      required this.currency,
-      required this.structuretypeId});
+  // final String currency;
+  // final String structuretypeId;
+  UpdateStructureStarted({
+    required this.id,
+    required this.name,
+    required this.baseSalary,
+    required this.allowance,
+    // required this.currency,
+    // required this.structuretypeId
+  });
 }
 
 class DeleteStructureStarted extends StructureEvent {

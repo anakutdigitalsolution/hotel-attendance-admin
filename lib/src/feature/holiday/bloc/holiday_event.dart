@@ -6,7 +6,10 @@ class HolidayEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitializeHolidayStarted extends HolidayEvent {}
+class InitializeHolidayStarted extends HolidayEvent {
+  final bool isRefresh;
+  InitializeHolidayStarted({required this.isRefresh});
+}
 
 class FetchHolidayStarted extends HolidayEvent {}
 

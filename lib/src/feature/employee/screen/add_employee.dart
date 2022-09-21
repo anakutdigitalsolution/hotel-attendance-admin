@@ -8,7 +8,7 @@ import 'package:hotle_attendnce_admin/src/feature/department/model/department_mo
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/model/role_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/role/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
@@ -207,8 +207,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       // isDense: true,
                                       contentPadding: const EdgeInsets.only(
                                         left: 14.0,
-                                      )
-                                      ),
+                                      )),
 
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -615,23 +614,23 @@ class _AddEmployeeState extends State<AddEmployee> {
                                         //         e.name == _roleCtrl.text);
                                         if (_image == null) {}
                                         print(_image);
-                                        employeeBloc.add(AddEmployeeStarted(
-                                            // roleId: roleModel.id,
-                                            name: _nameCtrl.text,
-                                            gender: _genderCtrl.text,
-                                            dob: _dobCtrl.text,
-                                            email: _emailCtrl.text,
-                                            username: _usernameCtrl.text,
-                                            img: _image,
-                                            password: _passwordCtrl.text,
-                                            positionId: posiId.id,
-                                            departmentId: departId.id,
-                                            meritalStatus: _statusCtl.text,
-                                            coupleJob: _coupleCtrl.text,
-                                            child: _numchildCtrl.text,
-                                            officeTel: _officeTelCtrl.text,
-                                            phoneNumber: _phoneNumberCtrl.text,
-                                            address: _addressCtrl.text));
+                                        //   employeeBloc.add(AddEmployeeStarted(
+                                        //       // roleId: roleModel.id,
+                                        //       name: _nameCtrl.text,
+                                        //       gender: _genderCtrl.text,
+                                        //       dob: _dobCtrl.text,
+                                        //       email: _emailCtrl.text,
+                                        //       username: _usernameCtrl.text,
+                                        //       img: _image,
+                                        //       password: _passwordCtrl.text,
+                                        //       positionId: posiId.id,
+                                        //       departmentId: departId.id,
+                                        //       meritalStatus: _statusCtl.text,
+                                        //       coupleJob: _coupleCtrl.text,
+                                        //       child: _numchildCtrl.text,
+                                        //       officeTel: _officeTelCtrl.text,
+                                        //       phoneNumber: _phoneNumberCtrl.text,
+                                        //       address: _addressCtrl.text));
                                       }
                                     })
                               ],

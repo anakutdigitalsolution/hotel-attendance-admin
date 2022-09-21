@@ -1,7 +1,10 @@
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/model/role_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/role/model/role_model.dart';
 
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/screen/working_day.dart';
 
 class EmployeeModel {
   final String id;
@@ -21,45 +24,53 @@ class EmployeeModel {
   final String? no;
   final String? card;
 
-  final String? type;
+  // final String? type;
   final String? meritalStatus;
   final String? coupleJob;
   final String? child;
 
   final PositionModel? positionModel;
   final DepartmentModel? departmentModel;
+  final TimetableModel? timetableModel;
+  final WorkingDayModel? workingDayModel;
   final RoleModel? roleModel;
 
   factory EmployeeModel.fromJson(Map<String, dynamic> json) {
     return EmployeeModel(
-      id: json["id"].toString(),
-      name: json["name"],
-      gender: json["gender"],
-      img: json["profile_url"],
-      phone: json["employee_phone"],
-      username: json["username"],
-      address: json["address"],
-      nationalilty: json["nationality"],
-      dob: json["dob"],
-      card: json["card_number"],
-      officeTel: json["office_tel"],
-      no: json["no"],
-      meritalStatus: json["merital_status"],
-      coupleJob: json["couple_job"],
-      child: json["number_of_child"].toString(),
-      email: json["email"],
-      type: json["em_type"].toString(),
-      positionId: json["position_id"].toString(),
-      checkinStatus: json["checkin_status"],
-      checkinId: json["checkin_id"].toString(),
-      roleModel: json["role"] == null ? null : RoleModel.fromJson(json["role"]),
-      positionModel: json["position"] == null
-          ? null
-          : PositionModel.fromJson(json["position"]),
-      departmentModel: json["department"] == null
-          ? null
-          : DepartmentModel.fromJson(json["department"]),
-    );
+        id: json["id"].toString(),
+        name: json["name"],
+        gender: json["gender"],
+        img: json["profile_url"],
+        phone: json["employee_phone"],
+        username: json["username"],
+        address: json["address"],
+        nationalilty: json["nationality"],
+        dob: json["dob"],
+        card: json["card_number"],
+        officeTel: json["office_tel"],
+        no: json["no"],
+        meritalStatus: json["merital_status"],
+        coupleJob: json["spouse_job"],
+        child: json["minor_children"].toString(),
+        email: json["email"],
+        // type: json["em_type"].toString(),
+        positionId: json["position_id"].toString(),
+        checkinStatus: json["checkin_status"],
+        checkinId: json["checkin_id"].toString(),
+        roleModel:
+            json["role"] == null ? null : RoleModel.fromJson(json["role"]),
+        positionModel: json["position"] == null
+            ? null
+            : PositionModel.fromJson(json["position"]),
+        departmentModel: json["department"] == null
+            ? null
+            : DepartmentModel.fromJson(json["department"]),
+        timetableModel: json["timetable"] == null
+            ? null
+            : TimetableModel.fromJson(json["timetable"]),
+        workingDayModel: json["workday"] == null
+            ? null
+            : WorkingDayModel.fromJson(json["workday"]));
   }
   EmployeeModel(
       {required this.id,
@@ -76,7 +87,7 @@ class EmployeeModel {
       required this.no,
       required this.card,
       required this.officeTel,
-      required this.type,
+      // required this.type,
       required this.positionModel,
       required this.departmentModel,
       required this.meritalStatus,
@@ -84,5 +95,7 @@ class EmployeeModel {
       required this.child,
       required this.checkinStatus,
       required this.roleModel,
+      required this.timetableModel,
+      required this.workingDayModel,
       required this.checkinId});
 }

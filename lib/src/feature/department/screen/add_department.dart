@@ -160,34 +160,34 @@ class _AddDepartmentState extends State<AddDepartment> {
                                   },
                                 ),
                                 SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _groupIdCtrl,
-                                  onTap: () {
-                                    _workingDayBloc
-                                        .add(FetchAllWorkingdayStarted());
-                                  },
-                                  readOnly: true,
-                                  // keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.arrow_drop_down),
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      labelText:
-                                          "${AppLocalizations.of(context)!.translate("choose_workday")!}"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'workday is required.';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                SizedBox(height: 15),
+                                // TextFormField(
+                                //   controller: _groupIdCtrl,
+                                //   onTap: () {
+                                //     _workingDayBloc
+                                //         .add(FetchAllWorkingdayStarted());
+                                //   },
+                                //   readOnly: true,
+                                //   // keyboardType: TextInputType.text,
+                                //   decoration: InputDecoration(
+                                //       suffixIcon: Icon(Icons.arrow_drop_down),
+                                //       contentPadding: const EdgeInsets.only(
+                                //         left: 14.0,
+                                //       ),
+                                //       fillColor: Colors.grey.shade100,
+                                //       filled: true,
+                                //       focusedBorder: OutlineInputBorder(
+                                //           borderSide: new BorderSide(
+                                //               color: Colors.grey.shade400)),
+                                //       labelText:
+                                //           "${AppLocalizations.of(context)!.translate("choose_workday")!}"),
+                                //   validator: (value) {
+                                //     if (value!.isEmpty) {
+                                //       return 'workday is required.';
+                                //     }
+                                //     return null;
+                                //   },
+                                // ),
+                                // SizedBox(height: 15),
                                 TextFormField(
                                   controller: _locationCtrl,
                                   onTap: () {
@@ -280,17 +280,17 @@ class _AddDepartmentState extends State<AddDepartment> {
                                                     element.name ==
                                                     _locationCtrl.text);
 
-                                        WorkingDayModel workingDayModel =
-                                            _workingDayBloc.departmentList
-                                                .firstWhere((e) =>
-                                                    "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
-                                                    _groupIdCtrl.text);
-                                        print("manger id $managerId");
+                                        // WorkingDayModel workingDayModel =
+                                        //     _workingDayBloc.departmentList
+                                        //         .firstWhere((e) =>
+                                        //             "${e.name}  Workday ${e.workingDay} Offday ${e.offDay}" ==
+                                        //             _groupIdCtrl.text);
+                                        // print("manger id $managerId");
                                         departmentBlc.add(AddDepartmentStarted(
                                             managerId: managerId,
                                             name: _reasonCtrl.text,
                                             locationId: locationModel.id,
-                                            workId: workingDayModel.id,
+                                            // workId: workingDayModel.id,
                                             notes: _noteCtrl.text));
                                       }
                                     })

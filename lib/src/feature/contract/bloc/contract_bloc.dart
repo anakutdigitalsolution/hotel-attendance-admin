@@ -23,8 +23,12 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
             .getContract(rowperpage: rowperpage, page: page);
         contract.addAll(_departmentList);
         page++;
-        print(page);
-        yield InitalizedContract();
+
+        if (event.isRefresh == true) {
+          yield FetchedContract();
+        } else {
+          yield InitalizedContract();
+        }
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingContract(error: e.toString());
@@ -38,8 +42,7 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
             .getContract(rowperpage: rowperpage, page: page);
         contract.addAll(_departmentList);
         page++;
-        print(page);
-        print(_departmentList.length);
+
         if (_departmentList.length < rowperpage) {
           yield EndofContractList();
         } else {
@@ -100,7 +103,6 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
             startedDate: event.startedDate,
             endDate: event.endDate,
             workingSchedule: event.workingSchedule,
-            
             refCode: event.refCode);
         yield AddedContract();
         yield FetchingContract();

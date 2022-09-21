@@ -111,11 +111,12 @@ class _BodyState extends State<Body> {
           } else if (state is AddedLocation) {
             EasyLoading.dismiss();
             EasyLoading.showSuccess("Sucess");
+            Navigator.pop(context);
           }
         });
   }
 
-  _buildListItem(LocationModel location) async {
+  _buildListItem(LocationModel location) {
     return Container(
       margin: EdgeInsets.only(bottom: 10.0, left: 8.0, right: 8.0),
       decoration: BoxDecoration(

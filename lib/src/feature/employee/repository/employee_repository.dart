@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
-import 'package:hotle_attendnce_admin/src/feature/employee/model/role_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/role/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/custome_exception.dart';
 
@@ -12,6 +12,47 @@ class EmployeeRepository {
       {required int rowPerpage, required int page}) async {
     try {
       String url = mainUrl + "employees?page_size=$rowPerpage&page=$page";
+
+      Response response = await apiProvider.get(url, null, null);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.data);
+        List<EmployeeModel> leave = [];
+        response.data["data"].forEach((data) {
+          leave.add(EmployeeModel.fromJson(data));
+        });
+        return leave;
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<EmployeeModel>> getEmployeeList(
+      {required int rowPerpage, required int page}) async {
+    try {
+      String url = mainUrl + "employees/list?page_size=$rowPerpage&page=$page";
+
+      Response response = await apiProvider.get(url, null, null);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print(response.data);
+        List<EmployeeModel> leave = [];
+        response.data["data"].forEach((data) {
+          leave.add(EmployeeModel.fromJson(data));
+        });
+        return leave;
+      }
+      throw CustomException.generalException();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<EmployeeModel>> getEmployeeDetail({required String id}) async {
+    try {
+      String url = mainUrl + "employees&employee_id=$id";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
@@ -80,12 +121,16 @@ class EmployeeRepository {
     required String password,
     required String positionId,
     required String departmentId,
-    // required String roleId,
     required String phoneNumber,
     required String address,
     required String meritalStatus,
     required String coupleJob,
     required String child,
+    required String cardNumber,
+    required String nationality,
+    required String roleId,
+    required String workdayId,
+    required String timetalbeId,
   }) async {
     try {
       String url = mainUrl + "employees/add";
@@ -100,13 +145,16 @@ class EmployeeRepository {
         "profile_url": img,
         "position_id": positionId,
         "department_id": departmentId,
-        // "role_id": roleId,
         "phone": phoneNumber,
         "address": address,
         "merital_status": meritalStatus,
-        // "role_id": roleId,
-        "number_of_child": child,
-        "couple_job": coupleJob,
+        "minor_children": child,
+        "spouse_job": coupleJob,
+        "role_id": roleId,
+        "nationality": nationality,
+        "card_number": cardNumber,
+        "workday_id": workdayId,
+        "timetable_id": timetalbeId,
       };
       Response response = await apiProvider.post(url, body, null);
       print(response.statusCode);
@@ -137,7 +185,11 @@ class EmployeeRepository {
     required String meritalStatus,
     required String coupleJob,
     required String child,
-    // required String roleId,
+    required String cardNumber,
+    required String nationality,
+    required String roleId,
+    required String workdayId,
+    required String timetalbeId,
   }) async {
     try {
       String url = mainUrl + "employees/edit/$id";
@@ -157,6 +209,11 @@ class EmployeeRepository {
         "number_of_child": child,
         "couple_job": coupleJob,
         // "role_id": roleId,
+        "role_id": roleId,
+        "nationality": nationality,
+        "card_number": cardNumber,
+        "workday_id": workdayId,
+        "timetable_id": timetalbeId,
       };
       Response response = await apiProvider.put(url, body);
 
