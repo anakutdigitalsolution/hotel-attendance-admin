@@ -22,9 +22,9 @@ class FetchedEmployee extends EmployeeState {}
 
 class EndofEmployeeList extends EmployeeState {}
 
-class FetchingRole extends EmployeeState {}
+// class FetchingRole extends EmployeeState {}
 
-class FetchedRole extends EmployeeState {}
+// class FetchedRole extends EmployeeState {}
 
 class AddingEmployee extends EmployeeState {}
 
@@ -40,10 +40,10 @@ class ErrorFetchingEmployee extends EmployeeState with ErrorState {
   ErrorFetchingEmployee({required this.error});
 }
 
-class ErrorFetchingRole extends EmployeeState {
-  final dynamic error;
-  ErrorFetchingRole({required this.error});
-}
+// class ErrorFetchingRole extends EmployeeState {
+//   final dynamic error;
+//   ErrorFetchingRole({required this.error});
+// }
 // class AddingCheckin extends EmployeeState {}
 // class AddedCheckin extends EmployeeState {}
 // class ErrorAddingCheckInOut extends EmployeeState {

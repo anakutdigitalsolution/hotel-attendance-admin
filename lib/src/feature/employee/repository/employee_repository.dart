@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_detail_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/role/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/utils/service/api_provider.dart';
@@ -50,14 +51,14 @@ class EmployeeRepository {
     }
   }
 
-  Future<EmployeeModel> getEmployeeDetail({required String id}) async {
+  Future<EmployeeDetailModel> getEmployeeDetail({required String id}) async {
     try {
       String url = mainUrl + "employees&employee_id=$id";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
-        return EmployeeModel.fromJson(response.data);
+        return EmployeeDetailModel.fromJson(response.data);
       }
       throw CustomException.generalException();
     } catch (e) {

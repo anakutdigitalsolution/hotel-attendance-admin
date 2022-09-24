@@ -4,6 +4,7 @@ import 'package:hotle_attendnce_admin/src/feature/auth/model/user_model.dart';
 // import 'package:hotle_attendnce_admin/src/feature/account/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
+import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_detail_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/model/employee_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/role/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/repository/employee_repository.dart';
@@ -14,25 +15,25 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   EmployeeRepository _departmentRepository = EmployeeRepository();
   List<EmployeeModel> emploList = [];
   List<RoleModel> roleList = [];
-  EmployeeModel? employeeModel;
+  EmployeeDetailModel? employeeModel;
   int rowperpage = 12;
   String? image;
   int page = 1;
   @override
   Stream<EmployeeState> mapEventToState(EmployeeEvent event) async* {
-    if (event is FetchRoleStarted) {
-      yield FetchingRole();
-      try {
-        if (roleList.length != 0) {
-          roleList.clear();
-        }
-        roleList = await _departmentRepository.getRole();
-        yield FetchedRole();
-      } catch (e) {
-        log(e.toString());
-        yield ErrorFetchingRole(error: e.toString());
-      }
-    }
+    // if (event is FetchRoleStarted) {
+    //   yield FetchingRole();
+    //   try {
+    //     if (roleList.length != 0) {
+    //       roleList.clear();
+    //     }
+    //     roleList = await _departmentRepository.getRole();
+    //     yield FetchedRole();
+    //   } catch (e) {
+    //     log(e.toString());
+    //     yield ErrorFetchingRole(error: e.toString());
+    //   }
+    // }
     if (event is FetchEmployeeDetailStarted) {
       yield FetchingEmployee();
       try {

@@ -123,7 +123,16 @@ class _BodyState extends State<Body> {
           );
         } else if (state is ErrorFetchingEmployee) {
           return Center(
-            child: Text(state.error.toString()),
+            child: TextButton(
+                onPressed: () {
+                  employeeBloc.add(InitializeEmployeeStarted());
+                },
+                style: TextButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: Colors.teal,
+                  onSurface: Colors.grey,
+                ),
+                child: Text("Retry")),
           );
         } else {
           if (employeeBloc.emploList.length == 0) {
@@ -253,12 +262,17 @@ class _BodyState extends State<Body> {
                                   ],
                                 ),
                                 onPressed: () {
+                                  // employeeBloc.add(FetchEmployeeDetailStarted(
+                                  //     id: employeeBloc.emploList[index].id));
+                                  // Future.delayed(Duration(milliseconds: 5));
+                                  // print(employeeBloc
+                                  //     .employeeModel!.employeeModel.name);
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (con) => EditEmployee(
-                                                employeeModel: employeeBloc
-                                                    .emploList[index],
+                                                id: employeeBloc
+                                                    .emploList[index].id,
                                               )));
                                 }),
                             SizedBox(

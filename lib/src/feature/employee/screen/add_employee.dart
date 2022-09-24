@@ -8,10 +8,15 @@ import 'package:hotle_attendnce_admin/src/feature/department/model/department_mo
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_event.dart';
 import 'package:hotle_attendnce_admin/src/feature/employee/bloc/employee_state.dart';
+import 'package:hotle_attendnce_admin/src/feature/role/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/role/model/role_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
@@ -48,6 +53,16 @@ class _AddEmployeeState extends State<AddEmployee> {
   final TextEditingController _coupleCtrl = TextEditingController();
   final TextEditingController _numchildCtrl = TextEditingController();
   late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  // final TextEditingController _roleCtrl = TextEditingController();
+  final TextEditingController _timetableCtrl = TextEditingController();
+  final TextEditingController _workdayCtrl = TextEditingController();
+  final TextEditingController _natoinCtrl = TextEditingController();
+  final TextEditingController _cardCtrl = TextEditingController();
+  DepartmentBlc _departmentBlc = DepartmentBlc();
+  PositionBlc _positionBloc = PositionBlc();
+  TimetableBloc _timetableBloc = TimetableBloc();
+  WorkingDayBloc _workingDayBloc = WorkingDayBloc();
+  RoleBloc _roleBloc = RoleBloc();
   File? _image;
   DateTime? date;
   DateTime dateNow = DateTime.now();
@@ -62,6 +77,16 @@ class _AddEmployeeState extends State<AddEmployee> {
     // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
     dateToday = formattedDate.toString();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _departmentBlc.close();
+    _timetableBloc.close();
+    _positionBloc.close();
+    _positionBloc.close();
+    _workingDayBloc.close();
+    super.dispose();
   }
 
   _dialogDate({required TextEditingController controller}) async {
@@ -100,7 +125,7 @@ class _AddEmployeeState extends State<AddEmployee> {
             bloc: employeeBloc,
             listener: (context, state) {
               if (state is AddingEmployee) {
-                EasyLoading.show(status: "loading....");
+                EasyLoading.show(status: "loading...");
               }
               if (state is ErorrAddingEmployee) {
                 EasyLoading.dismiss();
@@ -109,11 +134,14 @@ class _AddEmployeeState extends State<AddEmployee> {
               if (state is AddedEmployee) {
                 EasyLoading.dismiss();
                 EasyLoading.showSuccess("Sucess");
+
                 Navigator.pop(context);
+
+                print("success");
               }
             },
             child: BlocListener(
-              bloc: departmentBlc,
+              bloc: _departmentBlc,
               listener: (context, state) {
                 if (state is FetchingDepartment) {
                   EasyLoading.show(status: "loading...");
@@ -124,25 +152,22 @@ class _AddEmployeeState extends State<AddEmployee> {
                 }
                 if (state is FetchedDepartment) {
                   EasyLoading.dismiss();
-                  customModal(context,
-                      departmentBlc.departmentList.map((e) => e.name!).toList(),
-                      (value) {
+                  customModal(
+                      context,
+                      _departmentBlc.departmentList
+                          .map((e) => e.name!)
+                          .toList(), (value) {
                     _departmentIdCtrl.text = value;
-                    // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
-                    //     .roomtype
-                    //     .firstWhere((roomtype) => roomtype.type == value);
-                    // _roomNumberCtrl.clear();
-                    // _stayingCtrl.clear();
                   });
                 }
               },
               child: BlocListener(
-                  bloc: positionBlc,
+                  bloc: _positionBloc,
                   listener: (context, state) {
                     if (state is FetchingPosition) {
                       EasyLoading.show(status: "loading...");
                     }
-                    if (state is ErrorFetchingPosition) {
+                    if (state is ErrorAddingPosition) {
                       EasyLoading.dismiss();
                       errorSnackBar(
                           text: state.error.toString(), context: context);
@@ -151,493 +176,688 @@ class _AddEmployeeState extends State<AddEmployee> {
                       EasyLoading.dismiss();
                       customModal(
                           context,
-                          positionBlc.positionList
+                          _positionBloc.positionList
                               .map((e) => e.positionName)
                               .toList(), (value) {
                         _positionIdCtrl.text = value;
-                        // roomTypeModel = BlocProvider.of<RoomTypeBloc>(context)
-                        //     .roomtype
-                        //     .firstWhere((roomtype) => roomtype.type == value);
-                        // _roomNumberCtrl.clear();
-                        // _stayingCtrl.clear();
                       });
                     }
                   },
                   child: BlocListener(
-                    bloc: employeeBloc,
+                    bloc: _timetableBloc,
                     listener: (context, state) {
-                      if (state is FetchingRole) {
+                      if (state is FetchingTimetable) {
                         EasyLoading.show(status: "loading...");
                       }
-                      if (state is ErrorFetchingRole) {
+                      if (state is ErrorFetchingEmployee) {
                         EasyLoading.dismiss();
                         errorSnackBar(
                             text: state.error.toString(), context: context);
                       }
-                      if (state is FetchedRole) {
-                        EasyLoading.dismiss();
-                        customModal(context,
-                            employeeBloc.roleList.map((e) => e.name).toList(),
-                            (value) {
-                          _roleCtrl.text = value;
+                      if (state is FetchedTimetable) {
+                        customModal(
+                            context,
+                            _timetableBloc.timetableList
+                                .map((e) =>
+                                    "from ${e.onDutyTtime} to ${e.offDutyTime}")
+                                .toList(), (value) {
+                          _timetableCtrl.text = value;
                         });
                       }
                     },
-                    child: ListView(
-                      children: [
-                        Form(
-                          key: _formKey,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 15),
-                            child: Column(
-                              children: [
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  // controller: code,
-                                  controller: _nameCtrl,
-                                  decoration: InputDecoration(
-                                      labelText: "Enter full name",
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      // isDense: true,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      )),
+                    child: BlocListener(
+                      bloc: _workingDayBloc,
+                      listener: (context, state) {
+                        if (state is FetchingWorkingDay) {
+                          EasyLoading.show(status: "loading...");
+                        }
+                        if (state is ErrorFetchingWorkingDay) {
+                          EasyLoading.dismiss();
+                          errorSnackBar(
+                              text: state.error.toString(), context: context);
+                        }
+                        if (state is FetchedWorkingDay) {
+                          customModal(
+                              context,
+                              _workingDayBloc.departmentList
+                                  .map((e) =>
+                                      "from ${e.workingDay!} to ${e.offDay}")
+                                  .toList(), (value) {
+                            _workdayCtrl.text = value;
+                          });
+                        }
+                      },
+                      child: BlocListener(
+                        bloc: _roleBloc,
+                        listener: (context, state) {
+                          if (state is FetchingRole) {
+                            EasyLoading.show(status: "loading...");
+                          }
+                          if (state is ErrorFetchingRole) {
+                            EasyLoading.dismiss();
+                            errorSnackBar(
+                                text: state.error.toString(), context: context);
+                          }
+                          if (state is FetchedRole) {
+                            EasyLoading.dismiss();
+                            customModal(context,
+                                _roleBloc.rolelist.map((e) => e.name).toList(),
+                                (value) {
+                              _roleCtrl.text = value;
+                            });
+                          }
+                        },
+                        child: ListView(
+                          children: [
+                            Form(
+                              key: _formKey,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 15),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _nameCtrl,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Enter full name"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Full name is required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _genderCtrl,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Choose gender"),
+                                      onTap: () {
+                                        customModal(context, gender, (value) {
+                                          _genderCtrl.text = value;
+                                        });
+                                      },
+                                      readOnly: true,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Please select gender';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _emailCtrl,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Enter email address"),
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _dobCtrl,
+                                      keyboardType: TextInputType.text,
+                                      onTap: () {
+                                        _dialogDate(controller: _dobCtrl);
+                                      },
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Date of Birth"),
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _natoinCtrl,
+                                      onTap: () {
+                                        _positionBloc
+                                            .add(FetchAllPositionStarted());
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Choose nationality"),
+                                      // validator: (value) {
+                                      //   if (value!.isEmpty) {
+                                      //     return 'nationality is required';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _cardCtrl,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Card Number"),
+                                    ),
 
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Full name is required';
-                                    }
-                                    return null;
-                                  },
-                                ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _usernameCtrl,
+                                      // readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Username"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Username is required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _passwordCtrl,
+                                      readOnly: true,
+                                      // keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Password"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'password is required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _officeTelCtrl,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Office Tel"),
+                                    ),
+                                    SizedBox(height: 15),
+                                    // TextFormField(
+                                    //   controller: _usernameCtrl,
+                                    //   keyboardType: TextInputType.text,
+                                    //   decoration: InputDecoration(
+                                    //       contentPadding: EdgeInsets.all(15),
+                                    //       border: OutlineInputBorder(
+                                    //         borderRadius: BorderRadius.all(
+                                    //           Radius.circular(5.0),
+                                    //         ),
+                                    //         borderSide: new BorderSide(
+                                    //           width: 1,
+                                    //         ),
+                                    //       ),
+                                    //
+                                    //       labelText: "Username"),
+                                    //   validator: (value) {
+                                    //     if (value!.isEmpty) {
+                                    //       return 'Username is required';
+                                    //     }
+                                    //     return null;
+                                    //   },
+                                    // ),
+                                    // SizedBox(height: 15),
+                                    // TextFormField(
+                                    //   controller: _passwordCtrl,
+                                    //   keyboardType: TextInputType.text,
+                                    //   decoration: InputDecoration(
+                                    //       contentPadding: EdgeInsets.all(15),
+                                    //       border: OutlineInputBorder(
+                                    //         borderRadius: BorderRadius.all(
+                                    //           Radius.circular(5.0),
+                                    //         ),
+                                    //         borderSide: new BorderSide(
+                                    //           width: 1,
+                                    //         ),
+                                    //       ),
+                                    //
+                                    //       labelText: "password"),
+                                    //   validator: (value) {
+                                    //     if (value!.isEmpty) {
+                                    //       return 'password is required';
+                                    //     }
+                                    //     return null;
+                                    //   },
+                                    // ),
+                                    // SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _phoneNumberCtrl,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Phone number"),
+                                      // validator: (value) {
+                                      //   if (value!.isEmpty) {
+                                      //     return 'phone is required';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _departmentIdCtrl,
+                                      onTap: () {
+                                        _departmentBlc
+                                            .add(FetchAllDepartmentStarted());
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "select department name"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Department is required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _timetableCtrl,
+                                      onTap: () {
+                                        _timetableBloc
+                                            .add(FetchAllTimetableStarted());
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "select timetalbe name"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'timetable is required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _workdayCtrl,
+                                      onTap: () {
+                                        _workingDayBloc
+                                            .add(FetchAllWorkingdayStarted());
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "select working name"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'working is required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _roleCtrl,
+                                      onTap: () {
+                                        _roleBloc.add(FetchRoleStarted());
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Select role"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'role is required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _positionIdCtrl,
+                                      onTap: () {
+                                        _positionBloc
+                                            .add(FetchAllPositionStarted());
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Choose position"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'position is required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _addressCtrl,
+                                      keyboardType: TextInputType.text,
+                                      maxLines: null,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Enter address"),
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _statusCtl,
+                                      onTap: () {
+                                        customModal(context, status, (value) {
+                                          _statusCtl.text = value;
+                                        });
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Choose merital status"),
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _coupleCtrl,
+                                      onTap: () {
+                                        customModal(context, job, (value) {
+                                          _coupleCtrl.text = value;
+                                        });
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Choose couple job"),
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _numchildCtrl,
+                                      readOnly: true,
+                                      keyboardType: TextInputType.number,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText:
+                                              "Enter number of children"),
+                                    ),
+                                    SizedBox(height: 15),
 
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  // controller: code,
-                                  controller: _genderCtrl,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.arrow_drop_down),
-                                      labelText: "Choose gender",
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      )),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Gender is required';
-                                    }
-                                    return null;
-                                  },
-                                  onTap: () {
-                                    customModal(context, gender, (value) {
-                                      _genderCtrl.text = value;
-                                    });
-                                  },
-                                  readOnly: true,
-                                ),
-                                // TextFormField(
-                                //   controller: _genderCtrl,
-                                //   keyboardType: TextInputType.text,
-                                //   decoration: InputDecoration(
-                                //       suffixIcon: Icon(Icons.arrow_drop_down),
-                                //       contentPadding: EdgeInsets.all(15),
-                                //       border: OutlineInputBorder(
-                                //         borderRadius: BorderRadius.all(
-                                //           Radius.circular(5.0),
-                                //         ),
-                                //         borderSide: new BorderSide(
-                                //           width: 1,
-                                //         ),
-                                //       ),
-                                //       isDense: true,
-                                //       labelText: "Choose gender"),
-                                //   onTap: () {
-                                //     customModal(context, gender, (value) {
-                                //       _genderCtrl.text = value;
-                                //     });
-                                //   },
-                                //   readOnly: true,
-                                //   validator: (value) {
-                                //     if (value!.isEmpty) {
-                                //       return 'Please select gender';
-                                //     }
-                                //     return null;
-                                //   },
-                                // ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _dobCtrl,
-                                  keyboardType: TextInputType.text,
-                                  onTap: () {
-                                    _dialogDate(controller: _dobCtrl);
-                                  },
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Date of Birth"),
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _emailCtrl,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Enter email address"),
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _usernameCtrl,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Username"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Username is required';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _passwordCtrl,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "password"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'password is required';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _officeTelCtrl,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Office Tel"),
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _phoneNumberCtrl,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Phone number"),
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _departmentIdCtrl,
-                                  onTap: () {
-                                    departmentBlc
-                                        .add(FetchAllDepartmentStarted());
-                                  },
-                                  readOnly: true,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.arrow_drop_down),
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Choose deparment"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Department is required';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _positionIdCtrl,
-                                  onTap: () {
-                                    positionBlc.add(FetchAllPositionStarted());
-                                  },
-                                  readOnly: true,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.arrow_drop_down),
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Choose position"),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'position is required';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                // SizedBox(height: 15),
-                                // TextFormField(
-                                //   controller: _roleCtrl,
-                                //   onTap: () {
-                                //     employeeBloc.add(FetchRoleStarted());
-                                //   },
-                                //   readOnly: true,
-                                //   keyboardType: TextInputType.text,
-                                //   decoration: InputDecoration(
-                                //       suffixIcon: Icon(Icons.arrow_drop_down),
-                                //       contentPadding: EdgeInsets.all(15),
-                                //       border: OutlineInputBorder(
-                                //         borderRadius: BorderRadius.all(
-                                //           Radius.circular(5.0),
-                                //         ),
-                                //         borderSide: new BorderSide(
-                                //           width: 1,
-                                //         ),
-                                //       ),
-                                //       isDense: true,
-                                //       labelText: "select role "),
-                                //   validator: (value) {
-                                //     if (value!.isEmpty) {
-                                //       return 'role is required';
-                                //     }
-                                //     return null;
-                                //   },
-                                // ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _addressCtrl,
-                                  keyboardType: TextInputType.text,
-                                  maxLines: null,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Enter address"),
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _statusCtl,
-                                  onTap: () {
-                                    customModal(context, status, (value) {
-                                      _statusCtl.text = value;
-                                    });
-                                  },
-                                  readOnly: true,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.arrow_drop_down),
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Choose merital status"),
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _coupleCtrl,
-                                  onTap: () {
-                                    customModal(context, job, (value) {
-                                      _coupleCtrl.text = value;
-                                    });
-                                  },
-                                  readOnly: true,
-                                  keyboardType: TextInputType.text,
-                                  decoration: InputDecoration(
-                                      suffixIcon: Icon(Icons.arrow_drop_down),
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Choose couple job"),
-                                ),
-                                SizedBox(height: 15),
-                                TextFormField(
-                                  controller: _numchildCtrl,
-                                  readOnly: true,
-                                  keyboardType: TextInputType.number,
-                                  decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade100,
-                                      filled: true,
-                                      focusedBorder: OutlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: Colors.grey.shade400)),
-                                      enabledBorder: InputBorder.none,
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 14.0,
-                                      ),
-                                      labelText: "Enter number of children"),
-                                ),
-                                SizedBox(height: 15),
-                                GestureDetector(
-                                    onTap: () {
-                                      _showPicker(context);
-                                    },
-                                    child: (_image == null)
-                                        ? Container(
-                                            width: (MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    10) *
-                                                4,
-                                            height: (MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    10) *
-                                                4,
-                                            alignment: Alignment.center,
-                                            padding: EdgeInsets.all(0),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(5)),
-                                            child: FittedBox(
-                                              fit: BoxFit.fill,
-                                              child: Icon(
-                                                Icons.add_a_photo_outlined,
-                                                color: Colors.grey[600],
-                                                size: (MediaQuery.of(context)
+                                    GestureDetector(
+                                        onTap: () {
+                                          _showPicker(context);
+                                        },
+                                        child: (_image == null)
+                                            ? Container(
+                                                width: (MediaQuery.of(context)
                                                             .size
                                                             .width /
                                                         10) *
-                                                    3,
-                                              ),
-                                            ),
-                                          )
-                                        : Container(
-                                            // height: MediaQuery.of(context).size.width / 3,
-                                            width: (MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    10) *
-                                                7,
-                                            child: Image.file(_image!))),
-                                SizedBox(height: 30),
-                                standardBtn(
-                                    title: "Submit",
-                                    onTap: () {
-                                      if (_formKey!.currentState!.validate()) {
-                                        DepartmentModel departId = departmentBlc
-                                            .departmentList
-                                            .firstWhere((element) =>
-                                                element.name ==
-                                                _departmentIdCtrl.text);
+                                                    4,
+                                                height: (MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        10) *
+                                                    4,
+                                                alignment: Alignment.center,
+                                                padding: EdgeInsets.all(0),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                child: FittedBox(
+                                                  fit: BoxFit.fill,
+                                                  child: Icon(
+                                                    Icons.add_a_photo_outlined,
+                                                    color: Colors.grey[600],
+                                                    size:
+                                                        (MediaQuery.of(context)
+                                                                    .size
+                                                                    .width /
+                                                                10) *
+                                                            3,
+                                                  ),
+                                                ),
+                                              )
+                                            : Container(
+                                                // height: MediaQuery.of(context).size.width / 3,
+                                                width: (MediaQuery.of(context)
+                                                            .size
+                                                            .width /
+                                                        10) *
+                                                    7,
+                                                child: Image.file(_image!))),
+                                    SizedBox(height: 30),
+                                    standardBtn(
+                                        title: "Submit",
+                                        onTap: () {
+                                          if (_formKey!.currentState!
+                                              .validate()) {
+                                            DepartmentModel departId =
+                                                departmentBlc
+                                                    .departmentList
+                                                    .firstWhere((element) =>
+                                                        element.name ==
+                                                        _departmentIdCtrl.text);
 
-                                        PositionModel posiId = positionBlc
-                                            .positionList
-                                            .firstWhere((element) =>
-                                                element.positionName ==
-                                                _positionIdCtrl.text);
-                                        // RoleModel roleModel = employeeBloc
-                                        //     .roleList
-                                        //     .firstWhere((e) =>
-                                        //         e.name == _roleCtrl.text);
-                                        if (_image == null) {}
-                                        print(_image);
-                                        //   employeeBloc.add(AddEmployeeStarted(
-                                        //       // roleId: roleModel.id,
-                                        //       name: _nameCtrl.text,
-                                        //       gender: _genderCtrl.text,
-                                        //       dob: _dobCtrl.text,
-                                        //       email: _emailCtrl.text,
-                                        //       username: _usernameCtrl.text,
-                                        //       img: _image,
-                                        //       password: _passwordCtrl.text,
-                                        //       positionId: posiId.id,
-                                        //       departmentId: departId.id,
-                                        //       meritalStatus: _statusCtl.text,
-                                        //       coupleJob: _coupleCtrl.text,
-                                        //       child: _numchildCtrl.text,
-                                        //       officeTel: _officeTelCtrl.text,
-                                        //       phoneNumber: _phoneNumberCtrl.text,
-                                        //       address: _addressCtrl.text));
-                                      }
-                                    })
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
+                                            PositionModel posiId = positionBlc
+                                                .positionList
+                                                .firstWhere((element) =>
+                                                    element.positionName ==
+                                                    _positionIdCtrl.text);
+
+                                            RoleModel roleModel = employeeBloc
+                                                .roleList
+                                                .firstWhere((e) =>
+                                                    e.name == _roleCtrl.text);
+                                            TimetableModel timetableModel =
+                                                _timetableBloc.timetableList
+                                                    .firstWhere((e) =>
+                                                        "from ${e.onDutyTtime} to ${e.offDutyTime}" ==
+                                                        _timetableCtrl.text);
+                                            WorkingDayModel workingDayModel =
+                                                _workingDayBloc.departmentList
+                                                    .firstWhere((e) =>
+                                                        "from ${e.workingDay} to ${e.offDay}" ==
+                                                        _workdayCtrl.text);
+                                            // if (_image == null) {}
+                                            print(_image);
+                                            employeeBloc.add(AddEmployeeStarted(
+                                                cardNumber: _cardCtrl.text,
+                                                nationality: _natoinCtrl.text,
+                                                roleId: roleModel.id,
+                                                timetalbeId: timetableModel.id,
+                                                workdayId: workingDayModel.id,
+                                                name: _nameCtrl.text,
+                                                gender: _genderCtrl.text,
+                                                dob: _dobCtrl.text,
+                                                email: _emailCtrl.text,
+                                                username: _usernameCtrl.text,
+                                                img: _image,
+                                                password: _passwordCtrl.text,
+                                                positionId: posiId.id,
+                                                departmentId: departId.id,
+                                                meritalStatus: _statusCtl.text,
+                                                coupleJob: _coupleCtrl.text,
+                                                child: _numchildCtrl.text,
+                                                officeTel: _officeTelCtrl.text,
+                                                phoneNumber:
+                                                    _phoneNumberCtrl.text,
+                                                address: _addressCtrl.text));
+                                          }
+                                        })
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   )),
             ));

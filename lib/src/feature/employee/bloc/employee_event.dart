@@ -10,7 +10,7 @@ class EmployeeEvent extends Equatable {
 
 class FetchEmloyeeStarted extends EmployeeEvent {}
 
-class FetchRoleStarted extends EmployeeEvent {}
+// class FetchRoleStarted extends EmployeeEvent {}
 
 class InitializeEmployeeStarted extends EmployeeEvent {}
 

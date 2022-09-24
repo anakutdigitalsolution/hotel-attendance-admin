@@ -60,7 +60,8 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                                               .bodyText1),
                                       Expanded(
                                         child: Text(
-                                          employeeBloc.employeeModel!.name,
+                                          employeeBloc.employeeModel!
+                                              .employeeModel.name,
                                           textScaleFactor: 1.1,
                                           style: TextStyle(
                                               color: Colors.black,
@@ -76,12 +77,14 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyText1),
-                                      employeeBloc.employeeModel!.card == null
+                                      employeeBloc.employeeModel!.employeeModel
+                                                  .card ==
+                                              null
                                           ? Text("")
                                           : Expanded(
                                               child: Text(
-                                                employeeBloc
-                                                    .employeeModel!.card!,
+                                                employeeBloc.employeeModel!
+                                                    .employeeModel.card!,
                                                 textScaleFactor: 1.1,
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -98,12 +101,14 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyText1),
-                                      employeeBloc.employeeModel!.dob == null
+                                      employeeBloc.employeeModel!.employeeModel
+                                                  .dob ==
+                                              null
                                           ? Text("")
                                           : Expanded(
                                               child: Text(
-                                                employeeBloc
-                                                    .employeeModel!.dob!,
+                                                employeeBloc.employeeModel!
+                                                    .employeeModel.dob!,
                                                 textScaleFactor: 1.1,
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -120,13 +125,15 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyText1),
-                                      employeeBloc.employeeModel!
+                                      employeeBloc.employeeModel!.employeeModel
                                                   .nationalilty ==
                                               null
                                           ? Text("")
                                           : Expanded(
                                               child: Text(
-                                                employeeBloc.employeeModel!
+                                                employeeBloc
+                                                    .employeeModel!
+                                                    .employeeModel
                                                     .nationalilty!,
                                                 textScaleFactor: 1.1,
                                                 style: TextStyle(
@@ -163,12 +170,14 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                                             .textTheme
                                             .bodyText1,
                                       ),
-                                      employeeBloc.employeeModel!.phone == null
+                                      employeeBloc.employeeModel!.employeeModel
+                                                  .phone ==
+                                              null
                                           ? Text("")
                                           : Expanded(
                                               child: Text(
-                                                employeeBloc
-                                                    .employeeModel!.phone!,
+                                                employeeBloc.employeeModel!
+                                                    .employeeModel.phone!,
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1,
@@ -188,11 +197,13 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                                             .textTheme
                                             .bodyText1,
                                       ),
-                                      employeeBloc.employeeModel!.email == null
+                                      employeeBloc.employeeModel!.employeeModel
+                                                  .email ==
+                                              null
                                           ? Text("")
                                           : Expanded(
                                               child: Text(
-                                                "${employeeBloc.employeeModel!.email}",
+                                                "${employeeBloc.employeeModel!.employeeModel.email}",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1,
@@ -266,13 +277,14 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodyText1),
-                                      employeeBloc.employeeModel!.officeTel ==
+                                      employeeBloc.employeeModel!.employeeModel
+                                                  .officeTel ==
                                               null
                                           ? Text("")
                                           : Expanded(
                                               child: Text(
-                                                employeeBloc
-                                                    .employeeModel!.officeTel!,
+                                                employeeBloc.employeeModel!
+                                                    .employeeModel.officeTel!,
                                                 textScaleFactor: 1.1,
                                                 style: TextStyle(
                                                     color: Colors.black,
@@ -302,7 +314,9 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                                   //       ],
                                   //     ),
                                   SizedBox(height: 5),
-                                  employeeBloc.employeeModel!.email == null
+                                  employeeBloc.employeeModel!.employeeModel
+                                              .email ==
+                                          null
                                       ? Container()
                                       : Row(
                                           crossAxisAlignment:
@@ -316,7 +330,7 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                                             ),
                                             Expanded(
                                               child: Text(
-                                                "${employeeBloc.employeeModel!.email}",
+                                                "${employeeBloc.employeeModel!.employeeModel.email}",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .bodyText1,
@@ -383,7 +397,22 @@ class _EmployeeDetailPageState extends State<EmployeeDetailPage> {
                   ],
                 );
               }
-              if (state is ErrorFetchingEmployee) {}
+              if (state is ErrorFetchingEmployee) {
+                return Center(
+                  child: TextButton(
+                      onPressed: () {
+                        employeeBloc
+                            .add(FetchEmployeeDetailStarted(id: widget.id));
+                      },
+                      style: TextButton.styleFrom(
+                        primary: Colors.white,
+                        backgroundColor: Colors.teal,
+                        onSurface: Colors.grey,
+                      ),
+                      child: Text("Retry")),
+                );
+              }
+
               return Center(
                 // child: CircularProgressIndicator(),
                 child: Lottie.asset('assets/animation/loader.json',

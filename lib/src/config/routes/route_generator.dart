@@ -167,10 +167,10 @@ class RouteGenerator {
         return _errorRoute();
       case editDepartment:
         if (args is DepartmentModel) {
-          return MaterialPageRoute(
-              builder: (_) => EditDepartment(
-                    departmentModel: args,
-                  ));
+          // return MaterialPageRoute(
+          //     builder: (_) => EditDepartment(
+          //           departmentModel: args,
+          //         ));
         }
         return _errorRoute();
       case location:

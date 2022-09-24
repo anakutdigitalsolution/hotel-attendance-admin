@@ -13,6 +13,7 @@ class RoleBloc extends Bloc<RoleEvent, RoleState> {
     if (state is FetchRoleStarted) {
       yield FetchingRole();
       try {
+        rolelist.clear();
         List<RoleModel> _temList = await _repository.getRole();
         rolelist.addAll(_temList);
         yield FetchedRole();
