@@ -14,10 +14,8 @@ import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_appbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/standard_btn.dart';
-
 import '../../../appLocalizations.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class AddContract extends StatefulWidget {
   const AddContract({Key? key}) : super(key: key);
@@ -44,7 +42,6 @@ class _AddContractState extends State<AddContract> {
   void initState() {
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy/MM/dd').format(now);
-    // String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(now);
     dateToday = formattedDate.toString();
     super.initState();
   }
@@ -65,7 +62,6 @@ class _AddContractState extends State<AddContract> {
           controller.text = formateDate.toString();
         });
       }
-      // after click on date ,
     });
   }
 

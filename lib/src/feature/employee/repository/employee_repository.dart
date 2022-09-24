@@ -50,19 +50,14 @@ class EmployeeRepository {
     }
   }
 
-  Future<List<EmployeeModel>> getEmployeeDetail({required String id}) async {
+  Future<EmployeeModel> getEmployeeDetail({required String id}) async {
     try {
       String url = mainUrl + "employees&employee_id=$id";
 
       Response response = await apiProvider.get(url, null, null);
       print(response.statusCode);
       if (response.statusCode == 200) {
-        print(response.data);
-        List<EmployeeModel> leave = [];
-        response.data["data"].forEach((data) {
-          leave.add(EmployeeModel.fromJson(data));
-        });
-        return leave;
+        return EmployeeModel.fromJson(response.data);
       }
       throw CustomException.generalException();
     } catch (e) {

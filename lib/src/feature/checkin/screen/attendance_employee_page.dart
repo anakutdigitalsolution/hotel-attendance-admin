@@ -62,7 +62,6 @@ class _BodyState extends State<Body> {
         builder: (context, state) {
           if (state is InitializingEmployee) {
             return Center(
-              // child: CircularProgressIndicator(),
               child: Lottie.asset('assets/animation/loader.json',
                   width: 200, height: 200),
             );

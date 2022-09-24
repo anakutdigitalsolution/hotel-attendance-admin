@@ -35,7 +35,7 @@ Widget homeMenuTile(
               // SizedBox(
               //   height: 10,
               // ),
-              Text(name!,
+              Text(name!, 
                   style: TextStyle(fontWeight: FontWeight.bold),
                   textScaleFactor: 1.4)
             ],

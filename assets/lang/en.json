@@ -151,7 +151,12 @@
     "structure_type":"Structure type",
     "add_structure_type":"Add Structure type",
     "edit_structure_type":"Edit Structure type",
-    "configuration":"Configuration"
+    "configuration":"Configuration",
+    "dashboard":"Dashboard",
+    "approve_board":"Approve Board",
+    "leave_out":"Leave out",
+    "ot_compesation":"OT Compesation",
+    "change_dayOff":"Change Dayoff"
     
 
 

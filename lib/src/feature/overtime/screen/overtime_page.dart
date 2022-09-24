@@ -119,7 +119,7 @@ class _BodyState extends State<Body> {
                               });
                               print(value);
                               overtimeBloc.add(InitializeAllOvertimeStarted(
-                                  dateRange: value));
+                                  dateRange: value, isSecond: true));
                             }
                           },
                         ),
@@ -140,8 +140,8 @@ class _BodyState extends State<Body> {
                         onRefresh: () {
                           print("fetch dateRange");
                           print(mydateRage);
-                          overtimeBloc.add(
-                              RefreshAllOvertimeStarted(dateRange: mydateRage));
+                          overtimeBloc.add(InitializeAllOvertimeStarted(
+                              dateRange: mydateRage, isRefresh: true));
                         },
                         onLoading: () {
                           print("fetch dateRange");
@@ -522,7 +522,7 @@ class _BodyState extends State<Body> {
             ps.onConfirm!(ps, ps.selecteds);
             pe.onConfirm!(pe, pe.selecteds);
             overtimeBloc.add(InitializeAllOvertimeStarted(
-                dateRange: "$_startDate/$_endDate"));
+                dateRange: "$_startDate/$_endDate", isSecond: true));
           },
           child: Text(PickerLocalizations.of(context).confirmText!))
     ];

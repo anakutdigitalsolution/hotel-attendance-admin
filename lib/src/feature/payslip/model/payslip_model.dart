@@ -11,8 +11,8 @@ class PayslipModel {
   final String? baseSalary;
   final String? allowance;
   final String? bonus;
-  final String? totalOt;
-  final String? senioritySalary;
+  // final String? totalOt;
+  // final String? senioritySalary;
   final String? advanceMoney;
   final String? taxAllowance;
   final String? taxSalary;
@@ -21,6 +21,13 @@ class PayslipModel {
   final String? deduction;
   final String? grossSalary;
   final String? netSalary;
+  // final String? otHour;
+  // final String? totalLeave;
+  final String? totalAttendance;
+  final String? wageHour;
+  final String? netPerday;
+  final String? netPerHour;
+  final String? note;
   final EmployeeModel? userModel;
   // final ContractModel? contractModel;
 
@@ -28,14 +35,14 @@ class PayslipModel {
     return PayslipModel(
       id: json["id"].toString(),
       userId: json["user_id"].toString(),
-      // contractId: json["contract_id"].toString(),
-      fromDate: json["from_date"],
+     fromDate: json["from_date"],
       toDate: json["to_date"],
       baseSalary: json["base_salary"].toString(),
       allowance: json["allowance"].toString(),
       bonus: json["bonus"].toString(),
-      totalOt: json["total_ot"].toString(),
-      senioritySalary: json["senority_salary"].toString(),
+      wageHour: json["wage_hour"].toString(),
+      netPerHour: json["net_perhour"].toString(),
+      netPerday: json["net_perday"].toString(),
       advanceMoney: json["advance_salary"].toString(),
       taxAllowance: json["tax_allowance"].toString(),
       taxSalary: json["tax_salary"].toString(),
@@ -44,6 +51,9 @@ class PayslipModel {
       deduction: json["deduction"].toString(),
       grossSalary: json["net_salary"].toString(),
       netSalary: json["gross_salary"].toString(),
+
+      totalAttendance: json["total_attendance"].toString(),
+      note: json["notes"].toString(),
       userModel:
           json["user"] == null ? null : EmployeeModel.fromJson(json["user"]),
       // contractModel: json["contract"] == null
@@ -60,8 +70,10 @@ class PayslipModel {
     required this.baseSalary,
     required this.allowance,
     required this.bonus,
-    required this.totalOt,
-    required this.senioritySalary,
+    required this.wageHour,
+    required this.netPerHour,
+    required this.netPerday,
+    required this.note,
     required this.advanceMoney,
     required this.taxAllowance,
     required this.taxSalary,
@@ -70,6 +82,8 @@ class PayslipModel {
     required this.deduction,
     required this.grossSalary,
     required this.netSalary,
+   
+    required this.totalAttendance,
     required this.userModel,
     // required this.contractModel
   });

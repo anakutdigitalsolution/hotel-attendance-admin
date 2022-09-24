@@ -3,23 +3,32 @@ import 'package:hotle_attendnce_admin/src/feature/payslip/model/monthly_model.da
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/add_payslip.dart';
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/payslip_component.dart';
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/payslip_list_monthly.dart';
+import 'package:intl/intl.dart';
 
-class PaySlippage extends StatelessWidget {
+// ignore: must_be_immutable
+class PaySlippage extends StatefulWidget {
   // const PaySlippage({Key? key}) : super(key: key);
+  @override
+  State<PaySlippage> createState() => _PaySlippageState();
+}
+
+class _PaySlippageState extends State<PaySlippage> {
+  String? year;
   List<MonthlyModel> paylist = [
-    MonthlyModel(monthly: "January", value: "2022-01-01/2022-01-31"),
-    MonthlyModel(monthly: "February", value: "2022-02-01/2022-02-28"),
-    MonthlyModel(monthly: "March", value: "2022-03-01/2022-03-31"),
-    MonthlyModel(monthly: "April", value: "2022-04-01/2022-04-30"),
-    MonthlyModel(monthly: "May", value: "2022-05-01/2022-05-31"),
-    MonthlyModel(monthly: "June", value: "2022-06-01/2022-06-30"),
-    MonthlyModel(monthly: "July", value: "2022-07-01/2022-07-31"),
-    MonthlyModel(monthly: "August", value: "2022-08-01/2022-08-31"),
-    MonthlyModel(monthly: "September", value: "2022-09-01/2022-09-30"),
-    MonthlyModel(monthly: "October", value: "2022-10-01/2022-10-31"),
-    MonthlyModel(monthly: "November", value: "2022-11-01/2022-11-30"),
-    MonthlyModel(monthly: "December", value: "2022-12-01/2022-12-31")
+    MonthlyModel(monthly: "January", value1: "01-01", value2: "01-31"),
+    MonthlyModel(monthly: "February", value1: "02-01", value2: "02-28"),
+    MonthlyModel(monthly: "March", value1: "03-01", value2: "03-31"),
+    MonthlyModel(monthly: "April", value1: "04-01", value2: "04-30"),
+    MonthlyModel(monthly: "May", value1: "05-01", value2: "05-31"),
+    MonthlyModel(monthly: "June", value1: "06-01", value2: "06-30"),
+    MonthlyModel(monthly: "July", value1: "07-01", value2: "07-31"),
+    MonthlyModel(monthly: "August", value1: "08-01", value2: "08-31"),
+    MonthlyModel(monthly: "September", value1: "09-01", value2: "09-30"),
+    MonthlyModel(monthly: "October", value1: "10-01", value2: "10-31"),
+    MonthlyModel(monthly: "November", value1: "11-01", value2: "11-30"),
+    MonthlyModel(monthly: "December", value1: "12-01", value2: "12-31")
   ];
+
   List<String> numMonth = [
     "01",
     "02",
@@ -34,25 +43,36 @@ class PaySlippage extends StatelessWidget {
     "11",
     "12"
   ];
+  String d = "";
+  @override
+  void initState() {
+    DateTime now = DateTime.now();
+
+    String formattedDate = DateFormat('MM/dd/yyyy kk:mm:ss').format(now);
+    String creDate = DateFormat('yyyy-MM-dd kk:mm:ss').format(now);
+    d = creDate.substring(0, 4);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: _buildBody(context),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-            backgroundColor: Colors.blue,
-            child: Icon(Icons.add),
-            elevation: 0,
-            onPressed: () {
-              // Navigator.pushNamed(context, addPayslip);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddPayslip(monthly: "monthly")));
-            }),
-      ),
+      // floatingActionButton: Container(
+      //   child: FloatingActionButton(
+      //       backgroundColor: Colors.blue,
+      //       child: Icon(Icons.add),
+      //       elevation: 0,
+      //       onPressed: () {
+      //         // Navigator.pushNamed(context, addPayslip);
+      //         Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //                 builder: (context) => AddPayslip(monthly: "monthly")));
+      //       }),
+      // ),
     );
   }
 
@@ -68,6 +88,7 @@ class PaySlippage extends StatelessWidget {
       actions: [
         InkWell(
           onTap: () {
+            print('goto');
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => PayslipComponent()));
           },
@@ -135,12 +156,22 @@ class PaySlippage extends StatelessWidget {
                   return InkWell(
                     onTap: () {
                       print("month ${paylist[index]}");
+                      String newYear = d +
+                          "-" +
+                          paylist[index].value1 +
+                          "/" +
+                          d +
+                          "-" +
+                          paylist[index].value2;
+                      print("new year");
+                      print(newYear);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (conxtex) => PayslipListMonthly(
-                                    month: paylist[index].value,
-                                  )));
+                                  month: paylist[index].value1,
+                                  year: d,
+                                  dateRange: newYear)));
                     },
                     child: Container(
                       // margin: EdgeInsets.only(top: 10),
@@ -192,7 +223,7 @@ class PaySlippage extends StatelessWidget {
                                   Padding(
                                     padding: EdgeInsets.only(top: 3),
                                     child: Text(
-                                      "${paylist[index].value}",
+                                      "${paylist[index].value1}/${paylist[index].value2}",
                                       style: TextStyle(color: Colors.grey[500]),
                                     ),
                                   ),

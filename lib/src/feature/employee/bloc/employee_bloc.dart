@@ -14,6 +14,7 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
   EmployeeRepository _departmentRepository = EmployeeRepository();
   List<EmployeeModel> emploList = [];
   List<RoleModel> roleList = [];
+  EmployeeModel? employeeModel;
   int rowperpage = 12;
   String? image;
   int page = 1;
@@ -30,6 +31,17 @@ class EmployeeBloc extends Bloc<EmployeeEvent, EmployeeState> {
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingRole(error: e.toString());
+      }
+    }
+    if (event is FetchEmployeeDetailStarted) {
+      yield FetchingEmployee();
+      try {
+        employeeModel =
+            await _departmentRepository.getEmployeeDetail(id: event.id);
+        yield FetchedEmployee();
+      } catch (e) {
+        log(e.toString());
+        yield ErrorFetchingEmployee(error: e.toString());
       }
     }
     if (event is FetchEmloyeeStarted) {

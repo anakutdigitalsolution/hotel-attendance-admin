@@ -31,21 +31,21 @@ class ErrorAddingOvertime extends OverTimeState {
 }
 
 // ot compesation
-class InitailizingOTCompesation extends OverTimeState {}
+// class InitailizingOTCompesation extends OverTimeState {}
 
-class InitailizedOTCompesation extends OverTimeState {}
+// class InitailizedOTCompesation extends OverTimeState {}
 
-class FetchingOTCompesation extends OverTimeState {}
+// class FetchingOTCompesation extends OverTimeState {}
 
-class FetchedOTCompesation extends OverTimeState {}
+// class FetchedOTCompesation extends OverTimeState {}
 
-class ErrorFetchingOTCompesation extends OverTimeState {
-  final dynamic error;
-  ErrorFetchingOTCompesation({required this.error});
-}
+// class ErrorFetchingOTCompesation extends OverTimeState {
+//   final dynamic error;
+//   ErrorFetchingOTCompesation({required this.error});
+// }
 
-class UpdateOTCompesationStatus extends OverTimeState {
-  final String status;
-  final String id;
-  UpdateOTCompesationStatus({required this.id, required this.status});
-}
+// class UpdateOTCompesationStatus extends OverTimeState {
+//   final String status;
+//   final String id;
+//   UpdateOTCompesationStatus({required this.id, required this.status});
+// }

@@ -23,6 +23,11 @@ const String payslip = '/payslip';
 const String contract = '/contract';
 const String structure = '/structure';
 const String structuretype = '/structure';
+const String dashboard = '/dashboard';
+const String approveBaord = '/approveBaord';
+const String leaveout = '/leaveout';
+const String otcompesation = '/otcompesation';
+const String dayoff = '/dayoff';
 
 const String addHoliday = '/addHoliday';
 const String addNotification = '/addNotification';

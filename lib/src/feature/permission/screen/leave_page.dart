@@ -51,7 +51,8 @@ class _WantedBodyState extends State<WantedBody> {
   String mydateRage = "This week";
   @override
   void initState() {
-    leaveBloc.add(InitializeLeaveStarted(dateRange: "This week"));
+    leaveBloc
+        .add(InitializeLeaveStarted(dateRange: "This week", isSecond: false));
     super.initState();
   }
 
@@ -116,8 +117,8 @@ class _WantedBodyState extends State<WantedBody> {
                                 print("myvalue $mydateRage");
                                 print(mydateRage);
                               });
-                              leaveBloc.add(
-                                  InitializeLeaveStarted(dateRange: value));
+                              leaveBloc.add(InitializeLeaveStarted(
+                                  dateRange: value, isSecond: true));
                             }
                           },
                         ),
@@ -136,8 +137,8 @@ class _WantedBodyState extends State<WantedBody> {
                         onRefresh: () {
                           print("fetch dateRange");
                           print(mydateRage);
-                          leaveBloc
-                              .add(RefreshLeaveStarted(dateRange: mydateRage));
+                          leaveBloc.add(InitializeLeaveStarted(
+                              dateRange: mydateRage, isRefresh: true));
                         },
                         onLoading: () {
                           print("fetch dateRange");
@@ -567,8 +568,8 @@ class _WantedBodyState extends State<WantedBody> {
             ps.onConfirm!(ps, ps.selecteds);
             pe.onConfirm!(pe, pe.selecteds);
             print("$_startDate/$_endDate");
-            leaveBloc.add(
-                InitializeLeaveStarted(dateRange: "$_startDate/$_endDate"));
+            leaveBloc.add(InitializeLeaveStarted(
+                dateRange: "$_startDate/$_endDate", isSecond: true));
           },
           child: Text(PickerLocalizations.of(context).confirmText!))
     ];

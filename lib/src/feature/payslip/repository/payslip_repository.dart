@@ -14,6 +14,7 @@ class PayslipRepository {
     try {
       String url =
           "https://banban-hr.herokuapp.com/api/payslips?from_date=$startDate&to_date=$endDate&page_size=$rowperpage&page=$page";
+      print(url);
       Response response = await _apiProvider.get(url, null, null);
       print(response.statusCode);
       print(url);

@@ -24,7 +24,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
     if (event is InitializeLeaveStarted) {
       yield InitializingLeave();
       try {
-         page = 1;
+        page = 1;
         leavemodel.clear();
         // like Today, this week , this month, this year
         dateRange = event.dateRange;
@@ -32,13 +32,19 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         print(startDate);
         print(endDate);
         // Future.delayed(Duration(milliseconds: 200));
-        List<LeaveModel> leaveList =
-            await leaveRepository.getleave(page: page, rowperpage: rowperpage,startDate: startDate!,endDate: endDate!);
+        List<LeaveModel> leaveList = await leaveRepository.getleave(
+            page: page,
+            rowperpage: rowperpage,
+            startDate: startDate!,
+            endDate: endDate!);
         leavemodel.addAll(leaveList);
         print(leaveList.length);
         page++;
-        print(page);
-        yield InitializedLeave();
+        if (event.isRefresh == true || event.isSecond == true) {
+          yield FetchedLeave();
+        } else {
+          yield InitializedLeave();
+        }
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingLeave(error: e.toString());
@@ -55,13 +61,16 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
 
         // Future.delayed(Duration(milliseconds: 200));
         // page = 1;
-        List<LeaveModel> leaveList =
-            await leaveRepository.getleave(page: page, rowperpage: rowperpage,startDate: startDate!,endDate: endDate!);
+        List<LeaveModel> leaveList = await leaveRepository.getleave(
+            page: page,
+            rowperpage: rowperpage,
+            startDate: startDate!,
+            endDate: endDate!);
         leavemodel.addAll(leaveList);
         print(leaveList.length);
         page++;
         print(leaveList.length);
-       
+
         print(page);
         print(leaveList.length);
         if (leaveList.length < rowperpage) {
@@ -74,33 +83,36 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         yield ErrorFetchingLeave(error: e.toString());
       }
     }
-    if (event is RefreshLeaveStarted) {
-      yield FetchingLeave();
-      try {
-        // Future.delayed(Duration(milliseconds: 200));
-        
-        leavemodel.clear();
-        print(leavemodel.length);
-        dateRange = event.dateRange;
-        setEndDateAndStartDate();
-        print(startDate);
-        print(endDate);
-        page = 1;
+    // if (event is RefreshLeaveStarted) {
+    //   yield FetchingLeave();
+    //   try {
+    //     // Future.delayed(Duration(milliseconds: 200));
 
-        // Future.delayed(Duration(milliseconds: 200));
-        // page = 1;
-        List<LeaveModel> leaveList =
-            await leaveRepository.getleave(page: page, rowperpage: rowperpage,startDate: startDate!,endDate: endDate!);
-        leavemodel.addAll(leaveList);
-        print(leaveList.length);
-        page++;
-        print(leaveList.length);
-        yield FetchedLeave();
-      } catch (e) {
-        log(e.toString());
-        yield ErrorFetchingLeave(error: e.toString());
-      }
-    }
+    //     leavemodel.clear();
+    //     print(leavemodel.length);
+    //     dateRange = event.dateRange;
+    //     setEndDateAndStartDate();
+    //     print(startDate);
+    //     print(endDate);
+    //     page = 1;
+
+    //     // Future.delayed(Duration(milliseconds: 200));
+    //     // page = 1;
+    //     List<LeaveModel> leaveList = await leaveRepository.getleave(
+    //         page: page,
+    //         rowperpage: rowperpage,
+    //         startDate: startDate!,
+    //         endDate: endDate!);
+    //     leavemodel.addAll(leaveList);
+    //     print(leaveList.length);
+    //     page++;
+    //     print(leaveList.length);
+    //     yield FetchedLeave();
+    //   } catch (e) {
+    //     log(e.toString());
+    //     yield ErrorFetchingLeave(error: e.toString());
+    //   }
+    // }
     // if (event is AddLeaveStarted) {
     //   yield AddingLeave();
     //   try {
@@ -171,7 +183,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         yield AddedLeave();
         yield FetchingLeave();
         print(leavemodel.length);
-         page = 1;
+        page = 1;
         leavemodel.clear();
         print(leavemodel.length);
         dateRange = "This week";
@@ -181,8 +193,11 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
 
         // Future.delayed(Duration(milliseconds: 200));
         // page = 1;
-        List<LeaveModel> leaveList =
-            await leaveRepository.getleave(page: page, rowperpage: rowperpage,startDate: startDate!,endDate: endDate!);
+        List<LeaveModel> leaveList = await leaveRepository.getleave(
+            page: page,
+            rowperpage: rowperpage,
+            startDate: startDate!,
+            endDate: endDate!);
         leavemodel.addAll(leaveList);
         print(leaveList.length);
         page++;
@@ -203,7 +218,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
         yield AddedLeave();
         yield FetchingLeave();
         print(leavemodel.length);
-         page = 1;
+        page = 1;
         leavemodel.clear();
         print(leavemodel.length);
         dateRange = "This week";
@@ -213,8 +228,11 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
 
         // Future.delayed(Duration(milliseconds: 200));
         // page = 1;
-        List<LeaveModel> leaveList =
-            await leaveRepository.getleave(page: page, rowperpage: rowperpage,startDate: startDate!,endDate: endDate!);
+        List<LeaveModel> leaveList = await leaveRepository.getleave(
+            page: page,
+            rowperpage: rowperpage,
+            startDate: startDate!,
+            endDate: endDate!);
         leavemodel.addAll(leaveList);
         print(leaveList.length);
         page++;
@@ -226,6 +244,7 @@ class LeaveBloc extends Bloc<LeaveEvent, LeaveState> {
       }
     }
   }
+
   void setEndDateAndStartDate() {
     DateTime now = DateTime.now();
     if (dateRange == "Today") {

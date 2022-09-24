@@ -1,4 +1,5 @@
 import 'package:hotle_attendnce_admin/src/feature/account/screen/account_page_one.dart';
+import 'package:hotle_attendnce_admin/src/feature/changeDayof/screen/all_day_off.dart';
 import 'package:hotle_attendnce_admin/src/feature/checkin/screen/attendance_employee_page.dart';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:hotle_attendnce_admin/src/feature/contract/model/contract_model.
 import 'package:hotle_attendnce_admin/src/feature/contract/screen/add_contract.dart';
 import 'package:hotle_attendnce_admin/src/feature/contract/screen/contract_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/contract/screen/edit_contract.dart';
+import 'package:hotle_attendnce_admin/src/feature/dashboard/screen/dashboard_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/model/department_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/add_department.dart';
 import 'package:hotle_attendnce_admin/src/feature/department/screen/department_page.dart';
@@ -25,6 +27,7 @@ import 'package:hotle_attendnce_admin/src/feature/group/screen/edit_group.dart';
 import 'package:hotle_attendnce_admin/src/feature/group/screen/group_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/add_holiday.dart';
 import 'package:hotle_attendnce_admin/src/feature/holiday/screen/holiday_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/leaveout/screen/leaveout_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/screen/add_leave_type.dart';
 import 'package:hotle_attendnce_admin/src/feature/levetype/screen/leave_type_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/location/models/location_model.dart';
@@ -33,12 +36,14 @@ import 'package:hotle_attendnce_admin/src/feature/location/screens/edit_location
 import 'package:hotle_attendnce_admin/src/feature/location/screens/location_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/add_notification.dart';
 import 'package:hotle_attendnce_admin/src/feature/notification/screen/notification_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/ot_compesation/screen/ot_comesation_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/overtime/model/overtime_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/overtime/screen/add_overtime.dart';
 import 'package:hotle_attendnce_admin/src/feature/overtime/screen/edit_overtime.dart';
 import 'package:hotle_attendnce_admin/src/feature/overtime/screen/overtime_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/add_payslip.dart';
 import 'package:hotle_attendnce_admin/src/feature/payslip/screen/payslip_page.dart';
+import 'package:hotle_attendnce_admin/src/feature/permission/screen/approve_board.dart';
 import 'package:hotle_attendnce_admin/src/feature/permission/screen/leave_page.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/add_position.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/screen/position_page.dart';
@@ -128,6 +133,16 @@ class RouteGenerator {
         return _errorRoute();
       case workDay:
         return MaterialPageRoute(builder: (_) => WorkingDay());
+      case dashboard:
+        return MaterialPageRoute(builder: (_) => DashBoardPage());
+      case approveBaord:
+        return MaterialPageRoute(builder: (_) => ApproveBoard());
+      case leaveout:
+        return MaterialPageRoute(builder: (_) => LeaveoutPage());
+      case dayoff:
+        return MaterialPageRoute(builder: (_) => DayOffPage());
+      case otcompesation:
+        return MaterialPageRoute(builder: (_) => OTCompesation());
       case addWorkingday:
         return MaterialPageRoute(builder: (_) => AddWorkingDay());
       case group:
@@ -166,8 +181,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AdminResetPassword());
       case overtime:
         return MaterialPageRoute(builder: (_) => Overtimepage());
-      case addOvertime:
-        return MaterialPageRoute(builder: (_) => AddOvertime());
+      // case addOvertime:
+      //   return MaterialPageRoute(builder: (_) => AddOvertime());
       case editLocation:
         if (args is LocationModel) {
           return MaterialPageRoute(

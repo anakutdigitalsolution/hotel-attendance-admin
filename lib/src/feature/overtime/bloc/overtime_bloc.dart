@@ -142,37 +142,18 @@ class OverTimeBloc extends Bloc<OverTimeEvent, OverTimeState> {
         myovertime.addAll(overtime);
         page++;
         print(myovertime.length);
-        yield InitailizedOvertime();
+        if (event.isRefresh == true || event.isSecond == true) {
+          yield FetchedOvertime();
+        }else{
+           yield InitailizedOvertime();
+        }
+       
       } catch (e) {
         log(e.toString());
         yield ErrorFetchingOvertime(error: e.toString());
       }
     }
-    if (event is RefreshAllOvertimeStarted) {
-      yield FetchingOvertime();
-      try {
-        page = 1;
-        myovertime.clear();
-        // like Today, this week , this month, this year
-        dateRange = event.dateRange;
-        setEndDateAndStartDate();
-        print(startDate);
-        print(endDate);
-        // this function return start date and end date
-        List<OvertimeModel> overtime = await _overTimeRepository.getOvertime(
-            page: page,
-            rowperpage: rowperpage,
-            startDate: startDate!,
-            endDate: endDate!);
-        myovertime.addAll(overtime);
-        page++;
-        print(myovertime.length);
-        yield FetchedOvertime();
-      } catch (e) {
-        log(e.toString());
-        yield ErrorFetchingOvertime(error: e.toString());
-      }
-    }
+    
     if (event is FetchAllOvertimeStarted) {
       yield FetchingOvertime();
       try {
@@ -199,37 +180,7 @@ class OverTimeBloc extends Bloc<OverTimeEvent, OverTimeState> {
         yield ErrorFetchingOvertime(error: e.toString());
       }
     }
-    if (event is AddOvertimeStarted) {
-      yield AddingOvertime();
-      try {
-        await _overTimeRepository.addOvertime(
-            userId: event.userId,
-            reason: event.reason,
-            duration: event.duration,
-            fromDate: event.fromDate,
-            notes: event.notes,
-            type: event.type,
-            otMethod: event.otMethod,
-            toDate: event.toDate);
-        yield AddedOvertime();
-        yield FetchingOvertime();
-        myovertime.clear();
-        page = 1;
-        dateRange = "This month";
-        setEndDateAndStartDate();
-        List<OvertimeModel> overtime = await _overTimeRepository.getOvertime(
-            page: page,
-            rowperpage: rowperpage,
-            startDate: startDate!,
-            endDate: endDate!);
-        myovertime.addAll(overtime);
-        page++;
-        yield FetchedOvertime();
-      } catch (e) {
-        log(e.toString());
-        yield ErrorAddingOvertime(error: e.toString());
-      }
-    }
+    
     if (event is UpdateOvertimeStarted) {
       yield AddingOvertime();
       try {

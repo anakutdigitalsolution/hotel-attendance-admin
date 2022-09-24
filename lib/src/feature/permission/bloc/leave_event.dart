@@ -8,18 +8,21 @@ class LeaveEvent extends Equatable {
 
 class InitializeLeaveStarted extends LeaveEvent {
   final String? dateRange;
-  InitializeLeaveStarted({required this.dateRange});
+  final bool? isRefresh;
+  final bool? isSecond;
+  InitializeLeaveStarted(
+      {required this.dateRange, this.isRefresh, this.isSecond});
 }
 
 class FetchLeaveStarted extends LeaveEvent {
-   final String? dateRange;
+  final String? dateRange;
   FetchLeaveStarted({required this.dateRange});
 }
 
-class RefreshLeaveStarted extends LeaveEvent {
-  final String? dateRange;
-  RefreshLeaveStarted({required this.dateRange});
-}
+// class RefreshLeaveStarted extends LeaveEvent {
+//   final String? dateRange;
+//   RefreshLeaveStarted({required this.dateRange});
+// }
 
 class AddLeaveStarted extends LeaveEvent {
   final String employeeId;

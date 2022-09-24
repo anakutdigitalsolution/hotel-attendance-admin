@@ -18,7 +18,10 @@ import 'package:intl/intl.dart';
 
 class PayslipListMonthly extends StatelessWidget {
   final String month;
-  const PayslipListMonthly({required this.month});
+  final String year;
+  final String dateRange;
+  const PayslipListMonthly(
+      {required this.month, required this.year, required this.dateRange});
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +32,21 @@ class PayslipListMonthly extends StatelessWidget {
       body: Container(
           margin: EdgeInsets.only(top: 10, bottom: 10),
           child: Body(
-            monthly: month,
+            monthly: dateRange,
           )),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-            backgroundColor: Colors.blue,
-            child: Icon(Icons.add),
-            elevation: 0,
-            onPressed: () {
-              // Navigator.pushNamed(context, addP);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddPayslip(monthly: month)));
-            }),
-      ),
+      // floatingActionButton: Container(
+      //   child: FloatingActionButton(
+      //       backgroundColor: Colors.blue,
+      //       child: Icon(Icons.add),
+      //       elevation: 0,
+      //       onPressed: () {
+      //         // Navigator.pushNamed(context, addP);
+      //         Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //                 builder: (context) => AddPayslip(monthly: month)));
+      //       }),
+      // ),
     );
   }
 }
@@ -86,105 +89,151 @@ class _BodyState extends State<Body> {
               child: Text(state.error.toString()),
             );
           } else {
+            if (BlocProvider.of<PayslipBloc>(context).payslip.length == 0) {
+              return Center(
+                child: Text("No data"),
+              );
+            }
             // print(_reportBloc.dateRange!);
             return Column(
               children: [
-                // user condition to avoid null and cause error while data is fetching
-                BlocProvider.of<PayslipBloc>(context).dateRange == null
-                    ? Container()
-                    : Container(
-                        padding: EdgeInsets.only(left: 20),
-                        alignment: Alignment.centerLeft,
-                        child: DropdownButton<String>(
-                          hint: BlocProvider.of<PayslipBloc>(context)
-                                  .dateRange!
-                                  .contains("to")
-                              ? Text(
-                                  "${BlocProvider.of<PayslipBloc>(context).dateRange!}")
-                              : Text(
-                                  // leaveBloc.dateRange!,
-                                  // _reportBloc.dateRange!.contains("to")
-                                  //     ? _reportBloc.dateRange!
-                                  //     :W
-                                  "${BlocProvider.of<PayslipBloc>(context).dateRange!}",
-                                  textScaleFactor: 1,
-                                ),
-                          items: [
-                            // 'Last year',
-                            'This year',
-                            // 'Next year',
-                            "Custom"
-                          ].map((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            if (value == "Custom") {
-                              showPickerDateRange(context);
-                            } else {
-                              setState(() {
-                                mydateRage = value!;
-                                print("myvalue $mydateRage");
-                                print(mydateRage);
-                              });
-                              BlocProvider.of<PayslipBloc>(context).add(
-                                  InitailizePayslipStarted(dateRange: value));
-                            }
+                Expanded(
+                    child: SmartRefresher(
+                  onRefresh: () {
+                    print("fetch dateRange");
+                    print(mydateRage);
+                    BlocProvider.of<PayslipBloc>(context)
+                        .add(RefreshPayslipStarted(dateRange: mydateRage));
+                  },
+                  onLoading: () {
+                    print("fetch dateRange");
+                    print(mydateRage);
+                    BlocProvider.of<PayslipBloc>(context)
+                        .add(FetchPayslipStarted(dateRange: mydateRage));
+                  },
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  controller: _refreshController,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      // addAutomaticKeepAlives: true,
+                      children: [
+                        ListView.builder(
+                          cacheExtent: 1000,
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          // padding: EdgeInsets.only(left: 10, top: 10, right: 0),
+
+                          itemCount: BlocProvider.of<PayslipBloc>(context)
+                              .payslip
+                              .length,
+                          itemBuilder: (context, index) {
+                            return _buildContainer(
+                                context,
+                                BlocProvider.of<PayslipBloc>(context)
+                                    .payslip[index]);
                           },
                         ),
-                      ),
-                Container(
-                  width: double.infinity,
-                  height: 10,
-                  color: Colors.transparent,
-                ),
-                BlocProvider.of<PayslipBloc>(context).payslip.length == 0
-                    ? Container(
-                        child: Text("No data"),
-                      )
-                    : Expanded(
-                        child: SmartRefresher(
-                        onRefresh: () {
-                          print("fetch dateRange");
-                          print(mydateRage);
-                          BlocProvider.of<PayslipBloc>(context).add(
-                              RefreshPayslipStarted(dateRange: mydateRage));
-                        },
-                        onLoading: () {
-                          print("fetch dateRange");
-                          print(mydateRage);
-                          BlocProvider.of<PayslipBloc>(context)
-                              .add(FetchPayslipStarted(dateRange: mydateRage));
-                        },
-                        enablePullDown: true,
-                        enablePullUp: true,
-                        controller: _refreshController,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            // addAutomaticKeepAlives: true,
-                            children: [
-                              ListView.builder(
-                                cacheExtent: 1000,
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                // padding: EdgeInsets.only(left: 10, top: 10, right: 0),
+                      ],
+                    ),
+                  ),
+                ))
+                // user condition to avoid null and cause error while data is fetching
+                // BlocProvider.of<PayslipBloc>(context).dateRange == null
+                //     ? Container()
+                //     : Container(
+                //         padding: EdgeInsets.only(left: 20),
+                //         alignment: Alignment.centerLeft,
+                //         child: DropdownButton<String>(
+                //           hint: BlocProvider.of<PayslipBloc>(context)
+                //                   .dateRange!
+                //                   .contains("to")
+                //               ? Text(
+                //                   "${BlocProvider.of<PayslipBloc>(context).dateRange!}")
+                //               : Text(
+                //                   // leaveBloc.dateRange!,
+                //                   // _reportBloc.dateRange!.contains("to")
+                //                   //     ? _reportBloc.dateRange!
+                //                   //     :W
+                //                   "${BlocProvider.of<PayslipBloc>(context).dateRange!}",
+                //                   textScaleFactor: 1,
+                //                 ),
+                //           items: [
+                //             // 'Last year',
+                //             'This year',
+                //             // 'Next year',
+                //             "Custom"
+                //           ].map((String value) {
+                //             return DropdownMenuItem<String>(
+                //               value: value,
+                //               child: Text(value),
+                //             );
+                //           }).toList(),
+                //           onChanged: (value) {
+                //             if (value == "Custom") {
+                //               showPickerDateRange(context);
+                //             } else {
+                //               setState(() {
+                //                 mydateRage = value!;
+                //                 print("myvalue $mydateRage");
+                //                 print(mydateRage);
+                //               });
+                //               BlocProvider.of<PayslipBloc>(context).add(
+                //                   InitailizePayslipStarted(dateRange: value));
+                //             }
+                //           },
+                //         ),
+                //       ),
+                // Container(
+                //   width: double.infinity,
+                //   height: 10,
+                //   color: Colors.transparent,
+                // ),
+                // BlocProvider.of<PayslipBloc>(context).payslip.length == 0
+                //     ? Container(
+                //         child: Text("No data"),
+                //       )
+                //     : Expanded(
+                //         child: SmartRefresher(
+                //         onRefresh: () {
+                //           print("fetch dateRange");
+                //           print(mydateRage);
+                //           BlocProvider.of<PayslipBloc>(context).add(
+                //               RefreshPayslipStarted(dateRange: mydateRage));
+                //         },
+                //         onLoading: () {
+                //           print("fetch dateRange");
+                //           print(mydateRage);
+                //           BlocProvider.of<PayslipBloc>(context)
+                //               .add(FetchPayslipStarted(dateRange: mydateRage));
+                //         },
+                //         enablePullDown: true,
+                //         enablePullUp: true,
+                //         controller: _refreshController,
+                //         child: SingleChildScrollView(
+                //           child: Column(
+                //             // addAutomaticKeepAlives: true,
+                //             children: [
+                //               ListView.builder(
+                //                 cacheExtent: 1000,
+                //                 physics: NeverScrollableScrollPhysics(),
+                //                 shrinkWrap: true,
+                //                 // padding: EdgeInsets.only(left: 10, top: 10, right: 0),
 
-                                itemCount: BlocProvider.of<PayslipBloc>(context)
-                                    .payslip
-                                    .length,
-                                itemBuilder: (context, index) {
-                                  return _buildContainer(
-                                      context,
-                                      BlocProvider.of<PayslipBloc>(context)
-                                          .payslip[index]);
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      )),
+                //                 itemCount: BlocProvider.of<PayslipBloc>(context)
+                //                     .payslip
+                //                     .length,
+                //                 itemBuilder: (context, index) {
+                //                   return _buildContainer(
+                //                       context,
+                //                       BlocProvider.of<PayslipBloc>(context)
+                //                           .payslip[index]);
+                //                 },
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       )),
               ],
             );
           }
@@ -358,41 +407,41 @@ class _BodyState extends State<Body> {
                   ],
                 ),
               ),
-              CupertinoButton(
-                  padding: EdgeInsets.all(1.0),
-                  color: Colors.blue,
-                  child: Row(
-                    children: [
-                      Icon(Icons.edit),
-                    ],
-                  ),
-                  onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (con) => EditEmployee(
-                    //               employeeModel: employeeBloc
-                    //                   .emploList[index],
-                    //             )));
-                  }),
-              SizedBox(
-                width: 3,
-              ),
-              CupertinoButton(
-                  padding: EdgeInsets.all(1.0),
-                  color: Colors.red,
-                  child: Row(
-                    children: [
-                      Icon(Icons.delete),
-                    ],
-                  ),
-                  onPressed: () {
-                    deleteDialog(
-                        context: context,
-                        onPress: () {
-                          Navigator.pop(context);
-                        });
-                  }),
+              // CupertinoButton(
+              //     padding: EdgeInsets.all(1.0),
+              //     color: Colors.blue,
+              //     child: Row(
+              //       children: [
+              //         Icon(Icons.edit),
+              //       ],
+              //     ),
+              //     onPressed: () {
+              //       // Navigator.push(
+              //       //     context,
+              //       //     MaterialPageRoute(
+              //       //         builder: (con) => EditEmployee(
+              //       //               employeeModel: employeeBloc
+              //       //                   .emploList[index],
+              //       //             )));
+              //     }),
+              // SizedBox(
+              //   width: 3,
+              // ),
+              // CupertinoButton(
+              //     padding: EdgeInsets.all(1.0),
+              //     color: Colors.red,
+              //     child: Row(
+              //       children: [
+              //         Icon(Icons.delete),
+              //       ],
+              //     ),
+              //     onPressed: () {
+              //       deleteDialog(
+              //           context: context,
+              //           onPress: () {
+              //             Navigator.pop(context);
+              //           });
+              //     }),
             ],
           )),
     );

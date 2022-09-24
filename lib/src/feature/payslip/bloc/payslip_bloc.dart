@@ -11,7 +11,7 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
   PayslipBloc() : super(InitailizingPayslip());
   PayslipRepository _payslipRepository = PayslipRepository();
   List<PayslipModel> payslip = [];
-   int rowperpage = 12;
+  int rowperpage = 12;
   int page = 1;
   String? dateRange;
 
@@ -25,12 +25,15 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
       try {
         page = 1;
         payslip.clear();
-          dateRange = event.dateRange;
+        dateRange = event.dateRange;
         setEndDateAndStartDate();
         print(startDate);
         print(endDate);
-        List<PayslipModel> _departmentList = await _payslipRepository
-            .getPayslip(rowperpage: rowperpage, page: page, startDate: startDate!,
+        List<PayslipModel> _departmentList =
+            await _payslipRepository.getPayslip(
+                rowperpage: rowperpage,
+                page: page,
+                startDate: startDate!,
                 endDate: endDate!);
         payslip.addAll(_departmentList);
         page++;
@@ -45,14 +48,17 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
       yield FetchingPayslip();
       try {
         page = 1;
-       dateRange = event.dateRange;
+        dateRange = event.dateRange;
         setEndDateAndStartDate();
         print(startDate);
         print(endDate);
-        List<PayslipModel> _departmentList = await _payslipRepository
-            .getPayslip(rowperpage: rowperpage, page: page, startDate: startDate!,
+        List<PayslipModel> _departmentList =
+            await _payslipRepository.getPayslip(
+                rowperpage: rowperpage,
+                page: page,
+                startDate: startDate!,
                 endDate: endDate!);
-      
+
         payslip.addAll(_departmentList);
         page++;
         print(page);
@@ -65,12 +71,15 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
     if (event is FetchPayslipStarted) {
       yield FetchingPayslip();
       try {
-         dateRange = event.dateRange;
+        dateRange = event.dateRange;
         setEndDateAndStartDate();
         print(startDate);
         print(endDate);
-        List<PayslipModel> _departmentList = await _payslipRepository
-            .getPayslip(rowperpage: rowperpage, page: page, startDate: startDate!,
+        List<PayslipModel> _departmentList =
+            await _payslipRepository.getPayslip(
+                rowperpage: rowperpage,
+                page: page,
+                startDate: startDate!,
                 endDate: endDate!);
         payslip.addAll(_departmentList);
         page++;
@@ -104,12 +113,15 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
         yield FetchingPayslip();
         payslip.clear();
         page = 1;
-         dateRange = "This year";
+        dateRange = "This year";
         setEndDateAndStartDate();
         print(startDate);
         print(endDate);
-        List<PayslipModel> _departmentList = await _payslipRepository
-            .getPayslip(rowperpage: rowperpage, page: page, startDate: startDate!,
+        List<PayslipModel> _departmentList =
+            await _payslipRepository.getPayslip(
+                rowperpage: rowperpage,
+                page: page,
+                startDate: startDate!,
                 endDate: endDate!);
         payslip.addAll(_departmentList);
         page++;
@@ -138,12 +150,15 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
         yield FetchingPayslip();
         payslip.clear();
         page = 1;
-         dateRange = "This year";
+        dateRange = "This year";
         setEndDateAndStartDate();
         print(startDate);
         print(endDate);
-        List<PayslipModel> _departmentList = await _payslipRepository
-            .getPayslip(rowperpage: rowperpage, page: page, startDate: startDate!,
+        List<PayslipModel> _departmentList =
+            await _payslipRepository.getPayslip(
+                rowperpage: rowperpage,
+                page: page,
+                startDate: startDate!,
                 endDate: endDate!);
         payslip.addAll(_departmentList);
         page++;
@@ -166,8 +181,11 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
         setEndDateAndStartDate();
         print(startDate);
         print(endDate);
-        List<PayslipModel> _departmentList = await _payslipRepository
-            .getPayslip(rowperpage: rowperpage, page: page, startDate: startDate!,
+        List<PayslipModel> _departmentList =
+            await _payslipRepository.getPayslip(
+                rowperpage: rowperpage,
+                page: page,
+                startDate: startDate!,
                 endDate: endDate!);
         payslip.addAll(_departmentList);
         page++;
@@ -177,7 +195,8 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
       }
     }
   }
-    void setEndDateAndStartDate() {
+
+  void setEndDateAndStartDate() {
     DateTime now = DateTime.now();
     if (dateRange == "Today") {
       dateRange = "Today";
@@ -213,6 +232,7 @@ class PayslipBloc extends Bloc<PayslipEvent, PayslipState> {
       endDate =
           "${now.year}-12-${helper.intToStringWithPrefixZero(lastDateOfYear.day)} 23:59:59";
     } else {
+      print(dateRange);
       startDate = dateRange!.split("/").first;
       endDate = dateRange!.split("/").last + " 23:59:59";
       dateRange = "$startDate to ${dateRange!.split("/").last}";

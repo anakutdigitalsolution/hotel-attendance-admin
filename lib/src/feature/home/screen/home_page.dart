@@ -111,6 +111,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final List<Map> homeMenu = [
       {
+        "name": "${AppLocalizations.of(context)!.translate("dashboard")!}",
+        "iconColor": Colors.blue,
+        "image": "assets/blackIcon/checking-attendance.png",
+        "onPressed": () {
+          Navigator.pushNamed(context, dashboard);
+        }
+      },
+      {
         "name": "${AppLocalizations.of(context)!.translate("attendance")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/checking-attendance.png",
@@ -127,21 +135,21 @@ class _HomePageState extends State<HomePage> {
         }
       },
       {
-        "name": "${AppLocalizations.of(context)!.translate("schdeule")!}",
+        "name": "${AppLocalizations.of(context)!.translate("approve_board")!}",
         "iconColor": Colors.blue,
         "image": "assets/blackIcon/clock1.png",
         "onPressed": () {
-          Navigator.pushNamed(context, schedules);
+          Navigator.pushNamed(context, approveBaord  );
         }
       },
-      {
-        "name": "${AppLocalizations.of(context)!.translate("leave")!}",
-        "iconColor": Colors.blue,
-        "image": "assets/blackIcon/file.png",
-        "onPressed": () {
-          Navigator.pushNamed(context, leave);
-        }
-      },
+      // {
+      //   "name": "${AppLocalizations.of(context)!.translate("leave")!}",
+      //   "iconColor": Colors.blue,
+      //   "image": "assets/blackIcon/file.png",
+      //   "onPressed": () {
+      //     Navigator.pushNamed(context, leave);
+      //   }
+      // },
 
       {
         "name": "${AppLocalizations.of(context)!.translate("ot")!}",

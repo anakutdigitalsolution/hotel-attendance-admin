@@ -171,8 +171,7 @@ class _BodyState extends State<Body> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => EmployeeDetailPage(
-                                      employeeModel:
-                                          employeeBloc.emploList[index])));
+                                      id: employeeBloc.emploList[index].id)));
                         },
                         child: Row(
                           children: [
@@ -198,7 +197,7 @@ class _BodyState extends State<Body> {
                                         // imageCacheHeight: 80,
                                         // imageCacheWidth: 80,
                                         image:
-                                            "https://banban-hr.herokuapp.com/${employeeBloc.emploList[index].img}",
+                                            "${employeeBloc.emploList[index].img}",
                                         fit: BoxFit.fill,
                                       ),
                                     )),

@@ -83,8 +83,8 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         page = 1;
         contract.clear();
         // Future.delayed(Duration(milliseconds: 200));
-        List<ContractModel> _departmentList =
-            await _structuretypeRepository.getAllContract();
+        List<ContractModel> _departmentList = await _structuretypeRepository
+            .getContract(page: page, rowperpage: rowperpage);
         contract.addAll(_departmentList);
         page++;
         print(page);
@@ -109,11 +109,11 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         page = 1;
         contract.clear();
         // Future.delayed(Duration(milliseconds: 200));
-        List<ContractModel> _departmentList =
-            await _structuretypeRepository.getAllContract();
+        List<ContractModel> _departmentList = await _structuretypeRepository
+            .getContract(page: page, rowperpage: rowperpage);
         contract.addAll(_departmentList);
         page++;
-        print(page);
+
         yield FetchedContract();
       } catch (e) {
         yield ErrorAddingContract(error: e.toString());
@@ -130,8 +130,8 @@ class ContractBloc extends Bloc<ContractEvent, ContractState> {
         page = 1;
         contract.clear();
         // Future.delayed(Duration(milliseconds: 200));
-        List<ContractModel> _departmentList =
-            await _structuretypeRepository.getAllContract();
+        List<ContractModel> _departmentList = await _structuretypeRepository
+            .getContract(page: page, rowperpage: rowperpage);
         contract.addAll(_departmentList);
         page++;
         print(page);
