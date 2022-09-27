@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-abstract class RoleState extends Equatable {
+ class RoleState extends Equatable {
   RoleState([List props = const []]) : super();
   @override
   List<Object?> get props => [];
 }
 
-class FetchingRole extends RoleState {}
+class InitailingRole extends RoleState {}
 
-class FetchedRole extends RoleState {}
+class InitailizedRole extends RoleState {}
 
 class ErrorFetchingRole extends RoleState {
   final dynamic error;

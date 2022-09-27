@@ -89,29 +89,23 @@ class _AddEmployeeState extends State<AddEmployee> {
     super.dispose();
   }
 
-  _dialogDate({required TextEditingController controller}) async {
-    DatePicker.showDatePicker(context,
-            showTitleActions: true,
-            minTime: DateTime(DateTime.now().year - 50),
-            maxTime: DateTime(DateTime.now().year + 60),
-            theme: DatePickerTheme(
-                headerColor: Colors.blue,
-                backgroundColor: Colors.white,
-                itemStyle: TextStyle(
-                    color: Colors.black,
-                    // fontWeight: FontWeight.bold,
-                    fontSize: 18),
-                doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
-            onChanged: (date) {},
-            onConfirm: (date) {},
-            currentTime: DateTime.now(),
-            locale: LocaleType.en)
-        .then((value) {
-      setState(() {
-        date = value;
-        String formateDate = DateFormat('yyyy/MM/dd').format(date!);
-        controller.text = formateDate.toString();
-      });
+  _datePicker({required TextEditingController controller}) {
+    return showDatePicker(
+      context: context,
+      initialDate: dateNow,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 60),
+    ).then((value) {
+      if (value == null) {
+        print("null");
+      } else {
+        setState(() {
+          date = value;
+          String formateDate = DateFormat('yyyy/MM/dd').format(date!);
+          controller.text = formateDate.toString();
+        });
+      }
+      // after click on date ,
     });
   }
 
@@ -195,6 +189,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                             text: state.error.toString(), context: context);
                       }
                       if (state is FetchedTimetable) {
+                        EasyLoading.dismiss();
                         customModal(
                             context,
                             _timetableBloc.timetableList
@@ -206,44 +201,46 @@ class _AddEmployeeState extends State<AddEmployee> {
                       }
                     },
                     child: BlocListener(
-                      bloc: _workingDayBloc,
+                      bloc: _roleBloc,
                       listener: (context, state) {
-                        if (state is FetchingWorkingDay) {
+                        if (state is InitailingRole) {
                           EasyLoading.show(status: "loading...");
                         }
-                        if (state is ErrorFetchingWorkingDay) {
+                        if (state is ErrorFetchingRole) {
                           EasyLoading.dismiss();
+                          print("errr");
                           errorSnackBar(
                               text: state.error.toString(), context: context);
                         }
-                        if (state is FetchedWorkingDay) {
-                          customModal(
-                              context,
-                              _workingDayBloc.departmentList
-                                  .map((e) =>
-                                      "from ${e.workingDay!} to ${e.offDay}")
-                                  .toList(), (value) {
-                            _workdayCtrl.text = value;
+                        if (state is InitailizedRole) {
+                          EasyLoading.dismiss();
+                          customModal(context,
+                              _roleBloc.rolelist.map((e) => e.name).toList(),
+                              (value) {
+                            _roleCtrl.text = value;
                           });
                         }
                       },
                       child: BlocListener(
-                        bloc: _roleBloc,
+                        bloc: _workingDayBloc,
                         listener: (context, state) {
-                          if (state is FetchingRole) {
+                          if (state is FetchingWorkingDay) {
                             EasyLoading.show(status: "loading...");
                           }
-                          if (state is ErrorFetchingRole) {
+                          if (state is ErrorFetchingWorkingDay) {
                             EasyLoading.dismiss();
                             errorSnackBar(
                                 text: state.error.toString(), context: context);
                           }
-                          if (state is FetchedRole) {
+                          if (state is FetchedWorkingDay) {
                             EasyLoading.dismiss();
-                            customModal(context,
-                                _roleBloc.rolelist.map((e) => e.name).toList(),
-                                (value) {
-                              _roleCtrl.text = value;
+                            customModal(
+                                context,
+                                _workingDayBloc.departmentList
+                                    .map((e) =>
+                                        "from ${e.workingDay!} to ${e.offDay}")
+                                    .toList(), (value) {
+                              _workdayCtrl.text = value;
                             });
                           }
                         },
@@ -329,7 +326,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                       controller: _dobCtrl,
                                       keyboardType: TextInputType.text,
                                       onTap: () {
-                                        _dialogDate(controller: _dobCtrl);
+                                        _datePicker(controller: _dobCtrl);
                                       },
                                       decoration: InputDecoration(
                                           fillColor: Colors.grey.shade100,
@@ -346,11 +343,10 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     SizedBox(height: 15),
                                     TextFormField(
                                       controller: _natoinCtrl,
-                                      onTap: () {
-                                        _positionBloc
-                                            .add(FetchAllPositionStarted());
-                                      },
-                                      readOnly: true,
+                                      // onTap: () {
+                                      //   _buildCountry();
+                                      // },
+                                      // readOnly: true,
                                       keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
                                           suffixIcon:
@@ -415,8 +411,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     SizedBox(height: 15),
                                     TextFormField(
                                       controller: _passwordCtrl,
-                                      readOnly: true,
-                                      // keyboardType: TextInputType.text,
+                                      // readOnly: true,
+                                      keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
                                           fillColor: Colors.grey.shade100,
                                           filled: true,
@@ -452,52 +448,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                           labelText: "Office Tel"),
                                     ),
                                     SizedBox(height: 15),
-                                    // TextFormField(
-                                    //   controller: _usernameCtrl,
-                                    //   keyboardType: TextInputType.text,
-                                    //   decoration: InputDecoration(
-                                    //       contentPadding: EdgeInsets.all(15),
-                                    //       border: OutlineInputBorder(
-                                    //         borderRadius: BorderRadius.all(
-                                    //           Radius.circular(5.0),
-                                    //         ),
-                                    //         borderSide: new BorderSide(
-                                    //           width: 1,
-                                    //         ),
-                                    //       ),
-                                    //
-                                    //       labelText: "Username"),
-                                    //   validator: (value) {
-                                    //     if (value!.isEmpty) {
-                                    //       return 'Username is required';
-                                    //     }
-                                    //     return null;
-                                    //   },
-                                    // ),
-                                    // SizedBox(height: 15),
-                                    // TextFormField(
-                                    //   controller: _passwordCtrl,
-                                    //   keyboardType: TextInputType.text,
-                                    //   decoration: InputDecoration(
-                                    //       contentPadding: EdgeInsets.all(15),
-                                    //       border: OutlineInputBorder(
-                                    //         borderRadius: BorderRadius.all(
-                                    //           Radius.circular(5.0),
-                                    //         ),
-                                    //         borderSide: new BorderSide(
-                                    //           width: 1,
-                                    //         ),
-                                    //       ),
-                                    //
-                                    //       labelText: "password"),
-                                    //   validator: (value) {
-                                    //     if (value!.isEmpty) {
-                                    //       return 'password is required';
-                                    //     }
-                                    //     return null;
-                                    //   },
-                                    // ),
-                                    // SizedBox(height: 15),
+                                    
                                     TextFormField(
                                       controller: _phoneNumberCtrl,
                                       keyboardType: TextInputType.text,
@@ -512,12 +463,37 @@ class _AddEmployeeState extends State<AddEmployee> {
                                             left: 14.0,
                                           ),
                                           labelText: "Phone number"),
-                                      // validator: (value) {
-                                      //   if (value!.isEmpty) {
-                                      //     return 'phone is required';
-                                      //   }
-                                      //   return null;
-                                      // },
+                                     
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _positionIdCtrl,
+                                      onTap: () {
+                                        // _roleBloc.add(FetchRoleStarted());
+                                        _positionBloc
+                                            .add(FetchAllPositionStarted());
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Choose position"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'position is required';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                     SizedBox(height: 15),
                                     TextFormField(
@@ -610,7 +586,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                     TextFormField(
                                       controller: _roleCtrl,
                                       onTap: () {
-                                        _roleBloc.add(FetchRoleStarted());
+                                        _roleBloc.add(FetchAllRoleStarted());
                                       },
                                       readOnly: true,
                                       keyboardType: TextInputType.text,
@@ -634,35 +610,7 @@ class _AddEmployeeState extends State<AddEmployee> {
                                         return null;
                                       },
                                     ),
-                                    SizedBox(height: 15),
-                                    TextFormField(
-                                      controller: _positionIdCtrl,
-                                      onTap: () {
-                                        _positionBloc
-                                            .add(FetchAllPositionStarted());
-                                      },
-                                      readOnly: true,
-                                      keyboardType: TextInputType.text,
-                                      decoration: InputDecoration(
-                                          suffixIcon:
-                                              Icon(Icons.arrow_drop_down),
-                                          fillColor: Colors.grey.shade100,
-                                          filled: true,
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: new BorderSide(
-                                                  color: Colors.grey.shade400)),
-                                          enabledBorder: InputBorder.none,
-                                          contentPadding: const EdgeInsets.only(
-                                            left: 14.0,
-                                          ),
-                                          labelText: "Choose position"),
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'position is required';
-                                        }
-                                        return null;
-                                      },
-                                    ),
+
                                     SizedBox(height: 15),
                                     TextFormField(
                                       controller: _addressCtrl,
@@ -799,20 +747,19 @@ class _AddEmployeeState extends State<AddEmployee> {
                                           if (_formKey!.currentState!
                                               .validate()) {
                                             DepartmentModel departId =
-                                                departmentBlc
-                                                    .departmentList
+                                                _departmentBlc.departmentList
                                                     .firstWhere((element) =>
                                                         element.name ==
                                                         _departmentIdCtrl.text);
 
-                                            PositionModel posiId = positionBlc
+                                            PositionModel posiId = _positionBloc
                                                 .positionList
                                                 .firstWhere((element) =>
                                                     element.positionName ==
                                                     _positionIdCtrl.text);
 
-                                            RoleModel roleModel = employeeBloc
-                                                .roleList
+                                            RoleModel roleModel = _roleBloc
+                                                .rolelist
                                                 .firstWhere((e) =>
                                                     e.name == _roleCtrl.text);
                                             TimetableModel timetableModel =

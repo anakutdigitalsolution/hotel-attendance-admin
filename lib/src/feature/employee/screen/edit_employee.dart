@@ -18,7 +18,9 @@ import 'package:hotle_attendnce_admin/src/feature/position/bloc/index.dart';
 import 'package:hotle_attendnce_admin/src/feature/position/model/position_model.dart';
 
 import 'package:hotle_attendnce_admin/src/feature/timetable/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/timetable/model/timetable_model.dart';
 import 'package:hotle_attendnce_admin/src/feature/working_day/bloc/index.dart';
+import 'package:hotle_attendnce_admin/src/feature/working_day/model/working_day_model.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/custome_modal.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/error_snackbar.dart';
 import 'package:hotle_attendnce_admin/src/shared/widget/loadin_dialog.dart';
@@ -90,23 +92,29 @@ class _EditBodyState extends State<Body> {
   final TextEditingController _genderCtrl = TextEditingController();
   final TextEditingController _usernameCtrl = TextEditingController();
   final TextEditingController _passwordCtrl = TextEditingController();
-  final TextEditingController _imgCtrl = TextEditingController();
+
   final TextEditingController _addressCtrl = TextEditingController();
-  final TextEditingController _storeIdCtrl = TextEditingController();
-  final TextEditingController _positionIdCtrl = TextEditingController();
-  final TextEditingController _departmentIdCtrl = TextEditingController();
-  final TextEditingController _phoneNumberCtrl = TextEditingController();
-  late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
   final TextEditingController _officeTelCtrl = TextEditingController();
   final TextEditingController _emailCtrl = TextEditingController();
   final TextEditingController _dobCtrl = TextEditingController();
+  final TextEditingController _positionIdCtrl = TextEditingController();
+  final TextEditingController _departmentIdCtrl = TextEditingController();
+  final TextEditingController _phoneNumberCtrl = TextEditingController();
+  final TextEditingController _roleCtrl = TextEditingController();
   final TextEditingController _statusCtl = TextEditingController();
   final TextEditingController _coupleCtrl = TextEditingController();
   final TextEditingController _numchildCtrl = TextEditingController();
-
-  final TextEditingController _roleCtrl = TextEditingController();
+  late GlobalKey<FormState>? _formKey = GlobalKey<FormState>();
+  // final TextEditingController _roleCtrl = TextEditingController();
   final TextEditingController _timetableCtrl = TextEditingController();
   final TextEditingController _workdayCtrl = TextEditingController();
+  final TextEditingController _natoinCtrl = TextEditingController();
+  final TextEditingController _cardCtrl = TextEditingController();
+  DepartmentBlc _departmentBlc = DepartmentBlc();
+  PositionBlc _positionBloc = PositionBlc();
+  TimetableBloc _timetableBloc = TimetableBloc();
+  WorkingDayBloc _workingDayBloc = WorkingDayBloc();
+  RoleBloc _roleBloc = RoleBloc();
   File? _image;
 
   DateTime? date;
@@ -115,16 +123,37 @@ class _EditBodyState extends State<Body> {
   List<String> gender = ["Female", "Male", "Other"];
   List<String> status = ["married", "single"];
   List<String> job = ["housewife", "not housewife"];
+  _datePicker({required TextEditingController controller}) {
+    return showDatePicker(
+      context: context,
+      initialDate: dateNow,
+      firstDate: DateTime(DateTime.now().year - 5),
+      lastDate: DateTime(DateTime.now().year + 60),
+    ).then((value) {
+      if (value == null) {
+        print("null");
+      } else {
+        setState(() {
+          date = value;
+          String formateDate = DateFormat('yyyy/MM/dd').format(date!);
+          controller.text = formateDate.toString();
+        });
+      }
+      // after click on date ,
+    });
+  }
+
   @override
   void initState() {
     _nameCtrl.text = widget.employeeModel.employeeModel.name;
     widget.employeeModel.employeeModel.address == null
         ? _addressCtrl.text = ""
         : _addressCtrl.text = widget.employeeModel.employeeModel.address!;
-    employeeBloc.employeeModel!.departmentModel!.name!;
+
     _positionIdCtrl.text =
         employeeBloc.employeeModel!.positionModel!.positionName;
     _departmentIdCtrl.text = employeeBloc.employeeModel!.departmentModel!.name!;
+    // _roleCtrl.text = employeeBloc..name;
 
     _genderCtrl.text = widget.employeeModel.employeeModel.gender;
     widget.employeeModel.employeeModel.phone == null
@@ -156,37 +185,6 @@ class _EditBodyState extends State<Body> {
     super.initState();
   }
 
-  _dialogDate({required TextEditingController controller}) async {
-    DatePicker.showDatePicker(context,
-            showTitleActions: true,
-            minTime: DateTime(DateTime.now().year - 70),
-            maxTime: DateTime(DateTime.now().year + 60),
-            theme: DatePickerTheme(
-                headerColor: Colors.blue,
-                backgroundColor: Colors.white,
-                itemStyle: TextStyle(
-                    color: Colors.black,
-                    // fontWeight: FontWeight.bold,
-                    fontSize: 18),
-                doneStyle: TextStyle(color: Colors.white, fontSize: 16)),
-            onChanged: (date) {},
-            onConfirm: (date) {},
-            currentTime: DateTime.now(),
-            locale: LocaleType.en)
-        .then((value) {
-      setState(() {
-        date = value;
-        String formateDate = DateFormat('yyyy/MM/dd').format(date!);
-        controller.text = formateDate.toString();
-      });
-    });
-  }
-
-  DepartmentBlc _departmentBlc = DepartmentBlc();
-  PositionBlc _positionBloc = PositionBlc();
-  TimetableBloc _timetableBloc = TimetableBloc();
-  WorkingDayBloc _workingDayBloc = WorkingDayBloc();
-  RoleBloc _roleBloc = RoleBloc();
   @override
   void dispose() {
     _departmentBlc.close();
@@ -276,53 +274,58 @@ class _EditBodyState extends State<Body> {
                             text: state.error.toString(), context: context);
                       }
                       if (state is FetchedTimetable) {
+                        EasyLoading.dismiss();
                         customModal(
                             context,
                             _timetableBloc.timetableList
-                                .map((e) => e.timetableName)
+                                .map((e) =>
+                                    "from ${e.onDutyTtime} to ${e.offDutyTime}")
                                 .toList(), (value) {
                           _timetableCtrl.text = value;
                         });
                       }
                     },
                     child: BlocListener(
-                      bloc: _workingDayBloc,
+                      bloc: _roleBloc,
                       listener: (context, state) {
-                        if (state is FetchingWorkingDay) {
+                        if (state is InitailingRole) {
                           EasyLoading.show(status: "loading...");
                         }
-                        if (state is ErrorFetchingWorkingDay) {
+                        if (state is ErrorFetchingRole) {
                           EasyLoading.dismiss();
+                          print("errr");
                           errorSnackBar(
                               text: state.error.toString(), context: context);
                         }
-                        if (state is FetchedWorkingDay) {
-                          customModal(
-                              context,
-                              _workingDayBloc.departmentList
-                                  .map((e) => e.name!)
-                                  .toList(), (value) {
-                            _workdayCtrl.text = value;
+                        if (state is InitailizedRole) {
+                          EasyLoading.dismiss();
+                          customModal(context,
+                              _roleBloc.rolelist.map((e) => e.name).toList(),
+                              (value) {
+                            _roleCtrl.text = value;
                           });
                         }
                       },
                       child: BlocListener(
-                        bloc: _roleBloc,
+                        bloc: _workingDayBloc,
                         listener: (context, state) {
-                          if (state is FetchingRole) {
+                          if (state is FetchingWorkingDay) {
                             EasyLoading.show(status: "loading...");
                           }
-                          if (state is ErrorFetchingRole) {
+                          if (state is ErrorFetchingWorkingDay) {
                             EasyLoading.dismiss();
                             errorSnackBar(
                                 text: state.error.toString(), context: context);
                           }
-                          if (state is FetchedRole) {
+                          if (state is FetchedWorkingDay) {
                             EasyLoading.dismiss();
-                            customModal(context,
-                                _roleBloc.rolelist.map((e) => e.name).toList(),
-                                (value) {
-                              _roleCtrl.text = value;
+                            customModal(
+                                context,
+                                _workingDayBloc.departmentList
+                                    .map((e) =>
+                                        "from ${e.workingDay!} to ${e.offDay}")
+                                    .toList(), (value) {
+                              _workdayCtrl.text = value;
                             });
                           }
                         },
@@ -408,7 +411,7 @@ class _EditBodyState extends State<Body> {
                                       controller: _dobCtrl,
                                       keyboardType: TextInputType.text,
                                       onTap: () {
-                                        _dialogDate(controller: _dobCtrl);
+                                        _datePicker(controller: _dobCtrl);
                                       },
                                       decoration: InputDecoration(
                                           fillColor: Colors.grey.shade100,
@@ -424,9 +427,53 @@ class _EditBodyState extends State<Body> {
                                     ),
                                     SizedBox(height: 15),
                                     TextFormField(
+                                      controller: _natoinCtrl,
+                                      // onTap: () {
+                                      //   _buildCountry();
+                                      // },
+                                      // readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Choose nationality"),
+                                      // validator: (value) {
+                                      //   if (value!.isEmpty) {
+                                      //     return 'nationality is required';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _cardCtrl,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Card Number"),
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
                                       controller: _usernameCtrl,
-                                      readOnly: true,
-                                      // keyboardType: TextInputType.text,
+                                      // readOnly: true,
+                                      keyboardType: TextInputType.text,
                                       decoration: InputDecoration(
                                           fillColor: Colors.grey.shade100,
                                           filled: true,
@@ -438,12 +485,35 @@ class _EditBodyState extends State<Body> {
                                             left: 14.0,
                                           ),
                                           labelText: "Username"),
-                                      // validator: (value) {
-                                      //   if (value!.isEmpty) {
-                                      //     return 'Username is required';
-                                      //   }
-                                      //   return null;
-                                      // },
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'Username is required';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _passwordCtrl,
+                                      // readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Password"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'password is required';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                     SizedBox(height: 15),
                                     TextFormField(
@@ -462,52 +532,6 @@ class _EditBodyState extends State<Body> {
                                           labelText: "Office Tel"),
                                     ),
                                     SizedBox(height: 15),
-                                    // TextFormField(
-                                    //   controller: _usernameCtrl,
-                                    //   keyboardType: TextInputType.text,
-                                    //   decoration: InputDecoration(
-                                    //       contentPadding: EdgeInsets.all(15),
-                                    //       border: OutlineInputBorder(
-                                    //         borderRadius: BorderRadius.all(
-                                    //           Radius.circular(5.0),
-                                    //         ),
-                                    //         borderSide: new BorderSide(
-                                    //           width: 1,
-                                    //         ),
-                                    //       ),
-                                    //
-                                    //       labelText: "Username"),
-                                    //   validator: (value) {
-                                    //     if (value!.isEmpty) {
-                                    //       return 'Username is required';
-                                    //     }
-                                    //     return null;
-                                    //   },
-                                    // ),
-                                    // SizedBox(height: 15),
-                                    // TextFormField(
-                                    //   controller: _passwordCtrl,
-                                    //   keyboardType: TextInputType.text,
-                                    //   decoration: InputDecoration(
-                                    //       contentPadding: EdgeInsets.all(15),
-                                    //       border: OutlineInputBorder(
-                                    //         borderRadius: BorderRadius.all(
-                                    //           Radius.circular(5.0),
-                                    //         ),
-                                    //         borderSide: new BorderSide(
-                                    //           width: 1,
-                                    //         ),
-                                    //       ),
-                                    //
-                                    //       labelText: "password"),
-                                    //   validator: (value) {
-                                    //     if (value!.isEmpty) {
-                                    //       return 'password is required';
-                                    //     }
-                                    //     return null;
-                                    //   },
-                                    // ),
-                                    // SizedBox(height: 15),
                                     TextFormField(
                                       controller: _phoneNumberCtrl,
                                       keyboardType: TextInputType.text,
@@ -522,12 +546,36 @@ class _EditBodyState extends State<Body> {
                                             left: 14.0,
                                           ),
                                           labelText: "Phone number"),
-                                      // validator: (value) {
-                                      //   if (value!.isEmpty) {
-                                      //     return 'phone is required';
-                                      //   }
-                                      //   return null;
-                                      // },
+                                    ),
+                                    SizedBox(height: 15),
+                                    TextFormField(
+                                      controller: _positionIdCtrl,
+                                      onTap: () {
+                                        // _roleBloc.add(FetchRoleStarted());
+                                        _positionBloc
+                                            .add(FetchAllPositionStarted());
+                                      },
+                                      readOnly: true,
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                          suffixIcon:
+                                              Icon(Icons.arrow_drop_down),
+                                          fillColor: Colors.grey.shade100,
+                                          filled: true,
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.grey.shade400)),
+                                          enabledBorder: InputBorder.none,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 14.0,
+                                          ),
+                                          labelText: "Choose position"),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'position is required';
+                                        }
+                                        return null;
+                                      },
                                     ),
                                     SizedBox(height: 15),
                                     TextFormField(
@@ -620,7 +668,7 @@ class _EditBodyState extends State<Body> {
                                     TextFormField(
                                       controller: _roleCtrl,
                                       onTap: () {
-                                        _roleBloc.add(FetchRoleStarted());
+                                        _roleBloc.add(FetchAllRoleStarted());
                                       },
                                       readOnly: true,
                                       keyboardType: TextInputType.text,
@@ -640,35 +688,6 @@ class _EditBodyState extends State<Body> {
                                       validator: (value) {
                                         if (value!.isEmpty) {
                                           return 'role is required';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                    SizedBox(height: 15),
-                                    TextFormField(
-                                      controller: _positionIdCtrl,
-                                      onTap: () {
-                                        _positionBloc
-                                            .add(FetchAllPositionStarted());
-                                      },
-                                      readOnly: true,
-                                      keyboardType: TextInputType.text,
-                                      decoration: InputDecoration(
-                                          suffixIcon:
-                                              Icon(Icons.arrow_drop_down),
-                                          fillColor: Colors.grey.shade100,
-                                          filled: true,
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: new BorderSide(
-                                                  color: Colors.grey.shade400)),
-                                          enabledBorder: InputBorder.none,
-                                          contentPadding: const EdgeInsets.only(
-                                            left: 14.0,
-                                          ),
-                                          labelText: "Choose position"),
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'position is required';
                                         }
                                         return null;
                                       },
@@ -851,6 +870,8 @@ class _EditBodyState extends State<Body> {
                                           String depart = "";
                                           String position = "";
                                           String role = "";
+                                          String timetalbe = "";
+                                          String workday = "";
                                           String url = "";
                                           if (_formKey!.currentState!
                                               .validate()) {
@@ -884,26 +905,35 @@ class _EditBodyState extends State<Body> {
                                               position = widget.employeeModel
                                                   .positionModel!.id;
                                             }
-                                            // if (_timetableCtrl.text !=
-                                            //     widget
-                                            //         .employeeModel
-                                            //         .timetableModel!
-                                            //         .timetableName) {
-                                            //   PositionModel posiId = _positionBloc
-                                            //       .positionList
-                                            //       .firstWhere((element) =>
-                                            //           element.positionName ==
-                                            //           _positionIdCtrl.text);
-                                            //   position = posiId.id;
-                                            // } else {
-                                            //   position = widget.employeeModel
-                                            //       .positionModel!.id;
-                                            // }
+                                            if (_timetableCtrl.text !=
+                                                "from ${widget.employeeModel.timetableModel!.onDutyTtime} to ${widget.employeeModel.timetableModel!.offDutyTime}") {
+                                              TimetableModel timetableModel =
+                                                  _timetableBloc.timetableList
+                                                      .firstWhere((e) =>
+                                                          "from ${e.onDutyTtime} to ${e.offDutyTime}" ==
+                                                          _timetableCtrl.text);
+                                              timetalbe = timetableModel.id;
+                                            } else {
+                                              timetalbe = widget.employeeModel
+                                                  .timetableModel!.id;
+                                            }
+                                            if (_workdayCtrl.text !=
+                                                "from ${widget.employeeModel.workingDayModel!.workingDay} to ${widget.employeeModel.workingDayModel!.offDay}") {
+                                              WorkingDayModel workingDayModel =
+                                                  _workingDayBloc.departmentList
+                                                      .firstWhere((e) =>
+                                                          "from ${e.workingDay} to ${e.offDay}" ==
+                                                          _workdayCtrl.text);
+                                              workday = workingDayModel.id;
+                                            } else {
+                                              workday = widget.employeeModel
+                                                  .workingDayModel!.id;
+                                            }
                                             if (_roleCtrl.text !=
                                                 widget.employeeModel.roleModel!
                                                     .name) {
-                                              RoleModel roleModel = employeeBloc
-                                                  .roleList
+                                              RoleModel roleModel = _roleBloc
+                                                  .rolelist
                                                   .firstWhere((e) =>
                                                       e.name == _roleCtrl.text);
                                               role = roleModel.id;
@@ -921,22 +951,34 @@ class _EditBodyState extends State<Body> {
                                                   .employeeModel.img!;
                                             }
 
-                                            // employeeBloc.add(UpdateEmployeeStarted(
-                                            //     id: widget.employeeModel.id,
-                                            //     name: _nameCtrl.text,
-                                            //     gender: _genderCtrl.text,
-                                            //     dob: _dobCtrl.text,
-                                            //     email: _emailCtrl.text,
-                                            //     officeTel: _officeTelCtrl.text,
-                                            //     img: _image,
-                                            //     imgUrl: url,
-                                            //     positionId: position,
-                                            //     departmentId: depart,
-                                            //     meritalStatus: _statusCtl.text,
-                                            //     coupleJob: _coupleCtrl.text,
-                                            //     child: _numchildCtrl.text,
-                                            //     phoneNumber: _phoneNumberCtrl.text,
-                                            //     address: _addressCtrl.text));
+                                            employeeBloc.add(
+                                                UpdateEmployeeStarted(
+                                                    id: widget.employeeModel
+                                                        .employeeModel.id,
+                                                    name: _nameCtrl.text,
+                                                    gender: _genderCtrl.text,
+                                                    dob: _dobCtrl.text,
+                                                    email: _emailCtrl.text,
+                                                    officeTel:
+                                                        _officeTelCtrl.text,
+                                                    img: _image,
+                                                    nationality:
+                                                        _natoinCtrl.text,
+                                                    cardNumber: _cardCtrl.text,
+                                                    imgUrl: url,
+                                                    positionId: position,
+                                                    departmentId: depart,
+                                                    meritalStatus:
+                                                        _statusCtl.text,
+                                                    coupleJob: _coupleCtrl.text,
+                                                    child: _numchildCtrl.text,
+                                                    phoneNumber:
+                                                        _phoneNumberCtrl.text,
+                                                    roleId: role,
+                                                    timetalbeId: timetalbe,
+                                                    workdayId: workday,
+                                                    address:
+                                                        _addressCtrl.text));
                                           }
                                         })
                                   ],

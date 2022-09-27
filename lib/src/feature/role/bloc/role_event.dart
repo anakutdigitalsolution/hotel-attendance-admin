@@ -1,9 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-abstract class RoleEvent extends Equatable {
+ class RoleEvent extends Equatable {
   RoleEvent([List props = const []]) : super();
   @override
   List<Object?> get props => [];
 }
 
+class FetchAllRoleStarted extends RoleEvent{}
 class FetchRoleStarted extends RoleEvent {}
